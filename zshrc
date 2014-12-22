@@ -73,8 +73,8 @@ export PATH="$HOME/bin":"/usr/local/bin":$PATH
 ######################## zsh alias #########################
 
 alias grep='grep --color -E'
-alias mvim='mvim --remote-silent'
-alias vim='/usr/local/bin/mvim -v'
+#alias mvim='mvim --remote-silent'
+#alias vim='/usr/local/bin/mvim -v'
 alias tmux='tmux -2'
 
 alias l='ls -l'
