@@ -1,0 +1,48 @@
+"3.8.2 (created: 2014/02/13 23:52:43)
+
+cd ~
+
+set tabnumbers
+let mapleader = ','
+
+cmap <C-p> <Up>
+cmap <C-n> <Down>
+cmap <C-h> <BS>
+cmap <C-[> <Esc>
+
+nnoremap j 6j
+nnoremap k 6k
+nnoremap h gT
+nnoremap l gt
+nnoremap <C-h> h
+nnoremap <C-j> j
+nnoremap <C-k> k
+nnoremap <C-l> l
+
+nmap <BS> <PageUp>
+nmap J <C-d>
+nmap K <C-u>
+
+
+nmap <Leader>h :help<Space>
+"nmap <Leader>b	:bmarks! -tags<Space>
+
+
+
+nmap <Leader>,	:source ~/.vimperatorrc<CR>
+
+
+noremap <C-o>	<Esc>
+
+
+set "editor=/usr/local/bin/mvim --remote-silent"
+source! .vimperatorrc.local
+
+" vim: set ft=vimperator:
+
+imap <S-BS>	<C-w>
+cmap <S-BS>	<C-w>
+cmap jj	<Esc>	
+
+nnoremap B b
+nnoremap b :bmarks! -tags<SPACE>
