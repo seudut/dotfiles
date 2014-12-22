@@ -1,0 +1,6 @@
+.VimBallRecord
+*.swp
+bundle/*
+plugin/*
+.vim-bookmarks
+temp/*
