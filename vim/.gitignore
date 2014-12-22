@@ -4,3 +4,4 @@ bundle/*
 plugin/*
 .vim-bookmarks
 temp/*
+!.gitkeep
