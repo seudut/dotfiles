@@ -81,12 +81,12 @@ if has("gui_running")
 	set macmeta  "" Macvim only
 	colorscheme molokai
 	set guioptions+=c
-	set guifont=Sauce\ Code\ Powerline\ Light:h12
+	set guifont=Sauce\ Code\ Powerline\ Light:h11
 	highlight Cursor guifg=white guibg=green
 	set guicursor=a:blinkon0
 	set guioptions=eac
-	set lines=999
-	set columns=999
+"	set lines=999
+"	set columns=999
 else
 	set t_Co=256
 	colorscheme molokai22
