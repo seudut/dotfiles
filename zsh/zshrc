@@ -200,8 +200,9 @@ bindkey \^U backward-kill-line
 
 export PYTHONSTARTUP="$HOME/.pythonrc"
 
-[[ -f "$HOME/.cpverc" ]] && . "$HOME/.cpverc"
-[[ -f "$HOME/.eccrc" ]] && . "$HOME/.eccrc"
+export ZSHHOME="$HOME/.zsh"
+[[ -f "$ZSHHOME/cpverc" ]] && . "$ZSHHOME/cpverc"
+[[ -f "$ZSHHOME/eccrc" ]] && . "$ZSHHOME/eccrc"
 
 
 #` git log --oneline --abbrev-commit --all --graph --decorate --color `

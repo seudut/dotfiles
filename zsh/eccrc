@@ -1,0 +1,4 @@
+#!/bin/zsh
+
+
+alias ecc_ctags="ctags -R contrib include src tests"

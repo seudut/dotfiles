@@ -1,0 +1,16 @@
+#!/bin/zsh
+#
+#alias cpve_ctags="ctags --exclude=dependencies \
+#						--exclude=thirdparty \
+#						--exclude=target \
+#						--exclude=site_scons \
+#						--exclude=bootstrap \
+#						--exclude='*.py' \
+#						--exclude=tools \
+#						-R ."
+alias cpve_ctags="ctags -R cpve external movi vision"
+
+alias cpve_mac_build="scons arch=x86 debug=True -j 8"
+alias cpve_ios_build="scons arch=arm iosversion=8.0 debug=True -j 8"
+
+#						--exclude=external \
