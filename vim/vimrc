@@ -74,6 +74,8 @@ set lazyredraw
 set hlsearch
 set autoindent
 set confirm
+set nostartofline   " don't jump to first character when paging
+set nowrap
 syntax on
 " colorscheme {{{
 set cursorline
@@ -602,6 +604,4 @@ nnoremap <C-N>	:cn<CR>
 nnoremap <C-P>	:cp<CR>
 "http://dougblack.io/words/a-good-vimrc.html
 "nnoremap gV `[v`]
-set nostartofline   " don't jump to first character when paging
-set nowrap
 
