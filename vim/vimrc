@@ -21,7 +21,7 @@ Bundle 'vim-scripts/tcd.vim'
 Bundle 'vim-scripts/cmdline-completion'
 Bundle 'vim-scripts/vcscommand.vim'
 Bundle 'Lokaltog/vim-easymotion'
-Bundle 'vim-scripts/YankRing.vim'
+"Bundle 'vim-scripts/YankRing.vim'
 Bundle 'vim-scripts/gtags.vim'
 Bundle 'kshenoy/vim-signature'
 Bundle 'nathanaelkane/vim-indent-guides'
@@ -76,6 +76,9 @@ set autoindent
 set confirm
 set nostartofline   " don't jump to first character when paging
 set nowrap
+"set textwidth, formatoptions for chinese
+set formatoptions+=m
+set colorcolumn=+1
 syntax on
 " colorscheme {{{
 set cursorline
@@ -137,8 +140,8 @@ nmap <	<C-w>3<
 nmap >	<C-w>3>
 nmap =	<C-w>=
 
-nnoremap <C-D>	M<C-D>
-nnoremap <C-U>	M<C-U>
+nnoremap <C-D>	<C-D>zz
+nnoremap <C-U>	<C-U>zz
 
 nnoremap <SPACE>	<C-F>
 nnoremap <S-SPACE>	<C-B>
@@ -438,6 +441,8 @@ autocmd BufNewFile,BufRead *tmux.conf set filetype=tmux
 autocmd BufNewFile,BufRead SConstruct set filetype=python
 autocmd BufNewFile,BufRead SConscript* set filetype=python
 autocmd BufNewFile,BufReadPost *.md set filetype=markdown
+autocmd BufNewFile,BufRead *.c set filetype=cpp
+
 " http://vim.wikia.com/wiki/Update_the_diff_view_automatically
 autocmd InsertLeave,BufWritePost,CursorHold * if &diff == 1 | diffupdate | endif
 " setlocal nomodifiable for svn diff
@@ -458,6 +463,8 @@ autocmd FileType xml setlocal foldmethod=syntax |
 autocmd FileType vim setlocal foldmethod=marker |
 	\ setlocal formatoptions-=c formatoptions-=r formatoptions-=o |
     \ let b:AutoClosePairs = AutoClose#DefaultPairsModified("", "{} \"")
+
+autocmd Filetype markdown setlocal textwidth=80
 
 autocmd CmdwinEnter * map <buffer> q :q<CR>
 
