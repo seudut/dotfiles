@@ -34,6 +34,10 @@ Bundle 'tpope/vim-markdown'
 "Bundle 'vim-scripts/genutils'
 "Bundle 'vim-scripts/Marks-Browser'
 Bundle 'MattesGroeger/vim-bookmarks'
+"Bundle 'tpope/vim-repeat'
+"Bundle 'kien/ctrlp.vim'
+"disable since some conflicting mapping
+Bundle 'vim-latex/vim-latex'
 
 call vundle#end()
 filetype plugin indent on
@@ -41,6 +45,7 @@ filetype plugin indent on
 " }}}
 " Basic options ----------------------------------------------------------- {{{
 set number
+set relativenumber
 set tabstop=4
 set softtabstop=4
 set shiftwidth=4
@@ -75,7 +80,8 @@ set hlsearch
 set autoindent
 set confirm
 set nostartofline   " don't jump to first character when paging
-set nowrap
+set wrap
+set expandtab
 "set textwidth, formatoptions for chinese
 set formatoptions+=m
 set colorcolumn=+1
@@ -123,7 +129,7 @@ nmap <Leader>q	:q<CR>
 nmap <Leader>e	:e<Space>
 nmap <Leader>W	:w !sudo tee %<CR>
 nmap <Leader>h	:vertical help<Space>
-nmap <Leader>t	:tabedit<Space>
+nmap <Leader>t	:tabedit %<Space>
 "nmap <Leader>x	:x<CR>
 
 " windows 
@@ -152,8 +158,10 @@ nnoremap <A-p>	gT
 " map <A-TAB> Alt+TAB  
 "noremap <A-S-TAB> "input C-V then input key sequence to
 "http://vim.wikia.com/wiki/Make_Shift-Tab_work
-nnoremap <ESC><TAB> :bn<CR>
-nnoremap  :bp<CR>
+"nnoremap <ESC><TAB> :bn<CR>
+nnoremap <ESC><TAB> :tabnext<CR>
+"nnoremap  :bp<CR>
+nnoremap  :tabprevious<CR>
 "nmap <A-S-TAB>	:bp<CR>
 "nmap <A-SPACE>	:b#<CR>
 "nmap <Leader>d	:bd<CR>
@@ -175,6 +183,9 @@ nnoremap g,	g,zzzv
 nnoremap zR	zRzz
 nnoremap zr	zrzz
 nnoremap zn znzz
+
+nnoremap zj zjzz
+nnoremap zh zhzz
 
 noremap <Leader>z	zmzvzz
 nmap \\ :nohlsearch<CR>
@@ -220,6 +231,14 @@ vmap <C-k>	{
 vmap <C-j>	}	
 "vmap <Leader>y	"*y
 vmap Y	"*y
+"
+"vmap <C-Y>  "qy
+"vmap <C-P>  "qp
+vnoremap    Y   "*y
+vnoremap    <Leader>p  "*p
+"search for visually selectecd text
+vnoremap // y/<C-R>"<CR>
+vnoremap <Leader>a  :
 " }}}
 " }}}
 " Plugins Configuration --------------------------------------------------- {{{
@@ -234,18 +253,18 @@ nnoremap <silent> sj     :FufBuffer<CR>
 nnoremap <silent> sk     :FufFileWithCurrentBufferDir<CR>
 nnoremap <silent> sK     :FufFileWithFullCwd<CR>
 nnoremap <silent> s<C-k> :FufFile<CR>
-nnoremap <silent> sl     :FufCoverageFileChange<CR>
-nnoremap <silent> sL     :FufCoverageFileChange<CR>
-nnoremap <silent> s<C-l> :FufCoverageFileRegister<CR>
+"nnoremap <silent> sl     :FufCoverageFileChange<CR>
+"nnoremap <silent> sL     :FufCoverageFileChange<CR>
+"nnoremap <silent> s<C-l> :FufCoverageFileRegister<CR>
 nnoremap <silent> sd     :FufDirWithCurrentBufferDir<CR>
 nnoremap <silent> sD     :FufDirWithFullCwd<CR>
 nnoremap <silent> s<C-d> :FufDir<CR>
 nnoremap <silent> sn     :FufMruFile<CR>
 nnoremap <silent> sN     :FufMruFileInCwd<CR>
 nnoremap <silent> sm     :FufMruCmd<CR>
-nnoremap <silent> su     :FufBookmarkFile<CR>
+"nnoremap <silent> su     :FufBookmarkFile<CR>
 nnoremap <silent> s<C-u> :FufBookmarkFileAdd<CR>
-vnoremap <silent> s<C-u> :FufBookmarkFileAddAsSelectedText<CR>
+"vnoremap <silent> s<C-u> :FufBookmarkFileAddAsSelectedText<CR>
 nnoremap <silent> si     :FufBookmarkDir<CR>
 nnoremap <silent> s<C-i> :FufBookmarkDirAdd<CR>
 nnoremap <silent> sT     :FufTag<CR>
@@ -253,29 +272,30 @@ nnoremap <silent> st     :FufTag!<CR>
 nnoremap <silent> s<C-]> :FufTagWithCursorWord!<CR>
 nnoremap <silent> s,     :FufBufferTag<CR>
 nnoremap <silent> s<     :FufBufferTag!<CR>
-vnoremap <silent> s,     :FufBufferTagWithSelectedText!<CR>
-vnoremap <silent> s<     :FufBufferTagWithSelectedText<CR>
+"vnoremap <silent> s,     :FufBufferTagWithSelectedText!<CR>
+"vnoremap <silent> s<     :FufBufferTagWithSelectedText<CR>
 nnoremap <silent> s}     :FufBufferTagWithCursorWord!<CR>
+nnoremap <silent> sl     :FufBufferTagAll<CR>
 "nnoremap <silent> s.     :FufBufferTagAll<CR>
-"nnoremap <silent> s>     :FufBufferTagAll!<CR>
+nnoremap <silent> s>     :FufBufferTagAll!<CR>
 "vnoremap <silent> s.     :FufBufferTagAllWithSelectedText!<CR>
 "vnoremap <silent> s>     :FufBufferTagAllWithSelectedText<CR>
 "nnoremap <silent> s]     :FufBufferTagAllWithCursorWord!<CR>
 nnoremap <silent> sG     :FufTaggedFile<CR>
 nnoremap <silent> sg     :FufTaggedFile!<CR>
-nnoremap <silent> so     :FufJumpList<CR>
-nnoremap <silent> sp     :FufChangeList<CR>
-nnoremap <silent> sq     :FufQuickfix<CR>
-nnoremap <silent> sy     :FufLine<CR>
+"nnoremap <silent> so     :FufJumpList<CR>
+"nnoremap <silent> sp     :FufChangeList<CR>
+"nnoremap <silent> sq     :FufQuickfix<CR>
+"nnoremap <silent> sy     :FufLine<CR>
 "  nnoremap <silent> sh     :FufHelp<CR>
-nnoremap <silent> se     :FufEditDataFile<CR>
+"nnoremap <silent> se     :FufEditDataFile<CR>
 nnoremap <silent> sr     :FufRenewCache<CR>
 " }}}
 " YouCompleteMe ----------------------------------------------------------- {{{
 "syntax on, must before the YCM,
 
-let g:ycm_collect_identifiers_from_tags_files = 1
-let g:ycm_global_ycm_extra_conf = '~/.vim/bundle/YouCompleteMe/third_party/ycmd/cpp/ycm/.ycm_extra_conf.py'
+"let g:ycm_collect_identifiers_from_tags_files = 1
+"let g:ycm_global_ycm_extra_conf = '~/.vim/bundle/YouCompleteMe/third_party/ycmd/cpp/ycm/.ycm_extra_conf.py'
 let g:ycm_auto_trigger = 1
 let g:ycm_seed_identifiers_with_syntax = 1
 let g:ycm_show_diagnostics_ui = 0
@@ -312,7 +332,8 @@ let g:ycm_key_detailed_diagnostics = ''
 	let g:airline_right_sep = ''
 	let g:airline_right_alt_sep = ''
 
-	let g:airline#extensions#tabline#show_buffers = 1
+"	let g:airline#extensions#tabline#show_buffers = 1
+	let g:airline#extensions#tabline#show_buffers = 0
 	let g:airline#extensions#tabline#enabled = 1
 	let g:airline#extensions#tabline#left_sep = ''
 	let g:airline#extensions#tabline#left_alt_sep =''
@@ -401,8 +422,8 @@ endif
 " }}}
 " Marks ------------------------------------------------------------------- {{{
 nmap  \h <Plug>MarkSet
-nmap  * <Plug>MarkSearchNext
-nmap  # <Plug>MarkSearchPrev
+"nmap  * <Plug>MarkSearchNext
+"nmap  # <Plug>MarkSearchPrev
 " }}}
 " Gundo ------------------------------------------------------------------- {{{
 "    nnoremap <F5> :GundoToggle<CR>
@@ -432,7 +453,27 @@ let g:bookmark_auto_close = 1
 "  nmap ,c <Plug>BookmarkClear
 "  nmap ,x <Plug>BookmarkClearAll
 " }}}
-
+" EasyMotion -------------------------------------------------------------- {{{
+map en <Plug>(easymotion-sn)
+map ej <Plug>(easymotion-j)
+map ek <Plug>(easymotion-k)
+map eb <Plug>(easymotion-b)
+map ew <Plug>(easymotion-w)
+map el <Plug>(easymotion-lineforward)
+map eh <Plug>(easymotion-linebackward)
+"" }}}
+" vim-latex --------------------------------------------------------------- {{{
+"set grepprg=grep\ -nH\ $*
+"let g:tex_flavor='latex'
+"set iskeyword+=:
+"autocmd BufEnter *.tex set sw=2
+"disable default mapping 
+imap #$ <Plug>IMAP_JumpForward
+nmap #$ <Plug>IMAP_JumpForward
+vmap #$ <Plug>IMAP_JumpForward
+vmap #$ <Plug>IMAP_DeleteAndJumpForward
+let g:Imap_FreezeImap=1
+" }}}
 " }}}
 " FileType ---------------------------------------------------------------- {{{
 autocmd BufNewFile,BufRead *.log set filetype=logecc
@@ -455,7 +496,8 @@ autocmd FileType qf nnoremap <buffer> <silent> q :q<CR> | setlocal nowrap | setl
 autocmd FileType help nnoremap <buffer> <silent> q :q<CR> | vertical resize 85;
 autocmd FileType c,cpp setlocal foldmethod=syntax |
     \ let b:AutoClosePairs = AutoClose#DefaultPairsModified("\"", "{}") |
-	\ inoremap <buffer> { {<CR>}<ESC>kA<CR>
+	\ inoremap <buffer> { {<CR>}<ESC>kA<CR> |
+    \ nnoremap <buffer> <silent> <C-]> :let word=expand("<cword>")<CR>:wincmd o<cr>:vsp<CR>:exec("tag ". word)<cr>zzzr:wincmd w<cr>
 autocmd FileType python setlocal foldmethod=indent
 
 autocmd FileType xml setlocal foldmethod=syntax |
@@ -564,7 +606,7 @@ nmap <silent> \q :call ToggleList("Quickfix List", 'c')<CR>
 "endif
 function! DiffToggle()
 	if(&diff)
-		diffoff | wincmd h | wincmd o
+		diffoff | wincmd l | :q
 	else
 		exec ":VCSVimDiff" | wincmd h
 	endif
@@ -607,8 +649,27 @@ iabbrev		"}   " }}}
 " m
 nnoremap B ^
 nnoremap E $
-nnoremap <C-N>	:cn<CR>
-nnoremap <C-P>	:cp<CR>
+nnoremap <C-N>	:cn<CR>zzzv
+nnoremap <C-P>	:cp<CR>zzzv
 "http://dougblack.io/words/a-good-vimrc.html
 "nnoremap gV `[v`]
+
+"nnoremap <silent> <C-]> :let word=expand("<cword>")<CR>:vsp<CR>:wincmd w<cr>:exec("tag ". word)<cr>
+"nnoremap <silent> <C-]> :let word=expand("<cword>")<CR>:wincmd o<cr>:vsp<CR>:exec("tag ". word)<cr>zz:wincmd w<cr>
+" command in normal mode, and visual mode
+" yiw  = viwy
+" diw  = viwd
+" gn   select search and in visual mode
+" confirm when using :q to quit the last tab page,
+"Alias q if\ winnr('$')>1||tabpagenr('$')>1||confirm('Really\ quit?',\ "&OK\\n&Cancel")==1|quit|endif
+
+
+
+" color of current line
+"let s:marklist = ''
+nnoremap <Leader>m  :marks abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ<CR>:normal '
+
+"let g:ctrlp_extensions = ['tag', 'buffertag', 'quickfix', 'dir', 'rtscript',
+"                          \ 'undo', 'line', 'changes', 'mixed', 'bookmarkdir']
+
 
