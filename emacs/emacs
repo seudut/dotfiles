@@ -1,7 +1,69 @@
 (scroll-bar-mode -1)
 (tool-bar-mode -1)
-(add-to-list 'default-frame-alist '(width  . 90))
+(add-to-list 'default-frame-alist '(width  . 120))
 (add-to-list 'default-frame-alist '(height . 40))
-(add-to-list 'default-frame-alist '(font . "Source Code Pro for Powerline-12" ))
-(load-theme 'adwaita)
+(add-to-list 'default-frame-alist '(font . "Source Code Pro for Powerline-12:weight:light" ))
+(load-theme 'tango-dark)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;http://y.tsutsumi.io/emacs-from-scratch-part-2-package-management.html
+(require 'package)
+(add-to-list 'package-archives
+             '("melpa" . "http://melpa.milkbox.net/packages/") t)
+(package-initialize)
+
+(defvar required-packages
+  '(
+;    magit
+    helm
+    ido-ubiquitous
+    yasnippet
+  ) "a list of packages to ensure are installed at launch.")
+
+
+; my-packages.el
+(require 'cl)
+
+; method to check if all packages are installed
+(defun packages-installed-p ()
+  (loop for p in required-packages
+        when (not (package-installed-p p)) do (return nil)
+        finally (return t)))
+
+; if not all packages are installed, check one by one and install the missing ones.
+(unless (packages-installed-p)
+  ; check for new packages (package versions)
+  (message "%s" "Emacs is now refreshing its package database...")
+  (package-refresh-contents)
+  (message "%s" " done.")
+  ; install the missing packages
+  (dolist (p required-packages)
+    (when (not (package-installed-p p))
+      (package-install p))))
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(setq fiplr-root-markers '(".git" ".svn" "*.DS_Store"))
+(setq fiplr-ignored-globs '((directories (".git" ".svn"))
+                            (files ("*.jpg" "*.png" "*.zip" "*~" "*.o" ".obj" "*.swp" "*.hg" ".pyc" ".*" ))))
+
+
+(setq mac-right-option-modifier 'control)
+
+(global-set-key (kbd "C-x f") 'fiplr-find-file)
+
+;(ido-mode 1)
+;(ido-everywhere 1)
+
+;;;;;;;;; helm configuration https://github.com/emacs-helm/helm http://tuhdo.github.io/helm-intro.html
+(require 'helm-config)
+(global-set-key (kbd "M-x") 'helm-M-x)
+(helm-mode 1)
+(setq helm-M-x-fuzzy-match t)
+(global-set-key (kbd "C-x b") 'helm-mini)
+(setq helm-buffers-fuzzy-matching t
+      helm-recentf-fuzzy-match    t)
+(global-set-key (kbd "C-x C-f") 'helm-find-files)
+(when (executable-find "ack-grep")
+  (setq helm-grep-default-command "ack-grep -Hn --no-group --no-color %e %p %f"
+        helm-grep-default-recurse-command "ack-grep -H --no-group --no-color %e %p %f"))
 
