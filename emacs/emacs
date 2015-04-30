@@ -1,10 +1,14 @@
+(setq debug-on-error t)
+
 (scroll-bar-mode -1)
 (tool-bar-mode -1)
+(menu-bar-mode -1)
 (add-to-list 'default-frame-alist '(width  . 120))
 (add-to-list 'default-frame-alist '(height . 40))
 (add-to-list 'default-frame-alist '(font . "Source Code Pro for Powerline-12:weight:light" ))
 (load-theme 'tango-dark)
 
+(put 'set-goal-column 'disabled nil)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;http://y.tsutsumi.io/emacs-from-scratch-part-2-package-management.html
 (require 'package)
@@ -14,45 +18,57 @@
 
 (defvar required-packages
   '(
-;    magit
+    magit
     helm
-    ido-ubiquitous
+;    ido-ubiquitous
     yasnippet
+    evil
+;    ido-vertical-mode
+;    smex
+    color-theme
+;    helm-themes
   ) "a list of packages to ensure are installed at launch.")
 
-
-; my-packages.el
 (require 'cl)
-
-; method to check if all packages are installed
 (defun packages-installed-p ()
   (loop for p in required-packages
         when (not (package-installed-p p)) do (return nil)
         finally (return t)))
 
-; if not all packages are installed, check one by one and install the missing ones.
 (unless (packages-installed-p)
-  ; check for new packages (package versions)
   (message "%s" "Emacs is now refreshing its package database...")
   (package-refresh-contents)
   (message "%s" " done.")
-  ; install the missing packages
   (dolist (p required-packages)
     (when (not (package-installed-p p))
       (package-install p))))
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(setq fiplr-root-markers '(".git" ".svn" "*.DS_Store"))
-(setq fiplr-ignored-globs '((directories (".git" ".svn"))
-                            (files ("*.jpg" "*.png" "*.zip" "*~" "*.o" ".obj" "*.swp" "*.hg" ".pyc" ".*" ))))
+;(setq fiplr-root-markers '(".git" ".svn" "*.DS_Store"))
+;(setq fiplr-ignored-globs '((directories (".git" ".svn"))
+;                            (files ("*.jpg" "*.png" "*.zip" "*~" "*.o" ".obj" "*.swp" "*.hg" ".pyc" ".*" ))))
 
 
-(setq mac-right-option-modifier 'control)
+;(setq mac-right-option-modifier 'control)
 
-(global-set-key (kbd "C-x f") 'fiplr-find-file)
+;(global-set-key (kbd "C-x f") 'fiplr-find-file)
+;;;
+;;;(ido-mode 1)
+;;;(ido-everywhere 1)
+;;;(require 'ido-vertical-mode)
+;;;(setq ido-use-faces t)
+;;;(set-face-attribute 'ido-vertical-first-match-face nil
+;;;		    :background "#e5b7c0")
+;;;(set-face-attribute 'ido-vertical-only-match-face nil
+;;;		    :background "#e52b50"
+;;;		    :foreground "white")
+;;;(set-face-attribute 'ido-vertical-match-face nil
+;;;		    :foreground "#b00000")
+;;;(ido-vertical-mode 1)
+;;;
+(require 'evil)
+(evil-mode 1)
 
-;(ido-mode 1)
-;(ido-everywhere 1)
 
 ;;;;;;;;; helm configuration https://github.com/emacs-helm/helm http://tuhdo.github.io/helm-intro.html
 (require 'helm-config)
@@ -66,4 +82,21 @@
 (when (executable-find "ack-grep")
   (setq helm-grep-default-command "ack-grep -Hn --no-group --no-color %e %p %f"
         helm-grep-default-recurse-command "ack-grep -H --no-group --no-color %e %p %f"))
+(setq helm-ff-skip-boring-files t)
+;(require 'helm-config)
+;(require 'helm-themes)
+;(set-face-attribute 'helm-selection nil :background "#441100")
 
+
+;; magit
+;; will get ad-handle-definition:  got redefined
+;(require 'magit)
+;(setq magit-auto-revert-mode nil)
+;(setq magit-last-seen-setup-instructions "1.4.0")
+
+;; smex
+;(require 'smex) 
+;(global-set-key (kbd "M-x") 'smex)
+;(global-set-key (kbd "M-X") 'smex-major-mode-commands)
+
+(require 'color-theme)
