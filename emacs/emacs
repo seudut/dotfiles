@@ -5,10 +5,14 @@
 (menu-bar-mode -1)
 (add-to-list 'default-frame-alist '(width  . 120))
 (add-to-list 'default-frame-alist '(height . 40))
-(add-to-list 'default-frame-alist '(font . "Source Code Pro for Powerline-12:weight:light" ))
+;(add-to-list 'default-frame-alist '(font . "Source Code Pro for Powerline-12:weight:light" ))
+(add-to-list 'default-frame-alist '(font . "Source Code Pro for Powerline-14" ))
 (load-theme 'tango-dark)
 
 (put 'set-goal-column 'disabled nil)
+(setq vc-follow-symlinks t)
+(setq visible-bell 1)
+(setq ring-bell-function 'ignore)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;http://y.tsutsumi.io/emacs-from-scratch-part-2-package-management.html
 (require 'package)
@@ -20,13 +24,20 @@
   '(
     magit
     helm
-;    ido-ubiquitous
+    ido-ubiquitous
     yasnippet
     evil
-;    ido-vertical-mode
-;    smex
+    ido-vertical-mode
+    smex
     color-theme
-;    helm-themes
+    key-chord
+    powerline-evil
+    evil-leader
+    flx-ido
+    flx
+    auto-complete
+    fiplr
+    w3m
   ) "a list of packages to ensure are installed at launch.")
 
 (require 'cl)
@@ -44,59 +55,92 @@
       (package-install p))))
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;(setq fiplr-root-markers '(".git" ".svn" "*.DS_Store"))
-;(setq fiplr-ignored-globs '((directories (".git" ".svn"))
-;                            (files ("*.jpg" "*.png" "*.zip" "*~" "*.o" ".obj" "*.swp" "*.hg" ".pyc" ".*" ))))
+(setq fiplr-root-markers '(".git" ".svn" "*.DS_Store"))
+(setq fiplr-ignored-globs '((directories (".git" ".svn"))
+                            (files ("*.jpg" "*.png" "*.zip" "*~" "*.o" ".obj" "*.swp" "*.hg" ".pyc" ".*" ))))
 
 
 ;(setq mac-right-option-modifier 'control)
 
-;(global-set-key (kbd "C-x f") 'fiplr-find-file)
-;;;
-;;;(ido-mode 1)
-;;;(ido-everywhere 1)
-;;;(require 'ido-vertical-mode)
-;;;(setq ido-use-faces t)
-;;;(set-face-attribute 'ido-vertical-first-match-face nil
-;;;		    :background "#e5b7c0")
-;;;(set-face-attribute 'ido-vertical-only-match-face nil
-;;;		    :background "#e52b50"
-;;;		    :foreground "white")
-;;;(set-face-attribute 'ido-vertical-match-face nil
-;;;		    :foreground "#b00000")
-;;;(ido-vertical-mode 1)
-;;;
+(global-set-key (kbd "C-x f") 'fiplr-find-file)
+;;;; ------------------------------------ Ido ---------------------------------------------
+(ido-mode 1)
+(ido-everywhere 1)
+(flx-ido-mode 1)
+(setq ido-use-faces nil)
+(setq ido-enable-flex-matching t)
+(require 'ido-vertical-mode)
+(setq ido-use-faces t)
+(set-face-attribute 'ido-vertical-first-match-face nil
+		    :background "#e5b7c0")
+(set-face-attribute 'ido-vertical-only-match-face nil
+		    :background "#e52b50"
+		    :foreground "white")
+(set-face-attribute 'ido-vertical-match-face nil
+		    :foreground "#b00000")
+(ido-vertical-mode 1)
+
+;; smex
+(require 'smex) 
+(global-set-key (kbd "M-x") 'smex)
+(global-set-key (kbd "M-X") 'smex-major-mode-commands)
+;;;; ----------------------------------------------------------------------------------------
+
+;;;; ---------------------------------- evil ------------------------------------------------
+(global-evil-leader-mode)
+(evil-leader/set-leader ";")
+(evil-leader/set-key "e" 'find-file)
+(evil-leader/set-key "b" 'switch-to-buffer)
 (require 'evil)
+;;Exit insert mode by pressing j and then j quickly
+;(setq key-chord-two-keys-delay 0.5)
+;(key-chord-define evil-normal-state-map "jj" 'evil-force-normal-state)
+(key-chord-define evil-visual-state-map "jj" 'evil-change-to-previous-state)
+(key-chord-define evil-insert-state-map "jj" 'evil-normal-state)
+(key-chord-define evil-replace-state-map "jj" 'evil-normal-state)
+(key-chord-mode 1)
+
+;; change mode-line color by evil state
+(lexical-let ((default-color (cons (face-background 'mode-line)
+				   (face-foreground 'mode-line))))
+  (add-hook 'post-command-hook
+	    (lambda ()
+	      (let ((color (cond ((minibufferp) default-color)
+				 ((evil-insert-state-p) '("#e80000" . "#ffffff"))
+				 ((evil-emacs-state-p)  '("#444488" . "#ffffff"))
+				 ((buffer-modified-p)   '("#006fa0" . "#ffffff"))
+				 (t default-color))))
+		(set-face-background 'mode-line (car color))
+		           (set-face-foreground 'mode-line (cdr color))))))
 (evil-mode 1)
+(require 'powerline-evil)
+;; TODO: enter emacs mode in eshll rather then evil mode
+;;
+;;;; ---------------------------------- evil ------------------------------------------------
 
-
-;;;;;;;;; helm configuration https://github.com/emacs-helm/helm http://tuhdo.github.io/helm-intro.html
-(require 'helm-config)
-(global-set-key (kbd "M-x") 'helm-M-x)
-(helm-mode 1)
-(setq helm-M-x-fuzzy-match t)
-(global-set-key (kbd "C-x b") 'helm-mini)
-(setq helm-buffers-fuzzy-matching t
-      helm-recentf-fuzzy-match    t)
-(global-set-key (kbd "C-x C-f") 'helm-find-files)
-(when (executable-find "ack-grep")
-  (setq helm-grep-default-command "ack-grep -Hn --no-group --no-color %e %p %f"
-        helm-grep-default-recurse-command "ack-grep -H --no-group --no-color %e %p %f"))
-(setq helm-ff-skip-boring-files t)
-;(require 'helm-config)
-;(require 'helm-themes)
-;(set-face-attribute 'helm-selection nil :background "#441100")
-
+;;;; ------------------------------------ helm ---------------------------------------------
+;;;;;;;;;;; helm configuration https://github.com/emacs-helm/helm http://tuhdo.github.io/helm-intro.html
+;;(require 'helm-config)
+;;(global-set-key (kbd "M-x") 'helm-M-x)
+;;(helm-mode 1)
+;;(setq helm-M-x-fuzzy-match t)
+;;(global-set-key (kbd "C-x b") 'helm-mini)
+;;(setq helm-buffers-fuzzy-matching t
+;;      helm-recentf-fuzzy-match    t)
+;;(global-set-key (kbd "C-x C-f") 'helm-find-files)
+;;(when (executable-find "ack-grep")
+;;  (setq helm-grep-default-command "ack-grep -Hn --no-group --no-color %e %p %f"
+;;        helm-grep-default-recurse-command "ack-grep -H --no-group --no-color %e %p %f"))
+;;(setq helm-ff-skip-boring-files t)
+;;;(require 'helm-config)
+;;;(require 'helm-themes)
+;;;(set-face-attribute 'helm-selection nil :background "#441100")
+;;;; ----------------------------------------------------------------------------------------
 
 ;; magit
 ;; will get ad-handle-definition:  got redefined
-;(require 'magit)
+(require 'magit)
 ;(setq magit-auto-revert-mode nil)
-;(setq magit-last-seen-setup-instructions "1.4.0")
+(setq magit-last-seen-setup-instructions "1.4.0")
 
-;; smex
-;(require 'smex) 
-;(global-set-key (kbd "M-x") 'smex)
-;(global-set-key (kbd "M-X") 'smex-major-mode-commands)
-
-(require 'color-theme)
+(require 'auto-complete)
