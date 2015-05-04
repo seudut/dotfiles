@@ -116,7 +116,9 @@
 ;; powerline
 ;;
 (require 'powerline)
-
+;(powerline-evil-vim-color-theme)
+(powerline-evil-center-color-theme)
+(display-time-mode t)
 
 ;;---------------------------------------------------------------------------------------
 ;; evil
@@ -128,9 +130,9 @@
 (require 'evil)
 ;(setq key-chord-two-keys-delay 0.5)
 ;(key-chord-define evil-normal-state-map "jj" 'evil-force-normal-state)
-(key-chord-define evil-visual-state-map "jj" 'evil-change-to-previous-state)
+;(key-chord-define evil-visual-state-map "jj" 'evil-change-to-previous-state)
 (key-chord-define evil-insert-state-map "jj" 'evil-normal-state)
-(key-chord-define evil-replace-state-map "jj" 'evil-normal-state)
+;(key-chord-define evil-replace-state-map "jj" 'evil-normal-state)
 (key-chord-mode 1)
 
 ;; change mode-line color by evil state
@@ -145,6 +147,14 @@
 				 (t default-color))))
 		(set-face-background 'mode-line (car color))
 		           (set-face-foreground 'mode-line (cdr color))))))
+
+(setq evil-emacs-state-cursor '("red" box))
+(setq evil-normal-state-cursor '("green" box))
+(setq evil-visual-state-cursor '("orange" box))
+(setq evil-insert-state-cursor '("red" bar))
+(setq evil-replace-state-cursor '("red" bar))
+(setq evil-operator-state-cursor '("red" hollow))
+
 (evil-mode 1)
 ;(require 'powerline-evil)
 ;; TODO: enter emacs mode in eshll rather then evil mode
@@ -163,7 +173,9 @@
 
 
 
-;;;; ------------------------------------ helm ---------------------------------------------
+;;---------------------------------------------------------------------------------------
+;; Helm
+;;
 ;;;;;;;;;;; helm configuration https://github.com/emacs-helm/helm http://tuhdo.github.io/helm-intro.html
 ;;(require 'helm-config)
 ;;(global-set-key (kbd "M-x") 'helm-M-x)
@@ -180,8 +192,10 @@
 ;;;(require 'helm-config)
 ;;;(require 'helm-themes)
 ;;;(set-face-attribute 'helm-selection nil :background "#441100")
-;;;; ----------------------------------------------------------------------------------------
 
+;;---------------------------------------------------------------------------------------
+;; auto-complete
+;;
 (require 'auto-complete)
 (auto-complete-mode 1)
 
