@@ -16,6 +16,15 @@
 (setq visible-bell 1)
 (setq ring-bell-function 'ignore)
 (setq resize-mini-windows t)
+
+
+(add-to-list 'auto-mode-alist '("emacs\\'" . emacs-lisp-mode))
+;(set-fringe-mode nil)
+(fringe-mode 0)
+;(set-fringe-mode 1)
+
+
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;http://y.tsutsumi.io/emacs-from-scratch-part-2-package-management.html
 (require 'package)
@@ -35,7 +44,7 @@
     color-theme
     color-theme-sanityinc-tomorrow
     key-chord
-;    powerline-evil
+    powerline-evil
     powerline
     evil-leader
     flx-ido
@@ -63,44 +72,60 @@
       (package-install p))))
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(setq fiplr-root-markers '(".git" ".svn" "*.DS_Store"))
-(setq fiplr-ignored-globs '((directories (".git" ".svn"))
-                            (files ("*.jpg" "*.png" "*.zip" "*~" "*.o" ".obj" "*.swp" "*.hg" ".pyc" ".*" ))))
 
+;;---------------------------------------------------------------------------------------
+;; color theme
+;;
+(require 'color-theme)
+(load-theme 'sanityinc-tomorrow-bright t)
 
-;(setq mac-right-option-modifier 'control)
-
-(global-set-key (kbd "C-x f") 'fiplr-find-file)
-;;;; ------------------------------------ Ido ---------------------------------------------
+;;---------------------------------------------------------------------------------------
+;; Ido
+;;
+(require 'ido-vertical-mode)
+(ido-vertical-mode 1)
+(require 'flx-ido)
 (ido-mode 1)
 (ido-everywhere 1)
 (flx-ido-mode 1)
 (setq ido-use-faces nil)
-(setq ido-enable-flex-matching t)
-(require 'ido-vertical-mode)
-(setq ido-use-faces t)
-(set-face-attribute 'ido-vertical-first-match-face nil
-		    :background "#e5b7c0")
-(set-face-attribute 'ido-vertical-only-match-face nil
-		    :background "#e52b50"
-		    :foreground "white")
-(set-face-attribute 'ido-vertical-match-face nil
-		    :foreground "#b00000")
-(ido-vertical-mode 1)
+;(setq ido-enable-flex-matching t)
+;(setq ido-use-faces t)
+;(setq ido-use-faces nil)
+;(set-face-attribute 'ido-vertical-first-match-face nil
+;		    :background "#e5b7c0")
+;(set-face-attribute 'ido-vertical-only-match-face nil
+;		    :background "#e52b50"
+;		    :foreground "white")
+;(set-face-attribute 'ido-vertical-match-face nil
+;		    :foreground "#b00000")
 
 ;; smex
 (require 'smex) 
 (global-set-key (kbd "M-x") 'smex)
 (global-set-key (kbd "M-X") 'smex-major-mode-commands)
-;;;; ----------------------------------------------------------------------------------------
 
-;;;; ---------------------------------- evil ------------------------------------------------
+;;---------------------------------------------------------------------------------------
+;; Magit
+;;
+(require 'magit)
+;(setq magit-auto-revert-mode nil)
+(setq magit-last-seen-setup-instructions "1.4.0")
+
+;;---------------------------------------------------------------------------------------
+;; powerline
+;;
+(require 'powerline)
+
+
+;;---------------------------------------------------------------------------------------
+;; evil
+;;
 (global-evil-leader-mode)
 (evil-leader/set-leader ";")
 (evil-leader/set-key "e" 'find-file)
 (evil-leader/set-key "b" 'switch-to-buffer)
 (require 'evil)
-;;Exit insert mode by pressing j and then j quickly
 ;(setq key-chord-two-keys-delay 0.5)
 ;(key-chord-define evil-normal-state-map "jj" 'evil-force-normal-state)
 (key-chord-define evil-visual-state-map "jj" 'evil-change-to-previous-state)
@@ -120,11 +145,23 @@
 				 (t default-color))))
 		(set-face-background 'mode-line (car color))
 		           (set-face-foreground 'mode-line (cdr color))))))
-;(evil-mode 1)
-;;(require 'powerline-evil)
+(evil-mode 1)
+;(require 'powerline-evil)
 ;; TODO: enter emacs mode in eshll rather then evil mode
+
+;;---------------------------------------------------------------------------------------
+;; Fiplr
 ;;
-;;;; ---------------------------------- evil ------------------------------------------------
+(setq fiplr-root-markers '(".git" ".svn" "*.DS_Store"))
+(setq fiplr-ignored-globs '((directories (".git" ".svn"))
+                            (files ("*.jpg" "*.png" "*.zip" "*~" "*.o" ".obj" "*.swp" "*.hg" ".pyc" ".*" ))))
+
+(global-set-key (kbd "C-x f") 'fiplr-find-file)
+;;---------------------------------------------------------------------------------------
+
+;(setq mac-right-option-modifier 'control)
+
+
 
 ;;;; ------------------------------------ helm ---------------------------------------------
 ;;;;;;;;;;; helm configuration https://github.com/emacs-helm/helm http://tuhdo.github.io/helm-intro.html
@@ -145,12 +182,6 @@
 ;;;(set-face-attribute 'helm-selection nil :background "#441100")
 ;;;; ----------------------------------------------------------------------------------------
 
-;; magit
-;; will get ad-handle-definition:  got redefined
-(require 'magit)
-;(setq magit-auto-revert-mode nil)
-(setq magit-last-seen-setup-instructions "1.4.0")
-
 (require 'auto-complete)
 (auto-complete-mode 1)
 
@@ -166,17 +197,105 @@
 
 ;;; -----------------------------------------------------------------------------------------
 ;(add-to-list 'load-path "~/.emacs.d/test/powerline")
-(require 'powerline)
-
-(add-to-list 'auto-mode-alist '("emacs\\'" . emacs-lisp-mode))
-
-(require 'color-theme)
+;(require 'powerline)
 
 
-;(color-theme-sanityinc-tomorrow-bright)
-
-;(set-fringe-mode nil)
-(fringe-mode 0)
-(load-theme 'sanityinc-tomorrow-bright t)
 
 
+;
+;(require 'powerline-evil)
+;;;; --------------------------- powerline --------------------------------------
+
+;(custom-set-faces
+; '(mode-line-buffer-id ((t (:foreground "#008000" :bold t))))
+; '(which-func ((t (:foreground "#008000"))))
+; '(mode-line ((t (:foreground "#008000" :background "#dddddd" :box nil))))
+; '(mode-line-inactive ((t (:foreground "#008000" :background "#bbbbbb" :box nil)))))
+;
+;
+;(defun powerline-simpler-vc-mode (s)
+;  (if s
+;      (replace-regexp-in-string "Git:" "" s)
+;    s))
+;
+;(defun powerline-simpler-minor-display (s)
+;  (replace-regexp-in-string
+;   (concat " "
+;           (mapconcat 'identity '("Undo-Tree" "GitGutter" "Projectile"
+;                                  "Abbrev" "ColorIds" "MRev" "ElDoc" "Paredit"
+;                                  "+1" "+2" "FlyC" "Fly" ;; ":1/0"
+;                                  "Fill" "AC" "FIC") "\\|")) "" s))
+;
+;(defun powerline-ha-theme ()
+;  "A powerline theme that removes many minor-modes that don't serve much purpose on the mode-line."
+;  (interactive)
+;  (setq-default mode-line-format
+;                '("%e"
+;                  (:eval
+;                   (let*
+;                       ((active
+;                         (powerline-selected-window-active))
+;                        (mode-line
+;                         (if active 'mode-line 'mode-line-inactive))
+;                        (face1
+;                         (if active 'powerline-active1 'powerline-inactive1))
+;                        (face2
+;                         (if active 'powerline-active2 'powerline-inactive2))
+;                        (separator-left
+;                         (intern
+;                          (format "powerline-%s-%s" powerline-default-separator
+;                                  (car powerline-default-separator-dir))))
+;                        (separator-right
+;                         (intern
+;                          (format "powerline-%s-%s" powerline-default-separator
+;                                  (cdr powerline-default-separator-dir))))
+;                        (lhs
+;                         (list
+;                          (powerline-raw "%*" nil 'l)
+;                          ;; (powerline-buffer-size nil 'l)
+;                          (powerline-buffer-id nil 'l)
+;                          (powerline-raw " ")
+;                          (funcall separator-left mode-line face1)
+;                          (powerline-narrow face1 'l)
+;                          (powerline-simpler-vc-mode (powerline-vc face1))))
+;                        (rhs
+;                         (list
+;                          (powerline-raw mode-line-misc-info face1 'r)
+;                          (powerline-raw global-mode-string face1 'r)
+;                          (powerline-raw "%4l" face1 'r)
+;                          (powerline-raw ":" face1)
+;                          (powerline-raw "%3c" face1 'r)
+;                          (funcall separator-right face1 mode-line)
+;                          (powerline-raw " ")
+;                          (powerline-raw "%6p" nil 'r)
+;                          (powerline-hud face2 face1)))
+;                        (center
+;                         (list
+;                          (powerline-raw " " face1)
+;                          (funcall separator-left face1 face2)
+;                          (when
+;                              (boundp 'erc-modified-channels-object)
+;                            (powerline-raw erc-modified-channels-object face2 'l))
+;                          (powerline-major-mode face2 'l)
+;                          (powerline-process face2)
+;                          (powerline-raw " :" face2)
+;
+;                          (powerline-simpler-minor-display (powerline-minor-modes face2 'l))
+;
+;                          (powerline-raw " " face2)
+;                          (funcall separator-right face2 face1))))
+;                     (concat
+;                      (powerline-render lhs)
+;                      (powerline-fill-center face1
+;                                             (/
+;                                              (powerline-width center)
+;                                              2.0))
+;                      (powerline-render center)
+;                      (powerline-fill face1
+;                                      (powerline-width rhs))
+;                      (powerline-render rhs)))))))
+;
+;(powerline-ha-theme)
+;
+;
+;(provide 'init-mode-line)
