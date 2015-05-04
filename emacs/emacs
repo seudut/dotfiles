@@ -1,3 +1,4 @@
+
 (setq debug-on-error t)
 
 (scroll-bar-mode -1)
@@ -13,6 +14,7 @@
 (setq vc-follow-symlinks t)
 (setq visible-bell 1)
 (setq ring-bell-function 'ignore)
+(setq resize-mini-windows t)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;http://y.tsutsumi.io/emacs-from-scratch-part-2-package-management.html
 (require 'package)
@@ -30,14 +32,19 @@
     ido-vertical-mode
     smex
     color-theme
+    color-theme-sanityinc-tomorrow
     key-chord
-    powerline-evil
+;    powerline-evil
+    powerline
     evil-leader
     flx-ido
     flx
     auto-complete
     fiplr
     w3m
+    ace-jump-mode
+    el-get
+    color-identifiers-mode
   ) "a list of packages to ensure are installed at launch.")
 
 (require 'cl)
@@ -112,8 +119,8 @@
 				 (t default-color))))
 		(set-face-background 'mode-line (car color))
 		           (set-face-foreground 'mode-line (cdr color))))))
-(evil-mode 1)
-(require 'powerline-evil)
+;(evil-mode 1)
+;;(require 'powerline-evil)
 ;; TODO: enter emacs mode in eshll rather then evil mode
 ;;
 ;;;; ---------------------------------- evil ------------------------------------------------
@@ -144,3 +151,221 @@
 (setq magit-last-seen-setup-instructions "1.4.0")
 
 (require 'auto-complete)
+(auto-complete-mode 1)
+
+
+;;; ---------------------------------------- el-get -----------------------------------------
+;(require 'el-get)
+;(add-to-list 'el-get-recipe-path "~/.emacs.d/el-get-user/recipes")
+
+;(el-get-bundle packages/sm-package-powerline
+;  :url "https://github.com/laynor/emacs-conf.git"
+;  )
+
+
+;;; -----------------------------------------------------------------------------------------
+;(add-to-list 'load-path "~/.emacs.d/test/powerline")
+(require 'powerline)
+
+(add-hook 'emacs-lisp-mode-hook 'color-identifiers-mode)
+(global-font-lock-mode 1)
+(setq my/font-family "Source Code Pro")
+(set-frame-font my/font-family)
+(set-face-attribute 'default nil :font my/font-family :height 120)
+(set-face-font 'default my/font-family)
+
+
+
+;;;;;;;;;;;;;;;; color theme 
+(require 'color-theme)
+(defun org-src-color-blocks-light ()
+  "Colors the block headers and footers to make them stand out more for lighter themes"
+  (interactive)
+  (custom-set-faces
+   '(org-block-begin-line
+    ((t (:underline "#A7A6AA" :foreground "#008ED1" :background "#EAEAFF"))))
+   '(org-block-background
+     ((t (:background "#FFFFEA"))))
+   '(org-block-end-line
+     ((t (:overline "#A7A6AA" :foreground "#008ED1" :background "#EAEAFF"))))
+
+   '(mode-line-buffer-id ((t (:foreground "#005000" :bold t))))
+   '(which-func ((t (:foreground "#008000")))))
+
+   ;; Looks like the minibuffer issues are only for v23
+   ; (set-face-foreground 'minibuffer "black")
+   ; (set-face-foreground 'minibuffer-prompt "red")
+)
+
+(defun org-src-color-blocks-dark ()
+  "Colors the block headers and footers to make them stand out more for dark themes"
+  (interactive)
+  (custom-set-faces
+   '(org-block-begin-line
+     ((t (:foreground "#008ED1" :background "#002E41"))))
+   '(org-block-background
+     ((t (:background "#111111"))))
+   '(org-block-end-line
+     ((t (:foreground "#008ED1" :background "#002E41"))))
+
+   '(mode-line-buffer-id ((t (:foreground "black" :bold t))))
+   '(which-func ((t (:foreground "green")))))
+
+   ;; Looks like the minibuffer issues are only for v23
+   ;; (set-face-foreground 'minibuffer "white")
+   ;; (set-face-foreground 'minibuffer-prompt "white")
+)
+
+(deftheme ha/org-theme "Sub-theme to beautify org mode")
+
+
+(defun ha/change-theme (theme org-block-style)
+  "Changes the color scheme and reset the mode line."
+  (funcall theme)
+  (powerline-reset)
+  (funcall org-block-style)
+
+  (let* ((sans-font (cond ((x-list-fonts "Source Sans Pro") '(:font "Source Sans Pro"))
+                          ((x-list-fonts "Lucida Grande")   '(:font "Lucida Grande"))
+                          ((x-list-fonts "Verdana")         '(:font "Verdana"))
+                          ((x-family-fonts "Sans Serif")    '(:family "Sans Serif"))
+                          (nil (warn "Cannot find a Sans Serif Font.  Install Source Sans Pro."))))
+         (base-font-color  (face-foreground 'default nil 'default))
+         (background-color (face-background 'default nil 'default))
+         (primary-color    (face-foreground 'mode-line nil))
+         (secondary-color  (face-background 'secondary-selection nil 'region))
+         (headline        `(:inherit default :weight bold :foreground ,base-font-color)))
+    (custom-theme-set-faces 'ha/org-theme
+                            `(org-agenda-structure ((t (:inherit default ,@sans-font :height 2.0 :underline nil))))
+                            `(org-level-8 ((t (,@headline ,@sans-font))))
+                            `(org-level-7 ((t (,@headline ,@sans-font))))
+                            `(org-level-6 ((t (,@headline ,@sans-font))))
+                            `(org-level-5 ((t (,@headline ,@sans-font))))
+                            `(org-level-4 ((t (,@headline ,@sans-font :height 1.1))))
+                            `(org-level-3 ((t (,@headline ,@sans-font :height 1.25))))
+                            `(org-level-2 ((t (,@headline ,@sans-font :height 1.5))))
+                            `(org-level-1 ((t (,@headline ,@sans-font :height 1.75))))
+                            `(org-document-title ((t (,@headline ,@sans-font :height 1.5 :underline nil)))))))
+
+
+(if (equal "howard.abrams" user-login-name)
+;(if (equal "peli3" user-login-name)
+  (ha/change-theme 'color-theme-sanityinc-tomorrow-day
+                   'org-src-color-blocks-light)
+  (ha/change-theme 'color-theme-sanityinc-tomorrow-night
+                   'org-src-color-blocks-dark))
+
+
+;(define-sequence 'personal-theme-map "<f9> d" 'ha/change-theme
+;  (list (list "d" 'color-theme-sanityinc-tomorrow-day      'org-src-color-blocks-light)  ; White on Black
+;        (list "l" 'color-theme-sanityinc-tomorrow-eighties 'org-src-color-blocks-dark)   ; Lt. Gray on Gray
+;        (list "m" 'color-theme-sanityinc-tomorrow-bright   'org-src-color-blocks-dark)   ; Bright on Black
+;        (list "n" 'color-theme-sanityinc-tomorrow-night    'org-src-color-blocks-dark))) ; White on Gray
+
+;;;;;;;;; mode line
+(setq which-func-unknown "")
+(which-function-mode 1)
+
+(setq which-func-format
+      `(" "
+        (:propertize which-func-current local-map
+                     (keymap
+                      (mode-line keymap
+                                 (mouse-3 . end-of-defun)
+                                 (mouse-2 . narrow-to-defun)
+                                 (mouse-1 . beginning-of-defun)))
+                     face which-func
+                     mouse-face mode-line-highlight
+                     help-echo "mouse-1: go to beginning\n\
+mouse-2: toggle rest visibility\n\
+mouse-3: go to end")
+        " "))
+
+
+(defun powerline-simpler-vc-mode (s)
+  (if s
+      (replace-regexp-in-string "Git:" "" s)
+    s))
+
+(defun powerline-simpler-minor-display (s)
+  (replace-regexp-in-string
+   (concat " "
+           (mapconcat 'identity '("Undo-Tree" "GitGutter" "Projectile"
+                                  "Abbrev" "ColorIds" "MRev" "ElDoc" "Paredit"
+                                  "+1" "+2" "FlyC" "Fly" ;; ":1/0"
+                                  "Fill" "AC" "FIC") "\\|")) "" s))
+
+(defun powerline-ha-theme ()
+  "A powerline theme that removes many minor-modes that don't serve much purpose on the mode-line."
+  (interactive)
+  (setq-default mode-line-format
+                '("%e"
+                  (:eval
+                   (let*
+                       ((active
+                         (powerline-selected-window-active))
+                        (mode-line
+                         (if active 'mode-line 'mode-line-inactive))
+                        (face1
+                         (if active 'powerline-active1 'powerline-inactive1))
+                        (face2
+                         (if active 'powerline-active2 'powerline-inactive2))
+                        (separator-left
+                         (intern
+                          (format "powerline-%s-%s" powerline-default-separator
+                                  (car powerline-default-separator-dir))))
+                        (separator-right
+                         (intern
+                          (format "powerline-%s-%s" powerline-default-separator
+                                  (cdr powerline-default-separator-dir))))
+                        (lhs
+                         (list
+                          (powerline-raw "%*" nil 'l)
+                          ;; (powerline-buffer-size nil 'l)
+                          (powerline-buffer-id nil 'l)
+                          (powerline-raw " ")
+                          (funcall separator-left mode-line face1)
+                          (powerline-narrow face1 'l)
+                          (powerline-simpler-vc-mode (powerline-vc face1))))
+                        (rhs
+                         (list
+                          (powerline-raw mode-line-misc-info face1 'r)
+                          (powerline-raw global-mode-string face1 'r)
+                          (powerline-raw "%4l" face1 'r)
+                          (powerline-raw ":" face1)
+                          (powerline-raw "%3c" face1 'r)
+                          (funcall separator-right face1 mode-line)
+                          (powerline-raw " ")
+                          (powerline-raw "%6p" nil 'r)
+                          (powerline-hud face2 face1)))
+                        (center
+                         (list
+                          (powerline-raw " " face1)
+                          (funcall separator-left face1 face2)
+                          (when
+                              (boundp 'erc-modified-channels-object)
+                            (powerline-raw erc-modified-channels-object face2 'l))
+                          (powerline-major-mode face2 'l)
+                          (powerline-process face2)
+                          (powerline-raw " :" face2)
+
+                          (powerline-simpler-minor-display (powerline-minor-modes face2 'l))
+
+                          (powerline-raw " " face2)
+                          (funcall separator-right face2 face1))))
+                     (concat
+                      (powerline-render lhs)
+                      (powerline-fill-center face1
+                                             (/
+                                              (powerline-width center)
+                                              2.0))
+                      (powerline-render center)
+                      (powerline-fill face1
+                                      (powerline-width rhs))
+                      (powerline-render rhs)))))))
+
+(powerline-ha-theme)
+
+
+(provide 'init-mode-line)
+(fringe-mode -1)
