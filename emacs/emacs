@@ -1,4 +1,3 @@
-
 (setq debug-on-error t)
 
 (scroll-bar-mode -1)
@@ -23,7 +22,13 @@
 (fringe-mode 0)
 ;(set-fringe-mode 1)
 
-
+;(set-face-inverse-video-p 'vertical-border nil)
+;(set-face-background 'vertical-border (face-background 'default))
+;
+;;; Set symbol for the border
+;(set-display-table-slot standard-display-table
+;                        'vertical-border 
+;                        (make-glyph-code ?┃))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;http://y.tsutsumi.io/emacs-from-scratch-part-2-package-management.html
@@ -55,6 +60,7 @@
     ace-jump-mode
     el-get
     color-identifiers-mode
+    elscreen
   ) "a list of packages to ensure are installed at launch.")
 
 (require 'cl)
@@ -71,7 +77,8 @@
     (when (not (package-installed-p p))
       (package-install p))))
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
+					;
+;;(elscreen-start)
 
 ;;---------------------------------------------------------------------------------------
 ;; color theme
@@ -100,6 +107,12 @@
 ;(set-face-attribute 'ido-vertical-match-face nil
 ;		    :foreground "#b00000")
 
+(setq org-completion-use-ido t)
+(setq magit-completing-read-function 'magit-ido-completing-read)
+
+(require 'ido-ubiquitous)
+(ido-ubiquitous-mode 1)
+
 ;; smex
 (require 'smex) 
 (global-set-key (kbd "M-x") 'smex)
@@ -127,6 +140,7 @@
 (evil-leader/set-leader ";")
 (evil-leader/set-key "e" 'find-file)
 (evil-leader/set-key "b" 'switch-to-buffer)
+(evil-leader/set-key "w" 'evil-write)
 (require 'evil)
 ;(setq key-chord-two-keys-delay 0.5)
 ;(key-chord-define evil-normal-state-map "jj" 'evil-force-normal-state)
@@ -136,26 +150,46 @@
 (key-chord-mode 1)
 
 ;; change mode-line color by evil state
-(lexical-let ((default-color (cons (face-background 'mode-line)
-				   (face-foreground 'mode-line))))
-  (add-hook 'post-command-hook
-	    (lambda ()
-	      (let ((color (cond ((minibufferp) default-color)
-				 ((evil-insert-state-p) '("#e80000" . "#ffffff"))
-				 ((evil-emacs-state-p)  '("#444488" . "#ffffff"))
-				 ((buffer-modified-p)   '("#006fa0" . "#ffffff"))
-				 (t default-color))))
-		(set-face-background 'mode-line (car color))
-		           (set-face-foreground 'mode-line (cdr color))))))
-
+;(lexical-let ((default-color (cons (face-background 'mode-line)
+;				   (face-foreground 'mode-line))))
+;  (add-hook 'post-command-hook
+;	    (lambda ()
+;	      (let ((color (cond ((minibufferp) default-color)
+;				 ((evil-insert-state-p) '("#e80000" . "#ffffff"))
+;				 ((evil-emacs-state-p)  '("#444488" . "#ffffff"))
+;				 ((buffer-modified-p)   '("#006fa0" . "#ffffff"))
+;				 (t default-color))))
+;		(set-face-background 'mode-line (car color))
+;		           (set-face-foreground 'mode-line (cdr color))))))
+;; cursor shape
 (setq evil-emacs-state-cursor '("red" box))
 (setq evil-normal-state-cursor '("green" box))
 (setq evil-visual-state-cursor '("orange" box))
 (setq evil-insert-state-cursor '("red" bar))
 (setq evil-replace-state-cursor '("red" bar))
 (setq evil-operator-state-cursor '("red" hollow))
+;;Enter an emacs mode in a given state http://wikemacs.org/wiki/Evil
+(loop for (mode . state) in '(
+;			    (inferior-emacs-lisp-mode . emacs)
+;			    (nrepl-mode . insert)
+;			    (pylookup-mode . emacs)
+;			    (comint-mode . normal)
+;			    (shell-mode . emacs)
+;			    (git-commit-mode . insert)
+;			    (git-rebase-mode . emacs)
+;			    (term-mode . emacs)
+;			    (help-mode . emacs)
+;			    (helm-grep-mode . emacs)
+;			    (grep-mode . emacs)
+;			    (bc-menu-mode . emacs)
+;			    (magit-branch-manager-mode . emacs)
+;			    (rdictcc-buffer-mode . emacs)
+;			    (dired-mode . emacs)
+;			    (wdired-mode . normal)
+			    (eshell-mode . emacs))
+    do (evil-set-initial-state mode state))
 
-(evil-mode 1)
+;(evil-mode 1)
 ;(require 'powerline-evil)
 ;; TODO: enter emacs mode in eshll rather then evil mode
 
@@ -209,107 +243,18 @@
 ;  )
 
 
-;;; -----------------------------------------------------------------------------------------
-;(add-to-list 'load-path "~/.emacs.d/test/powerline")
-;(require 'powerline)
+
+;; Wind-move
+(global-set-key (kbd "C-x C-l") 'windmove-right)
+(global-set-key (kbd "C-x C-h") 'windmove-left)
+(global-set-key (kbd "C-x C-k") 'windmove-up)
+(global-set-key (kbd "C-x C-j") 'windmove-down)
+
+;(global-set-key (kbd "C-x C-s") 'split-window-right)
+
+;; windows devider
+(set-face-attribute 'vertical-border 
+                    nil 
+                    :foreground "gray")
 
 
-
-
-;
-;(require 'powerline-evil)
-;;;; --------------------------- powerline --------------------------------------
-
-;(custom-set-faces
-; '(mode-line-buffer-id ((t (:foreground "#008000" :bold t))))
-; '(which-func ((t (:foreground "#008000"))))
-; '(mode-line ((t (:foreground "#008000" :background "#dddddd" :box nil))))
-; '(mode-line-inactive ((t (:foreground "#008000" :background "#bbbbbb" :box nil)))))
-;
-;
-;(defun powerline-simpler-vc-mode (s)
-;  (if s
-;      (replace-regexp-in-string "Git:" "" s)
-;    s))
-;
-;(defun powerline-simpler-minor-display (s)
-;  (replace-regexp-in-string
-;   (concat " "
-;           (mapconcat 'identity '("Undo-Tree" "GitGutter" "Projectile"
-;                                  "Abbrev" "ColorIds" "MRev" "ElDoc" "Paredit"
-;                                  "+1" "+2" "FlyC" "Fly" ;; ":1/0"
-;                                  "Fill" "AC" "FIC") "\\|")) "" s))
-;
-;(defun powerline-ha-theme ()
-;  "A powerline theme that removes many minor-modes that don't serve much purpose on the mode-line."
-;  (interactive)
-;  (setq-default mode-line-format
-;                '("%e"
-;                  (:eval
-;                   (let*
-;                       ((active
-;                         (powerline-selected-window-active))
-;                        (mode-line
-;                         (if active 'mode-line 'mode-line-inactive))
-;                        (face1
-;                         (if active 'powerline-active1 'powerline-inactive1))
-;                        (face2
-;                         (if active 'powerline-active2 'powerline-inactive2))
-;                        (separator-left
-;                         (intern
-;                          (format "powerline-%s-%s" powerline-default-separator
-;                                  (car powerline-default-separator-dir))))
-;                        (separator-right
-;                         (intern
-;                          (format "powerline-%s-%s" powerline-default-separator
-;                                  (cdr powerline-default-separator-dir))))
-;                        (lhs
-;                         (list
-;                          (powerline-raw "%*" nil 'l)
-;                          ;; (powerline-buffer-size nil 'l)
-;                          (powerline-buffer-id nil 'l)
-;                          (powerline-raw " ")
-;                          (funcall separator-left mode-line face1)
-;                          (powerline-narrow face1 'l)
-;                          (powerline-simpler-vc-mode (powerline-vc face1))))
-;                        (rhs
-;                         (list
-;                          (powerline-raw mode-line-misc-info face1 'r)
-;                          (powerline-raw global-mode-string face1 'r)
-;                          (powerline-raw "%4l" face1 'r)
-;                          (powerline-raw ":" face1)
-;                          (powerline-raw "%3c" face1 'r)
-;                          (funcall separator-right face1 mode-line)
-;                          (powerline-raw " ")
-;                          (powerline-raw "%6p" nil 'r)
-;                          (powerline-hud face2 face1)))
-;                        (center
-;                         (list
-;                          (powerline-raw " " face1)
-;                          (funcall separator-left face1 face2)
-;                          (when
-;                              (boundp 'erc-modified-channels-object)
-;                            (powerline-raw erc-modified-channels-object face2 'l))
-;                          (powerline-major-mode face2 'l)
-;                          (powerline-process face2)
-;                          (powerline-raw " :" face2)
-;
-;                          (powerline-simpler-minor-display (powerline-minor-modes face2 'l))
-;
-;                          (powerline-raw " " face2)
-;                          (funcall separator-right face2 face1))))
-;                     (concat
-;                      (powerline-render lhs)
-;                      (powerline-fill-center face1
-;                                             (/
-;                                              (powerline-width center)
-;                                              2.0))
-;                      (powerline-render center)
-;                      (powerline-fill face1
-;                                      (powerline-width rhs))
-;                      (powerline-render rhs)))))))
-;
-;(powerline-ha-theme)
-;
-;
-;(provide 'init-mode-line)
