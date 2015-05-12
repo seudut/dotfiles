@@ -46,3 +46,14 @@ cmap jj	<Esc>
 
 nnoremap B b
 nnoremap b :bmarks! -tags<SPACE>
+
+set gui=nonavigation
+
+":tab addons
+":tab downloads
+":tab extoptions
+":tab help
+":tab javascript!
+":tab preferences!
+"
+
