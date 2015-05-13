@@ -16,7 +16,7 @@
 (setq ring-bell-function 'ignore)
 (setq resize-mini-windows t)
 
-
+(setq ns-use-srgb-colorspace nil)
 (add-to-list 'auto-mode-alist '("emacs\\'" . emacs-lisp-mode))
 ;(set-fringe-mode nil)
 (fringe-mode 0)
@@ -189,7 +189,7 @@
 			    (eshell-mode . emacs))
     do (evil-set-initial-state mode state))
 
-;(evil-mode 1)
+(evil-mode 1)
 ;(require 'powerline-evil)
 ;; TODO: enter emacs mode in eshll rather then evil mode
 
