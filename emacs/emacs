@@ -128,9 +128,9 @@
 ;;---------------------------------------------------------------------------------------
 ;; powerline
 ;;
-(require 'powerline)
+;(require 'powerline)
 ;(powerline-evil-vim-color-theme)
-(powerline-evil-center-color-theme)
+;(powerline-evil-center-color-theme)
 (display-time-mode t)
 
 ;;---------------------------------------------------------------------------------------
@@ -258,3 +258,8 @@
                     :foreground "gray")
 
 
+
+
+
+(add-to-list 'load-path "~/.emacs.d/config")
+(require 'init-color-theme)
