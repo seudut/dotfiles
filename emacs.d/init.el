@@ -2,13 +2,14 @@
 
 (scroll-bar-mode -1)
 (tool-bar-mode -1)
-(menu-bar-mode -1)
+;(menu-bar-mode -1)
 (add-to-list 'default-frame-alist '(width  . 120))
 (add-to-list 'default-frame-alist '(height . 40))
 ;(add-to-list 'default-frame-alist '(font . "Source Code Pro for Powerline-12:weight:light" ))
 (add-to-list 'default-frame-alist '(font . "Source Code Pro for Powerline-12" ))
 (load-theme 'tango-dark)
 
+(display-time-mode t)
 
 (put 'set-goal-column 'disabled nil)
 (setq vc-follow-symlinks t)
@@ -18,20 +19,17 @@
 
 (setq ns-use-srgb-colorspace nil)
 (add-to-list 'auto-mode-alist '("emacs\\'" . emacs-lisp-mode))
-;(set-fringe-mode nil)
 (fringe-mode 0)
-;(set-fringe-mode 1)
 
-;(set-face-inverse-video-p 'vertical-border nil)
-;(set-face-background 'vertical-border (face-background 'default))
 ;
 ;;; Set symbol for the border
-;(set-display-table-slot standard-display-table
-;                        'vertical-border 
-;                        (make-glyph-code ?┃))
+(set-display-table-slot standard-display-table
+                        'vertical-border 
+                        (make-glyph-code ?┃))
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;http://y.tsutsumi.io/emacs-from-scratch-part-2-package-management.html
+;;---------------------------------------------------------------------------------------
+;; package
+;; http://y.tsutsumi.io/emacs-from-scratch-part-2-package-management.html
 (require 'package)
 (add-to-list 'package-archives
              '("melpa" . "http://melpa.milkbox.net/packages/") t)
@@ -76,9 +74,6 @@
   (dolist (p required-packages)
     (when (not (package-installed-p p))
       (package-install p))))
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-					;
-;;(elscreen-start)
 
 ;;---------------------------------------------------------------------------------------
 ;; color theme
@@ -96,16 +91,6 @@
 (ido-everywhere 1)
 (flx-ido-mode 1)
 (setq ido-use-faces nil)
-;(setq ido-enable-flex-matching t)
-;(setq ido-use-faces t)
-;(setq ido-use-faces nil)
-;(set-face-attribute 'ido-vertical-first-match-face nil
-;		    :background "#e5b7c0")
-;(set-face-attribute 'ido-vertical-only-match-face nil
-;		    :background "#e52b50"
-;		    :foreground "white")
-;(set-face-attribute 'ido-vertical-match-face nil
-;		    :foreground "#b00000")
 
 (setq org-completion-use-ido t)
 (setq magit-completing-read-function 'magit-ido-completing-read)
@@ -122,16 +107,9 @@
 ;; Magit
 ;;
 (require 'magit)
-;(setq magit-auto-revert-mode nil)
 (setq magit-last-seen-setup-instructions "1.4.0")
+;(setq magit-auto-revert-mode nil)
 
-;;---------------------------------------------------------------------------------------
-;; powerline
-;;
-;(require 'powerline)
-;(powerline-evil-vim-color-theme)
-;(powerline-evil-center-color-theme)
-(display-time-mode t)
 
 ;;---------------------------------------------------------------------------------------
 ;; evil
@@ -143,24 +121,9 @@
 (evil-leader/set-key "w" 'evil-write)
 (require 'evil)
 ;(setq key-chord-two-keys-delay 0.5)
-;(key-chord-define evil-normal-state-map "jj" 'evil-force-normal-state)
-;(key-chord-define evil-visual-state-map "jj" 'evil-change-to-previous-state)
 (key-chord-define evil-insert-state-map "jj" 'evil-normal-state)
-;(key-chord-define evil-replace-state-map "jj" 'evil-normal-state)
 (key-chord-mode 1)
 
-;; change mode-line color by evil state
-;(lexical-let ((default-color (cons (face-background 'mode-line)
-;				   (face-foreground 'mode-line))))
-;  (add-hook 'post-command-hook
-;	    (lambda ()
-;	      (let ((color (cond ((minibufferp) default-color)
-;				 ((evil-insert-state-p) '("#e80000" . "#ffffff"))
-;				 ((evil-emacs-state-p)  '("#444488" . "#ffffff"))
-;				 ((buffer-modified-p)   '("#006fa0" . "#ffffff"))
-;				 (t default-color))))
-;		(set-face-background 'mode-line (car color))
-;		           (set-face-foreground 'mode-line (cdr color))))))
 ;; cursor shape
 (setq evil-emacs-state-cursor '("red" box))
 (setq evil-normal-state-cursor '("green" box))
@@ -190,8 +153,6 @@
     do (evil-set-initial-state mode state))
 
 (evil-mode 1)
-;(require 'powerline-evil)
-;; TODO: enter emacs mode in eshll rather then evil mode
 
 ;;---------------------------------------------------------------------------------------
 ;; Fiplr
@@ -201,65 +162,20 @@
                             (files ("*.jpg" "*.png" "*.zip" "*~" "*.o" ".obj" "*.swp" "*.hg" ".pyc" ".*" ))))
 
 (global-set-key (kbd "C-x f") 'fiplr-find-file)
-;;---------------------------------------------------------------------------------------
-
-;(setq mac-right-option-modifier 'control)
-
-
 
 ;;---------------------------------------------------------------------------------------
-;; Helm
-;;
-;;;;;;;;;;; helm configuration https://github.com/emacs-helm/helm http://tuhdo.github.io/helm-intro.html
-;;(require 'helm-config)
-;;(global-set-key (kbd "M-x") 'helm-M-x)
-;;(helm-mode 1)
-;;(setq helm-M-x-fuzzy-match t)
-;;(global-set-key (kbd "C-x b") 'helm-mini)
-;;(setq helm-buffers-fuzzy-matching t
-;;      helm-recentf-fuzzy-match    t)
-;;(global-set-key (kbd "C-x C-f") 'helm-find-files)
-;;(when (executable-find "ack-grep")
-;;  (setq helm-grep-default-command "ack-grep -Hn --no-group --no-color %e %p %f"
-;;        helm-grep-default-recurse-command "ack-grep -H --no-group --no-color %e %p %f"))
-;;(setq helm-ff-skip-boring-files t)
-;;;(require 'helm-config)
-;;;(require 'helm-themes)
-;;;(set-face-attribute 'helm-selection nil :background "#441100")
-
-;;---------------------------------------------------------------------------------------
-;; auto-complete
-;;
-(require 'auto-complete)
-(auto-complete-mode 1)
-
-
-;;; ---------------------------------------- el-get -----------------------------------------
-;(require 'el-get)
-;(add-to-list 'el-get-recipe-path "~/.emacs.d/el-get-user/recipes")
-
-;(el-get-bundle packages/sm-package-powerline
-;  :url "https://github.com/laynor/emacs-conf.git"
-;  )
-
-
-
 ;; Wind-move
+;;
 (global-set-key (kbd "C-x C-l") 'windmove-right)
 (global-set-key (kbd "C-x C-h") 'windmove-left)
 (global-set-key (kbd "C-x C-k") 'windmove-up)
 (global-set-key (kbd "C-x C-j") 'windmove-down)
 
-;(global-set-key (kbd "C-x C-s") 'split-window-right)
 
-;; windows devider
-(set-face-attribute 'vertical-border 
-                    nil 
-                    :foreground "gray")
-
-
-
-
+;;---------------------------------------------------------------------------------------
+;; Wind-move
+;;
+(set-face-attribute 'vertical-border nil  :foreground "gray")
 
 (add-to-list 'load-path "~/.emacs.d/config")
 (require 'init-color-theme)
