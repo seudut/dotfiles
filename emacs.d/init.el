@@ -7,7 +7,7 @@
 (add-to-list 'default-frame-alist '(height . 40))
 ;(add-to-list 'default-frame-alist '(font . "Source Code Pro for Powerline-12:weight:light" ))
 (add-to-list 'default-frame-alist '(font . "Source Code Pro for Powerline-12" ))
-(load-theme 'tango-dark)
+;(load-theme 'tango-dark)
 
 (display-time-mode t)
 
@@ -30,6 +30,7 @@
 ;;---------------------------------------------------------------------------------------
 ;; package
 ;; http://y.tsutsumi.io/emacs-from-scratch-part-2-package-management.html
+;;
 (require 'package)
 (add-to-list 'package-archives
              '("melpa" . "http://melpa.milkbox.net/packages/") t)
@@ -59,6 +60,10 @@
     el-get
     color-identifiers-mode
     elscreen
+    moe-theme
+    monokai-theme
+    molokai-theme
+    tangotango-theme
   ) "a list of packages to ensure are installed at launch.")
 
 (require 'cl)
@@ -79,9 +84,18 @@
 ;; color theme
 ;;
 (require 'color-theme)
-(load-theme 'sanityinc-tomorrow-bright t)
+;(load-theme 'sanityinc-tomorrow-bright t)
+(load-theme 'tangotango t)
 
-;;---------------------------------------------------------------------------------------
+;(require 'moe-theme)
+;(moe-dark)
+
+(require 'powerline)
+(powerline-default-theme)
+
+;(add-to-list 'load-path "~/.emacs.d/config")
+;(require 'init-color-theme)
+;---------------------------------------------------------------------------------------
 ;; Ido
 ;;
 (require 'ido-vertical-mode)
@@ -109,6 +123,8 @@
 (require 'magit)
 (setq magit-last-seen-setup-instructions "1.4.0")
 ;(setq magit-auto-revert-mode nil)
+
+
 
 
 ;;---------------------------------------------------------------------------------------
@@ -152,7 +168,7 @@
 			    (eshell-mode . emacs))
     do (evil-set-initial-state mode state))
 
-(evil-mode 1)
+;(evil-mode 1)
 
 ;;---------------------------------------------------------------------------------------
 ;; Fiplr
@@ -177,5 +193,7 @@
 ;;
 (set-face-attribute 'vertical-border nil  :foreground "gray")
 
-(add-to-list 'load-path "~/.emacs.d/config")
-(require 'init-color-theme)
+;(add-to-list 'load-path "~/.emacs.d/config")
+;(require 'init-color-theme)
+
+

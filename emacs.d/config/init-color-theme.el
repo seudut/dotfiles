@@ -1,14 +1,25 @@
 
 ;(load-theme 'tango-dark)
 
-(require 'color-theme)
-(load-theme 'sanityinc-tomorrow-bright t)
+
+
+(require 'moe-theme)
+(moe-dark)
+
+(require 'powerline)
+(powerline-default-theme)
+
+
+
+;(require 'color-theme)
+;(load-theme 'sanityinc-tomorrow-bright t)
 
 ;(require 'moe-theme)
 ;(moe-dark)
 
-(add-to-list 'load-path "~/.emacs.d/vendor/emacs-powerline")
-(require 'powerline)
+;(add-to-list 'load-path "~/.emacs.d/vendor/emacs-powerline")
+;(require 'powerline)
+;(powerline-default-theme)
 ;(setq powerline-arrow-shape 'arrow14) ;; best for small fonts
 
 ;(require 'smart-mode-line)
