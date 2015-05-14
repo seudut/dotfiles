@@ -1,0 +1,9 @@
+elpa/*
+games/*
+test/*
+vendor/*
+el-get/*
+auto-save-list/*
+ido.*
+smex-items
+ac-comphist.dat
