@@ -57,13 +57,14 @@
     fiplr
     w3m
     ace-jump-mode
-    el-get
+;    el-get
     color-identifiers-mode
     elscreen
     moe-theme
     monokai-theme
     molokai-theme
-    tangotango-theme
+;    tangotango-theme
+    cyberpunk-theme
   ) "a list of packages to ensure are installed at launch.")
 
 (require 'cl)
@@ -80,21 +81,6 @@
     (when (not (package-installed-p p))
       (package-install p))))
 
-;;---------------------------------------------------------------------------------------
-;; color theme
-;;
-(require 'color-theme)
-;(load-theme 'sanityinc-tomorrow-bright t)
-(load-theme 'tangotango t)
-
-;(require 'moe-theme)
-;(moe-dark)
-
-(require 'powerline)
-(powerline-default-theme)
-
-;(add-to-list 'load-path "~/.emacs.d/config")
-;(require 'init-color-theme)
 ;---------------------------------------------------------------------------------------
 ;; Ido
 ;;
@@ -197,3 +183,97 @@
 ;(require 'init-color-theme)
 
 
+;;;(defun color-theme-inkpot ()
+;;;      "Color theme based on the Inkpot theme. Ported and tweaked by Per Vognsen."
+;;;      (interactive)
+;;;      (color-theme-install
+;;;       '(color-theme-inkpot
+;;;         ((foreground-color . "#cfbfad")
+;;;          (background-color . "#1e1e27")
+;;;          (border-color . "#3e3e5e")
+;;;          (cursor-color . "#404040")
+;;;          (background-mode . dark))
+;;;         (region ((t (:background "#404040"))))
+;;;         (highlight ((t (:background "#404040"))))
+;;;         (fringe ((t (:background "#16161b"))))
+;;;         (show-paren-match-face ((t (:background "#606060"))))
+;;;         (isearch ((t (:bold t :foreground "#303030" :background "#cd8b60"))))
+;;;         (modeline ((t (:bold t :foreground "#b9b9b9" :background "#3e3e5e"))))
+;;;         (modeline-inactive ((t (:foreground "#708090" :background "#3e3e5e"))))
+;;;         (modeline-buffer-id ((t (:bold t :foreground "#b9b9b9" :background "#3e3e5e"))))
+;;;         (minibuffer-prompt ((t (:bold t :foreground "#708090"))))
+;;;         (font-lock-builtin-face ((t (:foreground "#c080d0"))))
+;;;         (font-lock-comment-face ((t (:foreground "#708090")))) ; original inkpot: #cd8b00
+;;;         (font-lock-constant-face ((t (:foreground "#506dbd"))))
+;;;         (font-lock-doc-face ((t (:foreground "#cd8b00"))))
+;;;         (font-lock-function-name-face ((t (:foreground "#87cefa"))))
+;;;         (font-lock-keyword-face ((t (:bold t :foreground "#c080d0"))))
+;;;         (font-lock-preprocessor-face ((t (:foreground "309090"))))
+;;;         (font-lock-reference-face ((t (:bold t :foreground "#808bed"))))
+;;;         (font-lock-string-face ((t (:foreground "#ffcd8b" :background "#404040"))))
+;;;         (font-lock-type-face ((t (:foreground "#ff8bff"))))
+;;;         (font-lock-variable-name-face ((t nil)))
+;;;         (font-lock-warning-face ((t (:foreground "#ffffff" :background "#ff0000"))))))
+
+
+(require 'color-theme)
+
+
+;;---------------------------------------------------------------------------------------
+;; El-get
+;; https://github.com/dimitri/el-get
+;;
+
+(add-to-list 'load-path "~/.emacs.d/el-get/el-get")
+
+(unless (require 'el-get nil 'noerror)
+  (with-current-buffer
+      (url-retrieve-synchronously
+       "https://raw.githubusercontent.com/dimitri/el-get/master/el-get-install.el")
+    (goto-char (point-max))
+    (eval-print-last-sexp)))
+
+(add-to-list 'el-get-recipe-path "~/.emacs.d/el-get-user/recipes")
+
+
+(el-get-bundle seudut/color-theme-tangotango
+;        :features color-theme-tangotango
+;        (color-theme-tangotango)
+        )
+
+  
+
+;(require 'color-theme-tangotango)
+;(color-theme-tangotango)
+
+
+
+
+;;---------------------------------------------------------------------------------------
+;; color theme
+;;
+;;(require 'color-theme)
+;;; this color theme no bold style
+;(load-theme 'sanityinc-tomorrow-night t)
+;(load-theme 'sanityinc-tomorrow-bright t)
+;; this theme no italic for comment
+;(load-theme 'tangotango t)
+;(load-theme 'cyberpunk t)
+
+;(require 'moe-theme)
+;(moe-dark)
+
+(add-to-list 'custom-theme-load-path "~/.emacs.d/el-get/color-theme-tangotango")
+(load-theme 'tangotango t)
+
+(require 'powerline)
+(powerline-default-theme)
+
+
+(add-to-list 'load-path "~/.emacs.d/config")
+;(require 'init-color-theme)
+;(require 'init-color-theme)
+;(color-theme-inkpot)
+
+;;(require 'color-theme-tangotango)
+;;(color-theme-tangotango)
