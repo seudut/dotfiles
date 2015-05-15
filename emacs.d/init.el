@@ -266,14 +266,22 @@
 (add-to-list 'custom-theme-load-path "~/.emacs.d/el-get/color-theme-tangotango")
 (load-theme 'tangotango t)
 
-(require 'powerline)
-(powerline-default-theme)
+
+
+;(require 'powerline)
+;(powerline-default-theme)
+
+
+;(add-to-list 'load-path "~/.emacs.d/vendor/emacs-powerline")
+;(require 'powerline)
+;(powerline-default-theme)
+
+
 
 
 (add-to-list 'load-path "~/.emacs.d/config")
-;(require 'init-color-theme)
-;(require 'init-color-theme)
+(require 'init-color-theme)
 ;(color-theme-inkpot)
 
-;;(require 'color-theme-tangotango)
-;;(color-theme-tangotango)
+;(require 'color-theme-tangotango)
+;(color-theme-tangotango)
