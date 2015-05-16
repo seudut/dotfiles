@@ -1,8 +1,6 @@
 
+(require 'color-theme)
 ;(load-theme 'tango-dark)
-
-
-
 ;(require 'moe-theme)
 ;(moe-dark)
 
