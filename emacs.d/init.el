@@ -8,7 +8,6 @@
 ;(add-to-list 'default-frame-alist '(font . "Source Code Pro for Powerline-12:weight:light" ))
 (add-to-list 'default-frame-alist '(font . "Source Code Pro for Powerline-12" ))
 
-(display-time-mode t)
 
 (put 'set-goal-column 'disabled nil)
 (setq vc-follow-symlinks t)
@@ -16,7 +15,7 @@
 (setq ring-bell-function 'ignore)
 (setq resize-mini-windows t)
 
-(setq ns-use-srgb-colorspace nil)
+
 (add-to-list 'auto-mode-alist '("emacs\\'" . emacs-lisp-mode))
 (fringe-mode 0)
 
@@ -205,7 +204,12 @@
 ;; 
 (add-to-list 'load-path "~/.emacs.d/config")
 (require 'init-color-theme)
+;(require 'my-powerline)
+;(require 'init-my-theme-2)
 
 
+
+
+(toggle-frame-fullscreen)
 
 
