@@ -8,3 +8,4 @@ ido.*
 smex-items
 ac-comphist.dat
 \#init.el\#
+url/*
