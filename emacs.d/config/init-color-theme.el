@@ -23,7 +23,7 @@
 
 ;(add-to-list 'load-path "~/.emacs.d/vendor/emacs-powerline")
 (require 'powerline)
-(powerline-default-theme)
+;(powerline-default-theme)
 
 
 ;(defconst color1 "#6b8e23")
@@ -125,7 +125,6 @@
                         (lhs
                             (list
                                 (powerline-raw "%*" nil 'l)
-                                ;; (powerline-buffer-size nil 'l)
                                 (powerline-buffer-id nil 'l)
                                 (powerline-raw " ")
                                 (funcall separator-left mode-line face1)
@@ -134,22 +133,12 @@
 			
                         (rhs
                             (list
-;                               (powerline-raw mode-line-misc-info face1 'r)
-                                (powerline-raw global-mode-string face1 'r)
                                 (funcall separator-right face1 mode-line)
-			                    (powerline-raw '(:eval (format-time-string " %Y-%m-%d %I:%M %p %a")) nil 'r)
+			                    (powerline-raw (format-time-string " %Y-%m-%d %I:%M %p %a") nil 'r)
                                 (funcall separator-right mode-line face1)
-;;			                    (powerline-raw '(:eval (propertize (format-time-string " %Y-%m-%d %I:%M %p %a")
-;;							        'help-echo
-;;							        (concat (format-time-string "%c; ")
-;;								        (emacs-uptime "Uptime:%hh")))) nil)
-					 
-                                (powerline-raw "%3c, %l/" face1)
-                                (powerline-raw (format "%d" (count-lines (point-min) (point-max))) face1 'r)
+                                (powerline-raw (concat "%3c, %l/" (format "%d" (count-lines (point-min) (point-max)))) face1 'r)
                                 (funcall separator-right face1 face3)
-;                                (powerline-raw " ")
-;                                (powerline-raw " %4p" nil)))
-                                (powerline-raw " %4p" face3)))
+                                (powerline-raw " %4p" face3 'r)))
                         (center
                             (list
                                 (powerline-raw " " face1)
@@ -190,3 +179,13 @@
 
 
 (provide 'init-color-theme)
+
+
+
+;                               (powerline-raw mode-line-misc-info face1 'r)
+;                                (powerline-raw global-mode-string face1 'r)
+
+;;			                    (powerline-raw '(:eval (propertize (format-time-string " %Y-%m-%d %I:%M %p %a")
+;;							        'help-echo
+;;							        (concat (format-time-string "%c; ")
+;;								        (emacs-uptime "Uptime:%hh")))) nil)
