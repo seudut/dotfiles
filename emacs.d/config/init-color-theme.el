@@ -164,6 +164,7 @@
                                 (powerline-buffer-id nil 'l)
                                 (powerline-raw " ")
                                 (funcall separator-left mode-line face-blue )
+				(powerline-raw " " face-blue)
                                 (powerline-major-mode face-blue 'r)
                                 (funcall separator-left face-blue face1)
                                 (powerline-narrow face1 'l)

@@ -19,7 +19,8 @@
 (add-to-list 'auto-mode-alist '("emacs\\'" . emacs-lisp-mode))
 (fringe-mode 0)
 
-;
+
+
 ;;; Set symbol for the border
 (set-display-table-slot standard-display-table
                         'vertical-border 
@@ -31,10 +32,10 @@
 (add-to-list 'load-path "~/.emacs.d/config")
 (require 'my-packages)
 
+;; elscreen should be placed begin of https://github.com/knu/elscreen/issues/6
+(elscreen-start)
 (require 'init-color-theme)
-;(require 'my-powerline)
 ;(require 'init-my-theme-2)
-
 
 ;---------------------------------------------------------------------------------------
 ;; Ido
