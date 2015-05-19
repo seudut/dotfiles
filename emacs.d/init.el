@@ -25,59 +25,16 @@
                         'vertical-border 
                         (make-glyph-code ?┃))
 
-;;---------------------------------------------------------------------------------------
-;; package
-;; http://y.tsutsumi.io/emacs-from-scratch-part-2-package-management.html
-;;
-(require 'package)
-(add-to-list 'package-archives
-             '("melpa" . "http://melpa.milkbox.net/packages/") t)
-(package-initialize)
+(set-face-attribute 'vertical-border nil  :foreground "gray")
 
-(defvar required-packages
-  '(
-    magit
-    helm
-    ido-ubiquitous
-    yasnippet
-    evil
-    ido-vertical-mode
-    smex
-    color-theme
-    color-theme-sanityinc-tomorrow
-    key-chord
-    powerline-evil
-    powerline
-    evil-leader
-    flx-ido
-    flx
-    auto-complete
-    fiplr
-    w3m
-    ace-jump-mode
-;    el-get
-    color-identifiers-mode
-    elscreen
-    moe-theme
-    monokai-theme
-    molokai-theme
-;    tangotango-theme
-    cyberpunk-theme
-  ) "a list of packages to ensure are installed at launch.")
 
-(require 'cl)
-(defun packages-installed-p ()
-  (loop for p in required-packages
-        when (not (package-installed-p p)) do (return nil)
-        finally (return t)))
+(add-to-list 'load-path "~/.emacs.d/config")
+(require 'my-packages)
 
-(unless (packages-installed-p)
-  (message "%s" "Emacs is now refreshing its package database...")
-  (package-refresh-contents)
-  (message "%s" " done.")
-  (dolist (p required-packages)
-    (when (not (package-installed-p p))
-      (package-install p))))
+(require 'init-color-theme)
+;(require 'my-powerline)
+;(require 'init-my-theme-2)
+
 
 ;---------------------------------------------------------------------------------------
 ;; Ido
@@ -134,20 +91,6 @@
 ;;Enter an emacs mode in a given state http://wikemacs.org/wiki/Evil
 (loop for (mode . state) in '(
 ;			    (inferior-emacs-lisp-mode . emacs)
-;			    (nrepl-mode . insert)
-;			    (pylookup-mode . emacs)
-;			    (comint-mode . normal)
-;			    (shell-mode . emacs)
-;			    (git-commit-mode . insert)
-;			    (git-rebase-mode . emacs)
-;			    (term-mode . emacs)
-;			    (help-mode . emacs)
-;			    (helm-grep-mode . emacs)
-;			    (grep-mode . emacs)
-;			    (bc-menu-mode . emacs)
-;			    (magit-branch-manager-mode . emacs)
-;			    (rdictcc-buffer-mode . emacs)
-;			    (dired-mode . emacs)
 ;			    (wdired-mode . normal)
 			    (eshell-mode . emacs))
     do (evil-set-initial-state mode state))
@@ -172,44 +115,6 @@
 (global-set-key (kbd "C-x C-j") 'windmove-down)
 
 
-;;---------------------------------------------------------------------------------------
-;; Wind-move
-;;
-(set-face-attribute 'vertical-border nil  :foreground "gray")
-
-;;---------------------------------------------------------------------------------------
-;; El-get
-;; https://github.com/dimitri/el-get
-;;
-
-(add-to-list 'load-path "~/.emacs.d/el-get/el-get")
-
-(unless (require 'el-get nil 'noerror)
-  (with-current-buffer
-      (url-retrieve-synchronously
-       "https://raw.githubusercontent.com/dimitri/el-get/master/el-get-install.el")
-    (goto-char (point-max))
-    (eval-print-last-sexp)))
-
-(add-to-list 'el-get-recipe-path "~/.emacs.d/el-get-user/recipes")
-
-
-(el-get-bundle seudut/color-theme-tangotango
-;        :features color-theme-tangotango
-;        (color-theme-tangotango)
-        )
-
-;;---------------------------------------------------------------------------------------
-;; Config folder
-;; 
-(add-to-list 'load-path "~/.emacs.d/config")
-(require 'init-color-theme)
-;(require 'my-powerline)
-;(require 'init-my-theme-2)
-
-
 
 
 (toggle-frame-fullscreen)
-
-
