@@ -37,6 +37,9 @@
     tangotango-theme
     cyberpunk-theme
     hydra
+    projectile
+    projectile-speedbar
+    ecb
   ) "a list of packages to ensure are installed at launch.")
 
 (require 'cl)
@@ -78,6 +81,6 @@
 
 ;(el-get-bundle Dewdrops/powerline)
 
-
+(el-get-bundle emacsmirror/sr-speedbar)
 
 (provide 'my-packages)
