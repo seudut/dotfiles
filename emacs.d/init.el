@@ -34,6 +34,7 @@
 
 ;; elscreen should be placed begin of https://github.com/knu/elscreen/issues/6
 (elscreen-start)
+(require 'init-elscreen)
 (require 'init-color-theme)
 ;(require 'init-my-theme-2)
 
@@ -138,52 +139,3 @@
 (setq ecb-layout-name "leftright3")
 
 
-
-;;(add-hook 'find-file-hook
-;;          (lambda ()
-;;            (setq default-directory "~/CPVE/")))
-
-;;(add-hook 'buffer-list-update-hook
-;;          (lambda ()
-;;            (elscreen-cd-default-directory
-;;              (elscreen-get-default-directory (elscreen-get-current-screen)))))
-
-
-;;(add-hook 'buffer-list-update-hook
-;;          (lambda ()
-;;            (cd "~/English/")))
-
-;;(add-hook 'elscreen-create-hook
-;;          (lambda ()
-;;            (elscreen-set-default-directory  (elscreen-get-current-screen) "~/CPVE/")))
-;;;            (elscreen-cd-default-directory "~/"))
-;;
-
-(add-hook 'elscreen-goto-hook
-          (lambda ()
-            (elscreen-cd-default-directory
-              (elscreen-get-default-directory (elscreen-get-current-screen)))))
-
-(defun sd-cd-dd (dir)
-  "Set default directory screen."
-  (interactive "sSet dir:")
-;  (message dir)
-  (elscreen-set-default-directory (elscreen-get-current-screen) dir)
-  (cd dir)
-)
-
-(defun sd-show-dir ()
-  "show elscreen default directory."
-  (interactive)
-  (message
-  (elscreen-get-default-directory (elscreen-get-current-screen))))
-
-
-
-(add-hook 'buffer-list-update-hook
-          (lambda ()
-            (let ((el-dir (elscreen-get-default-directory (elscreen-get-current-screen))))
-              (if (> (length el-dir) 0)
-                 (cd el-dir)))))
-              
-              
