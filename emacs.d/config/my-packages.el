@@ -30,7 +30,7 @@
     ace-jump-mode
 ;    el-get
     color-identifiers-mode
-    elscreen
+;    elscreen
     moe-theme
     monokai-theme
     molokai-theme
@@ -82,5 +82,6 @@
 ;(el-get-bundle Dewdrops/powerline)
 
 (el-get-bundle emacsmirror/sr-speedbar)
+(el-get-bundle seudut/elscreen)
 
 (provide 'my-packages)

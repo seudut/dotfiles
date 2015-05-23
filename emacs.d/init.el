@@ -96,8 +96,9 @@
 			    (eshell-mode . emacs))
     do (evil-set-initial-state mode state))
 
-;(evil-mode 1)
 
+;(global-evil-tabs-mode t)
+;(evil-mode 1)
 ;;---------------------------------------------------------------------------------------
 ;; Fiplr
 ;;
@@ -115,7 +116,74 @@
 (global-set-key (kbd "C-x C-k") 'windmove-up)
 (global-set-key (kbd "C-x C-j") 'windmove-down)
 
-
+;;---------------------------------------------------------------------------------------
+;; sr-speedbar
+;;
+;(require 'sr-speedbar)
+;(setq speedbar-use-images nil)
+;(setq speedbar-show-unknown-files t)
 
 
 (toggle-frame-fullscreen)
+
+
+(require 'projectile)
+(projectile-global-mode)
+(setq projectile-enable-caching t)
+(require 'projectile-speedbar)
+
+(require 'cc-mode)
+(require 'ecb)
+
+(setq ecb-layout-name "leftright3")
+
+
+
+;;(add-hook 'find-file-hook
+;;          (lambda ()
+;;            (setq default-directory "~/CPVE/")))
+
+;;(add-hook 'buffer-list-update-hook
+;;          (lambda ()
+;;            (elscreen-cd-default-directory
+;;              (elscreen-get-default-directory (elscreen-get-current-screen)))))
+
+
+;;(add-hook 'buffer-list-update-hook
+;;          (lambda ()
+;;            (cd "~/English/")))
+
+;;(add-hook 'elscreen-create-hook
+;;          (lambda ()
+;;            (elscreen-set-default-directory  (elscreen-get-current-screen) "~/CPVE/")))
+;;;            (elscreen-cd-default-directory "~/"))
+;;
+
+(add-hook 'elscreen-goto-hook
+          (lambda ()
+            (elscreen-cd-default-directory
+              (elscreen-get-default-directory (elscreen-get-current-screen)))))
+
+(defun sd-cd-dd (dir)
+  "Set default directory screen."
+  (interactive "sSet dir:")
+;  (message dir)
+  (elscreen-set-default-directory (elscreen-get-current-screen) dir)
+  (cd dir)
+)
+
+(defun sd-show-dir ()
+  "show elscreen default directory."
+  (interactive)
+  (message
+  (elscreen-get-default-directory (elscreen-get-current-screen))))
+
+
+
+(add-hook 'buffer-list-update-hook
+          (lambda ()
+            (let ((el-dir (elscreen-get-default-directory (elscreen-get-current-screen))))
+              (if (> (length el-dir) 0)
+                 (cd el-dir)))))
+              
+              
