@@ -139,3 +139,20 @@
 (setq ecb-layout-name "leftright3")
 
 
+;(setq mac-command-modifier 'super) ; make cmd key do Meta
+(global-set-key (kbd "<s-return>") 'toggle-frame-fullscreen)
+
+
+
+
+(global-set-key (kbd "M-g M-v") 'split-window-right)
+(global-set-key (kbd "M-g M-s") 'split-window-below)
+(global-set-key (kbd "M-g M-o") 'delete-other-windows)
+
+(global-set-key (kbd "M-g M-w") 'other-window)
+
+;(global-set-key (kbd "C-g C-k") 'windmove-up)
+;(global-set-key (kbd "C-g C-j") 'windmove-down)
+
+;;;; show default directory on mode-line
+

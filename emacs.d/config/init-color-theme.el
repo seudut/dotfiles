@@ -160,20 +160,22 @@
                                   (cdr powerline-default-separator-dir))))
                         (lhs
                             (list
-                                (powerline-raw "%*" nil 'l)
-                                (powerline-buffer-id nil 'l)
-                                (powerline-raw " ")
-                                (funcall separator-left mode-line face-blue )
-				(powerline-raw " " face-blue)
+                                (powerline-raw "%*" face-yel 'l)
+                                (powerline-buffer-id face-yel 'l)
+                                (powerline-raw " " face-yel)
+                                (funcall separator-left face-yel face-blue )
+				                (powerline-raw " " face-blue)
                                 (powerline-major-mode face-blue 'r)
-                                (funcall separator-left face-blue face1)
-                                (powerline-narrow face1 'l)
-                                (powerline-simpler-vc-mode (powerline-vc face1))))
+                                (funcall separator-left face-blue mode-line)
+                                (powerline-narrow mode-line 'l)
+                                (powerline-vc mode-line 'r)
+                                (funcall separator-left mode-line face1)))
+;                                (powerline-simpler-vc-mode (powerline-vc face2))))
 			
                         (rhs
                             (list
                                 (funcall separator-right face1 mode-line)
-                                (powerline-raw (concat "%3c, %l/" (format "%d" (count-lines (point-min) (point-max))) " %4p") mode-line)
+                                (powerline-raw (concat "%3c, %l/" (format "%d" (count-lines (point-min) (point-max))) " %4p ") mode-line)
                                 (funcall separator-right mode-line face1)
 			                    (powerline-raw (format-time-string " %m-%d") face1 'r)
                                 (funcall separator-right face1 face-yel)
@@ -209,7 +211,9 @@
 
 (powerline-ha-theme)
 
-
-
-
 (provide 'init-color-theme)
+
+
+;; TODO
+;; 1. change color when buffer is modified
+;; 2. 
