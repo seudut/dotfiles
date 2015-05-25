@@ -36,7 +36,7 @@
 (elscreen-start)
 (require 'init-elscreen)
 (require 'init-color-theme)
-;(require 'init-my-theme-2)
+
 
 ;---------------------------------------------------------------------------------------
 ;; Ido

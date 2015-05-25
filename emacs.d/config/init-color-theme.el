@@ -131,6 +131,11 @@
                                   "+1" "+2" "FlyC" "Fly" ;; ":1/0"
                                   "Fill" "AC" "FIC") "\\|")) "" s))
 
+(defun powerline-format-default-directory (s)
+  (if s
+    (replace-regexp-in-string "/Users/peli3/"  "~/" s)
+    s))
+
 (defun powerline-ha-theme ()
   "A powerline theme that removes many minor-modes that don't serve much purpose on the mode-line."
   (interactive)
@@ -176,7 +181,11 @@
                             (list
                                 (funcall separator-right face1 mode-line)
                                 (powerline-raw (concat "%3c, %l/" (format "%d" (count-lines (point-min) (point-max))) " %4p ") mode-line)
-                                (funcall separator-right mode-line face1)
+				                (funcall separator-right mode-line face-blue)
+				                (powerline-raw " [" face-blue)
+				                (powerline-raw (powerline-format-default-directory default-directory) face-blue )
+				                (powerline-raw "] " face-blue)
+				                (funcall separator-right face-blue face1)
 			                    (powerline-raw (format-time-string " %m-%d") face1 'r)
                                 (funcall separator-right face1 face-yel)
 			                    (powerline-raw (format-time-string " %I:%M %p %a ") face-yel 'r)))
