@@ -1,6 +1,7 @@
 ;; this config file is based on  seudut/elscreen.git, which added two interface and one property 
 ;; default directory
 
+(elscreen-set-default-directory (elscreen-get-current-screen) "~/")
 
 ;; change default keybinding
 (global-set-key (kbd "<M-tab>") 'elscreen-next) ;; "C-M-I"
@@ -43,7 +44,7 @@
 (defun sd-update-elscreen-dir ()
   "update elscreen dir as current default directory"
   (interactive)
-  (elscreen-set-default-directory (elscreen-get-current-scren) default-directory))
+  (elscreen-set-default-directory (elscreen-get-current-screen) default-directory))
 
 
 
@@ -52,6 +53,15 @@
 ;;            (let ((el-dir (elscreen-get-default-directory (elscreen-get-current-screen))))
 ;;              (if (> (length el-dir) 0)
 ;;                 (cd el-dir)))))
+
+
+;; when major-mode is magit-*, don't change default-directory, otherwise, there is error when usingit command in magin-* mode
+(add-hook 'elscreen-screen-update-hook
+          (lambda ()
+            (let ((el-dir (elscreen-get-default-directory (elscreen-get-current-screen))))
+              (unless (string-match "magit" (symbol-name major-mode))
+                (if (> (length el-dir) 0)
+                  (cd el-dir))))))
 
 
 (provide 'init-elscreen)

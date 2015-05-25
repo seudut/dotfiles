@@ -151,8 +151,5 @@
 
 (global-set-key (kbd "M-g M-w") 'other-window)
 
-;(global-set-key (kbd "C-g C-k") 'windmove-up)
-;(global-set-key (kbd "C-g C-j") 'windmove-down)
-
 ;;;; show default directory on mode-line
 
