@@ -1,3 +1,12 @@
+;;;(if (eq system-type 'darwin)
+;;;  (setenv "PATH"
+;;;)   (concat (getenv "path") ":/usr/local/bin:~/bin/")
+;;;  )
+
+
+(setenv "PATH" (concat (getenv "PATH") ":/usr/local/bin"))
+(setq exec-path (append exec-path '("/usr/local/bin")))
+
 (setq debug-on-error t)
 
 (scroll-bar-mode -1)
@@ -130,13 +139,13 @@
 
 (require 'projectile)
 (projectile-global-mode)
-(setq projectile-enable-caching t)
+(setq projectile-enable-caching nil)
 (require 'projectile-speedbar)
 
-(require 'cc-mode)
-(require 'ecb)
+;(require 'cc-mode)
+;(require 'ecb)
 
-(setq ecb-layout-name "leftright3")
+;(setq ecb-layout-name "leftright3")
 
 
 ;(setq mac-command-modifier 'super) ; make cmd key do Meta
@@ -152,4 +161,19 @@
 (global-set-key (kbd "M-g M-w") 'other-window)
 
 ;;;; show default directory on mode-line
+(ggtags-mode 1)
+
+
+
+;;j;(setq ggtags-completing-read-function
+;;j;      (lambda (&rest args)
+;;j;        (apply #'ido-completing-read
+;;j;               (car args)
+;;j;               (all-completions "" ggtags-completion-table)
+;;j;               (cddr args))))
+
+
+;; gnu global support
+;(require 'semantic/db)
+;(global-semanticdb-minor-mode 1)
 
