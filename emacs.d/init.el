@@ -74,10 +74,11 @@
 ;;
 (require 'magit)
 (setq magit-last-seen-setup-instructions "1.4.0")
+(global-set-key (kbd "C-x g") 'magit-status)
 ;(setq magit-auto-revert-mode nil)
 
 
-(require 'init-evil)
+;(require 'init-evil)
 
 
 
@@ -132,22 +133,23 @@
 
 (global-set-key (kbd "M-g M-w") 'other-window)
 
-
-
-
 ;; gnu global support
 ;(require 'semantic/db)
 ;(global-semanticdb-minor-mode 1)
 
 (require 'init-ggtags)
 
-
-
 (global-unset-key "\C-o")
-(global-set-key (kbd "C-o f") 'ido-find-file)
-(global-set-key (kbd "C-o j") 'ido-switch-buffer)
+(global-set-key (kbd "C-o C-f") 'ido-find-file)
+(global-set-key (kbd "C-o C-b") 'ido-switch-buffer)
 
 (global-set-key (kbd "C-o g") 'ggtags-find-file)
 (global-set-key (kbd "C-o t") 'ggtags-find-tag-dwim)
 
 (global-set-key (kbd "M-g M-g") 'magit-status)
+
+
+(setq scroll-margin 5)
+(setq scroll-conservatively 10000)
+(show-paren-mode t)
+

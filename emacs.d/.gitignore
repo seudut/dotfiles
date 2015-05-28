@@ -9,3 +9,7 @@ smex-items
 ac-comphist.dat
 \#init.el\#
 url/*
+recentf
+projectile-bookmarks.eld
+config/init-my-theme-2.el
+config/my-color-theme.el
