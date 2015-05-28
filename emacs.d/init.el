@@ -77,38 +77,10 @@
 ;(setq magit-auto-revert-mode nil)
 
 
+(require 'init-evil)
 
 
-;;---------------------------------------------------------------------------------------
-;; evil
-;;
-(global-evil-leader-mode)
-(evil-leader/set-leader ";")
-(evil-leader/set-key "e" 'find-file)
-(evil-leader/set-key "b" 'switch-to-buffer)
-(evil-leader/set-key "w" 'evil-write)
-(require 'evil)
-;(setq key-chord-two-keys-delay 0.5)
-(key-chord-define evil-insert-state-map "jj" 'evil-normal-state)
-(key-chord-mode 1)
 
-;; cursor shape
-(setq evil-emacs-state-cursor '("red" box))
-(setq evil-normal-state-cursor '("green" box))
-(setq evil-visual-state-cursor '("orange" box))
-(setq evil-insert-state-cursor '("red" bar))
-(setq evil-replace-state-cursor '("red" bar))
-(setq evil-operator-state-cursor '("red" hollow))
-;;Enter an emacs mode in a given state http://wikemacs.org/wiki/Evil
-(loop for (mode . state) in '(
-;			    (inferior-emacs-lisp-mode . emacs)
-;			    (wdired-mode . normal)
-			    (eshell-mode . emacs))
-    do (evil-set-initial-state mode state))
-
-
-;(global-evil-tabs-mode t)
-;(evil-mode 1)
 ;;---------------------------------------------------------------------------------------
 ;; Fiplr
 ;;
@@ -139,7 +111,7 @@
 
 (require 'projectile)
 (projectile-global-mode)
-(setq projectile-enable-caching nil)
+(setq projectile-enable-caching t)
 (require 'projectile-speedbar)
 
 ;(require 'cc-mode)
@@ -163,10 +135,19 @@
 
 
 
-
 ;; gnu global support
 ;(require 'semantic/db)
 ;(global-semanticdb-minor-mode 1)
 
 (require 'init-ggtags)
 
+
+
+(global-unset-key "\C-o")
+(global-set-key (kbd "C-o f") 'ido-find-file)
+(global-set-key (kbd "C-o j") 'ido-switch-buffer)
+
+(global-set-key (kbd "C-o g") 'ggtags-find-file)
+(global-set-key (kbd "C-o t") 'ggtags-find-tag-dwim)
+
+(global-set-key (kbd "M-g M-g") 'magit-status)

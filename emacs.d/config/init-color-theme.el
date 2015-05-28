@@ -173,7 +173,8 @@
                                 (powerline-major-mode face-blue 'r)
                                 (funcall separator-left face-blue mode-line)
                                 (powerline-narrow mode-line 'l)
-                                (powerline-vc mode-line 'r)
+;                                (powerline-vc mode-line 'r)
+                                (powerline-simpler-vc-mode (powerline-vc mode-line 'r))
                                 (funcall separator-left mode-line face1)))
 ;                                (powerline-simpler-vc-mode (powerline-vc face2))))
 			

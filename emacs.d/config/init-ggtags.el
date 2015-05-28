@@ -14,4 +14,12 @@
 (custom-set-variables
  '(ggtags-split-window-function (quote split-window-vertically)))
 
+
+(setq-local imenu-create-index-function #'ggtags-build-imenu-index)
+
+
+; gnu global support
+(require 'semantic/db)
+(global-semanticdb-minor-mode 1)
+
 (provide 'init-ggtags)
