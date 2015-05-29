@@ -202,3 +202,23 @@
 ;; call this function from c/c++ hooks
 (add-hook 'c++-mode-hook 'my:ac-c-header-init)
 (add-hook 'c-mode-hook 'my:ac-c-header-init)
+
+;;; iedit, fix iedit bug in Mac, C-c ; to trigger multiple cursor edit
+(define-key global-map (kbd "C-c ;") 'iedit-mode)
+
+;; flymake-google-cpplint-load
+;; define a function for flymake initialization
+(defun my:flymake-google-init ()
+  (require 'flymake-google-cpplint)
+  (custom-set-variables
+   '(flymake-google-cpplint-command "/usr/local/bin/cpplint"))
+  (flymake-google-cpplint-load)
+  )
+(add-hook 'c-mode-hook 'my:flymake-google-init)
+(add-hook 'c++-mode-hook 'my:flymake-google-init)
+
+;; start google-c-style with emacs
+(require 'google-c-style)
+(add-hook 'c-mode-hook 'google-set-c-style)
+(add-hook 'c++-mode-hook 'google-make-newline-indent)
+
