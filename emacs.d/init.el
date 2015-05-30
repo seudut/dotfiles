@@ -163,14 +163,16 @@
 ;(semantic-mode 1)
 
 
+
+; set LD_LIBRARY_PATH 
+(setenv "LD_LIBRARY_PATH" "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/")
+; load irony-mode
+;( add-to-list 'load-path (expand-file-name "~/.emacs.d/irony-mode/elisp/"))
+(require 'irony)
 (add-hook 'c++-mode-hook 'irony-mode)
 (add-hook 'c-mode-hook 'irony-mode)
 (add-hook 'objc-mode-hook 'irony-mode)
 
-
-;;---------------------------------------------------------------------------------------
-;; irony-mode
-;;
 ;; replace the `completion-at-point' and `complete-symbol' bindings in
 ;; irony-mode's buffers by irony-mode's function
 (defun my-irony-mode-hook ()
@@ -180,7 +182,6 @@
     'irony-completion-at-point-async))
 (add-hook 'irony-mode-hook 'my-irony-mode-hook)
 (add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options)
-
 
 
 
@@ -208,19 +209,21 @@
 
 ;; flymake-google-cpplint-load
 ;; define a function for flymake initialization
-(defun my:flymake-google-init ()
-  (require 'flymake-google-cpplint)
-  (custom-set-variables
-   '(flymake-google-cpplint-command "/usr/local/bin/cpplint"))
-  (flymake-google-cpplint-load)
-  )
-(add-hook 'c-mode-hook 'my:flymake-google-init)
-(add-hook 'c++-mode-hook 'my:flymake-google-init)
+;(defun my:flymake-google-init ()
+;  (require 'flymake-google-cpplint)
+;  (custom-set-variables
+;   '(flymake-google-cpplint-command "/usr/local/bin/cpplint"))
+;  (flymake-google-cpplint-load)
+;  )
+;(add-hook 'c-mode-hook 'my:flymake-google-init)
+;(add-hook 'c++-mode-hook 'my:flymake-google-init)
 
 ;; start google-c-style with emacs
 ;(require 'google-c-style)
-(add-hook 'c-mode-hook 'google-set-c-style)
-(add-hook 'c++-mode-hook 'google-make-newline-indent)
+;(add-hook 'c-mode-hook 'google-set-c-style)
+;(add-hook 'c++-mode-hook 'google-make-newline-indent)
+
+
 
 ;; cedet
 (semantic-mode 1)
@@ -238,3 +241,4 @@
 
 ;; turn on automatic reparsing of open buffers in semantic
 (global-semantic-idle-scheduler-mode 1)
+(global-semantic-stickyfunc-mode 1)
