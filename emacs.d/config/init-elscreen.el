@@ -48,18 +48,20 @@
 
 
 
+
 ;;(add-hook 'buffer-list-update-hook
 ;;          (lambda ()
 ;;            (let ((el-dir (elscreen-get-default-directory (elscreen-get-current-screen))))
 ;;              (if (> (length el-dir) 0)
 ;;                 (cd el-dir)))))
 
+(defvar elscreen-exclude-modes '(eshell-mode magit magit-status-mode magit-commit-mode magit-diff-mode) "the major modes don't update directory")
 
 ;; when major-mode is magit-*, don't change default-directory, otherwise, there is error when usingit command in magin-* mode
 (add-hook 'elscreen-screen-update-hook
           (lambda ()
             (let ((el-dir (elscreen-get-default-directory (elscreen-get-current-screen))))
-              (unless (string-match "magit" (symbol-name major-mode))
+	      (unless (member  major-mode elscreen-exclude-modes)
                 (if (> (length el-dir) 0)
                   (cd el-dir))))))
 
