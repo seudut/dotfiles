@@ -140,11 +140,15 @@
 (require 'init-ggtags)
 
 (global-unset-key "\C-o")
+(global-set-key (kbd "C-o C-o") 'keyboard-quit);; same as C-g to quit
 (global-set-key (kbd "C-o C-f") 'ido-find-file)
+(global-set-key (kbd "C-o C-r") 'recentf-ido-find-file)
 (global-set-key (kbd "C-o C-b") 'ido-switch-buffer)
+(global-set-key (kbd "C-o C-j") 'ido-find-file)
 
-(global-set-key (kbd "C-o g") 'ggtags-find-file)
-(global-set-key (kbd "C-o t") 'ggtags-find-tag-dwim)
+
+(global-set-key (kbd "C-o C-g") 'ggtags-find-file)
+(global-set-key (kbd "C-o C-t") 'ggtags-find-tag-dwim)
 
 (global-set-key (kbd "M-g M-g") 'magit-status)
 
@@ -156,3 +160,14 @@
 
 (require 'init-c-cpp)
 
+(require 'recentf)
+(recentf-mode 1)
+(setq recentf-max-menu-items 100)
+(defun recentf-ido-find-file ()
+  "Find a recent file using Ido."
+  (interactive)
+  (let ((file (ido-completing-read "Choose recent file: " recentf-list nil t)))
+    (when file
+      (find-file file))))
+
+(require 'recentf-ext)

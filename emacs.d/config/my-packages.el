@@ -48,6 +48,7 @@
     flymake-google-cpplint
     flymake-cursor
     google-c-style
+    recentf-ext
   ) "a list of packages to ensure are installed at launch.")
 
 (require 'cl)
