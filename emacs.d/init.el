@@ -107,7 +107,7 @@
 ;(setq speedbar-show-unknown-files t)
 
 
-(toggle-frame-fullscreen)
+;(toggle-frame-fullscreen)
 
 
 (require 'projectile)
@@ -154,13 +154,13 @@
 (show-paren-mode t)
 
 ;;; next, cedet & ecb for c++ development
-(require 'cc-mode)
-(require 'semantic)
+;(require 'cc-mode)
+;(require 'semantic)
 
-(global-semanticdb-minor-mode 1)
-(global-semantic-idle-scheduler-mode 1)
+;(global-semanticdb-minor-mode 1)
+;(global-semantic-idle-scheduler-mode 1)
 
-(semantic-mode 1)
+;(semantic-mode 1)
 
 
 (add-hook 'c++-mode-hook 'irony-mode)
@@ -218,7 +218,23 @@
 (add-hook 'c++-mode-hook 'my:flymake-google-init)
 
 ;; start google-c-style with emacs
-(require 'google-c-style)
+;(require 'google-c-style)
 (add-hook 'c-mode-hook 'google-set-c-style)
 (add-hook 'c++-mode-hook 'google-make-newline-indent)
 
+;; cedet
+(semantic-mode 1)
+;; let's define a function which adds semantic as a suggestion backend to auto complete
+(defun my:add-semantic-to-autocomplete()
+  (add-to-list 'ac-sources 'ac-source-semantic)
+  )
+(add-hook 'c-mode-common-hook 'my:add-semantic-to-autocomplete)
+;; turn on ede mode
+(global-ede-mode 1)
+
+;(ede-cpp-root-project "my project" :file "~/demos/my_program/src/main.cpp"
+;		      :include-path '("/../my_inc"))
+;; you can use system-include-path for setting up the system header file locations.
+
+;; turn on automatic reparsing of open buffers in semantic
+(global-semantic-idle-scheduler-mode 1)
