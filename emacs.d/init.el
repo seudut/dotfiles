@@ -120,37 +120,11 @@
 
 ;(setq ecb-layout-name "leftright3")
 
-
-;(setq mac-command-modifier 'super) ; make cmd key do Meta
-(global-set-key (kbd "<s-return>") 'toggle-frame-fullscreen)
-
-
-
-
-(global-set-key (kbd "M-g M-v") 'split-window-right)
-(global-set-key (kbd "M-g M-s") 'split-window-below)
-(global-set-key (kbd "M-g M-o") 'delete-other-windows)
-
-(global-set-key (kbd "M-g M-w") 'other-window)
-
 ;; gnu global support
 ;(require 'semantic/db)
 ;(global-semanticdb-minor-mode 1)
 
 (require 'init-ggtags)
-
-(global-unset-key "\C-o")
-(global-set-key (kbd "C-o C-o") 'keyboard-quit);; same as C-g to quit
-(global-set-key (kbd "C-o C-f") 'ido-find-file)
-(global-set-key (kbd "C-o C-r") 'recentf-ido-find-file)
-(global-set-key (kbd "C-o C-b") 'ido-switch-buffer)
-(global-set-key (kbd "C-o C-j") 'ido-find-file)
-
-
-(global-set-key (kbd "C-o C-g") 'ggtags-find-file)
-(global-set-key (kbd "C-o C-t") 'ggtags-find-tag-dwim)
-
-(global-set-key (kbd "M-g M-g") 'magit-status)
 
 
 (setq scroll-margin 5)
@@ -171,3 +145,5 @@
       (find-file file))))
 
 (require 'recentf-ext)
+
+(require 'init-key-binding)
