@@ -3,13 +3,6 @@
 
 (elscreen-set-default-directory (elscreen-get-current-screen) "~/")
 
-;; change default keybinding
-(global-set-key (kbd "<M-tab>") 'elscreen-next) ;; "C-M-I"
-(global-set-key (kbd "M-n") 'elscreen-next)
-(global-set-key (kbd "M-p") 'elscreen-previous)
-(global-set-key (kbd "M-t") 'elscreen-create)
-;;; split 
-
 
 ;; tab face
 
@@ -35,6 +28,7 @@
   (cd dir)
 )
 
+    
 (defun sd-show-dir ()
   "show elscreen default directory."
   (interactive)

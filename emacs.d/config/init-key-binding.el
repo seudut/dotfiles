@@ -1,6 +1,8 @@
+;; This  file is for some global key binding
 
-;; This is file is for some global key binding
-;; Super key binding is for some global windows/tab operations
+;;----------------------------------------------------------------------------
+;; super prefix binding for elscreen TAB/Windows operation
+;
 (setq mac-command-modifier 'super) ; make cmd key do Meta
 
 ;; super key for elscreen tabs
@@ -37,20 +39,23 @@
 
 
 
-(global-set-key (kbd "M-g M-v") 'split-window-right)
-(global-set-key (kbd "M-g M-s") 'split-window-below)
-(global-set-key (kbd "M-g M-o") 'delete-other-windows)
+;(global-set-key (kbd "M-g M-v") 'split-window-right)
+;(global-set-key (kbd "M-g M-s") 'split-window-below)
+;(global-set-key (kbd "M-g M-o") 'delete-other-windows)
 
 
-(global-set-key (kbd "M-g M-w") 'other-window)
+;(global-set-key (kbd "M-g M-w") 'other-window)
 
-;;; C-o 
+;;----------------------------------------------------------------------------
+;; C-o prefix binding for some File/Buffer switching/openning
+;;
 (global-unset-key "\C-o")
-(global-set-key (kbd "C-o C-o") 'keyboard-quit);; same as C-g to quit
+;;(global-set-key (kbd "C-o C-o") 'keyboard-quit);; same as C-g to quit
+(global-set-key (kbd "C-o C-o") 'fiplr-find-file)
 (global-set-key (kbd "C-o C-f") 'ido-find-file)
-(global-set-key (kbd "C-o C-r") 'recentf-ido-find-file)
-(global-set-key (kbd "C-o C-b") 'ido-switch-buffer)
-(global-set-key (kbd "C-o C-j") 'ido-find-file)
+(global-set-key (kbd "C-o C-n") 'recentf-ido-find-file)
+(global-set-key (kbd "C-o C-j") 'ido-switch-buffer)
+;(global-set-key (kbd "C-o C-j") 'ido-find-file)
 
 
 (global-set-key (kbd "C-o C-g") 'ggtags-find-file)
@@ -58,6 +63,19 @@
 
 (global-set-key (kbd "M-g M-g") 'magit-status)
 
-;;;;
+
+(defun recentf-ido-find-file ()
+  "Find a recent file using Ido."
+  (interactive)
+  (let ((file (ido-completing-read "Choose recent file: " recentf-list nil t)))
+    (when file
+      (find-file file))))
+
+
+;;----------------------------------------------------------------------------
+;; M-g prefix binding for some commands
+;;
+
+
 
 (provide 'init-key-binding)

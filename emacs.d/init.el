@@ -91,13 +91,6 @@
 
 (global-set-key (kbd "C-x f") 'fiplr-find-file)
 
-;;---------------------------------------------------------------------------------------
-;; Wind-move
-;;
-(global-set-key (kbd "C-x C-l") 'windmove-right)
-(global-set-key (kbd "C-x C-h") 'windmove-left)
-(global-set-key (kbd "C-x C-k") 'windmove-up)
-(global-set-key (kbd "C-x C-j") 'windmove-down)
 
 ;;---------------------------------------------------------------------------------------
 ;; sr-speedbar
@@ -137,12 +130,7 @@
 (require 'recentf)
 (recentf-mode 1)
 (setq recentf-max-menu-items 100)
-(defun recentf-ido-find-file ()
-  "Find a recent file using Ido."
-  (interactive)
-  (let ((file (ido-completing-read "Choose recent file: " recentf-list nil t)))
-    (when file
-      (find-file file))))
+
 
 (require 'recentf-ext)
 
