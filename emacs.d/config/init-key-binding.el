@@ -38,12 +38,6 @@
 			      
 
 
-
-;(global-set-key (kbd "M-g M-v") 'split-window-right)
-;(global-set-key (kbd "M-g M-s") 'split-window-below)
-;(global-set-key (kbd "M-g M-o") 'delete-other-windows)
-
-
 ;(global-set-key (kbd "M-g M-w") 'other-window)
 
 ;;----------------------------------------------------------------------------

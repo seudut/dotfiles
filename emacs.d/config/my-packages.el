@@ -49,6 +49,8 @@
     flymake-cursor
     google-c-style
     recentf-ext
+    linum-relative
+    jekyll-modes
   ) "a list of packages to ensure are installed at launch.")
 
 (require 'cl)

@@ -135,3 +135,13 @@
 (require 'recentf-ext)
 
 (require 'init-key-binding)
+
+(require 'linum-relative)
+(winner-mode 1)
+
+(global-set-key (kbd "C-c C-l") 'winner-redo)
+(global-set-key (kbd "C-c C-h") 'winner-undo)
+
+
+
+;(require 'minibuffer-tray)
