@@ -145,3 +145,19 @@
 
 
 ;(require 'minibuffer-tray)
+;(require 'eyebrowse)
+;(eyebrowse-mode t)
+
+;(require 'workgroups2)
+;(workgroups-mode 1)
+
+
+(require 'minibuffer-line)
+(minibuffer-line-mode 1)
+
+
+;(add-to-list 'load-path "~/.emacs.d/vendor")
+;(require 'minibuffer-tray)
+;(minibuffer-tray-mode 1)
+
+
