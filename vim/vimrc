@@ -459,6 +459,7 @@ map ej <Plug>(easymotion-j)
 map ek <Plug>(easymotion-k)
 map eb <Plug>(easymotion-b)
 map ew <Plug>(easymotion-w)
+map ee <Plug>(easymotion-w)
 map el <Plug>(easymotion-lineforward)
 map eh <Plug>(easymotion-linebackward)
 "" }}}

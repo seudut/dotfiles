@@ -46,6 +46,7 @@ cmap jj	<Esc>
 
 nnoremap B b
 nnoremap b :bmarks! -tags<SPACE>
+nnoremap e b
 
 "set gui=nonavigation
 
