@@ -23,6 +23,7 @@
 (setq visible-bell 1)
 (setq ring-bell-function 'ignore)
 (setq resize-mini-windows t)
+(blink-cursor-mode 0)
 
 
 (add-to-list 'auto-mode-alist '("emacs\\'" . emacs-lisp-mode))
@@ -42,8 +43,8 @@
 (require 'my-packages)
 
 ;; elscreen should be placed begin of https://github.com/knu/elscreen/issues/6
-(elscreen-start)
-(require 'init-elscreen)
+;(elscreen-start)
+;(require 'init-elscreen)
 (require 'init-color-theme)
 
 
@@ -78,7 +79,7 @@
 ;(setq magit-auto-revert-mode nil)
 
 
-;(require 'init-evil)
+(require 'init-evil)
 
 
 
@@ -148,16 +149,27 @@
 ;(require 'eyebrowse)
 ;(eyebrowse-mode t)
 
-;(require 'workgroups2)
-;(workgroups-mode 1)
+(require 'workgroups2)
+(workgroups-mode 1)
 
 
 (require 'minibuffer-line)
-(minibuffer-line-mode 1)
+;(minibuffer-line-mode 1)
 
 
 ;(add-to-list 'load-path "~/.emacs.d/vendor")
 ;(require 'minibuffer-tray)
 ;(minibuffer-tray-mode 1)
+;(require 'xwem-minibuffer)
+
+; (run-at-time
+;  nil 30
+;  (lambda ()
+;    (with-current-buffer " *Minibuf-0*"
+;      (erase-buffer)
+;      (dotimes (spaces (- (frame-width) 20))
+;        (insert " "))
+;      (insert (format-time-string "%m-%d  %I:%M %p %a ")))))
+
 
 

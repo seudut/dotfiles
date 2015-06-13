@@ -7,53 +7,14 @@
 (setq ns-use-srgb-colorspace nil)
 
 (require 'color-theme)
-;(load-theme 'tango-dark)
-;(require 'moe-theme)
-;(moe-dark)
 
-
-;(add-to-list 'custom-theme-load-path "~/.emacs.d/el-get/color-theme-tangotango")
-;(load-theme 'tangotango t)
 (load-theme 'cyberpunk t)
 
-;(require 'color-theme-sanityinc-tomorrow)
-;(color-theme-sanityinc-tomorrow-bright)
-
-
-
-;(add-to-list 'load-path "~/.emacs.d/vendor/emacs-powerline")
+(require 'evil)
 (require 'powerline)
-;(powerline-default-theme)
-;(require 'powerline-evil)
-
-;(defconst color1 "#6b8e23")
-;(defconst color2 "#eedd82")
-
-;(make-face 'mode-line-color-1)
-;(set-face-attribute 'mode-line-color-1 nil
-;                    :foreground "#fffacd"
-;                    :bold t
-;                    :background color1)
-
-;(make-face 'mode-line-color-2)
-;(set-face-attribute 'mode-line-color-2 nil
-;                    :foreground "#fffacd"
-;                    :bold t
-;                    :background color2)
+(require 'powerline-evil)
 
 
-;;(defface powerline-active2 '((t (:background "grey40" :inherit mode-line)))
-;;  "Powerline face 2."
-;;  :group 'powerline)
-;;
-
-
-;; https://github.com/howardabrams/dot-files/blob/master/emacs-mode-line.org
-;;;(custom-set-faces
-;;; '(mode-line-buffer-id ((t (:foreground "#008000" :bold t))))
-;;; '(which-func ((t (:foreground "#008000"))))
-;;; '(mode-line ((t (:foreground "#008000" :background "#dddddd" :box nil))))
-;;; '(mode-line-inactive ((t (:foreground "#008000" :background "#bbbbbb" :box nil)))))
 
 ;;; this variable should equal as height in mode-line
 (custom-set-variables
@@ -165,6 +126,15 @@
                                   (cdr powerline-default-separator-dir))))
                         (lhs
                             (list
+                                (let ((evil-face (powerline-evil-face)))
+                                    (if evil-mode
+;                                        (progn 
+                                            (powerline-raw (powerline-evil-tag) evil-face)
+;;                                            )
+                                        )
+                                    )
+                                (funcall separator-left (powerline-evil-face) face-yel)
+
                                 (powerline-raw "%*" face-yel 'l)
                                 (powerline-buffer-id face-yel 'l)
                                 (powerline-raw " " face-yel)
