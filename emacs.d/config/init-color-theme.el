@@ -12,7 +12,7 @@
 
 (require 'evil)
 (require 'powerline)
-(require 'powerline-evil)
+;(require 'powerline-evil)
 
 
 
@@ -41,19 +41,13 @@
   "Powerline face 2."
   :group 'powerline)
 
-(defface powerline-inactive11
-  '((t (:background "grey11" )))
+(defface powerline-inactive11   '((t (:background "grey11" )))
   "Powerline face 1."
   :group 'powerline)
 
-(defface powerline-inactive22
-  '((t (:background "grey20" )))
+(defface powerline-inactive22   '((t (:background "grey20" )))
   "Powerline face 2."
   :group 'powerline)
-
-
-
-
 
 
 ;(defface powerline-active-yel '((t (:background "yellow" :inherit mode-line)))
@@ -64,6 +58,60 @@
 (defface powerline-active-blue '((t (:background "blue" )))
   "Powerline face 1."
   :group 'powerline)
+
+;;;---------------- evil powerline
+; https://github.com/raugturi/powerline-evil/blob/master/powerline-evil.el
+; ;https://github.com/laynor/emacs-conf/blob/master/packages/sm-package-powerline.el
+;(defface powerline-evil-base-face '((t (:foreground "white" :inherit mode-line)))
+(defface powerline-evil-base-face '((t (:foreground "black" :weight bold )))
+  "Base face for powerline evil faces."
+  :group 'powerline)
+
+(defface powerline-evil-normal-face '((t (:background "green" :inherit powerline-evil-base-face)))
+  "Powerline face for evil NORMAL state."
+  :group 'powerline)
+
+(defface powerline-evil-insert-face '((t (:background "blue" :inherit powerline-evil-base-face)))
+  "Powerline face for evil INSERT state."
+  :group 'powerline)
+
+(defface powerline-evil-visual-face '((t (:background "orange" :inherit powerline-evil-base-face)))
+  "Powerline face for evil VISUAL state."
+  :group 'powerline)
+
+(defface powerline-evil-operator-face   '((t (:background "cyan" :inherit powerline-evil-operator-face)))
+  "Powerline face for evil OPERATOR state."
+  :group 'powerline)
+
+(defface powerline-evil-replace-face    '((t (:background "red" :inherit powerline-evil-base-face)))
+  "Powerline face for evil REPLACE state."
+  :group 'powerline)
+
+(defface powerline-evil-motion-face '((t (:background "magenta" :inherit powerline-evil-base-face)))
+  "Powerline face for evil MOTION state."
+  :group 'powerline)
+
+(defface powerline-evil-emacs-face  '((t (:background "violet" :inherit powerline-evil-base-face)))
+  "Powerline face for evil EMACS state."
+  :group 'powerline)
+
+;;(defun powerline-evil-face (active)
+;;  "Function to select appropriate face based on `evil-state'."
+;;  (let* ((face (intern (concat "powerline-evil-" (symbol-name evil-state) "-face"))))
+;;    (if (facep face) face nil)))
+;;
+
+  (defun powerline-evil-face (active)
+    (let ((face (intern (concat "powerline-evil-" (symbol-name evil-state) "-face"))))
+      (cond ((and active (facep face))
+             face)
+            (active 'powerline-active2)
+            (t 'powerline-inactive2))))
+
+  (defpowerline powerline-evil-tag
+    (concat " " (replace-regexp-in-string "[<> ]" "" (eval (evil-state-property evil-state :tag))) " "))
+
+
 
 
 
@@ -97,6 +145,10 @@
     (replace-regexp-in-string "/Users/peli3/"  "~/" s)
     s))
 
+(defun powerline-evil-tag-new ()
+  (concat (replace-regexp-in-string "[<>]" "" (powerline-evil-tag)) " ")
+  )
+
 (defun powerline-ha-theme ()
   "A powerline theme that removes many minor-modes that don't serve much purpose on the mode-line."
   (interactive)
@@ -116,6 +168,7 @@
                          (if active 'powerline-active-yel 'powerline-inactive22))
                         (face-blue
                          (if active 'powerline-active-blue 'powerline-inactive22))
+                         (pl-evil-face (ignore-errors (powerline-evil-face active)))
                         (separator-left
                          (intern
                           (format "powerline-%s-%s" powerline-default-separator
@@ -126,14 +179,16 @@
                                   (cdr powerline-default-separator-dir))))
                         (lhs
                             (list
-                                (let ((evil-face (powerline-evil-face)))
-                                    (if evil-mode
-;                                        (progn 
-                                            (powerline-raw (powerline-evil-tag) evil-face)
-;;                                            )
-                                        )
-                                    )
-                                (funcall separator-left (powerline-evil-face) face-yel)
+;;                                (let ((evil-face (powerline-evil-face)))
+;;                                    (if evil-mode
+;;                                            (powerline-raw (powerline-evil-tag) evil-face)
+;;                                    )
+;;
+;;                                )
+                                (powerline-raw (powerline-evil-tag) pl-evil-face )
+                                (and evil-mode (funcall separator-left pl-evil-face face-yel))
+;;                                (powerline-raw (powerline-evil-tag) (powerline-evil-face))
+;;                                (funcall separator-left (powerline-evil-face) face-yel)
 
                                 (powerline-raw "%*" face-yel 'l)
                                 (powerline-buffer-id face-yel 'l)
@@ -194,6 +249,9 @@
 (provide 'init-color-theme)
 
 
+
 ;; TODO
 ;; 1. change color when buffer is modified
 ;; 2. 
+;; show date and time in the right below minibuffer
+

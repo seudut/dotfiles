@@ -19,7 +19,7 @@
     color-theme
     color-theme-sanityinc-tomorrow
     key-chord
-    powerline-evil
+;    powerline-evil
     powerline
     evil-leader
     flx-ido
