@@ -16,46 +16,49 @@
 
 
 
+;(set-face-attribute 'mode-line nil :font "Source Code Pro for Powerline-10")
+
 ;;; this variable should equal as height in mode-line
-(custom-set-variables
- '(powerline-text-scale-factor 0.85))
+;;;;;(custom-set-variables
+;;;;; '(powerline-text-scale-factor 0.85))
 
 (custom-set-faces
- '(mode-line ((t (:foreground "#030303" :background "#bdbdbd" :box nil :height 0.8 ))))
- '(mode-line-inactive ((t (:foreground "#f9f9f9" :background "#666666" :box nil :height 0.8)))))
+;;; '(mode-line ((t (:foreground "#030303" :background "#bdbdbd" :box nil :height 0.8 ))))
+;;; '(mode-line-inactive ((t (:foreground "#f9f9f9" :background "#666666" :box nil :height 0.8)))))
+ '(mode-line ((t (:foreground "#030303" :background "#bdbdbd" :box nil  :family "Source Code Pro for Powerline" :height 0.8))))
+ '(mode-line-inactive ((t (:foreground "#f9f9f9" :background "#666666" :box nil :family "Source Code Pro for Powerline" :height 0.8)))))
 
-
-(defface powerline-active00 '((t (:foreground "#030303" :background "#bdbdbd" :box nil )))
+(defface powerline-active00 '((t (:foreground "#030303" :background "#bdbdbd" :box nil :inherit mode-line)))
   "Powerline face 1."
   :group 'powerline)
 
-(defface powerline-inactive00 '((t (:foreground "#f9f9f9" :background "#666666" :box nil )))
+(defface powerline-inactive00 '((t (:foreground "#f9f9f9" :background "#666666" :box nil :inherit mode-line)))
   "Powerline face 1."
   :group 'powerline)
 
-(defface powerline-active11 '((t (:background "grey22" )))
+(defface powerline-active11 '((t (:background "grey22" :inherit mode-line)))
   "Powerline face 1."
   :group 'powerline)
 
-(defface powerline-active22 '((t (:background "grey40" )))
+(defface powerline-active22 '((t (:background "grey40" :inherit mode-line)))
   "Powerline face 2."
   :group 'powerline)
 
-(defface powerline-inactive11   '((t (:background "grey11" )))
+(defface powerline-inactive11   '((t (:background "grey11" :inherit mode-line)))
   "Powerline face 1."
   :group 'powerline)
 
-(defface powerline-inactive22   '((t (:background "grey20" )))
+(defface powerline-inactive22   '((t (:background "grey20" :inherit mode-line)))
   "Powerline face 2."
   :group 'powerline)
 
 
 ;(defface powerline-active-yel '((t (:background "yellow" :inherit mode-line)))
-(defface powerline-active-yel '((t (:background "yellow" )))
+(defface powerline-active-yel '((t (:background "yellow" :inherit mode-line)))
   "Powerline face 1."
   :group 'powerline)
 
-(defface powerline-active-blue '((t (:background "blue" )))
+(defface powerline-active-blue '((t (:background "blue" :inherit mode-line)))
   "Powerline face 1."
   :group 'powerline)
 
@@ -63,7 +66,8 @@
 ; https://github.com/raugturi/powerline-evil/blob/master/powerline-evil.el
 ; ;https://github.com/laynor/emacs-conf/blob/master/packages/sm-package-powerline.el
 ;(defface powerline-evil-base-face '((t (:foreground "white" :inherit mode-line)))
-(defface powerline-evil-base-face '((t (:foreground "black" :weight bold )))
+;(defface powerline-evil-base-face '((t (:foreground "black" :weight bold )))
+(defface powerline-evil-base-face '((t (:foreground "black" :weight bold :inherit mode-line)))
   "Base face for powerline evil faces."
   :group 'powerline)
 
@@ -79,7 +83,7 @@
   "Powerline face for evil VISUAL state."
   :group 'powerline)
 
-(defface powerline-evil-operator-face   '((t (:background "cyan" :inherit powerline-evil-operator-face)))
+(defface powerline-evil-operator-face   '((t (:background "cyan" :inherit powerline-evil-base-face)))
   "Powerline face for evil OPERATOR state."
   :group 'powerline)
 
@@ -105,8 +109,8 @@
     (let ((face (intern (concat "powerline-evil-" (symbol-name evil-state) "-face"))))
       (cond ((and active (facep face))
              face)
-            (active 'powerline-active2)
-            (t 'powerline-inactive2))))
+            (active 'powerline-active22)
+            (t 'powerline-inactive22))))
 
   (defpowerline powerline-evil-tag
     (concat " " (replace-regexp-in-string "[<> ]" "" (eval (evil-state-property evil-state :tag))) " "))
@@ -245,6 +249,25 @@
 
 
 (powerline-ha-theme)
+
+
+
+;;(let ((faces '(mode-line
+;;               powerline-active00
+;;               powerline-active11
+;;               powerline-active22
+;;               powerline-active-yel
+;;               powerline-active-blue
+;;               mode-line-buffer-id
+;;               mode-line-emphasis
+;;               mode-line-highlight
+;;               mode-line-inactive)))
+;;     (mapc
+;;;      (lambda (face) (set-face-attribute face nil :font "Source Code Pro for Powerline-10"))
+;;      (lambda (face) (set-face-attribute face nil :font "Courier"))
+;;      faces))
+
+
 
 (provide 'init-color-theme)
 
