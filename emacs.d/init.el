@@ -15,8 +15,8 @@
 (add-to-list 'default-frame-alist '(width  . 120))
 (add-to-list 'default-frame-alist '(height . 40))
 ;(add-to-list 'default-frame-alist '(font . "Source Code Pro for Powerline-12:weight:light" ))
-(add-to-list 'default-frame-alist '(font . "Source Code Pro for Powerline-12" ))
-
+(add-to-list 'default-frame-alist '(font . "Source Code Pro for Powerline-14" ))
+(setq inhibit-startup-message t)
 
 (put 'set-goal-column 'disabled nil)
 (setq vc-follow-symlinks t)
@@ -101,7 +101,6 @@
 ;(setq speedbar-show-unknown-files t)
 
 
-;(toggle-frame-fullscreen)
 
 
 (require 'projectile)
@@ -150,7 +149,7 @@
 ;(eyebrowse-mode t)
 
 (require 'workgroups2)
-(workgroups-mode 1)
+;;;;(workgroups-mode 1)
 
 
 (require 'minibuffer-line)
@@ -170,6 +169,4 @@
 ;      (dotimes (spaces (- (frame-width) 20))
 ;        (insert " "))
 ;      (insert (format-time-string "%m-%d  %I:%M %p %a ")))))
-
-
 

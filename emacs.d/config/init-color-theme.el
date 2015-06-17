@@ -19,14 +19,15 @@
 ;(set-face-attribute 'mode-line nil :font "Source Code Pro for Powerline-10")
 
 ;;; this variable should equal as height in mode-line
-;;;;;(custom-set-variables
-;;;;; '(powerline-text-scale-factor 0.85))
+(custom-set-variables
+ '(powerline-text-scale-factor 0.74)) ;; 100/140
 
 (custom-set-faces
 ;;; '(mode-line ((t (:foreground "#030303" :background "#bdbdbd" :box nil :height 0.8 ))))
 ;;; '(mode-line-inactive ((t (:foreground "#f9f9f9" :background "#666666" :box nil :height 0.8)))))
- '(mode-line ((t (:foreground "#030303" :background "#bdbdbd" :box nil  :family "Source Code Pro for Powerline" :height 0.8))))
- '(mode-line-inactive ((t (:foreground "#f9f9f9" :background "#666666" :box nil :family "Source Code Pro for Powerline" :height 0.8)))))
+ '(mode-line ((t (:foreground "#030303" :background "#bdbdbd" :box nil  :family "Source Code Pro for Powerline" :height 100))))
+;; '(mode-line ((t (:foreground "#030303" :background "#bdbdbd" :box nil  :family "Source Code Pro for Powerline" :height 80))))
+ '(mode-line-inactive ((t (:foreground "#f9f9f9" :background "#666666" :box nil :family "Source Code Pro for Powerline" :height 100)))))
 
 (defface powerline-active00 '((t (:foreground "#030303" :background "#bdbdbd" :box nil :inherit mode-line)))
   "Powerline face 1."
@@ -99,11 +100,11 @@
   "Powerline face for evil EMACS state."
   :group 'powerline)
 
-;;(defun powerline-evil-face (active)
-;;  "Function to select appropriate face based on `evil-state'."
-;;  (let* ((face (intern (concat "powerline-evil-" (symbol-name evil-state) "-face"))))
-;;    (if (facep face) face nil)))
-;;
+(defun powerline-evil-face ()
+  "Function to select appropriate face based on `evil-state'."
+  (let* ((face (intern (concat "powerline-evil-" (symbol-name evil-state) "-face"))))
+    (if (facep face) face nil)))
+
 
   (defun powerline-evil-face (active)
     (let ((face (intern (concat "powerline-evil-" (symbol-name evil-state) "-face"))))
@@ -111,6 +112,30 @@
              face)
             (active 'powerline-active22)
             (t 'powerline-inactive22))))
+
+  (defun powerline-evil-face-22 (active)
+    (if (equal (symbol-name evil-state) "normal")
+
+        (let ((face (intern (concat "powerline-evil-emacs-face"))))
+          face)
+
+        (let ((face (intern (concat "powerline-evil-normal-face"))))
+          face)
+
+;;          (cond ((and active (facep face))
+;;                 face)
+;;                (active 'powerline-active22)
+;;                (t 'powerline-inactive22)))
+
+;;;;    (let ((face (intern (concat "powerline-evil-" (symbol-name evil-state) "-face"))))
+;;;;      (cond ((and active (facep face))
+;;;;             face)
+;;;;            (active 'powerline-active22)
+;;;;            (t 'powerline-inactive22)))
+    )
+    )
+
+
 
   (defpowerline powerline-evil-tag
     (concat " " (replace-regexp-in-string "[<> ]" "" (eval (evil-state-property evil-state :tag))) " "))
@@ -172,7 +197,12 @@
                          (if active 'powerline-active-yel 'powerline-inactive22))
                         (face-blue
                          (if active 'powerline-active-blue 'powerline-inactive22))
-                         (pl-evil-face (ignore-errors (powerline-evil-face active)))
+                        (pl-evil-face (ignore-errors (powerline-evil-face active)))
+                        (pppp-face
+                           (intern (concat "powerline-evil-" (symbol-name evil-state) "-face")))
+
+                        (face-yel22
+                         (if active 'powerline-active-yel 'powerline-inactive22))
                         (separator-left
                          (intern
                           (format "powerline-%s-%s" powerline-default-separator
@@ -189,9 +219,10 @@
 ;;                                    )
 ;;
 ;;                                )
-                                (powerline-raw (powerline-evil-tag) pl-evil-face )
-                                (and evil-mode (funcall separator-left pl-evil-face face-yel))
-;;                                (powerline-raw (powerline-evil-tag) (powerline-evil-face))
+                                (powerline-raw (powerline-evil-tag) pl-evil-face)
+;;;                                (and evil-mode (funcall separator-left pppp-face face-yel))
+;;;;;;                                (funcall separator-left pppp-face pppp-face)
+;;;;                                (powerline-raw (powerline-evil-tag) pppp-face face-yel)
 ;;                                (funcall separator-left (powerline-evil-face) face-yel)
 
                                 (powerline-raw "%*" face-yel 'l)
