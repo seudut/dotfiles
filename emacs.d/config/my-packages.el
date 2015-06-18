@@ -51,6 +51,7 @@
     recentf-ext
     linum-relative
     jekyll-modes
+    workgroups2
   ) "a list of packages to ensure are installed at launch.")
 
 (require 'cl)
