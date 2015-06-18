@@ -199,3 +199,19 @@
 ;(setq evil-escape-excluded-major-modes '(dired-mode))
 ;(setq-default evil-escape-key-sequence "jj")
 ;(evil-escape-mode 1)
+
+
+;; ---------------
+;; recent file
+(require 'recentf)
+(recentf-mode)
+;(setq recentf-max-menu-items 100)
+
+;; http://www.emacswiki.org/emacs/RecentFiles
+(defun recentf-ido-find-file ()
+  "Find a recent file using Ido."
+  (interactive)
+  (let ((file (ido-completing-read "Choose recent file: " recentf-list nil t)))
+    (when file
+      (find-file file))))
+

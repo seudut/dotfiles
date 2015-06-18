@@ -26,6 +26,7 @@
 (global-evil-leader-mode)
 (evil-leader/set-leader ";")
 (evil-leader/set-key "e" 'find-file)
+(evil-leader/set-key "f" 'recentf-ido-find-file)
 (evil-leader/set-key "b" 'switch-to-buffer)
 (evil-leader/set-key "w" 'evil-write)
 
