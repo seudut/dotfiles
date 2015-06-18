@@ -27,7 +27,6 @@
 
 
 (add-to-list 'auto-mode-alist '("emacs\\'" . emacs-lisp-mode))
-(fringe-mode 0)
 
 
 
@@ -136,7 +135,6 @@
 
 (require 'init-key-binding)
 
-(require 'linum-relative)
 (winner-mode 1)
 
 (global-set-key (kbd "C-c C-l") 'winner-redo)
@@ -190,11 +188,7 @@
 
 
 
-;;; map C-W in minibuffer to delete word before cussor
-
-
-
-;(require 'evil-escape)
+(require 'evil-escape)
 ;(setq-default evil-escape-delay 0.2)	
 ;(setq evil-escape-excluded-major-modes '(dired-mode))
 ;(setq-default evil-escape-key-sequence "jj")
@@ -215,3 +209,26 @@
     (when file
       (find-file file))))
 
+
+
+;; http://stackoverflow.com/questions/11484225/fix-an-auto-complete-mode-and-linum-mode-annoyance
+;(ac-linum-workaround)
+
+
+;; ---------------------------------
+;; linum-relative
+
+
+(require 'linum-relative)
+
+(custom-set-variables
+ '(fringe-mode (quote (4 . 0)) nil (fringe)))
+
+(custom-set-faces
+ '(linum ((t (:background "#000000" :foreground "gray40" :height 0.8))))
+ '(linum-relative-current-face ((t (:inherit linum :foreground "Yellow" :weight light :height 0.8)))))
+
+
+;; enable linum-relative in programming mode
+;https://github.com/howardabrams/dot-files/blob/master/emacs.org
+(add-hook 'prog-mode-hook 'linum-mode)
