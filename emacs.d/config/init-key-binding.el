@@ -45,7 +45,9 @@
 ;;
 (global-unset-key "\C-o")
 ;;(global-set-key (kbd "C-o C-o") 'keyboard-quit);; same as C-g to quit
-(global-set-key (kbd "C-o C-o") 'fiplr-find-file)
+;;; c-o c-o swith to normal mode 
+(global-set-key (kbd "C-o C-o") 'evil-normal-state)
+;;(global-set-key (kbd "C-o C-o") 'fiplr-find-file)
 (global-set-key (kbd "C-o C-f") 'ido-find-file)
 (global-set-key (kbd "C-o C-n") 'recentf-ido-find-file)
 (global-set-key (kbd "C-o C-j") 'ido-switch-buffer)

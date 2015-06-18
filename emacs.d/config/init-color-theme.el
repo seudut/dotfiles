@@ -20,7 +20,7 @@
 
 ;;; this variable should equal as height in mode-line
 (custom-set-variables
- '(powerline-text-scale-factor 0.74)) ;; 100/140
+ '(powerline-text-scale-factor 0.85)) ;; 100/140
 
 (custom-set-faces
 ;;; '(mode-line ((t (:foreground "#030303" :background "#bdbdbd" :box nil :height 0.8 ))))

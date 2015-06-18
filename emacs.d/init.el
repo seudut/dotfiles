@@ -15,7 +15,7 @@
 (add-to-list 'default-frame-alist '(width  . 120))
 (add-to-list 'default-frame-alist '(height . 40))
 ;(add-to-list 'default-frame-alist '(font . "Source Code Pro for Powerline-12:weight:light" ))
-(add-to-list 'default-frame-alist '(font . "Source Code Pro for Powerline-14" ))
+(add-to-list 'default-frame-alist '(font . "Source Code Pro for Powerline-12" ))
 (setq inhibit-startup-message t)
 
 (put 'set-goal-column 'disabled nil)
@@ -170,3 +170,32 @@
 ;        (insert " "))
 ;      (insert (format-time-string "%m-%d  %I:%M %p %a ")))))
 
+
+
+
+;;; set font size of minibuffer
+;;;; http://stackoverflow.com/questions/7869429/altering-the-font-size-for-the-emacs-minibuffer-separately-from-default-emacs
+(add-hook 'minibuffer-setup-hook 'my-minibuffer-setup)
+(defun my-minibuffer-setup ()
+       (set (make-local-variable 'face-remapping-alist)
+          '((default :height 120))))
+
+
+
+(add-hook 'minibuffer-setup-hook
+          (lambda ()
+            (make-local-variable 'face-remapping-alist)
+            (add-to-list 'face-remapping-alist '(default (:background "green")))))
+
+
+
+
+;;; map C-W in minibuffer to delete word before cussor
+
+
+
+;(require 'evil-escape)
+;(setq-default evil-escape-delay 0.2)	
+;(setq evil-escape-excluded-major-modes '(dired-mode))
+;(setq-default evil-escape-key-sequence "jj")
+;(evil-escape-mode 1)
