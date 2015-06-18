@@ -52,6 +52,7 @@
     linum-relative
     jekyll-modes
     evil-escape
+    workgroups2
   ) "a list of packages to ensure are installed at launch.")
 
 (require 'cl)
