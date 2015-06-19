@@ -178,6 +178,21 @@
   (concat (replace-regexp-in-string "[<>]" "" (powerline-evil-tag)) " ")
   )
 
+;; -----------------------------------------------------------------------------
+
+;; -----------------------------------------------------------------------------
+;; |evil| buffer_name | major-mode | vc |            | position | pwd | time |
+;; -----------------------------------------------------------------------------
+;;
+;; ToDo:
+;; position and pwd only shows in some mode, such as programming mode
+;; using workgroup instead of pwd
+;; some other modes such as eshell, package, help, don't need the posittion and
+;; pwd
+;;
+
+;; -----------------------------------------------------------------------------
+
 (defun powerline-ha-theme ()
   "A powerline theme that removes many minor-modes that don't serve much purpose on the mode-line."
   (interactive)
@@ -241,12 +256,13 @@
                         (rhs
                             (list
                                 (funcall separator-right face1 mode-line)
+				;;  position
                                 (powerline-raw (concat "%3c, %l/" (format "%d" (count-lines (point-min) (point-max))) " %4p ") mode-line)
 				                (funcall separator-right mode-line face-blue)
-				                (powerline-raw " [" face-blue)
-				                (powerline-raw (powerline-format-default-directory default-directory) face-blue )
-				                (powerline-raw "] " face-blue)
+				;; pwd/workgroups
+				(powerline-raw (concat " [" (powerline-format-default-directory default-directory) "] ") face-blue )
 				                (funcall separator-right face-blue face1)
+                                ;; date and time
 			                    (powerline-raw (format-time-string " %m-%d") face1 'r)
                                 (funcall separator-right face1 face-yel)
 			                    (powerline-raw (format-time-string " %I:%M %p %a ") face-yel 'r)))

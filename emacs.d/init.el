@@ -44,6 +44,12 @@
 ;; elscreen should be placed begin of https://github.com/knu/elscreen/issues/6
 ;(elscreen-start)
 ;(require 'init-elscreen)
+;(require 'elscreen)
+;(custom-set-faces
+; '(elscreen-tab-current-screen-face ((t (:background "Yellow" :foreground "black"))))
+; '(elscreen-tab-other-screen-face ((t (:background "gray22" :foreground "black")))))
+
+
 (require 'init-color-theme)
 
 
@@ -146,8 +152,6 @@
 ;(require 'eyebrowse)
 ;(eyebrowse-mode t)
 
-(require 'workgroups2)
-;;;;(workgroups-mode 1)
 
 
 ;;(require 'minibuffer-line)
@@ -218,15 +222,16 @@
 ;; ---------------------------------
 ;; linum-relative
 
-
 (require 'linum-relative)
 
 (custom-set-variables
  '(fringe-mode (quote (4 . 0)) nil (fringe)))
 
+;; maybe better to fix the size of line number rather scaled 0.8
+;; https://github.com/howardabrams/dot-files/blob/master/emacs.org
 (custom-set-faces
  '(highlight-current-line-face ((t (:background "gray22"))))
- '(linum ((t (:background "#000000" :foreground "gray40" :height 0.8))))
+ '(linum ((t (:background "#000000" :foreground "gray40" :height 0.8 :slant italic :weigth light))))
  '(linum-relative-current-face ((t (:inherit linum :foreground "Yellow" :weight light :height 0.8)))))
 
 
@@ -235,10 +240,35 @@
 (add-hook 'prog-mode-hook 'linum-mode)
 
 
-
-
-;(require 'highli
+;; hight current line
 (require 'highlight-current-line)
 (highlight-current-line-on t)
 
+
+
+;(defun pl-fringe-mode ()
+;  "jfoewoif"
+;  (if linum-mode
+;      (fringe-mode '(4 . 0))
+;    (fringe-mode '(0 . 0))))
+
+
+;(add-hook 'eshell-mode-hook 'pl-fringe-mode)
+;(add-hook 'prog-mode-hook 'pl-fringe-mode)
+
+
+
+
+
+(require 'workgroups2)
+
+
+(setq wg-prefix-key (kbd "C-c z"))
+(setq wg-session-file "~/.emacs.d/.emacs_workgroups")
+(setq wg-mode-line-display-on t)          ; Default: (not (featurep 'powerline))
+(setq wg-flag-modified t)                 ; Display modified flags as well
+(setq wg-mode-line-decor-left-brace "["
+      wg-mode-line-decor-right-brace "]"  ; how to surround it
+      wg-mode-line-decor-divider ":")
+;(workgroups-mode 1)
 
