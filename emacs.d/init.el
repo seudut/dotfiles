@@ -212,7 +212,7 @@
 
 
 ;; http://stackoverflow.com/questions/11484225/fix-an-auto-complete-mode-and-linum-mode-annoyance
-;(ac-linum-workaround)
+(ac-linum-workaround)
 
 
 ;; ---------------------------------
@@ -225,6 +225,7 @@
  '(fringe-mode (quote (4 . 0)) nil (fringe)))
 
 (custom-set-faces
+ '(highlight-current-line-face ((t (:background "gray22"))))
  '(linum ((t (:background "#000000" :foreground "gray40" :height 0.8))))
  '(linum-relative-current-face ((t (:inherit linum :foreground "Yellow" :weight light :height 0.8)))))
 
@@ -232,3 +233,12 @@
 ;; enable linum-relative in programming mode
 ;https://github.com/howardabrams/dot-files/blob/master/emacs.org
 (add-hook 'prog-mode-hook 'linum-mode)
+
+
+
+
+;(require 'highli
+(require 'highlight-current-line)
+(highlight-current-line-on t)
+
+
