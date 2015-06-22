@@ -462,6 +462,16 @@ map ew <Plug>(easymotion-w)
 map ee <Plug>(easymotion-w)
 map el <Plug>(easymotion-lineforward)
 map eh <Plug>(easymotion-linebackward)
+
+map <SPACE>n <Plug>(easymotion-sn)
+map <SPACE>j <Plug>(easymotion-j)
+map <SPACE>k <Plug>(easymotion-k)
+map <SPACE>b <Plug>(easymotion-b)
+map <SPACE>w <Plug>(easymotion-w)
+map <SPACE>e <Plug>(easymotion-w)
+map <SPACE>l <Plug>(easymotion-lineforward)
+map <SPACE>h <Plug>(easymotion-linebackward)
+
 "" }}}
 " vim-latex --------------------------------------------------------------- {{{
 "set grepprg=grep\ -nH\ $*
