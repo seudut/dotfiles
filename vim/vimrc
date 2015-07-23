@@ -149,7 +149,7 @@ nmap =	<C-w>=
 nnoremap <C-D>	<C-D>zz
 nnoremap <C-U>	<C-U>zz
 
-nnoremap <SPACE>	<C-F>
+"nnoremap <SPACE>	<C-F>
 nnoremap <S-SPACE>	<C-B>
 nnoremap <BS>	<C-B>
 nnoremap <A-n>	gt
@@ -462,6 +462,19 @@ map ew <Plug>(easymotion-w)
 map ee <Plug>(easymotion-w)
 map el <Plug>(easymotion-lineforward)
 map eh <Plug>(easymotion-linebackward)
+
+"" space for easymotion
+map <SPACE>n <Plug>(easymotion-sn)
+map <SPACE>j <Plug>(easymotion-j)
+map <SPACE>k <Plug>(easymotion-k)
+map <SPACE>b <Plug>(easymotion-b)
+map <SPACE>w <Plug>(easymotion-w)
+"map <SPACE>e <Plug>(easymotion-w)
+map <SPACE>l <Plug>(easymotion-lineforward)
+map <SPACE>h <Plug>(easymotion-linebackward)
+
+
+
 "" }}}
 " vim-latex --------------------------------------------------------------- {{{
 "set grepprg=grep\ -nH\ $*
@@ -497,7 +510,7 @@ autocmd FileType qf nnoremap <buffer> <silent> q :q<CR> | setlocal nowrap | setl
 autocmd FileType help nnoremap <buffer> <silent> q :q<CR> | vertical resize 85;
 autocmd FileType c,cpp setlocal foldmethod=syntax |
     \ let b:AutoClosePairs = AutoClose#DefaultPairsModified("\"", "{}") |
-	\ inoremap <buffer> { {<CR>}<ESC>kA<CR> |
+	\ inoremap <buffer> { {<CR>}<ESC>kA<CR>|
     \ nnoremap <buffer> <silent> <C-]> :let word=expand("<cword>")<CR>:wincmd o<cr>:vsp<CR>:exec("tag ". word)<cr>zzzr:wincmd w<cr>
 autocmd FileType python setlocal foldmethod=indent
 
@@ -619,7 +632,7 @@ nnoremap \d :call DiffToggle()<CR>
 " }}}
 
 "nnoremap <silent> <Space> @=(foldlevel('.')?'za':"\<Space>")<CR>
-nnoremap <silent> <Space> @=(foldlevel('.')?'za':"\<Space>")<CR>
+"nnoremap <silent> <Space> @=(foldlevel('.')?'za':"\<Space>")<CR>
 "noremap <Leader>d	@=(&diff)?':diffoff':":VCSVimDiff"<CR><CR>
 
 " https://bitbucket.org/sjl/dotfiles/src/tip/vim/vimrc
