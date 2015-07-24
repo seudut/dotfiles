@@ -463,14 +463,14 @@ map ee <Plug>(easymotion-w)
 map el <Plug>(easymotion-lineforward)
 map eh <Plug>(easymotion-linebackward)
 
-map <SPACE>n <Plug>(easymotion-sn)
-map <SPACE>j <Plug>(easymotion-j)
-map <SPACE>k <Plug>(easymotion-k)
-map <SPACE>b <Plug>(easymotion-b)
-map <SPACE>w <Plug>(easymotion-w)
-map <SPACE>e <Plug>(easymotion-w)
-map <SPACE>l <Plug>(easymotion-lineforward)
-map <SPACE>h <Plug>(easymotion-linebackward)
+"map <SPACE>n <Plug>(easymotion-sn)
+"map <SPACE>j <Plug>(easymotion-j)
+"map <SPACE>k <Plug>(easymotion-k)
+"map <SPACE>b <Plug>(easymotion-b)
+"map <SPACE>w <Plug>(easymotion-w)
+"map <SPACE>e <Plug>(easymotion-w)
+"map <SPACE>l <Plug>(easymotion-lineforward)
+"map <SPACE>h <Plug>(easymotion-linebackward)
 
 "" }}}
 " vim-latex --------------------------------------------------------------- {{{
@@ -516,6 +516,10 @@ autocmd FileType xml setlocal foldmethod=syntax |
 autocmd FileType vim setlocal foldmethod=marker |
 	\ setlocal formatoptions-=c formatoptions-=r formatoptions-=o |
     \ let b:AutoClosePairs = AutoClose#DefaultPairsModified("", "{} \"")
+
+autocmd FileType perl setlocal foldmethod=syntax |
+    \ let b:AutoClosePairs = AutoClose#DefaultPairsModified("\"", "{}") |
+	\ inoremap <buffer> { {<CR>}<ESC>kA<CR>
 
 autocmd Filetype markdown setlocal textwidth=80
 
@@ -629,7 +633,7 @@ nnoremap \d :call DiffToggle()<CR>
 " }}}
 
 "nnoremap <silent> <Space> @=(foldlevel('.')?'za':"\<Space>")<CR>
-nnoremap <silent> <Space> @=(foldlevel('.')?'za':"\<Space>")<CR>
+nnoremap <silent> <cr> @=(foldlevel('.')?'za':"\<Space>")<CR>
 "noremap <Leader>d	@=(&diff)?':diffoff':":VCSVimDiff"<CR><CR>
 
 " https://bitbucket.org/sjl/dotfiles/src/tip/vim/vimrc
