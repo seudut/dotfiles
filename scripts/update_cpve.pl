@@ -13,6 +13,9 @@ my $ip = (split / /, `ifconfig | grep "inet .*broadcast"`)[1];
 my $cpve_dir = '/Users/peli3/CPVE/cpve_trunk/';
 my $ecc_dir = '/Users/peli3/JCC/ecc-p2p/';
 
+my $ecc_mac_libs = "$ecc_dir/contrib/cpve/lib/darwin/x86_64";
+my $cpve_mac_libs = "$cpve_dir/target/dist/lib/darwin/x86_64";
+
 
 #### 
 if($options{n})
@@ -26,15 +29,18 @@ else
     !system "scons arch=x86_64 platform=darwin debug=True -j16 osxversion=10.10"    or die "building CPVE failed : $!";
 
     ## remove old cpve libs and replace in ECC
-    !system "rm -rf $ecc_dir/contrib/cpve/lib/darwin/x86_64/*"     or die "remove libs failed : $!";
+#    !system "rm -rf $ecc_dir/contrib/cpve/lib/darwin/x86_64/*"     or die "remove libs failed : $!";
+    !system "rm -rf $ecc_mac_libs/*"     or die "remove libs failed : $!";
 
-    !system "/bin/cp -r $cpve_dir/target/dist/lib/darwin/x86_64/* $ecc_dir/contrib/cpve/lib/darwin/x86_64/"     or die "copy libs failed: $!";
+    mkdir $ecc_mac_libs unless -e $ecc_mac_libs;
+
+    !system "/bin/cp -r $cpve_mac_libs/* $ecc_mac_libs/"     or die "copy libs failed: $!";
 
 }
 
 #### building ecc
 chdir $ecc_dir or die ": $!";
-!system "python runSconsBuild.py JabberMac64Bit  -j 16  -t no --early_cpve"     or die " building ECC failed : $!";
+!system "python runSconsBuild.py JabberMac64Bit  -j 16  -t no --early_cpve --nofetch"     or die " building ECC failed : $!";
 
 print "copy bin-s bin-c\n";
 !system "rm -rf bin-s/* bin-c/*" or die "$!";
