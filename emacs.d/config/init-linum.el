@@ -1,16 +1,18 @@
 ;; refer to https://github.com/aaronbieber/dotfiles/blob/master/configs/emacs.d/lisp/init-linum.el
-;;; Stuff for line numbers.
+;; Stuff for line numbers.
 (defface linum-current
-  '((t (:inherit linum :weight bold :underline "#555")))
+;  '((t (:inherit linum :weight bold :underline "#555")))
+  '((t (:inherit linum :weight bold :foreground "Yellow")))
   "The current line number.")
 
 (defun my-linum-get-format-string ()
-  (let* ((width (max 4 (1+ (length (number-to-string
+ (let* ((width (min 4 (1+ (length (number-to-string
                              (count-lines (point-min) (point-max)))))))
          (format (concat "%" (number-to-string width) "d "))
          (current-line-format (concat "%-" (number-to-string width) "d ")))
     (setq my-linum-format-string format)
-	(setq my-linum-current-line-format-string current-line-format)))
+;    (setq my-linum-current-line-format-string current-line-format)))
+    (setq my-linum-current-line-format-string format)))
 
 (defvar my-linum-current-line-number 0)
 
