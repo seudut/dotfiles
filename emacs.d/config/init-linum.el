@@ -1,5 +1,18 @@
 ;; refer to https://github.com/aaronbieber/dotfiles/blob/master/configs/emacs.d/lisp/init-linum.el
 ;; Stuff for line numbers.
+
+
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(highlight-current-line-face ((t (:background "gray22"))))
+ '(linum ((t (:background "#000000" :foreground "gray40" :height 0.8 :slant italic :weigth light))))
+ '(linum-relative-current-face ((t (:inherit linum :foreground "Yellow" :weight light :height 0.8)))))
+
+(require 'linum-relative)
+
 (defface linum-current
 ;  '((t (:inherit linum :weight bold :underline "#555")))
   '((t (:inherit linum :weight bold :foreground "Yellow")))
