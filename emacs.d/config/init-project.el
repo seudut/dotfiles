@@ -15,5 +15,4 @@
 
 (require 'projectile-speedbar)
 
-
 (provide 'init-project)

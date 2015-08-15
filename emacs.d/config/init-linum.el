@@ -49,4 +49,18 @@
 (global-linum-mode t)
 (add-hook 'linum-before-numbering-hook 'my-linum-get-format-string)
 
+
+
+
+
+;; enable linum-relative in programming mode
+;https://github.com/howardabrams/dot-files/blob/master/emacs.org
+(add-hook 'prog-mode-hook 'linum-mode)
+
+;; hight current line
+(require 'highlight-current-line)
+(highlight-current-line-on t)
+
+
+
 (provide 'init-linum)
