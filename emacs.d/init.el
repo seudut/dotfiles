@@ -28,14 +28,15 @@
 (show-paren-mode t)
 
 
-(require 'init-c-cpp)
+;;;; conflict with C-c . in org-mode, disable it temporarily
+;;;;(require 'init-c-cpp)
 (require 'init-key-binding)
 (require 'init-winner)
 (require 'init-minibuffer)
 
 
 ;; http://stackoverflow.com/questions/11484225/fix-an-auto-complete-mode-and-linum-mode-annoyance
-(ac-linum-workaround)
+;;;(ac-linum-workaround)
 
 
 (require 'init-mode-line)
