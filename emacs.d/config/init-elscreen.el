@@ -60,4 +60,19 @@
                   (cd el-dir))))))
 
 
+
+
+
+;; elscreen should be placed begin of https://github.com/knu/elscreen/issues/6
+;(elscreen-start)
+;(require 'init-elscreen)
+;(require 'elscreen)
+;(custom-set-faces
+; '(elscreen-tab-current-screen-face ((t (:background "Yellow" :foreground "black"))))
+; '(elscreen-tab-other-screen-face ((t (:background "gray22" :foreground "black")))))
+
+
+
+
+
 (provide 'init-elscreen)
