@@ -54,6 +54,9 @@
     evil-escape
     workgroups2
     highlight-current-line
+    pp-c-l
+    session
+    use-package
   ) "a list of packages to ensure are installed at launch.")
 
 (require 'cl)

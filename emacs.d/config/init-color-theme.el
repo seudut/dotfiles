@@ -234,7 +234,8 @@
 ;;                                    )
 ;;
 ;;                                )
-                                (powerline-raw (powerline-evil-tag) pl-evil-face)
+                                (if evil-mode
+                                (powerline-raw (powerline-evil-tag) pl-evil-face))
 ;;;                                (and evil-mode (funcall separator-left pppp-face face-yel))
 ;;;;;;                                (funcall separator-left pppp-face pppp-face)
 ;;;;                                (powerline-raw (powerline-evil-tag) pppp-face face-yel)

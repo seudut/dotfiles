@@ -28,9 +28,6 @@
 ;;
 ;; c/c++ auto-complete, yasnippet, auto-complet-c-headers
 ;;https://www.youtube.com/watch?v=HTUE03LnaXA&list=PL-mFLc7R_MJet8ItKipCtYc7PWoS5KTfM
-(require 'auto-complete)
-(require 'auto-complete-config)
-(ac-config-default)
 ;; input TAB to 
 (require 'yasnippet)
 (yas-global-mode 1)
