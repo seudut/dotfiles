@@ -57,6 +57,8 @@
     pp-c-l
     session
     use-package
+    helm-gtags
+    icicles
   ) "a list of packages to ensure are installed at launch.")
 
 (require 'cl)

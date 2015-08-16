@@ -17,7 +17,19 @@
 (global-set-key "\C-cb" 'org-iswitchb)
 
 
-(add-hook 'org-mode-hook
-          (lambda ()
-                      (org-set-local 'yas/trigger-key [tab])
-                      (define-key yas/keymap [tab] 'yas/next-field-or-maybe-expand)))
+;;(add-hook 'org-mode-hook
+;;          (lambda ()
+;;                      (org-set-local 'yas/trigger-key [tab])
+;;                      (define-key yas/keymap [tab] 'yas/next-field-or-maybe-expand)))
+
+
+
+
+;; org-capture
+(setq org-directory "~/Private/org")
+(setq org-default-notes-file (concat org-directory "/notes.org"))
+(define-key global-map "\C-cc" 'org-capture)
+
+
+
+(provide 'init-org)
