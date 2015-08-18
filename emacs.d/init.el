@@ -119,3 +119,4 @@
 
 
 (require 'init-org)
+(setq help-window-select t)
