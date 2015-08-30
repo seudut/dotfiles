@@ -6,7 +6,8 @@
 (add-to-list 'default-frame-alist '(width  . 120))
 (add-to-list 'default-frame-alist '(height . 40))
 ;(add-to-list 'default-frame-alist '(font . "Source Code Pro for Powerline-12:weight:light" ))
-(add-to-list 'default-frame-alist '(font . "Source Code Pro for Powerline-12" ))
+;(add-to-list 'default-frame-alist '(font . "Source Code Pro for Powerline-12" ))
+
 (setq inhibit-startup-message t)
 
 (put 'set-goal-column 'disabled nil)
