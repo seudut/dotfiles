@@ -133,4 +133,4 @@
    "eim-py" "euc-cn" 'eim-use-package
    "拼音" "汉字拼音输入法" "~/.emacs.d/site-lisp/eim/py.txt")
 
-
+(require 'init-keychord)
