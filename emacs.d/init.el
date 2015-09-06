@@ -134,3 +134,6 @@
    "拼音" "汉字拼音输入法" "~/.emacs.d/site-lisp/eim/py.txt")
 
 ;(require 'init-keychord)
+
+(setq hydra-examples-verbatim t)
+(require 'init-hydra)
