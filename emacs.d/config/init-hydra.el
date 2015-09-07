@@ -6,6 +6,8 @@
 ;; windows layout restore / maximum
 ;; 
 
+;; misc such as
+;; package-list-p, eval-buffer
 
 (defhydra hydra-helm (global-map "M-c")
   "Helm"
@@ -19,6 +21,37 @@
     ("g" text-scale-increase "in")
     ("l" text-scale-decrease "out"))
 
+
+(global-set-key
+ (kbd "C-M-o")
+; (kbd "M-p")
+      (defhydra hydra-window ()
+	"window"
+	("h" windmove-left)
+	("j" windmove-down)
+	("l" windmove-right)
+	("k" windmove-up)
+	("v" (lambda ()
+	       (interactive)
+	       (split-window-right)
+	       (windmove-right))
+	 "vert")
+	("x" (lambda ()
+	       (interactive)
+	       (split-window-below)
+	       (windmove-down))
+	 "horz")
+	("o" delete-other-windows "one" :color blue)
+	("a" ace-window "ace")
+	("s" ace-swap-window "swap")
+	("d" ace-delete-window "del")
+	("i" ace-maximize-window "ace-one" :color blue)
+	("b" ido-switch-buffer "buf")
+	("u" (progn (winner-undo) (setq this-command 'winner-undo)) "undo")
+	("i" winner-undo "undo2")
+	("q" nil "cancel")))
+
+;; define C-space start mark 
 
 
 ;;** Example 2: move window splitter
@@ -44,17 +77,17 @@
 
 ;;** Example 4: toggle rarely used modes
 
-  (defvar whitespace-mode nil)
-  (global-set-key
-   (kbd "C-c C-v")
-   (defhydra hydra-toggle-simple (:color blue)
-     "toggle"
-     ("a" abbrev-mode "abbrev")
-     ("d" toggle-debug-on-error "debug")
-     ("f" auto-fill-mode "fill")
-     ("t" toggle-truncate-lines "truncate")
-     ("w" whitespace-mode "whitespace")
-     ("q" nil "cancel")))
+;  (defvar whitespace-mode nil)
+;  (global-set-key
+;   (kbd "C-c C-v")
+;   (defhydra hydra-toggle-simple (:color blue)
+;     "toggle"
+;     ("a" abbrev-mode "abbrev")
+;     ("d" toggle-debug-on-error "debug")
+;     ("f" auto-fill-mode "fill")
+;     ("t" toggle-truncate-lines "truncate")
+;     ("w" whitespace-mode "whitespace")
+;     ("q" nil "cancel")))
 
 
 

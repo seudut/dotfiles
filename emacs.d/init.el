@@ -137,3 +137,7 @@
 
 (setq hydra-examples-verbatim t)
 (require 'init-hydra)
+
+
+(require 'ace-window)
+(global-set-key (kbd "M-p") 'ace-window)
