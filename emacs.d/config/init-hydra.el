@@ -23,8 +23,8 @@
 
 
 (global-set-key
- (kbd "C-M-o")
-; (kbd "M-p")
+; (kbd "C-M-o")
+ (kbd "M-o")
       (defhydra hydra-window ()
 	"window"
 	("h" windmove-left)
@@ -36,20 +36,22 @@
 	       (split-window-right)
 	       (windmove-right))
 	 "vert")
-	("x" (lambda ()
+	("s" (lambda ()
 	       (interactive)
 	       (split-window-below)
 	       (windmove-down))
 	 "horz")
 	("o" delete-other-windows "one" :color blue)
 	("a" ace-window "ace")
-	("s" ace-swap-window "swap")
+	("w" ace-swap-window "swap")
 	("d" ace-delete-window "del")
 	("i" ace-maximize-window "ace-one" :color blue)
 	("b" ido-switch-buffer "buf")
 	("u" (progn (winner-undo) (setq this-command 'winner-undo)) "undo")
-	("i" winner-undo "undo2")
 	("q" nil "cancel")))
+
+;(defun pl-last-winner ()
+  
 
 ;; define C-space start mark 
 
@@ -114,7 +116,7 @@
      ("y" kill-ring-save "yank" :color blue)
      ("q" nil "quit")))
 
-
+(setq hydra-lv nil)
 
 ;;** Example 6: selective global bind
 
