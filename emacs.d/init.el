@@ -26,7 +26,7 @@
 (require 'init-key-binding)
 (require 'init-winner)
 (require 'init-minibuffer)
-
+(require 'init-eshell)
 
 ;; http://stackoverflow.com/questions/11484225/fix-an-auto-complete-mode-and-linum-mode-annoyance
 ;;;(ac-linum-workaround)
