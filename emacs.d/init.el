@@ -1,8 +1,3 @@
-;;;(if (eq system-type 'darwin)
-;;;  (setenv "PATH"
-;;;)   (concat (getenv "path") ":/usr/local/bin:~/bin/")
-;;;  )
-
 
 (setenv "PATH" (concat (getenv "PATH") ":/usr/local/bin"))
 (setq exec-path (append exec-path '("/usr/local/bin")))
@@ -12,8 +7,6 @@
 
 (add-to-list 'load-path "~/.emacs.d/config")
 
-(global-set-key "\C-s" 'isearch-forward-regexp)
-(global-set-key "\C-r" 'isearch-backward-regexp)
 
 (require 'init-base)
 (require 'init-font)
@@ -34,7 +27,7 @@
 
 ;;;; conflict with C-c . in org-mode, disable it temporarily
 ;;;;(require 'init-c-cpp)
-;(require 'init-key-binding)
+(require 'init-key-binding)
 (require 'init-winner)
 (require 'init-minibuffer)
 
