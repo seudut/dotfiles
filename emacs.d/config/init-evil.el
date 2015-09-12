@@ -22,6 +22,10 @@
 (define-key evil-normal-state-map "\C-j" nil)
 (define-key evil-normal-state-map "\C-o" nil)
 
+;; M-e not works correctly in evil-normal mode, this fix it
+(define-key evil-normal-state-map "\M-e" (lambda() (interactive)
+					   (forward-sentence 2)))
+
 
 (global-evil-leader-mode)
 (evil-leader/set-leader "s")
