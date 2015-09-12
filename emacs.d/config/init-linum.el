@@ -19,7 +19,7 @@
   "The current line number.")
 
 (defun my-linum-get-format-string ()
- (let* ((width (min 4 (1+ (length (number-to-string
+ (let* ((width (max 3 (1+ (length (number-to-string
                              (count-lines (point-min) (point-max)))))))
          (format (concat "%" (number-to-string width) "d "))
          (current-line-format (concat "%-" (number-to-string width) "d ")))

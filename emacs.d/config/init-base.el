@@ -36,4 +36,7 @@
 (show-paren-mode t)
 
 
+(add-hook 'help-mode-hook
+	  (lambda ()
+	    (linum-mode -1)))
 (provide 'init-base)
