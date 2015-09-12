@@ -20,6 +20,7 @@
 
 ;;; this variable should equal as height in mode-line
 (custom-set-variables
+ '(powerline-height 14)
  '(powerline-text-scale-factor 0.85)) ;; 100/140
 
 (custom-set-faces
