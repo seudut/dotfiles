@@ -37,7 +37,6 @@
     tangotango-theme
     cyberpunk-theme
     hydra
-    projectile
     projectile-speedbar
     ecb
     ggtags
@@ -61,6 +60,7 @@
     icicles
     ace-window
     multi-term
+    projectile
   ) "a list of packages to ensure are installed at launch.")
 
 (require 'cl)

@@ -133,3 +133,4 @@
 
 
 (require 'init-multi-term)
+(require 'init-projectile)
