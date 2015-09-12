@@ -125,7 +125,7 @@
 ;(require 'init-keychord)
 
 ;(setq hydra-examples-verbatim t)
-;(require 'init-hydra)
+(require 'init-hydra)
 
 
 ;(require 'ace-window)

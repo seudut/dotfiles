@@ -4,23 +4,26 @@
 ;; misc operation for toggle some style
 ;; such as toggle line number
 ;; windows layout restore / maximum
-;; 
 
-;; misc such as
-;; package-list-p, eval-buffer
-
-(defhydra hydra-helm (global-map "M-c")
-  "Helm"
-  ("j" helm-mini "helm-mini")
-  ("q" nil "quit"))
-;;* Examples
-;;** Example 1: text scale
 
   (defhydra hydra-zoom (global-map "<f2>")
     "zoom"
     ("g" text-scale-increase "in")
     ("l" text-scale-decrease "out"))
 
+;; Misc commands
+(defhydra hydra-misc (:exit t)
+  "Misc commancs"
+  ("p" (lambda ()
+	 (interactive)
+	 (if (buffer-exists "*Packages*")
+	     (switch-to-buffer "*Packages*")
+	   (package-list-packages)))
+   "list-package" :color red)
+  ("e" eval-buffer "eval-buffer" :color red))
+
+(defun buffer-exists (bufname)   (not (eq nil (get-buffer bufname))))
+(global-set-key (kbd "M-c") 'hydra-misc/body)
 
 (global-set-key
 ; (kbd "C-M-o")
@@ -53,6 +56,14 @@
 ;(defun pl-last-winner ()
   
 
+;;(defhydra hydra-launcher (:color blue :columns 2)
+;;   "Launch"
+;;   ("h" man "man")
+;;   ("r" (browse-url "http://www.reddit.com/r/emacs/") "reddit")
+;;   ("w" (browse-url "http://www.emacswiki.org/") "emacswiki")
+;;   ("s" shell "shell")
+;;   ("q" nil "cancel"))
+
 ;; define C-space start mark 
 
 
@@ -77,20 +88,6 @@
 
 
 
-;;** Example 4: toggle rarely used modes
-
-;  (defvar whitespace-mode nil)
-;  (global-set-key
-;   (kbd "C-c C-v")
-;   (defhydra hydra-toggle-simple (:color blue)
-;     "toggle"
-;     ("a" abbrev-mode "abbrev")
-;     ("d" toggle-debug-on-error "debug")
-;     ("f" auto-fill-mode "fill")
-;     ("t" toggle-truncate-lines "truncate")
-;     ("w" whitespace-mode "whitespace")
-;     ("q" nil "cancel")))
-
 
 
 ;;** Example 5: mini-vi
@@ -101,20 +98,20 @@
   (set-cursor-color "#ffffff"))
 
 
-  (global-set-key
-   (kbd "C-z")
-   (defhydra hydra-vi (:pre hydra-vi/pre :post hydra-vi/post :color amaranth)
-     "vi"
-     ("l" forward-char)
-     ("h" backward-char)
-     ("j" next-line)
-     ("k" previous-line)
-     ("m" set-mark-command "mark")
-     ("a" move-beginning-of-line "beg")
-     ("e" move-end-of-line "end")
-     ("d" delete-region "del" :color blue)
-     ("y" kill-ring-save "yank" :color blue)
-     ("q" nil "quit")))
+;  (global-set-key
+;   (kbd "C-z")
+;   (defhydra hydra-vi (:pre hydra-vi/pre :post hydra-vi/post :color amaranth)
+;     "vi"
+;     ("l" forward-char)
+;     ("h" backward-char)
+;     ("j" next-line)
+;     ("k" previous-line)
+;     ("m" set-mark-command "mark")
+;     ("a" move-beginning-of-line "beg")
+;     ("e" move-end-of-line "end")
+;     ("d" delete-region "del" :color blue)
+;     ("y" kill-ring-save "yank" :color blue)
+;     ("q" nil "quit")))
 
 (setq hydra-lv nil)
 
@@ -302,3 +299,18 @@ _h_   _l_   _o_k        _y_ank
       (goto-char mk))))
 
 (provide 'init-hydra)
+
+
+;;** Example 4: toggle rarely used modes
+
+;  (defvar whitespace-mode nil)
+;  (global-set-key
+;   (kbd "C-c C-v")
+;   (defhydra hydra-toggle-simple (:color blue)
+;     "toggle"
+;     ("a" abbrev-mode "abbrev")
+;     ("d" toggle-debug-on-error "debug")
+;     ("f" auto-fill-mode "fill")
+;     ("t" toggle-truncate-lines "truncate")
+;     ("w" whitespace-mode "whitespace")
+;     ("q" nil "cancel")))

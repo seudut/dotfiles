@@ -95,13 +95,10 @@
 	      ("b" . helm-find-files)))
 
 ;; ESC c 
-(pl-make-keymap "\M-c"
-            '(("v" . split-window-below)
-
-
-
-	      ("h" . split-window-right)
-	      ("b" . helm-find-files)))
+;(pl-make-keymap "\M-c"
+;            '(("v" . split-window-below)
+;	      ("h" . split-window-right)
+;	      ("b" . helm-find-files)))
 
 
 ;; Esc o - set font , can change
