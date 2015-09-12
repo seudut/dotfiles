@@ -26,6 +26,7 @@
 (define-key evil-normal-state-map "\M-e" (lambda() (interactive)
 					   (forward-sentence 2)))
 
+(define-key evil-motion-state-map "\C-e" (move-end-of-line 1))
 
 (global-evil-leader-mode)
 (evil-leader/set-leader "s")
