@@ -20,10 +20,6 @@
 (require 'init-project)
 (require 'init-ggtags)
 
-(setq scroll-margin 5)
-(setq scroll-conservatively 10000)
-(show-paren-mode t)
-
 
 ;;;; conflict with C-c . in org-mode, disable it temporarily
 ;;;;(require 'init-c-cpp)

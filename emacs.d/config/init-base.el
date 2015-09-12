@@ -29,8 +29,11 @@
 
 (set-face-attribute 'vertical-border nil  :foreground "gray")
 
+(defalias 'yes-or-no-p 'y-or-n-p)
 
-
+(setq scroll-margin 5)
+(setq scroll-conservatively 10000)
+(show-paren-mode t)
 
 
 (provide 'init-base)

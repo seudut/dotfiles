@@ -32,11 +32,6 @@
 ;(key-chord-define-global "sj" 'helm-mini)
 ;(key-chord-define-global "sk" 'helm-find-files)
 
-;(key-chord-define-global ";w" 'save-buffer)
-;(key-chord-define-global ";s" 'split-window-below)
-;(key-chord-define-global ";v" 'split-window-right)
-;(key-chord-define-global ";q" 'delete-window)
-
 
 (key-chord-define-global "JJ" 'save-buffer)
 (key-chord-define-global "HH" 'save-buffer)

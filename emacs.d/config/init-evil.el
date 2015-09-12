@@ -22,11 +22,15 @@
 (define-key evil-normal-state-map "\C-j" nil)
 (define-key evil-normal-state-map "\C-o" nil)
 
+
+
+
 ;; M-e not works correctly in evil-normal mode, this fix it
 (define-key evil-normal-state-map "\M-e" (lambda() (interactive)
 					   (forward-sentence 2)))
-
 (define-key evil-motion-state-map "\C-e" (move-end-of-line 1))
+
+
 
 (global-evil-leader-mode)
 (evil-leader/set-leader "s")
@@ -41,7 +45,6 @@
 (key-chord-define evil-normal-state-map ";w" 'save-buffer)
 (key-chord-define evil-normal-state-map ";s" 'split-window-below)
 (key-chord-define evil-normal-state-map ";v" 'split-window-right)
-
 (key-chord-define evil-normal-state-map ";;" 'helm-find-files)
 
 (key-chord-mode 1)
@@ -57,8 +60,7 @@
 
 
 ;; cursor shape
-;(setq evil-emacs-state-cursor '("red" box))
-(setq evil-emacs-state-cursor '("red" bar))
+(setq evil-emacs-state-cursor '("red" box))
 (setq evil-normal-state-cursor '("green" box))
 (setq evil-visual-state-cursor '("orange" box))
 (setq evil-insert-state-cursor '("red" bar))
