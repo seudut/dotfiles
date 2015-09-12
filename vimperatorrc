@@ -32,7 +32,7 @@ nmap <Leader>h :help<Space>
 nmap <Leader>,	:source ~/.vimperatorrc<CR>
 
 
-noremap <C-o>	<Esc>
+"noremap <C-o>	<Esc>
 
 
 set "editor=/usr/local/bin/mvim --remote-silent"
@@ -48,7 +48,7 @@ nnoremap B b
 nnoremap b :bmarks! -tags<SPACE>
 nnoremap e b
 
-"set gui=nonavigation
+set gui=nonavigation
 
 ":tab addons
 ":tab downloads
@@ -57,4 +57,5 @@ nnoremap e b
 ":tab javascript!
 ":tab preferences!
 "
-
+noremap <C-SPACE> <C-^>
+noremap v <C-^>
