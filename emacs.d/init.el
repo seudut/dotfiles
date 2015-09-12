@@ -134,3 +134,6 @@
 
 ;(require 'ace-window)
 ;(global-set-key (kbd "M-p") 'ace-window)
+
+
+(require 'init-multi-term)
