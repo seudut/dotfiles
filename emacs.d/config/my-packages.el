@@ -61,6 +61,7 @@
     ace-window
     multi-term
     projectile
+    page-break-lines
   ) "a list of packages to ensure are installed at launch.")
 
 (require 'cl)

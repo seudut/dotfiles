@@ -33,7 +33,7 @@
 
 
 (require 'init-mode-line)
-(require 'init-workgroup2)
+;(require 'init-workgroup2)
 (require 'init-perl)
 
 ;(add-to-list 'load-path "~/.emacs.d/Emacs-PDE-0.2.16/lisp/")
@@ -134,3 +134,7 @@
 
 (require 'init-multi-term)
 (require 'init-projectile)
+
+(require 'page-break-lines)
+;(turn-on-page-break-lines-mode)
+(global-page-break-lines-mode 1)
