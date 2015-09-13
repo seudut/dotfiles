@@ -3,7 +3,7 @@
 
 
 (setq wg-prefix-key (kbd "C-c z"))
-(setq wg-session-file "~/.emacs.d/.emacs_workgroups")
+(setq wg-session-file "~/.emacs.d/temp/.emacs_workgroups")
 (setq wg-mode-line-display-on t)          ; Default: (not (featurep 'powerline))
 (setq wg-flag-modified t)                 ; Display modified flags as well
 (setq wg-mode-line-decor-left-brace "["

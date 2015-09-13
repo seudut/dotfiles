@@ -15,3 +15,4 @@ projectile-bookmarks.eld
 config/init-my-theme-2.el
 config/my-color-theme.el
 \#*
+temp/*
