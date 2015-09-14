@@ -1,8 +1,3 @@
-;;;(if (eq system-type 'darwin)
-;;;  (setenv "PATH"
-;;;)   (concat (getenv "path") ":/usr/local/bin:~/bin/")
-;;;  )
-
 
 (setenv "PATH" (concat (getenv "PATH") ":/usr/local/bin"))
 (setq exec-path (append exec-path '("/usr/local/bin")))
@@ -12,8 +7,6 @@
 
 (add-to-list 'load-path "~/.emacs.d/config")
 
-(global-set-key "\C-s" 'isearch-forward-regexp)
-(global-set-key "\C-r" 'isearch-backward-regexp)
 
 (require 'init-base)
 (require 'init-font)
@@ -23,13 +16,9 @@
 (require 'init-color-theme)
 ;(require 'init-ido)
 (require 'init-magit)
-;(require 'init-evil)
+(require 'init-evil)
 (require 'init-project)
 (require 'init-ggtags)
-
-(setq scroll-margin 5)
-(setq scroll-conservatively 10000)
-(show-paren-mode t)
 
 
 ;;;; conflict with C-c . in org-mode, disable it temporarily
@@ -37,14 +26,14 @@
 (require 'init-key-binding)
 (require 'init-winner)
 (require 'init-minibuffer)
-
+(require 'init-eshell)
 
 ;; http://stackoverflow.com/questions/11484225/fix-an-auto-complete-mode-and-linum-mode-annoyance
 ;;;(ac-linum-workaround)
 
 
 (require 'init-mode-line)
-(require 'init-workgroup2)
+;(require 'init-workgroup2)
 (require 'init-perl)
 
 ;(add-to-list 'load-path "~/.emacs.d/Emacs-PDE-0.2.16/lisp/")
@@ -119,25 +108,33 @@
 ;(icy-mode 1)
 
 
-(require 'init-org)
+;(require 'init-org)
 (setq help-window-select t)
 
 
-  (add-to-list 'load-path "~/.emacs.d/site-lisp/eim")
-  (autoload 'eim-use-package "eim" "Another emacs input method")
-
-  (register-input-method
-   "eim-wb" "euc-cn" 'eim-use-package
-   "五笔" "汉字五笔输入法" "~/.emacs.d/site-lisp/eim/wb.txt")
-  (register-input-method
-   "eim-py" "euc-cn" 'eim-use-package
-   "拼音" "汉字拼音输入法" "~/.emacs.d/site-lisp/eim/py.txt")
-
+;;  (add-to-list 'load-path "~/.emacs.d/site-lisp/eim")
+;;  (autoload 'eim-use-package "eim" "Another emacs input method")
+;;
+;;  (register-input-method
+;;   "eim-wb" "euc-cn" 'eim-use-package
+;;   "五笔" "汉字五笔输入法" "~/.emacs.d/site-lisp/eim/wb.txt")
+;;  (register-input-method
+;;   "eim-py" "euc-cn" 'eim-use-package
+;;   "拼音" "汉字拼音输入法" "~/.emacs.d/site-lisp/eim/py.txt")
+;;
 ;(require 'init-keychord)
 
-(setq hydra-examples-verbatim t)
+;(setq hydra-examples-verbatim t)
 (require 'init-hydra)
 
 
-(require 'ace-window)
-(global-set-key (kbd "M-p") 'ace-window)
+;(require 'ace-window)
+;(global-set-key (kbd "M-p") 'ace-window)
+
+
+(require 'init-multi-term)
+(require 'init-projectile)
+
+(require 'page-break-lines)
+;(turn-on-page-break-lines-mode)
+(global-page-break-lines-mode 1)

@@ -23,20 +23,29 @@
 (define-key evil-normal-state-map "\C-o" nil)
 
 
-(global-evil-leader-mode)
-(evil-leader/set-leader ";")
-(evil-leader/set-key "e" 'find-file)
-(evil-leader/set-key "f" 'recentf-ido-find-file)
-(evil-leader/set-key "b" 'switch-to-buffer)
-(evil-leader/set-key "w" 'evil-write)
 
-(evil-leader/set-key "s" 'split-window-below)
-(evil-leader/set-key "v" 'split-window-right)
-(evil-leader/set-key "q" 'delete-window)
+
+;; M-e not works correctly in evil-normal mode, this fix it
+(define-key evil-normal-state-map "\M-e" (lambda() (interactive)
+					   (forward-sentence 2)))
+(define-key evil-motion-state-map "\C-e" (move-end-of-line 1))
+
+
+
+(global-evil-leader-mode)
+(evil-leader/set-leader "s")
+(evil-leader/set-key "j" 'helm-mini)
+(evil-leader/set-key "k" 'helm-find-files)
 
 (setq key-chord-two-keys-delay 0.5)
 (key-chord-define evil-insert-state-map "jj" 'evil-normal-state)
 (key-chord-define evil-emacs-state-map "jj" 'evil-normal-state)
+
+
+(key-chord-define evil-normal-state-map ";w" 'save-buffer)
+(key-chord-define evil-normal-state-map ";s" 'split-window-below)
+(key-chord-define evil-normal-state-map ";v" 'split-window-right)
+(key-chord-define evil-normal-state-map ";;" 'helm-find-files)
 
 (key-chord-mode 1)
 
@@ -51,8 +60,7 @@
 
 
 ;; cursor shape
-;(setq evil-emacs-state-cursor '("red" box))
-(setq evil-emacs-state-cursor '("red" bar))
+(setq evil-emacs-state-cursor '("red" box))
 (setq evil-normal-state-cursor '("green" box))
 (setq evil-visual-state-cursor '("orange" box))
 (setq evil-insert-state-cursor '("red" bar))

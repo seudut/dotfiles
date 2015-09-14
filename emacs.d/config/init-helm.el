@@ -10,13 +10,13 @@
 
 ;; helm-mini
 ;;(global-set-key (kbd "C-x b") 'helm-mini)
-(global-set-key (kbd "C-o C-j") 'helm-mini)
+;;(global-set-key (kbd "C-o C-j") 'helm-mini)
 (setq helm-buffers-fuzzy-matching t
       helm-recentf-fuzzy-match    t)
 
 ;; helm-find-file
 ;(global-set-key (kbd "C-x C-f") 'helm-find-files)
-(global-set-key (kbd "C-o C-f") 'helm-find-files)
+;;(global-set-key (kbd "C-o C-f") 'helm-find-files)
 
 
 
@@ -41,5 +41,17 @@
 (helm-adaptive-mode 1)
 (helm-adaptative-mode 1)
 (setq helm-adaptive-history 1)
+
+
+;;j;(defun helm-buffer-face-mode ()
+;;j;  "Helm buffer face"
+;;j;  (interactive)
+;;j;  (with-helm-buffer
+;;j;  (setq line-spacing 2)
+;;j;  (buffer-face-set '(:family "Source Code Pro" :height 100))))
+							      
+
+;;;(add-hook 'helm-update-hook 'helm-buffer-face-mode)
+
 
 (provide 'init-helm)

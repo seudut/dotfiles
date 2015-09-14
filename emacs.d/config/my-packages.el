@@ -37,7 +37,6 @@
     tangotango-theme
     cyberpunk-theme
     hydra
-    projectile
     projectile-speedbar
     ecb
     ggtags
@@ -59,6 +58,10 @@
     use-package
     helm-gtags
     icicles
+    ace-window
+    multi-term
+    projectile
+    page-break-lines
   ) "a list of packages to ensure are installed at launch.")
 
 (require 'cl)

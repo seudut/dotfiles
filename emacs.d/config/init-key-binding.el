@@ -1,11 +1,8 @@
 ;; This  file is for some global key binding
 
-
-
-
 (require 'key-chord)
 
-(setq key-chord-two-keys-delay 0.2)
+;(setq key-chord-two-keys-delay 0.2)
 
 ;; from emacs conference 2015 workshop
 (defun keychord-keymap (keychord bindings)
@@ -15,57 +12,25 @@
   (key-chord-define-global keychord keymap))
 
 
+
+
+;;; keychord
+;;;
 (defun switch-to-previous-buffer ()
   "Switch to previously open buffer. Repeated invocations toggle between the two most recently open buffers."
   (interactive)
   (switch-to-buffer (other-buffer (current-buffer) 1)))
 
 
-
-
 ;; main keymap
-(keychord-keymap "ss"
-                 '(("j" . helm-mini)
-                   ("k" . find-file)
-		   ("o" . delete-other-windows)))
-
-;; misc
-;; eval-buffer
-;; packet-list-install
-;; 
-
+;n(keychord-keymap "ss"
+;                 '(("j" . helm-mini)
+;                   ("k" . find-file)
+;		   ("o" . delete-other-windows)))
 
 ;; for some helm key mapping
-(key-chord-define-global "sj" 'helm-mini)
-(key-chord-define-global "sk" 'helm-find-files)
-
-;;
-(key-chord-define-global ";w" 'save-buffer)
-(key-chord-define-global ";s" 'split-window-below)
-(key-chord-define-global ";v" 'split-window-right)
-(key-chord-define-global ";q" 'delete-window)
-
-;(key-chord-define-global "x0" 'other-window)
-;(key-chord-define-global "x1" 'delete-other-windows)
-
-
-;; same  set ESC ESC as a prefix key map
-;; Windows
-;(global-set-key (kbd "<escape> M-a") 'find-file)
-(global-set-key (kbd "<escape> M-o") 'delete-other-windows)
-(global-set-key (kbd "<escape> M-h") 'other-window)
-(global-set-key (kbd "<escape> M-j") 'find-file)
-(global-set-key (kbd "<escape> M-k") 'find-file)
-(global-set-key (kbd "<escape> M-l") 'find-file)
-
-
-;; project
-(global-set-key (kbd "<escape> M-n") 'find-file)
-(global-set-key (kbd "<escape> M-m") 'find-file)
-(global-set-key (kbd "<escape> M-p") 'find-file)
-(global-set-key (kbd "<escape> M-u") 'find-file)
-(global-set-key (kbd "<escape> M-y") 'find-file)
-;(global-set-key (kbd "<escape> <escape>") 'find-file)
+;(key-chord-define-global "sj" 'helm-mini)
+;(key-chord-define-global "sk" 'helm-find-files)
 
 
 (key-chord-define-global "JJ" 'save-buffer)
@@ -100,10 +65,121 @@
 
 (key-chord-mode 1)
 
-;;;;;;;;;;;;;(provide 'init-keychord)
+
+
+;;; global key mapping, windows buffer, tab, project
+;;;
+(defun pl-make-keymap (key bindings)
+  (setq keymap (make-sparse-keymap))
+  (dolist (binding bindings)
+    (define-key keymap (car binding) (cdr binding)))
+  (global-set-key key keymap))
+
+;; ESC s j
+(pl-make-keymap "\M-s"
+            '(("j" . helm-mini)
+	      ("k" . helm-find-files)
+	      ("w" . save-buffer)
+	      ("q" . helm-find-files)
+	      ("-" . split-window-below)
+	      ("\\" . split-window-right)
+;	      ("\M-s" . split-window-below)
+;	      ("\M-v" . split-window-right)
+	      ("o" . occur)
+	      ("b" . helm-find-files)))
+
+;; ESC ; j M-; add comment, 
+(pl-make-keymap "\M-;"
+            '(("v" . split-window-below)
+	      ("h" . split-window-right)
+	      ("b" . helm-find-files)))
+
+;; ESC c 
+;(pl-make-keymap "\M-c"
+;            '(("v" . split-window-below)
+;	      ("h" . split-window-right)
+;	      ("b" . helm-find-files)))
+
+
+;; Esc o - set font , can change
+;; M-l M-u low/up caps can changed
+;; M-t transpose, not used, changed
+;; M-z
+;; M-c capitialize
+
+
+;(global-set-key (kbd "M-s j") 'helm-mini)
+;(global-set-key (kbd "M-s k") 'helm-find-files)
+
+;; ESC ESC + i
+(global-set-key (kbd "ESC M-h") 'helm-mini)
+(global-set-key (kbd "ESC M-j") 'helm-mini)
+(global-set-key (kbd "ESC M-k") 'helm-mini)
+(global-set-key (kbd "ESC M-l") 'helm-mini)
+(global-set-key (kbd "ESC M-;") 'helm-mini)
+(global-set-key (kbd "ESC M-y") 'helm-mini)
+(global-set-key (kbd "ESC M-u") 'helm-mini)
+(global-set-key (kbd "ESC M-i") 'helm-mini)
+(global-set-key (kbd "ESC M-o") 'other-window)
+(global-set-key (kbd "ESC M-p") 'helm-mini)
+(global-set-key (kbd "ESC M-n") 'helm-mini)
+(global-set-key (kbd "ESC M-m") 'helm-mini)
+(global-set-key (kbd "ESC M-y") 'helm-mini)
+(global-set-key (kbd "ESC M-s") 'split-window-below)
+(global-set-key (kbd "ESC M-v") 'split-window-right)
+(global-set-key (kbd "ESC M-u") 'helm-mini)
+(global-set-key (kbd "ESC M-i") 'helm-mini)
+(global-set-key (kbd "ESC M-p") 'helm-mini)
+(global-set-key (kbd "ESC M-;") 'helm-mini)
+(global-set-key (kbd "ESC M-1") 'delete-other-windows)
+(global-set-key (kbd "ESC M-2") 'split-window-below)
+(global-set-key (kbd "ESC M-3") 'split-window-right)
+
+
+(global-set-key (kbd "C-; C-j") 'helm-mini)
+
+;(global-set-key (kbd "<escape> j") 'helm-mini)
+;(global-set-key (kbd "<escape> k") 'helm-find-files)
+;(global-set-key (kbd "<escape> l") 'find-file)
+;(global-set-key (kbd "<escape> f") 'find-file)
+;(global-set-key (kbd "<escape> M-a") 'find-file)
+;(global-set-key (kbd "<escape> M-a") 'find-file)
+;(global-set-key (kbd "<escape> M-a") 'find-file)
+;(global-set-key (kbd "<escape> M-o") 'delete-other-windows)
+;(global-set-key (kbd "<escape> M-h") 'other-window)
+;(global-set-key (kbd "<escape> M-j") 'find-file)
+;(global-set-key (kbd "<escape> M-k") 'find-file)
+;(global-set-key (kbd "<escape> M-l") 'find-file)
+
+
+
+(defvar sacha/windmove-map (make-sparse-keymap))
+(define-key sacha/windmove-map "h" 'windmove-left)
+(define-key sacha/windmove-map "t" 'windmove-up)
+(define-key sacha/windmove-map "n" 'windmove-down)
+(define-key sacha/windmove-map "s" 'windmove-right)
+(define-key sacha/windmove-map "[left]" 'windmove-left)
+(define-key sacha/windmove-map "[up]" 'windmove-up)
+(define-key sacha/windmove-map "[down]" 'windmove-down)
+(define-key sacha/windmove-map "[right]" 'windmove-right)
+;(key-chord-define-global "yy"     sacha/windmove-map)
+
+
+
+;; project
+;(global-set-key (kbd "<escape> M-n") 'find-file)
+;(global-set-key (kbd "<escape> M-m") 'find-file)
+;(global-set-key (kbd "<escape> M-p") 'find-file)
+;(global-set-key (kbd "<escape> M-u") 'find-file)
+;(global-set-key (kbd "<escape> M-y") 'find-file)
+;(global-set-key (kbd "<escape> <escape>") 'find-file)
+
+
 
 
 (setq mac-command-modifier 'super) ; make cmd key do Meta
+
+
 
 ;; super key for elscreen tabs
 (global-set-key (kbd "<s-return>") 'toggle-frame-fullscreen)
@@ -143,21 +219,24 @@
 ;;----------------------------------------------------------------------------
 ;; C-o prefix binding for some File/Buffer switching/openning
 ;;
-(global-unset-key "\C-o")
+;;(global-unset-key "\C-o")
 ;;(global-set-key (kbd "C-o C-o") 'keyboard-quit);; same as C-g to quit
 ;;; c-o c-o swith to normal mode 
-(global-set-key (kbd "C-o C-o") 'evil-normal-state)
+;(global-set-key (kbd "C-o C-o") 'evil-normal-state)
 ;;(global-set-key (kbd "C-o C-o") 'fiplr-find-file)
-(global-set-key (kbd "C-o C-f") 'ido-find-file)
-(global-set-key (kbd "C-o C-n") 'recentf-ido-find-file)
-(global-set-key (kbd "C-o C-j") 'ido-switch-buffer)
+;(global-set-key (kbd "C-o C-f") 'ido-find-file)
+;(global-set-key (kbd "C-o C-n") 'recentf-ido-find-file)
+;(global-set-key (kbd "C-o C-j") 'ido-switch-buffer)
 ;(global-set-key (kbd "C-o C-j") 'ido-find-file)
 
 
-(global-set-key (kbd "C-o C-g") 'ggtags-find-file)
-(global-set-key (kbd "C-o C-t") 'ggtags-find-tag-dwim)
+;(global-set-key (kbd "C-o C-g") 'ggtags-find-file)
+;(global-set-key (kbd "C-o C-t") 'ggtags-find-tag-dwim)
 
-(global-set-key (kbd "M-g M-g") 'magit-status)
+;(global-set-key (kbd "M-g M-g") 'magit-status)
+
+(global-set-key [f7] 'winner-undo)
+(global-set-key [C-f7] 'winner-redo)
 
 
 (defun recentf-ido-find-file ()
@@ -168,10 +247,7 @@
       (find-file file))))
 
 
-;;----------------------------------------------------------------------------
-;; M-g prefix binding for some commands
-;;
-
-
+(global-set-key "\C-s" 'isearch-forward-regexp)
+(global-set-key "\C-r" 'isearch-backward-regexp)
 
 (provide 'init-key-binding)
