@@ -1,7 +1,6 @@
 #!/usr/bin/perl -w
 #
 use strict;
-use warnings;
 #use v5.10;
 
 my @cpve_libs = ( 'libpme.0.dylib', 'libpmexy.1.dylib', 'libpmpxy.1.dylib', 'libtaf.0.dylib', 'libtafxy.1.dylib','libsrtp.dylib' );
