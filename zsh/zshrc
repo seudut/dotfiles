@@ -47,17 +47,17 @@ man() {
 
 export PYTHONPATH="/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages/"
 export DEV_ENV_ROOT=$HOME/android/
-export ANDROID_NDK_ROOT="${DEV_ENV_ROOT}/android-ndk-r8c/"
+export ANDROID_NDK_ROOT="${DEV_ENV_ROOT}/android-ndk-r10d/"
 export ANDROID_SDK_ROOT="${DEV_ENV_ROOT}/android-sdk-macosx/"
 #export ANDROID_TOOLCHAIN="${DEV_ENV_ROOT}/standalone-toolchain-api14/"
-export ANDROID_NDK_HOME="$HOME/android/android-ndk-r8c"
+export ANDROID_NDK_HOME="$HOME/android/android-ndk-r10d"
 
 
 
 export ANDROID_TOOLCHAIN="$ANDROID_NDK_HOME/standalone-toolchain-api14/"
 
 
-export ANDROID_HOME="/Users/peli3/android/android-sdk-macosx/"
+export ANDROID_HOME="$HOME/android/android-sdk-macosx/"
 
 export PATH=$PATH:"${ANDROID_TOOLCHAIN}/bin/":"${ANDROID_HOME}/platform-tools/"
 export PATH="$HOME/bin":"/usr/local/bin":$PATH
@@ -213,3 +213,19 @@ export ZSHHOME="$HOME/.zsh"
 alias emacs='TERM=xterm-256color emacs -nw'
 
 alias tw='open -a /Applications/TextWrangler.app/'
+
+#
+#function exists { which $1 &> /dev/null }
+#
+#if exists percol; then
+#    function percol_select_history() {
+#        local tac
+#        exists gtac && tac="gtac" || { exists tac && tac="tac" || { tac="tail -r" } }
+#        BUFFER=$(fc -l -n 1 | eval $tac | percol --query "$LBUFFER")
+#        CURSOR=$#BUFFER         # move cursor
+#        zle -R -c               # refresh
+#    }
+#
+#    zle -N percol_select_history
+#    bindkey '^R' percol_select_history
+#fi
