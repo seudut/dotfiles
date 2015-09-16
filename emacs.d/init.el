@@ -138,3 +138,9 @@
 (require 'page-break-lines)
 ;(turn-on-page-break-lines-mode)
 (global-page-break-lines-mode 1)
+
+;(setq projectile-completion-system 'helm)
+;(helm-projectile-on)
+
+
+;; show projectile name in mode-line
