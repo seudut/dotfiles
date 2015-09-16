@@ -36,16 +36,19 @@
 (evil-leader/set-leader "s")
 (evil-leader/set-key "j" 'helm-mini)
 (evil-leader/set-key "k" 'helm-find-files)
+(evil-leader/set-key "h" 'persp-switch)
+(evil-leader/set-key "l" 'persp-switch)
+(evil-leader/set-key "g" 'persp-switch)
 
 (setq key-chord-two-keys-delay 0.5)
 (key-chord-define evil-insert-state-map "jj" 'evil-normal-state)
 (key-chord-define evil-emacs-state-map "jj" 'evil-normal-state)
 
 
-(key-chord-define evil-normal-state-map ";w" 'save-buffer)
-(key-chord-define evil-normal-state-map ";s" 'split-window-below)
+;(key-chord-define evil-normal-state-map ";w" 'save-buffer)
+;(key-chord-define evil-normal-state-map "ss" 'split-window-below)
 (key-chord-define evil-normal-state-map ";v" 'split-window-right)
-(key-chord-define evil-normal-state-map ";;" 'helm-find-files)
+;(key-chord-define evil-normal-state-map ";;" 'helm-find-files)
 
 (key-chord-mode 1)
 

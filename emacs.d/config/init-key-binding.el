@@ -33,23 +33,23 @@
 ;(key-chord-define-global "sk" 'helm-find-files)
 
 
-(key-chord-define-global "JJ" 'save-buffer)
-(key-chord-define-global "HH" 'save-buffer)
-(key-chord-define-global "KK" 'save-buffer)
-(key-chord-define-global "LL" 'save-buffer)
-(key-chord-define-global "LL" 'save-buffer)
-(key-chord-define-global "UU" 'save-buffer)
-(key-chord-define-global "II" 'save-buffer)
-(key-chord-define-global "OO" 'save-buffer)
-(key-chord-define-global "NN" 'save-buffer)
-(key-chord-define-global "MM" 'save-buffer)
-(key-chord-define-global "PP" 'save-buffer)
-(key-chord-define-global "YY" 'save-buffer)
+;(key-chord-define-global "JJ" 'save-buffer)
+;(key-chord-define-global "HH" 'save-buffer)
+;(key-chord-define-global "KK" 'save-buffer)
+;(key-chord-define-global "LL" 'save-buffer)
+;(key-chord-define-global "LL" 'save-buffer)
+;(key-chord-define-global "UU" 'save-buffer)
+;(key-chord-define-global "II" 'save-buffer)
+;(key-chord-define-global "OO" 'save-buffer)
+;(key-chord-define-global "NN" 'save-buffer)
+;(key-chord-define-global "MM" 'save-buffer)
+;(key-chord-define-global "PP" 'save-buffer)
+;(key-chord-define-global "YY" 'save-buffer)
 
 
 
 
-(key-chord-define minibuffer-local-map "qq" "\C-g")
+;(key-chord-define minibuffer-local-map "qq" "\C-g")
 
 
 (key-chord-define minibuffer-local-map "jj"  'keyboard-escape-quit)
@@ -150,19 +150,6 @@
 ;(global-set-key (kbd "<escape> M-j") 'find-file)
 ;(global-set-key (kbd "<escape> M-k") 'find-file)
 ;(global-set-key (kbd "<escape> M-l") 'find-file)
-
-
-
-(defvar sacha/windmove-map (make-sparse-keymap))
-(define-key sacha/windmove-map "h" 'windmove-left)
-(define-key sacha/windmove-map "t" 'windmove-up)
-(define-key sacha/windmove-map "n" 'windmove-down)
-(define-key sacha/windmove-map "s" 'windmove-right)
-(define-key sacha/windmove-map "[left]" 'windmove-left)
-(define-key sacha/windmove-map "[up]" 'windmove-up)
-(define-key sacha/windmove-map "[down]" 'windmove-down)
-(define-key sacha/windmove-map "[right]" 'windmove-right)
-;(key-chord-define-global "yy"     sacha/windmove-map)
 
 
 
