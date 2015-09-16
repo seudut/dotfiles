@@ -10,8 +10,8 @@ print "-n $options{n}\n" if defined $options{n};
 
 my $ip = (split / /, `ifconfig | grep "inet .*broadcast"`)[1];
 
-my $cpve_dir = '/Users/peli3/CPVE/cpve_trunk/';
-my $ecc_dir = '/Users/peli3/JCC/ecc-p2p/';
+my $cpve_dir = '/Users/peli3-imac/CPVE/cpve_trunk/';
+my $ecc_dir = '/Users/peli3-imac/JCC/ecc-p2p-mac/';
 
 my $ecc_mac_libs = "$ecc_dir/contrib/cpve/lib/darwin/x86_64";
 my $cpve_mac_libs = "$cpve_dir/target/dist/lib/darwin/x86_64";
@@ -40,6 +40,7 @@ else
 
 #### building ecc
 chdir $ecc_dir or die ": $!";
+!system "rm $ecc_dir/contrib/cpve/SConstruct" or die "$!" if -e "$ecc_dir/contrib/cpve/SConstruct";
 !system "python runSconsBuild.py JabberMac64Bit  -j 16  -t no --early_cpve --nofetch"     or die " building ECC failed : $!";
 
 print "copy bin-s bin-c\n";
@@ -58,11 +59,3 @@ close CONF;
 
 
 print "####### DONE #######\n";
-
-#sub get_local_ip{
-#    my @cc = (split / /, `ifconfig | grep "inet .*broadcast"`)[1];
-##    @cc[1]; ## return value
-##    return @cc[1];
-#}
-
-#print CONF "P2P_SERVER_IP=" . &get_local_ip . "\n";
