@@ -83,6 +83,7 @@
                   (grep-mode . emacs)
                   (bc-menu-mode . emacs)
                   (magit-branch-manager-mode . emacs)
+                  (magit-popup-mode . emacs)
                   (rdictcc-buffer-mode . emacs)
                   (dired-mode . emacs)
                   (wdired-mode . normal)
