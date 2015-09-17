@@ -15,7 +15,8 @@
 (helm-projectile-on)
 
 
-(setq projectile-switch-project-action 'helm-projectile-find-file)
+;(setq projectile-switch-project-action 'helm-projectile-find-file)
+(setq projectile-switch-project-action 'projectile-dired)
 
 ;; with - perspective
 (persp-mode)

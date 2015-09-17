@@ -259,14 +259,15 @@
                             (list
                                 (funcall separator-right face1 mode-line)
 				;;  position
-                                (powerline-raw (concat "%3c, %l/" (format "%d" (count-lines (point-min) (point-max))) " %4p ") mode-line)
+;;				(powerline-raw (concat " [" (powerline-format-default-directory default-directory) "] ") mode-line)
+                                (powerline-raw (format " P:[%s] " (projectile-project-name))  mode-line)
 				                (funcall separator-right mode-line face-blue)
 				;; pwd/workgroups
-				(powerline-raw (concat " [" (powerline-format-default-directory default-directory) "] ") face-blue )
-				                (funcall separator-right face-blue face1)
+                                (powerline-raw (concat "%3c, %l/" (format "%d" (count-lines (point-min) (point-max))) " %4p ") face-blue)
+;				                (funcall separator-right face-blue face1)
                                 ;; date and time
-			                    (powerline-raw (format-time-string " %m-%d") face1 'r)
-                                (funcall separator-right face1 face-yel)
+;;;			                    (powerline-raw (format-time-string " %m-%d") face1 'r)
+                                (funcall separator-right face-blue face-yel)
 			                    (powerline-raw (format-time-string " %I:%M %p %a ") face-yel 'r)))
                         (center
                             (list
