@@ -86,6 +86,7 @@
                   (magit-popup-mode . emacs)
                   (rdictcc-buffer-mode . emacs)
                   (dired-mode . emacs)
+                  (text-mode . emacs)
                   (wdired-mode . normal)
 ;			    (inferior-emacs-lisp-mode . emacs)
 ;			    (wdired-mode . normal)
