@@ -268,7 +268,7 @@
                                 ;; date and time
 ;;;			                    (powerline-raw (format-time-string " %m-%d") face1 'r)
                                 (funcall separator-right face-blue face-yel)
-			                    (powerline-raw (format-time-string " %I:%M %p %a ") face-yel 'r)))
+			                    (powerline-raw (format-time-string " %I:%M %p %m-%d %a ") face-yel 'r)))
                         (center
                             (list
                                 (powerline-raw " " face1)
