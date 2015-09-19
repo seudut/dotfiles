@@ -2,8 +2,37 @@
 
 (require 'key-chord)
 
-;(setq key-chord-two-keys-delay 0.2)
+(setq mac-command-modifier 'super) ; make cmd key do Meta
 
+(global-set-key (kbd "<s-return>") 'toggle-frame-fullscreen)
+
+;; global swith project - plugin projectile
+(global-set-key (kbd "s-t") 'helm-projectile-switch-project)
+(global-set-key (kbd "s-n") 'persp-next)
+(global-set-key (kbd "s-p") 'persp-prev)
+;(global-set-key (kbd "s-m") 'helm-projectile-switch-project)
+
+;;; global key mapping, windows buffer, tab, project
+(defun pl-make-keymap (key bindings)
+  (setq keymap (make-sparse-keymap))
+  (dolist (binding bindings)
+    (define-key keymap (car binding) (cdr binding)))
+  (global-set-key key keymap))
+
+;; Esc s or M-s as prefix key
+(pl-make-keymap "\M-s"
+            '(("j" . helm-projectile-switch-to-buffer)
+	      ("h" . persp-switch)
+	      ("k" . helm-find-files)
+	      ("f" . helm-ls-git-ls)
+	      ("w" . save-buffer)
+	      ("q" . helm-find-files)
+	      ("-" . split-window-below)
+	      ("\\" . split-window-right)
+	      ("o" . occur)
+	      ("b" . helm-find-files)))
+
+;(setq key-chord-two-keys-delay 0.2)
 ;; from emacs conference 2015 workshop
 (defun keychord-keymap (keychord bindings)
   (setq keymap (make-sparse-keymap))
@@ -67,26 +96,6 @@
 
 
 
-;;; global key mapping, windows buffer, tab, project
-;;;
-(defun pl-make-keymap (key bindings)
-  (setq keymap (make-sparse-keymap))
-  (dolist (binding bindings)
-    (define-key keymap (car binding) (cdr binding)))
-  (global-set-key key keymap))
-
-;; ESC s j
-(pl-make-keymap "\M-s"
-            '(("j" . helm-mini)
-	      ("k" . helm-find-files)
-	      ("w" . save-buffer)
-	      ("q" . helm-find-files)
-	      ("-" . split-window-below)
-	      ("\\" . split-window-right)
-;	      ("\M-s" . split-window-below)
-;	      ("\M-v" . split-window-right)
-	      ("o" . occur)
-	      ("b" . helm-find-files)))
 
 ;; ESC ; j M-; add comment, 
 (pl-make-keymap "\M-;"
@@ -164,15 +173,7 @@
 
 
 
-(setq mac-command-modifier 'super) ; make cmd key do Meta
 
-
-
-;; super key for elscreen tabs
-(global-set-key (kbd "<s-return>") 'toggle-frame-fullscreen)
-(global-set-key (kbd "s-t") 'elscreen-create)
-(global-set-key (kbd "s-n") 'elscreen-next)
-(global-set-key (kbd "s-p") 'elscreen-previous)
 ;;(global-set-key (kbd "s-k") (lambda () (interactive) (elscreen-kill (elscreen-get-current-screen))))
 ;;(global-set-key (kbd "s-d") (lambda () (interactive) (elscreen-kill (elscreen-get-current-screen))))
 ;; C-c C-d

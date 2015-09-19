@@ -5,12 +5,8 @@
 
 (require 'evil)
 (defalias 'evil-insert-state 'evil-emacs-state)
-;; C-o C-o switch to normal mode, defined in config/init-key-binding.el
-;;;(global-set-key (kbd "C-o C-o") 'evil-normal-state)
 
 ;;https://github.com/toumorokoshi/yt.rc/blob/master/emacs/my-evil.el
-;; let's disable keymaps we don't want.
-;; basically, anything that uses C or M
 (define-key evil-visual-state-map "\C-w" nil)
 ;(define-key evil-normal-state-map (kbd "M-.") nil)
 (define-key evil-normal-state-map "\C-t" nil)
@@ -23,22 +19,30 @@
 (define-key evil-normal-state-map "\C-o" nil)
 
 
-
-
 ;; M-e not works correctly in evil-normal mode, this fix it
 (define-key evil-normal-state-map "\M-e" (lambda() (interactive)
 					   (forward-sentence 2)))
 (define-key evil-motion-state-map "\C-e" (move-end-of-line 1))
 
 
-
+;; most common keys in normal-mode to swith buffer, project, windows,
+;; in emacs mode, Esc + s + x, the same
 (global-evil-leader-mode)
 (evil-leader/set-leader "s")
-(evil-leader/set-key "j" 'helm-mini)
-(evil-leader/set-key "k" 'helm-find-files)
+;(evil-leader/set-key "j" 'helm-mini)
+(evil-leader/set-key "j" 'helm-projectile-switch-to-buffer)
 (evil-leader/set-key "h" 'persp-switch)
-(evil-leader/set-key "l" 'persp-switch)
-(evil-leader/set-key "g" 'persp-switch)
+(evil-leader/set-key "k" 'helm-find-files)
+(evil-leader/set-key "ff" 'helm-ls-git-ls)
+(evil-leader/set-key "fb" 'helm-mini)
+;(evil-leader/set-key "p" 'helm-projectile-switch-project)
+
+;(define-key evil-normal-state-map "\M-n" 'persp-next)
+;(define-key evil-normal-state-map "\M-p" 'persp-prev)
+
+
+;(evil-leader/set-key "l" 'persp-switch)
+;(evil-leader/set-key "g" 'persp-switch)
 
 (setq key-chord-two-keys-delay 0.5)
 (key-chord-define evil-insert-state-map "jj" 'evil-normal-state)
@@ -46,7 +50,7 @@
 
 
 ;(key-chord-define evil-normal-state-map ";w" 'save-buffer)
-;(key-chord-define evil-normal-state-map "ss" 'split-window-below)
+(key-chord-define evil-normal-state-map ";s" 'split-window-below)
 (key-chord-define evil-normal-state-map ";v" 'split-window-right)
 ;(key-chord-define evil-normal-state-map ";;" 'helm-find-files)
 
@@ -60,6 +64,12 @@
 ;(define-key minibuffer-local-completion-map [escape] 'minibuffer-keyboard-quit)
 ;(define-key minibuffer-local-must-match-map [escape] 'minibuffer-keyboard-quit)
 ;(define-key minibuffer-local-isearch-map [escape] 'minibuffer-keyboard-quit)
+
+
+
+;; implement some missing vim normal command
+;; g-; - goto last change
+;; g
 
 
 ;; cursor shape
