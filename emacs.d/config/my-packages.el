@@ -63,6 +63,8 @@
     projectile
     page-break-lines
     helm-projectile
+    paradox
+    diff-hl
   ) "a list of packages to ensure are installed at launch.")
 
 (require 'cl)
@@ -106,5 +108,6 @@
 
 (el-get-bundle emacsmirror/sr-speedbar)
 (el-get-bundle seudut/elscreen)
+(el-get-bundle seudut/helm-cmd-t)
 
 (provide 'my-packages)
