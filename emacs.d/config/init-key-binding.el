@@ -23,7 +23,7 @@
 (pl-make-keymap "\M-s"
             '(("j" . helm-projectile-switch-to-buffer)
 	      ("h" . persp-switch)
-	      ("k" . helm-find-files)
+	      ("k" . helm-cmd-t)
 	      ("f" . helm-ls-git-ls)
 	      ("w" . save-buffer)
 	      ("q" . helm-find-files)

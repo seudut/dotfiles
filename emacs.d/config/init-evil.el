@@ -29,15 +29,15 @@
 ;; in emacs mode, Esc + s + x, the same
 (global-evil-leader-mode)
 (evil-leader/set-leader "s")
-;(evil-leader/set-key "j" 'helm-mini)
 (evil-leader/set-key "j" 'helm-projectile-switch-to-buffer)
 (evil-leader/set-key "h" 'persp-switch)
-(evil-leader/set-key "k" 'helm-find-files)
-(evil-leader/set-key "ff" 'helm-ls-git-ls)
-(evil-leader/set-key "fb" 'helm-mini)
+(evil-leader/set-key "k" 'helm-cmd-t)
+(evil-leader/set-key "f" 'helm-ls-git-ls)
+(evil-leader/set-key "b" 'helm-mini)
+;(evil-leader/set-key "j" 'helm-mini)
 ;(evil-leader/set-key "p" 'helm-projectile-switch-project)
 
-;(define-key evil-normal-state-map "\M-n" 'persp-next)
+;(define-key evil-normal-state-map "M-n" 'persp-next)
 ;(define-key evil-normal-state-map "\M-p" 'persp-prev)
 
 
