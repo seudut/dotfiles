@@ -16,3 +16,9 @@ config/init-my-theme-2.el
 config/my-color-theme.el
 \#*
 temp/*
+history
+irony/*
+projectile.cache
+site-lisp/*
+Emacs-PDE*
+helm-adaptive-history
