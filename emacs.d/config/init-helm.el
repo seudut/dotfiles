@@ -1,7 +1,10 @@
 
 (require 'helm)
 (require 'helm-config)
-(require 'helm-adaptive)
+
+
+
+;(require 'helm-adaptive)
 (helm-mode 1)
 
 ;; helm-M-x
@@ -18,7 +21,7 @@
 ;(global-set-key (kbd "C-x C-f") 'helm-find-files)
 ;;(global-set-key (kbd "C-o C-f") 'helm-find-files)
 
-
+(setq helm-candidate-number-limit 30)
 
 ;; http://stackoverflow.com/questions/9992475/how-to-show-anything-buffers-always-in-new-window
 (setq helm-display-function
@@ -46,12 +49,13 @@
 ;;j;(defun helm-buffer-face-mode ()
 ;;j;  "Helm buffer face"
 ;;j;  (interactive)
-;;j;  (with-helm-buffer
-;;j;  (setq line-spacing 2)
+;;j;  (with-helm-buffer ;;j;  (setq line-spacing 2)
 ;;j;  (buffer-face-set '(:family "Source Code Pro" :height 100))))
 							      
 
 ;;;(add-hook 'helm-update-hook 'helm-buffer-face-mode)
 
+(require 'helm-cmd-t)
+(require 'helm-C-x-b)
 
 (provide 'init-helm)
