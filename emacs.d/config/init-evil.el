@@ -4,6 +4,7 @@
 ;;
 
 (require 'evil)
+
 (defalias 'evil-insert-state 'evil-emacs-state)
 
 ;;https://github.com/toumorokoshi/yt.rc/blob/master/emacs/my-evil.el
@@ -32,7 +33,7 @@
 (evil-leader/set-key "j" 'helm-projectile-switch-to-buffer)
 (evil-leader/set-key "h" 'persp-switch)
 (evil-leader/set-key "k" 'helm-cmd-t)
-(evil-leader/set-key "f" 'helm-ls-git-ls)
+;(evil-leader/set-key "f" 'helm-ls-git-ls)
 (evil-leader/set-key "b" 'helm-mini)
 ;(evil-leader/set-key "j" 'helm-mini)
 ;(evil-leader/set-key "p" 'helm-projectile-switch-project)

@@ -10,9 +10,13 @@
 (global-set-key (kbd "s-t") 'helm-projectile-switch-project)
 (global-set-key (kbd "s-n") 'persp-next)
 (global-set-key (kbd "s-p") 'persp-prev)
-;(global-set-key (kbd "s-m") 'helm-projectile-switch-project)
+(global-set-key (kbd "s-h") 'persp-switch)
+(global-set-key (kbd "s-j") 'helm-projectile-switch-to-buffer)
+(global-set-key (kbd "s-k") 'helm-cmd-t)
+;(global-set-key (kbd "s-m") 'helm-cmd-t)
+;(global-set-key (kbd "s-u") 'helm-cmd-t)
 
-;;; global key mapping, windows buffer, tab, project
+
 (defun pl-make-keymap (key bindings)
   (setq keymap (make-sparse-keymap))
   (dolist (binding bindings)
@@ -24,7 +28,6 @@
             '(("j" . helm-projectile-switch-to-buffer)
 	      ("h" . persp-switch)
 	      ("k" . helm-cmd-t)
-	      ("f" . helm-ls-git-ls)
 	      ("w" . save-buffer)
 	      ("q" . helm-find-files)
 	      ("-" . split-window-below)
@@ -189,15 +192,15 @@
 (global-set-key (kbd "s-8") (lambda () (interactive) (elscreen-goto 8)))
 
 ;; super key for windows
-(global-set-key (kbd "s-l") 'split-window-below)
-(global-set-key (kbd "s-h") 'split-window-right)
-(global-set-key (kbd "s-i") 'other-window)
-(global-set-key (kbd "s-j") 'delete-other-windows)
+;(global-set-key (kbd "s-l") 'split-window-below)
+;(global-set-key (kbd "s-h") 'split-window-right)
+;(global-set-key (kbd "s-i") 'other-window)
+;(global-set-key (kbd "s-j") 'delete-other-windows)
 
-(global-set-key (kbd "s-k") (lambda () (interactive)
-			      (split-window-right)
-			      (other-window 1)
-			      (ido-find-file)))
+;(global-set-key (kbd "s-k") (lambda () (interactive)
+;			      (split-window-right)
+;			      (other-window 1)
+;			      (ido-find-file)))
 				
 			      
 
