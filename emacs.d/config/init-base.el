@@ -41,6 +41,7 @@
 	    (linum-mode -1)))
 
 ;; Dired mode
+(require 'dired+)
 ;; create new file  key map
 (define-key dired-mode-map "c" 'find-file)
 ;; ^ goto-up directory

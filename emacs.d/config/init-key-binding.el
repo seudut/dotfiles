@@ -1,6 +1,5 @@
 ;; This  file is for some global key binding
 
-(require 'key-chord)
 
 (setq mac-command-modifier 'super) ; make cmd key do Meta
 
@@ -13,8 +12,6 @@
 (global-set-key (kbd "s-h") 'persp-switch)
 (global-set-key (kbd "s-j") 'helm-projectile-switch-to-buffer)
 (global-set-key (kbd "s-k") 'helm-cmd-t)
-;(global-set-key (kbd "s-m") 'helm-cmd-t)
-;(global-set-key (kbd "s-u") 'helm-cmd-t)
 
 
 (defun pl-make-keymap (key bindings)
@@ -43,7 +40,11 @@
     (helm-mini)))
   
 
-;(setq key-chord-two-keys-delay 0.2)
+;; key-chord
+(require 'key-chord)
+
+(setq key-chord-two-keys-delay 0.5)
+
 ;; from emacs conference 2015 workshop
 (defun keychord-keymap (keychord bindings)
   (setq keymap (make-sparse-keymap))
@@ -51,11 +52,6 @@
     (define-key keymap (car binding) (cdr binding)))
   (key-chord-define-global keychord keymap))
 
-
-
-
-;;; keychord
-;;;
 (defun switch-to-previous-buffer ()
   "Switch to previously open buffer. Repeated invocations toggle between the two most recently open buffers."
   (interactive)

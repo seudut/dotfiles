@@ -36,24 +36,15 @@
 ;(evil-leader/set-key "f" 'helm-ls-git-ls)
 (evil-leader/set-key "b" 'helm-mini)
 (evil-leader/set-key "m" 'helm-mini)
-;(evil-leader/set-key "p" 'helm-projectile-switch-project)
 
-;(define-key evil-normal-state-map "M-n" 'persp-next)
-;(define-key evil-normal-state-map "\M-p" 'persp-prev)
-
-
-;(evil-leader/set-key "l" 'persp-switch)
-;(evil-leader/set-key "g" 'persp-switch)
 
 (setq key-chord-two-keys-delay 0.5)
 (key-chord-define evil-insert-state-map "jj" 'evil-normal-state)
 (key-chord-define evil-emacs-state-map "jj" 'evil-normal-state)
 
 
-;(key-chord-define evil-normal-state-map ";w" 'save-buffer)
 (key-chord-define evil-normal-state-map ";s" 'split-window-below)
 (key-chord-define evil-normal-state-map ";v" 'split-window-right)
-;(key-chord-define evil-normal-state-map ";;" 'helm-find-files)
 
 (key-chord-mode 1)
 
@@ -67,20 +58,12 @@
 ;(define-key minibuffer-local-isearch-map [escape] 'minibuffer-keyboard-quit)
 
 
-
-;; implement some missing vim normal command
-;; g-; - goto last change
-;; g
-
-
-;; cursor shape
 (setq evil-emacs-state-cursor '("red" box))
 (setq evil-normal-state-cursor '("green" box))
 (setq evil-visual-state-cursor '("orange" box))
 (setq evil-insert-state-cursor '("red" bar))
 (setq evil-replace-state-cursor '("red" bar))
 (setq evil-operator-state-cursor '("red" hollow))
-;;Enter an emacs mode in a given state http://wikemacs.org/wiki/Evil
 (loop for (mode . state) in '(
                   (nrepl-mode . insert)
                   (pylookup-mode . emacs)

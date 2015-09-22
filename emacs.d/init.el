@@ -12,10 +12,10 @@
 (setq custom-file "~/.emacs.d/custom.el")
 (load custom-file 'noerror)
 
-(require 'init-base)
-(require 'init-font)
 
 (require 'my-packages)
+(require 'init-base)
+(require 'init-font)
 
 (require 'init-color-theme)
 ;(require 'init-ido)
@@ -187,4 +187,3 @@
 
 
 
-(require 'dired+)
