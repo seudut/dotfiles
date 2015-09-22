@@ -39,4 +39,15 @@
 (add-hook 'help-mode-hook
 	  (lambda ()
 	    (linum-mode -1)))
+
+;; Dired mode
+;; create new file  key map
+(define-key dired-mode-map "c" 'find-file)
+;; ^ goto-up directory
+;(define-key dired-mode-map "\C-c \C-u" ')
+
+(setq diredp-hide-details-initially-flag t)
+(setq diredp-hide-details-propagate-flag t)
+
+
 (provide 'init-base)
