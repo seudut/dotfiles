@@ -44,7 +44,7 @@
 ;; create new file  key map
 (define-key dired-mode-map "c" 'find-file)
 ;; ^ goto-up directory
-;(define-key dired-mode-map "\C-c \C-u" ')
+(define-key dired-mode-map (kbd "C-c C-u") 'dired-up-directory)
 
 (setq diredp-hide-details-initially-flag t)
 (setq diredp-hide-details-propagate-flag t)

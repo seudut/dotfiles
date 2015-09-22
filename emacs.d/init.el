@@ -7,6 +7,10 @@
 
 (add-to-list 'load-path "~/.emacs.d/config")
 
+;; remove custom setting out of init.el
+;; http://emacsblog.org/2008/12/06/quick-tip-detaching-the-custom-file/
+(setq custom-file "~/.emacs.d/custom.el")
+(load custom-file 'noerror)
 
 (require 'init-base)
 (require 'init-font)
@@ -144,3 +148,43 @@
 
 
 ;; show projectile name in mode-line
+
+
+(if (locate-library "ediff")
+    (progn
+      (autoload 'ediff-files "ediff")
+      (autoload 'ediff-buffers "ediff")
+
+       (eval-after-load "ediff" '(progn
+  			  (message "doing ediff customisation")
+			  (setq diff-switches               "-u"
+				ediff-custom-diff-options   "-U3"
+				ediff-split-window-function 'split-window-horizontally
+				ediff-window-setup-function 'ediff-setup-windows-plain)
+
+			  (add-hook 'ediff-startup-hook 'ediff-toggle-wide-display)
+			  (add-hook 'ediff-cleanup-hook 'ediff-toggle-wide-display)
+			  (add-hook 'ediff-suspend-hook 'ediff-toggle-wide-display)))))
+
+
+
+(defun update-diff-colors ()
+  "update the colors for diff faces"
+  (set-face-attribute 'diff-added nil
+                      :foreground "white" :background "blue")
+  (set-face-attribute 'diff-removed nil
+                      :foreground "white" :background "red3")
+  (set-face-attribute 'diff-changed nil
+                      :foreground "white" :background "purple"))
+(eval-after-load "diff-mode"
+  '(update-diff-colors))
+
+
+
+(require 'helm-ag)
+(require 'flx)
+(flx-ido-mode t)
+
+
+
+(require 'dired+)
