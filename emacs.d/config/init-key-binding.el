@@ -25,7 +25,7 @@
 
 ;; Esc s or M-s as prefix key
 (pl-make-keymap "\M-s"
-            '(("j" . helm-projectile-switch-to-buffer)
+            '(("j" . pl-switch-buffers)
 	      ("h" . persp-switch)
 	      ("k" . helm-cmd-t)
 	      ("w" . save-buffer)
@@ -34,6 +34,14 @@
 	      ("\\" . split-window-right)
 	      ("o" . occur)
 	      ("b" . helm-find-files)))
+
+;; if current is not a project, useing helm-mini instead
+(defun pl-switch-buffers ()
+  (interactive)
+  (if (projectile-project-p)
+      (helm-projectile-switch-to-buffer)
+    (helm-mini)))
+  
 
 ;(setq key-chord-two-keys-delay 0.2)
 ;; from emacs conference 2015 workshop
