@@ -231,3 +231,23 @@ alias tw='open -a /Applications/TextWrangler.app/'
 #fi
 export LANG='en_US.UTF-8'
 export LC_ALL="en_US.UTF-8"
+
+lftp-cp() {
+
+    server='cmbu-ftp.cisco.com'
+    user='cmbu'
+    pass='cisco123!@#'
+    home='/FTPServer/users/peli3'
+    dir=`date +%m%d`
+
+    localfile=$1;
+    remotefile=${home}/${dir}/$2;
+
+    echo "copy ${localfile} to ftp://${server}${remotefile}"
+    lftp -e "mkdir ${home}/${dir}; put ${localfile} -o  ${remotefile}; bye" -u $user,$pass $server
+}
+merge_logs() {
+    ls -rl jabber.log*  | awk '{print $9}' | Xargs cat >> full.log
+}
+
+export MANPATH=$MANPATH:/usr/local/man
