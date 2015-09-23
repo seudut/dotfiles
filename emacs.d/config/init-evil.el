@@ -33,7 +33,6 @@
 (evil-leader/set-key "j" 'pl-switch-buffers)
 (evil-leader/set-key "h" 'persp-switch)
 (evil-leader/set-key "k" 'helm-cmd-t)
-;(evil-leader/set-key "f" 'helm-ls-git-ls)
 (evil-leader/set-key "b" 'helm-mini)
 (evil-leader/set-key "m" 'helm-mini)
 
@@ -42,7 +41,6 @@
 (key-chord-define evil-insert-state-map "jj" 'evil-normal-state)
 (key-chord-define evil-emacs-state-map "jj" 'evil-normal-state)
 
-
 (key-chord-define evil-normal-state-map ";s" 'split-window-below)
 (key-chord-define evil-normal-state-map ";v" 'split-window-right)
 
@@ -50,13 +48,6 @@
 
 (define-key evil-normal-state-map [escape] 'keyboard-quit)
 (define-key evil-visual-state-map [escape] 'keyboard-quit)
-
-;(define-key minibuffer-local-map [escape] 'keyboard-escape-quit)
-;(define-key minibuffer-local-ns-map [escape] 'keyboard-escape-quit)
-;(define-key minibuffer-local-completion-map [escape] 'minibuffer-keyboard-quit)
-;(define-key minibuffer-local-must-match-map [escape] 'minibuffer-keyboard-quit)
-;(define-key minibuffer-local-isearch-map [escape] 'minibuffer-keyboard-quit)
-
 
 (setq evil-emacs-state-cursor '("red" box))
 (setq evil-normal-state-cursor '("green" box))
