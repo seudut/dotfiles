@@ -50,5 +50,6 @@
 (setq diredp-hide-details-initially-flag t)
 (setq diredp-hide-details-propagate-flag t)
 
+(setq term-buffer-maximum-size 10000)
 
 (provide 'init-base)
