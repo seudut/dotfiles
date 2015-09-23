@@ -38,7 +38,8 @@
 
 
 ;; Setup font size based on emacs-font-size-pair
-(set-font emacs-english-font emacs-cjk-font emacs-font-size-pair)
+(if (display-graphic-p)
+    (set-font emacs-english-font emacs-cjk-font emacs-font-size-pair))
 
 
 (defun emacs-step-font-size (step)
