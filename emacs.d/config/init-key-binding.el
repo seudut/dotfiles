@@ -84,10 +84,6 @@
 
 
 
-
-;(key-chord-define minibuffer-local-map "qq" "\C-g")
-
-
 (key-chord-define minibuffer-local-map "jj"  'keyboard-escape-quit)
 (key-chord-define minibuffer-local-ns-map "jj"  'keyboard-escape-quit)
 (key-chord-define minibuffer-local-isearch-map "jj"  'keyboard-escape-quit)
@@ -96,6 +92,16 @@
 (key-chord-define minibuffer-local-must-match-filename-map "jj"  'keyboard-escape-quit)
 (key-chord-define minibuffer-local-filename-completion-map "jj"  'keyboard-escape-quit)
 (key-chord-define minibuffer-local-filename-must-match-map "jj"  'keyboard-escape-quit)
+
+
+(define-key minibuffer-local-map [escape]  'keyboard-escape-quit)
+(define-key minibuffer-local-ns-map [escape]  'keyboard-escape-quit)
+(define-key minibuffer-local-isearch-map [escape]  'keyboard-escape-quit)
+(define-key minibuffer-local-completion-map [escape]  'keyboard-escape-quit)
+(define-key minibuffer-local-must-match-map [escape]  'keyboard-escape-quit)
+(define-key minibuffer-local-must-match-filename-map [escape]  'keyboard-escape-quit)
+(define-key minibuffer-local-filename-completion-map [escape]  'keyboard-escape-quit)
+(define-key minibuffer-local-filename-must-match-map [escape]  'keyboard-escape-quit)
 
 
 
@@ -211,18 +217,6 @@
 
 ;(global-set-key (kbd "M-g M-w") 'other-window)
 
-;;----------------------------------------------------------------------------
-;; C-o prefix binding for some File/Buffer switching/openning
-;;
-;;(global-unset-key "\C-o")
-;;(global-set-key (kbd "C-o C-o") 'keyboard-quit);; same as C-g to quit
-;;; c-o c-o swith to normal mode 
-;(global-set-key (kbd "C-o C-o") 'evil-normal-state)
-;;(global-set-key (kbd "C-o C-o") 'fiplr-find-file)
-;(global-set-key (kbd "C-o C-f") 'ido-find-file)
-;(global-set-key (kbd "C-o C-n") 'recentf-ido-find-file)
-;(global-set-key (kbd "C-o C-j") 'ido-switch-buffer)
-;(global-set-key (kbd "C-o C-j") 'ido-find-file)
 
 
 ;(global-set-key (kbd "C-o C-g") 'ggtags-find-file)
