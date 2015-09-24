@@ -9,10 +9,10 @@
 (setq multi-term-program "/bin/zsh")
 (setq system-uses-terminfo nil)
 
-(add-hook 'term-mode-hook
-          (lambda ()
-	    (linum-mode -1)
-	    (highlight-current-line-on nil)))
+;;(add-hook 'term-mode-hook
+;;          (lambda ()
+;;	    (linum-mode -1)
+;;	    (highlight-current-line-on nil)))
 
 
 (add-to-list 'term-bind-key-alist '("C-c C-n" . multi-term-next))
