@@ -1,4 +1,11 @@
 
+
+;; Added by Package.el.  This must come before configurations of
+;; installed packages.  Don't delete this line.  If you don't want it,
+;; just comment it out by adding a semicolon to the start of the line.
+;; You may delete these explanatory comments.
+(package-initialize)
+
 (setenv "PATH" (concat (getenv "PATH") ":/usr/local/bin"))
 (setq exec-path (append exec-path '("/usr/local/bin")))
 
@@ -17,17 +24,18 @@
 (require 'init-base)
 (require 'init-font)
 
-(require 'init-color-theme)
+;(require 'init-color-theme)
+(require 'init-color-theme-2)
 ;(require 'init-ido)
 (require 'init-magit)
-(require 'init-evil)
+;(require 'init-evil)
 (require 'init-project)
 (require 'init-ggtags)
 
 
 ;;;; conflict with C-c . in org-mode, disable it temporarily
 ;;;;(require 'init-c-cpp)
-(require 'init-key-binding)
+;(require 'init-key-binding)
 (require 'init-winner)
 (require 'init-minibuffer)
 (require 'init-eshell)
@@ -36,21 +44,21 @@
 ;;;(ac-linum-workaround)
 
 
-(require 'init-mode-line)
+;(require 'init-mode-line)
 ;(require 'init-workgroup2)
 (require 'init-perl)
 
 ;(add-to-list 'load-path "~/.emacs.d/Emacs-PDE-0.2.16/lisp/")
 ;(load "pde-load")                       ;
 
-(require 'init-linum)
+;(require 'init-linum)
 
 (require 'auto-complete)
 (require 'auto-complete-config)
 (ac-config-default)
 
 
-(require 'init-helm)
+;(require 'init-helm)
 
 ;; page break configuration
 ;(require 'pp-c-l)
@@ -137,7 +145,7 @@
 
 
 (require 'init-multi-term)
-(require 'init-projectile)
+;(require 'init-projectile)
 
 (require 'page-break-lines)
 ;(turn-on-page-break-lines-mode)
@@ -181,9 +189,9 @@
 
 
 
-(require 'helm-ag)
-(require 'flx)
-(flx-ido-mode t)
+;(require 'helm-ag)
+;(require 'flx)
+;(flx-ido-mode t)
 
 
 
