@@ -1,0 +1,23 @@
+
+** emacs change note
+
+**** config basic 
+
+**** color theme
+
+**** font family
+
+**** font size
+
+**** eshell config
+
+**** Org setting
+
+**** TODO
+
+- helm
+- projectile
+- 
+- 
+
+
