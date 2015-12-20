@@ -24,6 +24,7 @@
       (add-to-list 'eshell-visual-commands "ssh")
       (add-to-list 'eshell-visual-commands "tail")))
 
+; copied from howard's github
 (defun curr-dir-git-branch-string (pwd)
   "Returns current git branch as a string, or the empty string if
 PWD is not in a git repo (or the git command is not found)."
@@ -183,7 +184,10 @@ directory to make multiple eshell windows easier."
 
 
 
+;; alias
 
+(defalias 'e 'find-file)
+(defalias 'ee 'find-file-other-window)
 
 
 

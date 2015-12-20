@@ -17,6 +17,10 @@
 (setq resize-mini-windows t)
 (blink-cursor-mode 0)
 
+;(custom-set-variables
+; '(fringe-mode (quote (0 . 0)) nil (fringe)))
+
+(fringe-mode (quote (0 . 0)))
 
 (add-to-list 'auto-mode-alist '("emacs\\'" . emacs-lisp-mode))
 

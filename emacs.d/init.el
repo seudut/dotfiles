@@ -195,3 +195,4 @@
 
 
 
+(fringe-mode (quote (0 . 0)))
