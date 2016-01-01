@@ -1,6 +1,6 @@
 
 ;; http://coldnew.github.io/blog/2013/11/16_d2f3a.html
-(defvar emacs-english-font "Source Code Pro for Powerline"
+(defvar emacs-english-font "Source Code Pro for Powerline:weigth:light"
   "The font name of English.")
 
 (defvar emacs-cjk-font "Heiti SC"
@@ -38,8 +38,8 @@
 
 
 ;; Setup font size based on emacs-font-size-pair
-(if (display-graphic-p)
-    (set-font emacs-english-font emacs-cjk-font emacs-font-size-pair))
+;(if (display-graphic-p)
+;    (set-font emacs-english-font emacs-cjk-font emacs-font-size-pair))
 
 
 (defun emacs-step-font-size (step)
