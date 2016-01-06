@@ -90,7 +90,7 @@ alias ln='ln -i'
 #alias svn='colorsvn'
 alias sed='/usr/local/bin/gsed'
 
-alias 'git log'='git log  --oneline --graph --all --color --decorate --abbrev-commit'
+alias 'git-log'='git log  --oneline --graph --all --color --decorate --abbrev-commit'
 
 
 
