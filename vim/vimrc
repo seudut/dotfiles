@@ -26,7 +26,7 @@ Bundle 'vim-scripts/gtags.vim'
 Bundle 'kshenoy/vim-signature'
 Bundle 'nathanaelkane/vim-indent-guides'
 Bundle 'rking/ag.vim'
-Bundle 'payneseu/mark-2.8.4'
+"Bundle 'payneseu/mark-2.8.4'
 "Bundle 'derekwyatt/vim-fswitch'
 Bundle 'sjl/gundo.vim'
 Bundle 'tpope/vim-markdown'
@@ -296,6 +296,10 @@ nnoremap <silent> sr     :FufRenewCache<CR>
 
 "let g:ycm_collect_identifiers_from_tags_files = 1
 "let g:ycm_global_ycm_extra_conf = '~/.vim/bundle/YouCompleteMe/third_party/ycmd/cpp/ycm/.ycm_extra_conf.py'
+" this is fix youcompleteme python error
+"http://www.cnblogs.com/clivelee/p/4266559.html
+"https://github.com/Valloric/YouCompleteMe/issues/18
+let g:ycm_path_to_python_interpreter= '/System/Library/Frameworks/Python.framework/Versions/2.7/bin/python'
 let g:ycm_auto_trigger = 1
 let g:ycm_seed_identifiers_with_syntax = 1
 let g:ycm_show_diagnostics_ui = 0

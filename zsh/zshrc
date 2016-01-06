@@ -251,3 +251,9 @@ merge_logs() {
 }
 
 export MANPATH=$MANPATH:/usr/local/man
+
+
+## vim YouCompleteMe
+# https://github.com/Valloric/YouCompleteMe/issues/18
+#export DYLD_FORCE_FLAT_NAMESPACE=1
+
