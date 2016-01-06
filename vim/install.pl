@@ -1,11 +1,12 @@
 #!/usr/bin/perl -w
 
+## 1. git clone package manager Vundle
 my $vundle_url = "https://github.com/gmarik/Vundle.vim.git";
  
-system "cd bundle";
+chdir "bundle";
 system "git clone " . $vundle_url;
-system "ls -l";
-system "cd ..";
+
+## 2. install pacage
 
 
 #vim --cmd 'echo "aaaa"';
