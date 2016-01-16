@@ -513,7 +513,8 @@ autocmd FileType c,cpp setlocal foldmethod=syntax |
     \ let b:AutoClosePairs = AutoClose#DefaultPairsModified("\"", "{}") |
 	\ inoremap <buffer> { {<CR>}<ESC>kA<CR>|
     \ nnoremap <buffer> <silent> <C-]> :let word=expand("<cword>")<CR>:wincmd o<cr>:vsp<CR>:exec("tag ". word)<cr>zzzr:wincmd w<cr>
-autocmd FileType python setlocal foldmethod=indent
+autocmd FileType python setlocal foldmethod=indent |
+    \ set list
 
 autocmd FileType xml setlocal foldmethod=syntax |
 	\ let g:xml_syntax_folding=1
