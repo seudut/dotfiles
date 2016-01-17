@@ -17,7 +17,7 @@
 
 (fringe-mode (quote (0 . 0)))
 (add-to-list 'auto-mode-alist '("emacs\\'" . emacs-lisp-mode))
-
+(show-paren-mode t)
 ;(add-to-list 'default-frame-alist '(width  . 120))
 ;(add-to-list 'default-frame-alist '(height . 40))
 ;(add-to-list 'default-frame-alist '(font . "Source Code Pro for Powerline-12:weight:light" ))
@@ -48,7 +48,7 @@
 
 ;(setq scroll-margin 5)
 ;(setq scroll-conservatively 10000)
-;(show-paren-mode t)
+
 
 
 ;(add-hook 'help-mode-hook
