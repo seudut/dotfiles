@@ -22,3 +22,4 @@ projectile.cache
 site-lisp/*
 Emacs-PDE*
 helm-adaptive-history
+network-security.data

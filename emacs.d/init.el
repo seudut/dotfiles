@@ -6,16 +6,20 @@
 ;; You may delete these explanatory comments.
 ;(package-initialize)
 
-; (load-library "url-handlers")
+ (load-library "url-handlers")
 
 (setenv "PATH" (concat (getenv "PATH") ":/usr/local/bin"))
 (setq exec-path (append exec-path '("/usr/local/bin")))
 
 ;; package manager
 (require 'package)
+
 (add-to-list 'package-archives
              '("melpa" . "http://melpa.milkbox.net/packages/") t)
-
+(add-to-list 'package-archives
+             '("org" . "http://orgmode.org/elpa/") t)
+;(add-to-list 'package-archives
+;             '("marmalade" . "http://marmalade-repo.org/packages/") t)
 
 (package-initialize)
 
@@ -29,10 +33,15 @@
 ;;;;; load path
 (add-to-list 'load-path "~/.emacs.d/elisp")
 
+;;; load elisp config
 (require 'init-base)
 (require 'init-magit)
 
+(use-package ido-vertical-mode
+  :ensure t)
 
+(use-package helm
+  :ensure t)
 
 (use-package hydra
   :ensure t
@@ -243,7 +252,7 @@
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (yasnippet workgroups2 w3m use-package tangotango-theme tabbar smex session rich-minority relative-line-numbers recentf-ext projectile-speedbar pp-c-l powerline persp-projectile paradox page-break-lines org-cliplink org-caldav org-bullets multi-term monokai-theme molokai-theme moe-theme minibuffer-line markdown-mode magit linum-relative key-chord jekyll-modes irony iedit ido-vertical-mode ido-ubiquitous icicles hydra highlight-tail highlight-escape-sequences highlight-current-line helm-projectile helm-ls-svn helm-ls-git helm-gtags helm-ag google-c-style ggtags flyspell-lazy flymake-google-cpplint flymake-cursor flx-ido fiplr eyebrowse evil-leader evil-escape ecb dired+ diff-hl cyberpunk-theme company color-theme-sanityinc-tomorrow color-theme color-identifiers-mode auto-complete-c-headers ace-window ace-jump-mode))))
+    (helm yasnippet workgroups2 w3m use-package tangotango-theme tabbar smex session rich-minority relative-line-numbers recentf-ext projectile-speedbar pp-c-l powerline persp-projectile paradox page-break-lines org-cliplink org-caldav org-bullets multi-term monokai-theme molokai-theme moe-theme minibuffer-line markdown-mode magit linum-relative key-chord jekyll-modes irony iedit ido-vertical-mode ido-ubiquitous icicles hydra highlight-tail highlight-escape-sequences highlight-current-line helm-projectile helm-ls-svn helm-ls-git helm-gtags helm-ag google-c-style ggtags flyspell-lazy flymake-google-cpplint flymake-cursor flx-ido fiplr eyebrowse evil-leader evil-escape ecb dired+ diff-hl cyberpunk-theme company color-theme-sanityinc-tomorrow color-theme color-identifiers-mode auto-complete-c-headers ace-window ace-jump-mode))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
