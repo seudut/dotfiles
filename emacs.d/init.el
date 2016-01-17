@@ -36,12 +36,20 @@
 ;;; load elisp config
 (require 'init-base)
 (require 'init-magit)
+(require 'init-helm)
+(require 'init-projectile)
+
+
+
+
+
+
+
+
 
 (use-package ido-vertical-mode
   :ensure t)
 
-(use-package helm
-  :ensure t)
 
 (use-package hydra
   :ensure t
