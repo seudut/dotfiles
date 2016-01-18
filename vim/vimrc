@@ -295,7 +295,7 @@ nnoremap <silent> sr     :FufRenewCache<CR>
 "syntax on, must before the YCM,
 
 "let g:ycm_collect_identifiers_from_tags_files = 1
-"let g:ycm_global_ycm_extra_conf = '~/.vim/bundle/YouCompleteMe/third_party/ycmd/cpp/ycm/.ycm_extra_conf.py'
+let g:ycm_global_ycm_extra_conf = '~/.vim/bundle/YouCompleteMe/third_party/ycmd/cpp/ycm/.ycm_extra_conf.py'
 " this is fix youcompleteme python error
 "http://www.cnblogs.com/clivelee/p/4266559.html
 "https://github.com/Valloric/YouCompleteMe/issues/18
