@@ -16,7 +16,8 @@
   :config
   (helm-mode 1)
   (helm-autoresize-mode 1)
-  :bind (("M-x" . helm-M-x)))
+  :bind (("M-x" . helm-M-x)
+	 ("s-j" . helm-mini)))
 
 
 

@@ -1,6 +1,7 @@
 
 
 ;; http://batsov.com/projectile/
+;; Todo add svn repo support
 
 (use-package projectile
   :ensure t
@@ -17,7 +18,9 @@
   :init
   (setq helm-projectile-fuzzy-match nil)
   :config
-  (helm-projectile-on))
+  (helm-projectile-on)
+  :bind (("s-f" . helm-projectile-find-file)
+	 ("s-b" . helm-projectile-switch-to-buffer)))
 
 (use-package perspective
   :ensure t
@@ -26,10 +29,8 @@
 
 (use-package persp-projectile
   :ensure t
-  :defer t)
-
-
-;; (define-key projectile-mode-map (kbd "s-s") 'projectile-persp-switch-project)
+  :config
+  (define-key projectile-mode-map (kbd "s-p") 'projectile-persp-switch-project))
 
 
 (provide 'init-projectile)
