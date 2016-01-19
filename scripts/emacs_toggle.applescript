@@ -1,3 +1,7 @@
+
+## this scirpt works together with Quicksilver
+## copy/link this file to ~/Library/Application Support/Quicksilver/Action
+## and set a toggle event on Quicksilver preference
 #tell application "System Events"
 #    tell application process "Emacs"
 #        if visible then
