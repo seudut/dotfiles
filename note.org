@@ -1,23 +1,27 @@
 
-** emacs change note
+#+TITLE: Emacs configure 
 
-**** config basic 
+#+STARTUP: indent
 
-**** color theme
 
-**** font family
 
-**** font size
+** config basic
 
-**** eshell config
+*** color theme
 
-**** Org setting
+*** font
 
-**** TODO
+** Magit
 
-- helm
-- projectile
-- 
-- 
+** eshell config
+
+** projectile
+
+** Org setting
+
+** Keybinding
+
+** Motion
+
 
 

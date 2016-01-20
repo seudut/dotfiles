@@ -38,6 +38,7 @@
 (require 'init-magit)
 (require 'init-helm)
 (require 'init-projectile)
+(require 'init-org)
 
 
 
