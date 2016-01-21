@@ -4,9 +4,18 @@
 
 (add-to-list 'auto-mode-alist '("\\.\\(org\\|org_archive\\|txt\\)$" . org-mode))
 
+;;; better map to M-c instead of C-c, since M-c is more easy
+;;(global-set-key "M-cqc" 'org-capture) or M-o c
 (global-set-key "\C-cl" 'org-store-link)
 (global-set-key "\C-ca" 'org-agenda)
 (global-set-key "\C-cb" 'org-iswitchb)
+
+
+;; better use hydra define these
+(global-unset-key "\M-o")
+(global-set-key (kbd "M-o a") 'org-agenda)
+(global-set-key (kbd "M-o b") 'org-iswitchb)
+(global-set-key (kbd "M-o c") 'org-capture)
 
 
 (global-set-key (kbd "<f12>") 'org-agenda)

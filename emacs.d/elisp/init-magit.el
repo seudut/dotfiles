@@ -2,7 +2,9 @@
 
 (use-package magit
   :ensure t
-  :defer t)
+  :bind (("M-g s" . magit-status)))
+  
+
 
 
 
