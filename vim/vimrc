@@ -524,7 +524,7 @@ autocmd FileType vim setlocal foldmethod=marker |
 
 autocmd FileType perl setlocal foldmethod=syntax |
     \ let b:AutoClosePairs = AutoClose#DefaultPairsModified("\"", "{}") |
-	\ inoremap <buffer> { {<CR>}<ESC>kA<CR>
+	\ inoremap <buffer> {<CR> {<CR>}<ESC>kA<CR>
 
 autocmd Filetype markdown setlocal textwidth=80
 
@@ -693,3 +693,5 @@ nnoremap <Leader>m  :marks abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ<
 "                          \ 'undo', 'line', 'changes', 'mixed', 'bookmarkdir']
 
 
+"" TODO: 
+""
