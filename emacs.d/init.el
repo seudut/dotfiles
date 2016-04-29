@@ -64,6 +64,12 @@
   :init
   (bind-key "C-." 'ace-jump-mode))
 
+(use-package sublime-themes
+  :ensure t
+  :config
+  (load-theme 'spolsky t)
+  )
+
 
 
 
