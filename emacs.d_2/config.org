@@ -1,0 +1,69 @@
+#+TITLE: Emacs Configuration file
+#+AUTHOR: Peng Li
+#+EMAIL: seudut@gmail.com
+
+#+STARTUP: indent
+
+* Basic Settings
+
+** Setting Path
+
+Set the system PATH environment  
+
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+
+  (setenv "PATH" (concat (getenv "PATH") ":/usr/local/bin"))
+
+#+END_SRC
+
+Set the emacs load path
+
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+
+  (add-to-list 'load-path "~/.emacs.d/elisp")
+
+#+END_SRC
+
+** Windows Setting
+
+Disable scroll bar, tool-bar and menu-bar
+
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+
+  (scroll-bar-mode -1)
+  (tool-bar-mode -1)
+  (menu-bar-mode -1)
+
+#+END_SRC
+
+** Package Initialization
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+
+  (require 'package)
+
+  (setq package-archives '(("mepla" . "http://melpa.milkbox.net/packages/")
+                           ("org" . "http://orgmode.org/elpa/")))
+
+  (package-initialize)
+
+#+END_SRC
+
+* Use-package
+
+Using [[https://github.com/jwiegley/use-package][use-package]] to manage emacs packages
+
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+
+  (unless (package-installed-p 'use-package)
+    (package-refresh-contents)
+    (package-install 'use-package))
+
+  (require 'use-package)
+
+
+#+END_SRC
+
+* Org-mode Settings
+
+
