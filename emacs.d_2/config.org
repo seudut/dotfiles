@@ -26,6 +26,19 @@ Set the emacs load path
 
 #+END_SRC
 
+** Package Initialization
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+
+  (require 'package)
+
+  (setq package-archives '(("mepla" . "http://melpa.milkbox.net/packages/")
+                           ("org" . "http://orgmode.org/elpa/")))
+
+  (package-initialize)
+
+#+END_SRC
+
 ** Windows Setting
 
 Disable scroll bar, tool-bar and menu-bar
@@ -41,19 +54,6 @@ Disable scroll bar, tool-bar and menu-bar
 
   (defalias 'yes-or-no-p 'y-or-n-p)
 
-
-#+END_SRC
-
-** Package Initialization
-
-#+BEGIN_SRC emacs-lisp :tangle yes
-
-  (require 'package)
-
-  (setq package-archives '(("mepla" . "http://melpa.milkbox.net/packages/")
-                           ("org" . "http://orgmode.org/elpa/")))
-
-  (package-initialize)
 
 #+END_SRC
 
@@ -146,7 +146,7 @@ Setting the fonts
   (if window-system
       (when sd/fixed-font-family
         (set-frame-font sd/fixed-font-family)
-        (set-face-attribute 'default nil :font sd/fixed-font-family :height 150)
+        (set-face-attribute 'default nil :font sd/fixed-font-family :height 140)
         (set-face-font 'default sd/fixed-font-family)))
 
 #+END_SRC
@@ -178,6 +178,7 @@ Always indents header, and hide header leading starts so that no need type =#+ST
   (setq org-hide-leading-starts t)
   ;(setq org-src-fontify-natively t)
   (setq org-src-tab-acts-natively t)
+  (setq org-confirm-babel-evaluate nil)
 
 #+END_SRC
 
@@ -185,3 +186,72 @@ Always indents header, and hide header leading starts so that no need type =#+ST
 
 ** Capture
 
+* Magit
+
+[[https://github.com/magit/magit][Magit]] is a very cool git interface on Emacs.
+
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+
+  (use-package magit
+    :ensure t
+    :commands magit-status magit-blame)
+
+
+#+END_SRC
+
+* IDO & SMEX
+
+** IDO
+
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+
+  (use-package ido
+    :ensure t
+    :init (setq ido-enable-flex-matching t
+                ido-ignore-extensions t
+                ido-use-virtual-buffers t
+                ido-everywhere t)
+    :config
+    (ido-mode 1)
+    (ido-everywhere 1)
+    (add-to-list 'completion-ignored-extensions ".pyc"))
+
+#+END_SRC
+
+** FLX
+
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+
+  (use-package flx-ido
+    :ensure t
+    :init (setq ido-enable-flex-matching t
+                ido-use-faces nil)
+    :config (flx-ido-mode 1))
+
+#+END_SRC
+
+** IDO-vertically
+
+#+BEGIN_SRC emacs-lisp :tangle yes :result silent
+
+  (use-package ido-vertical-mode
+    :ensure t
+    :init
+    (setq ido-vertical-define-keys 'C-n-C-p-up-and-down)
+    :config
+    (ido-vertical-mode 1))
+
+#+END_SRC
+
+** SMEX
+
+#+BEGIN_SRC emacs-lisp :tangle yes :result silent
+
+  (use-package smex
+    :ensure t
+    :init (smex-initialize)
+    :bind
+    ("M-x" . smex)
+    ("M-X" . smex-major-mode-commands))
+
+#+END_SRC
