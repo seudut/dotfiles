@@ -4,7 +4,7 @@
 
 * Introduction
 
-Most config copied from [[https://github.com/howardabrams/dot-files][howardabrams]]'s dotfiles
+Most config are just copied from [[https://github.com/howardabrams/dot-files][howardabrams]]'s dotfiles
 
 * Basic Settings
 
@@ -255,3 +255,51 @@ Always indents header, and hide header leading starts so that no need type =#+ST
     ("M-X" . smex-major-mode-commands))
 
 #+END_SRC
+
+* Misc Settings
+
+** Line Number
+
+Enable linum mode on programming modes
+
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+
+  (add-hook 'prog-mode-hook 'linum-mode)
+
+#+END_SRC
+
+Fix the font size of line number
+
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+
+  (defun fix-linum-size ()
+       (interactive)
+       (set-face-attribute 'linum nil :height 110))
+
+  (add-hook 'linum-mode-hook 'fix-linum-size)
+
+#+END_SRC
+
+I like [[https://github.com/coldnew/linum-relative][linum-relative]], just like the =set relativenumber= on =vim=
+
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+
+  (use-package linum-relative
+    :ensure t
+    :config
+    (defun linum-new-mode ()
+      "If line numbers aren't displayed, then display them.
+  Otherwise, toggle between absolute and relative numbers."
+      (interactive)
+      (if linum-mode
+          (linum-relative-toggle)
+        (linum-mode 1)))
+
+    :bind
+    ("A-k" . linum-new-mode))
+
+  ;; auto enable linum-new-mode in programming modes
+  (add-hook 'prog-mode-hook 'linum-relative-mode)
+
+#+END_SRC
+
