@@ -2,7 +2,9 @@
 #+AUTHOR: Peng Li
 #+EMAIL: seudut@gmail.com
 
-#+STARTUP: indent
+* Introduction
+
+Most config copied from [[https://github.com/howardabrams/dot-files][howardabrams]]'s dotfiles
 
 * Basic Settings
 
@@ -30,9 +32,15 @@ Disable scroll bar, tool-bar and menu-bar
 
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
 
-  (scroll-bar-mode -1)
-  (tool-bar-mode -1)
-  (menu-bar-mode -1)
+  (scroll-bar-mode 0)
+  (tool-bar-mode 0)
+  (menu-bar-mode 0)
+
+  (setq debug-on-error t)
+  (setq inhibit-startup-message t)
+
+  (defalias 'yes-or-no-p 'y-or-n-p)
+
 
 #+END_SRC
 
@@ -61,9 +69,119 @@ Using [[https://github.com/jwiegley/use-package][use-package]] to manage emacs p
 
   (require 'use-package)
 
+#+END_SRC
+
+* Color and Fonts Settings
+
+** highlight current line
+
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+
+  (global-hl-line-mode)
+
+#+END_SRC
+
+** Smart Comments
+
+[[https://github.com/paldepind/smart-comment][smart-comments]]
+
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+
+  (use-package smart-comment
+    :ensure t
+    :bind ("M-;" . smart-conmment))
+
+#+END_SRC
+
+** Color Theme
+
+Loading theme should be after all required loaded, refere [[https://github.com/jwiegley/use-package][:defer]] in =use-package=
+
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+
+  (setq vc-follow-symlinks t)
+
+  (use-package color-theme
+    :ensure t
+    :init (require 'color-theme)
+    :config (use-package color-theme-sanityinc-tomorrow
+              :ensure t
+              :no-require t
+              :config
+              (load-theme 'sanityinc-tomorrow-bright t)))
+
+  ;(eval-after-load 'color-theme
+  ;  (load-theme 'sanityinc-tomorrow-bright t))
+
+#+END_SRC
+
+syntax highlighting
+
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+
+  (global-font-lock-mode 1)
+
+#+END_SRC
+
+** Font Setting
+
+[[https://github.com/i-tu/Hasklig][Hasklig]] and Source Code Pro, defined fonts family
+
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+
+  (if window-system
+      (defvar sd/fixed-font-family
+        (cond ((x-list-fonts "Hasklig")         "Hasklig")
+              ((x-list-fonts "Source Code Pro") "Source Code Pro")
+              ((x-list-fonts "Anonymous Pro")   "Anonymous Pro")
+              ((x-list-fonts "M+ 1mn")          "M+ 1mn"))
+        "The fixed width font based on what is installed, `nil' if not defined."))
+
+#+END_SRC
+
+Setting the fonts 
+
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+
+  (if window-system
+      (when sd/fixed-font-family
+        (set-frame-font sd/fixed-font-family)
+        (set-face-attribute 'default nil :font sd/fixed-font-family :height 150)
+        (set-face-font 'default sd/fixed-font-family)))
 
 #+END_SRC
 
 * Org-mode Settings
 
+** Org-bullets
+
+use [[https://github.com/sabof/org-bullets][org-bullets]] package to show utf-8 charactes
+
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+
+  (use-package org-bullets
+    :ensure t
+    :init
+    (add-hook 'org-mode-hook
+              (lambda ()
+                (org-bullets-mode t))))
+
+#+END_SRC
+
+** Org-mode Basic setting
+
+Always indents header, and hide header leading starts so that no need type =#+STATUP: indent= 
+
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+
+  (setq org-startup-indented t)
+  (setq org-hide-leading-starts t)
+  ;(setq org-src-fontify-natively t)
+  (setq org-src-tab-acts-natively t)
+
+#+END_SRC
+
+** Task Management
+
+** Capture
 
