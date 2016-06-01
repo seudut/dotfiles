@@ -8,15 +8,7 @@ Most config are just copied from [[https://github.com/howardabrams/dot-files][ho
 
 * Basic Settings
 
-** Setting Path
-
-Set the system PATH environment  
-
-#+BEGIN_SRC emacs-lisp :tangle yes :results silent
-
-  (setenv "PATH" (concat (getenv "PATH") ":/usr/local/bin"))
-
-#+END_SRC
+** Setting loading Path
 
 Set the emacs load path
 
@@ -237,7 +229,6 @@ improve color for org-mode
 
 #+END_SRC
 
-
 * Org-mode Settings
 
 ** Org-bullets
@@ -281,8 +272,25 @@ Always indents header, and hide header leading starts so that no need type =#+ST
      (sqlite . t)
      (js . t)))
 
+  (setq org-use-speed-commands t
+        org-completion-use-ido t)
+     
+
 #+END_SRC
 
+** Worf Mode
+
+[[https://github.com/abo-abo/worf][worf]] mode is an extension of vi-like binding for org-mode
+
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+
+  (use-package worf
+    :ensure t
+    :commands worf-mode
+    :init (add-hook 'org-mode-hook 'worf-mode))
+
+
+#+END_SRC
 ** Task Management
 
 ** Capture
@@ -412,6 +420,16 @@ I like [[https://github.com/coldnew/linum-relative][linum-relative]], just like 
   (setq-default save-place t)
   (setq save-place-forget-unreadable-files t)
   (setq save-place-skip-check-regexp "\\`/\\(?:cdrom\\|floppy\\|mnt\\|/[0-9]\\|\\(?:[^@/:]*@\\)?[^@/:]*[^@/:.]:\\)")
+
+#+END_SRC
+
+* Eshell Setting
+
+Setting PATH environment variable
+
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+
+  (setenv "PATH" (concat (getenv "PATH") ":/usr/local/bin"))
 
 #+END_SRC
 
