@@ -53,7 +53,7 @@ Disable scroll bar, tool-bar and menu-bar
   (setq inhibit-startup-message t)
 
   (defalias 'yes-or-no-p 'y-or-n-p)
-
+  (show-paren-mode 1)
 
 #+END_SRC
 
@@ -93,27 +93,7 @@ Using [[https://github.com/jwiegley/use-package][use-package]] to manage emacs p
 
 #+END_SRC
 
-** Color Theme
-
-Loading theme should be after all required loaded, refere [[https://github.com/jwiegley/use-package][:defer]] in =use-package=
-
-#+BEGIN_SRC emacs-lisp :tangle yes :results silent
-
-  (setq vc-follow-symlinks t)
-
-  (use-package color-theme
-    :ensure t
-    :init (require 'color-theme)
-    :config (use-package color-theme-sanityinc-tomorrow
-              :ensure t
-              :no-require t
-              :config
-              (load-theme 'sanityinc-tomorrow-bright t)))
-
-  ;(eval-after-load 'color-theme
-  ;  (load-theme 'sanityinc-tomorrow-bright t))
-
-#+END_SRC
+** Font Setting
 
 syntax highlighting
 
@@ -122,8 +102,6 @@ syntax highlighting
   (global-font-lock-mode 1)
 
 #+END_SRC
-
-** Font Setting
 
 [[https://github.com/i-tu/Hasklig][Hasklig]] and Source Code Pro, defined fonts family
 
@@ -150,6 +128,115 @@ Setting the fonts
         (set-face-font 'default sd/fixed-font-family)))
 
 #+END_SRC
+
+** Color Theme
+
+Loading theme should be after all required loaded, refere [[https://github.com/jwiegley/use-package][:defer]] in =use-package=
+
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+
+  (setq vc-follow-symlinks t)
+
+  (use-package color-theme
+    :ensure t
+    :init (require 'color-theme)
+    :config (use-package color-theme-sanityinc-tomorrow
+              :ensure t
+              :no-require t
+              :config
+              (load-theme 'sanityinc-tomorrow-bright t)))
+
+  ;(eval-after-load 'color-theme
+  ;  (load-theme 'sanityinc-tomorrow-bright t))
+
+#+END_SRC
+
+Change the Org-mode colors 
+
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+
+  (defun org-src-color-blocks-light ()
+    "Colors the block headers and footers to make them stand out more for lighter themes"
+    (interactive)
+    (custom-set-faces
+     '(org-block-begin-line
+      ((t (:underline "#A7A6AA" :foreground "#008ED1" :background "#EAEAFF"))))
+     '(org-block-background
+       ((t (:background "#FFFFEA"))))
+     '(org-block
+       ((t (:background "#FFFFEA"))))
+     '(org-block-end-line
+       ((t (:overline "#A7A6AA" :foreground "#008ED1" :background "#EAEAFF"))))
+
+     '(mode-line-buffer-id ((t (:foreground "#005000" :bold t))))
+     '(which-func ((t (:foreground "#008000"))))))
+
+  (defun org-src-color-blocks-dark ()
+    "Colors the block headers and footers to make them stand out more for dark themes"
+    (interactive)
+    (custom-set-faces
+     '(org-block-begin-line
+       ((t (:foreground "#008ED1" :background "#002E41"))))
+     '(org-block-background
+       ((t (:background "#000000"))))
+     '(org-block
+       ((t (:background "#000000"))))
+     '(org-block-end-line
+       ((t (:foreground "#008ED1" :background "#002E41"))))
+
+     '(mode-line-buffer-id ((t (:foreground "black" :bold t))))
+     '(which-func ((t (:foreground "green"))))))
+
+  (org-src-color-blocks-dark)
+
+#+END_SRC
+
+improve color for org-mode
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+  (deftheme ha/org-theme "Sub-theme to beautify org mode")
+
+  (if window-system
+      (defvar sd/variable-font-tuple
+        (cond ((x-list-fonts "Source Sans Pro") '(:font "Source Sans Pro"))
+              ((x-list-fonts "Lucida Grande")   '(:font "Lucida Grande"))
+              ((x-list-fonts "Verdana")         '(:font "Verdana"))
+              ((x-family-fonts "Sans Serif")    '(:family "Sans Serif"))
+              (nil (warn "Cannot find a Sans Serif Font.  Install Source Sans Pro.")))
+        "My variable width font available to org-mode files and whatnot."))
+
+  (defun sd/org-color ()
+    (let* ((sd/fixed-font-tuple (list :font sd/fixed-font-family))
+           (base-font-color     (face-foreground 'default nil 'default))
+           (background-color    (face-background 'default nil 'default))
+           (primary-color       (face-foreground 'mode-line nil))
+           (secondary-color     (face-background 'secondary-selection nil 'region))
+           (base-height         (face-attribute 'default :height))
+           (headline           `(:inherit default :weight bold :foreground ,base-font-color)))
+      (custom-theme-set-faces 'ha/org-theme
+                              `(org-agenda-structure ((t (:inherit default :height 2.0 :underline nil))))
+                              `(org-verbatim ((t (:inherit 'fixed-pitched :foreground "#aef"))))
+                              `(org-table ((t (:inherit 'fixed-pitched))))
+                              `(org-block ((t (:inherit 'fixed-pitched))))
+                              `(org-block-background ((t (:inherit 'fixed-pitched))))
+                              `(org-block-begin-line ((t (:inherit 'fixed-pitched))))
+                              `(org-block-end-line ((t (:inherit 'fixed-pitched))))
+                              `(org-level-8 ((t (,@headline ,@sd/variable-font-tuple))))
+                              `(org-level-7 ((t (,@headline ,@sd/variable-font-tuple))))
+                              `(org-level-6 ((t (,@headline ,@sd/variable-font-tuple))))
+                              `(org-level-5 ((t (,@headline ,@sd/variable-font-tuple))))
+                              `(org-level-4 ((t (,@headline ,@sd/variable-font-tuple
+                                                            :height ,(round (* 1.1 base-height))))))
+                              `(org-level-3 ((t (,@headline ,@sd/variable-font-tuple
+                                                            :height ,(round (* 1.25 base-height))))))
+                              `(org-level-2 ((t (,@headline ,@sd/variable-font-tuple
+                                                            :height ,(round (* 1.5 base-height))))))
+                              `(org-level-1 ((t (,@headline ,@sd/variable-font-tuple
+                                                            :height ,(round (* 1.75 base-height))))))
+                              `(org-document-title ((t (,@headline ,@sd/variable-font-tuple :height 1.5 :underline nil)))))))
+
+
+#+END_SRC
+
 
 * Org-mode Settings
 
@@ -179,6 +266,20 @@ Always indents header, and hide header leading starts so that no need type =#+ST
   ;(setq org-src-fontify-natively t)
   (setq org-src-tab-acts-natively t)
   (setq org-confirm-babel-evaluate nil)
+
+  (org-babel-do-load-languages
+   'org-babel-load-languages
+   '((python . t)
+     (C . t)
+     (calc . t)
+     (latex . t)
+     (java . t)
+     (ruby . t)
+     (lisp . t)
+     (scheme . t)
+     (sh . t)
+     (sqlite . t)
+     (js . t)))
 
 #+END_SRC
 
@@ -303,3 +404,35 @@ I like [[https://github.com/coldnew/linum-relative][linum-relative]], just like 
 
 #+END_SRC
 
+** Save File Position
+
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+
+  (require 'saveplace)
+  (setq-default save-place t)
+  (setq save-place-forget-unreadable-files t)
+  (setq save-place-skip-check-regexp "\\`/\\(?:cdrom\\|floppy\\|mnt\\|/[0-9]\\|\\(?:[^@/:]*@\\)?[^@/:]*[^@/:.]:\\)")
+
+#+END_SRC
+
+* Programming Languages
+
+** Emacs Lisp
+
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+
+  (use-package color-identifiers-mode
+    :ensure t
+    :init
+    (add-hook 'emacs-lisp-mode-hook 'color-identifiers-mode)
+    :diminish color-identifiers-mode)
+
+#+END_SRC
+
+* Others
+
+** Shell pop mode
+
+** Smartparens mode
+
+** 
