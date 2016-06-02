@@ -231,32 +231,18 @@ improve color for org-mode
 
 * Org-mode Settings
 
-** Org-bullets
-
-use [[https://github.com/sabof/org-bullets][org-bullets]] package to show utf-8 charactes
-
-#+BEGIN_SRC emacs-lisp :tangle yes :results silent
-
-  (use-package org-bullets
-    :ensure t
-    :init
-    (add-hook 'org-mode-hook
-              (lambda ()
-                (org-bullets-mode t))))
-
-#+END_SRC
-
 ** Org-mode Basic setting
 
 Always indents header, and hide header leading starts so that no need type =#+STATUP: indent= 
 
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
 
-  (setq org-startup-indented t)
-  (setq org-hide-leading-starts t)
-  ;(setq org-src-fontify-natively t)
-  (setq org-src-tab-acts-natively t)
-  (setq org-confirm-babel-evaluate nil)
+
+    (setq org-startup-indented t)
+    (setq org-hide-leading-starts t)
+    (setq org-src-fontify-natively t)
+    (setq org-src-tab-acts-natively t)
+    (setq org-confirm-babel-evaluate nil)
 
   (org-babel-do-load-languages
    'org-babel-load-languages
@@ -274,7 +260,22 @@ Always indents header, and hide header leading starts so that no need type =#+ST
 
   (setq org-use-speed-commands t
         org-completion-use-ido t)
-     
+ 
+
+#+END_SRC
+
+** Org-bullets
+
+use [[https://github.com/sabof/org-bullets][org-bullets]] package to show utf-8 charactes
+
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+
+  (use-package org-bullets
+    :ensure t
+    :init
+    (add-hook 'org-mode-hook
+              (lambda ()
+                (org-bullets-mode t))))
 
 #+END_SRC
 
