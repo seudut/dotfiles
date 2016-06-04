@@ -237,17 +237,22 @@ Always indents header, and hide header leading starts so that no need type =#+ST
 
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
 
-
+  (use-package org
+    :ensure t
+    :init
     (setq org-startup-indented t)
     (setq org-hide-leading-starts t)
     (setq org-src-fontify-natively t)
     (setq org-src-tab-acts-natively t)
     (setq org-confirm-babel-evaluate nil)
+    (setq org-use-speed-commands t)
+    (setq org-completion-use-ido t))
 
   (org-babel-do-load-languages
    'org-babel-load-languages
    '((python . t)
      (C . t)
+     (perl . t)
      (calc . t)
      (latex . t)
      (java . t)
@@ -257,10 +262,6 @@ Always indents header, and hide header leading starts so that no need type =#+ST
      (sh . t)
      (sqlite . t)
      (js . t)))
-
-  (setq org-use-speed-commands t
-        org-completion-use-ido t)
- 
 
 #+END_SRC
 
@@ -281,17 +282,25 @@ use [[https://github.com/sabof/org-bullets][org-bullets]] package to show utf-8 
 
 ** Worf Mode
 
-[[https://github.com/abo-abo/worf][worf]] mode is an extension of vi-like binding for org-mode
+[[https://github.com/abo-abo/worf][worf]] mode is an extension of vi-like binding for org-mode. 
+In =worf-mode=, it is mapping =[=, =]= as =worf-backward= and =worf-forward= in global, wich
+cause we cannot input =[= and =]=, so here I unset this mappings. And redifined this two to
+=M-[= and =M-]=
 
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
 
   (use-package worf
     :ensure t
     :commands worf-mode
-    :init (add-hook 'org-mode-hook 'worf-mode))
-
+    :init (add-hook 'org-mode-hook 'worf-mode)
+    :config
+    (define-key worf-mode-map "[" nil)
+    (define-key worf-mode-map "]" nil)
+    (define-key worf-mode-map (kbd "M-[") 'worf-backward)
+    (define-key worf-mode-map (kbd "M-]") 'worf-forward))
 
 #+END_SRC
+
 ** Task Management
 
 ** Capture
@@ -424,13 +433,26 @@ I like [[https://github.com/coldnew/linum-relative][linum-relative]], just like 
 
 #+END_SRC
 
-* Eshell Setting
-
-Setting PATH environment variable
+** Multi-term
 
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
 
-  (setenv "PATH" (concat (getenv "PATH") ":/usr/local/bin"))
+  (use-package multi-term
+    :ensure t)
+
+#+END_SRC
+
+** ace-link
+
+[[https://github.com/abo-abo/ace-link][ace-link]] is a package written by [[https://github.com/abo-abo][Oleh Krehel]]. It is convenient to jump to link in help mode, info-mode, etc
+Type =o= to go to the link
+
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+
+  (use-package ace-link
+    :ensure t
+    :init
+    (ace-link-setup-default))
 
 #+END_SRC
 
