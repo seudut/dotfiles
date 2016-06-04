@@ -5,3 +5,4 @@ config.el
 ido.last
 *~
 recentf
+el-get/*

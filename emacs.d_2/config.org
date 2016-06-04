@@ -49,7 +49,9 @@ Disable scroll bar, tool-bar and menu-bar
 
 #+END_SRC
 
-* Use-package
+* Package Management Tools
+
+** Use-package
 
 Using [[https://github.com/jwiegley/use-package][use-package]] to manage emacs packages
 
@@ -60,6 +62,20 @@ Using [[https://github.com/jwiegley/use-package][use-package]] to manage emacs p
     (package-install 'use-package))
 
   (require 'use-package)
+
+#+END_SRC
+
+** El-get
+
+[[https://github.com/dimitri/el-get][El-get]] is package management tool, whicl allows to install external elisp package from any git repository not in mepla. 
+Check out [[http://tapoueh.org/emacs/el-get.html][el-get]].
+
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+
+  (use-package el-get
+    :ensure t
+    :init
+    (add-to-list 'load-path "~/.emacs.d/el-get"))
 
 #+END_SRC
 
