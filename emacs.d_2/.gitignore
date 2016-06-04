@@ -2,3 +2,6 @@
 elpa/*
 \#*
 config.el
+ido.last
+*~
+recentf
