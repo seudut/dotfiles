@@ -39,7 +39,7 @@ Disable scroll bar, tool-bar and menu-bar
 
   (scroll-bar-mode 0)
   (tool-bar-mode 0)
-  (menu-bar-mode 0)
+  (menu-bar-mode 1)
 
   (setq debug-on-error t)
   (setq inhibit-startup-message t)
@@ -493,7 +493,16 @@ Type =o= to go to the link
 
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
 
-  (defalias 'perl-mode 'cperl-mode)
+   (defalias 'perl-mode 'cperl-mode)
+
+   (setq cperl-hairy t) ;; Turns on most of the CPerlMode options
+   (setq cperl-auto-newline t)
+   (setq cperl-highlight-variables-indiscriminately t)
+
+  ;(add-to-list 'load-path "~/.emacs.d/elisp/")
+  ;(require 'template)
+  ;(template-initialize)
+  ;(require 'perlnow)
 
 #+END_SRC
 
