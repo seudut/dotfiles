@@ -466,7 +466,18 @@ Type =o= to go to the link
     :ensure t
     :init
     (add-hook 'emacs-lisp-mode-hook 'color-identifiers-mode)
+
     :diminish color-identifiers-mode)
+
+#+END_SRC
+
+** Perl
+
+[[https://www.emacswiki.org/emacs/CPerlMode][CPerl mode]] has more features than =PerlMode= for perl programming. Alias this to =CPerlMode=
+
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+
+  (defalias 'perl-mode 'cperl-mode)
 
 #+END_SRC
 
@@ -476,4 +487,4 @@ Type =o= to go to the link
 
 ** Smartparens mode
 
-** 
+*** 
