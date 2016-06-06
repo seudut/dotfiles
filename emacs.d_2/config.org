@@ -301,7 +301,7 @@ use [[https://github.com/sabof/org-bullets][org-bullets]] package to show utf-8 
 [[https://github.com/abo-abo/worf][worf]] mode is an extension of vi-like binding for org-mode. 
 In =worf-mode=, it is mapping =[=, =]= as =worf-backward= and =worf-forward= in global, wich
 cause we cannot input =[= and =]=, so here I unset this mappings. And redifined this two to
-=M-[= and =M-]=
+=M-[= and =M-]=. see this [[https://github.com/abo-abo/worf/issues/19#issuecomment-223756599][issue]]
 
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
 
@@ -493,16 +493,60 @@ Type =o= to go to the link
 
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
 
-   (defalias 'perl-mode 'cperl-mode)
+  (defalias 'perl-mode 'cperl-mode)
 
-   (setq cperl-hairy t) ;; Turns on most of the CPerlMode options
-   (setq cperl-auto-newline t)
-   (setq cperl-highlight-variables-indiscriminately t)
+  ;(setq cperl-hairy t) ;; Turns on most of the CPerlMode options
+  (setq cperl-auto-newline t)
+  (setq cperl-highlight-variables-indiscriminately t)
+  ;(setq cperl-indent-level 4)
+  ;(setq cperl-continued-statement-offset 4)
+  (setq cperl-close-paren-offset -4)
+  (setq cperl-indent-parents-as-block t)
+  (setq cperl-tab-always-indent t)
+  ;(setq cperl-brace-offset  0)
 
-  ;(add-to-list 'load-path "~/.emacs.d/elisp/")
+  (add-hook 'cperl-mode-hook
+            '(lambda ()
+               (cperl-set-style "C++")))
+
   ;(require 'template)
   ;(template-initialize)
   ;(require 'perlnow)
+
+#+END_SRC
+
+- auto insert
+- run script 
+
+Change the compile-command to set the default command run when call =compile=
+Mapping =s-r= (on Mac, it's =Command + R= to run the script. Here =current-prefix-arg= is set
+to call =compilation=  interactively.
+
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+
+  (defun my-perl-hook ()
+      (progn
+        (set (make-local-variable 'compile-command)
+             (concat "/usr/bin/perl "
+                     (if buffer-file-name
+                         (shell-quote-argument buffer-file-name))))
+        (local-set-key (kbd "s-r")
+                       (lambda ()
+                         (interactive)
+                         (setq current-prefix-arg '(4)) ; C-u
+                         (call-interactively 'compile)))))
+
+  (add-hook 'cperl-mode-hook 'my-perl-hook)
+
+#+END_SRC
+
+** 
+** C & C++
+
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+
+  (setq c-default-style "k&r"
+        c-basic-offset 4)
 
 #+END_SRC
 
