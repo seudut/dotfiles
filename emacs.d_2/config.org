@@ -472,9 +472,11 @@ Type =o= to go to the link
 
 #+END_SRC
 
-* Programming Languages
+* Programming
 
-** Emacs Lisp
+** Languages
+
+*** Emacs Lisp
 
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
 
@@ -487,7 +489,7 @@ Type =o= to go to the link
 
 #+END_SRC
 
-** Perl
+*** Perl
 
 [[https://www.emacswiki.org/emacs/CPerlMode][CPerl mode]] has more features than =PerlMode= for perl programming. Alias this to =CPerlMode=
 
@@ -525,30 +527,118 @@ to call =compilation=  interactively.
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
 
   (defun my-perl-hook ()
-      (progn
-        (set (make-local-variable 'compile-command)
-             (concat "/usr/bin/perl "
-                     (if buffer-file-name
-                         (shell-quote-argument buffer-file-name))))
-        (local-set-key (kbd "s-r")
+    (progn
+      (setq-local compilation-read-command nil)
+      (set (make-local-variable 'compile-command)
+           (concat "/usr/bin/perl "
+                   (if buffer-file-name
+                       (shell-quote-argument buffer-file-name))))
+      (local-set-key (kbd "s-r")
                        (lambda ()
                          (interactive)
-                         (setq current-prefix-arg '(4)) ; C-u
+  ;                       (setq current-prefix-arg '(4)) ; C-u
                          (call-interactively 'compile)))))
 
   (add-hook 'cperl-mode-hook 'my-perl-hook)
 
+
 #+END_SRC
 
-** 
-** C & C++
+*** C & C++
 
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
 
-  (setq c-default-style "k&r"
+  (setq c-default-style "stroustrup"
         c-basic-offset 4)
 
 #+END_SRC
+
+** Compile
+
+Set the environments vairables in compilation mode
+
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+
+  (use-package compile
+    :commands compile
+    :config
+    (setq compilation-environment (cons "LC_ALL=C" compilation-environment)))
+
+#+END_SRC
+
+** Auto-Insert
+
+Enable auto-insert mode
+
+#+BEGIN_SRC emacs-lisp :tangle yes :results silenc
+
+  (auto-insert-mode t)
+  (setq auto-insert-query nil)
+
+#+END_SRC
+
+*** C++ Auto Insert
+
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+
+  (eval-after-load 'autoinsert
+    '(define-auto-insert '("\\.cpp\\'" . "C++ skeleton")
+       '(
+         "Short description:"
+         "/*"
+         "\n * " (file-name-nondirectory (buffer-file-name))
+         "\n */" > \n \n
+         "#include <iostream>" \n
+         "#include \""
+         (file-name-sans-extension
+          (file-name-nondirectory (buffer-file-name)))
+         ".hpp\"" \n \n
+         "using namespace std;" \n \n
+         "int main ()"
+         "\n{" \n 
+         > _ \n
+         "return 1;"
+         "\n}" > \n
+         )))
+
+  (eval-after-load 'autoinsert
+    '(define-auto-insert '("\\.c\\'" . "C skeleton")
+       '(
+         "Short description:"
+         "/*\n"
+         " * " (file-name-nondirectory (buffer-file-name)) "\n"
+         " */" > \n \n
+         "#include <stdio.h>" \n
+         "#include \""
+         (file-name-sans-extension
+          (file-name-nondirectory (buffer-file-name)))
+         ".h\"" \n \n
+         "int main ()\n"
+         "{" \n
+         > _ \n
+         "return 1;\n"
+         "}" > \n
+         )))
+       
+#+END_SRC
+
+*** Perl Auto Insert
+
+Refer [[https://www.emacswiki.org/emacs/AutoInsertMode][AutoInsertMode]] Wiki
+
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+
+  (eval-after-load 'autoinsert
+    '(define-auto-insert '("\\.pl\\'" . "Perl skeleton")
+       '(
+         "Description: "
+         "#!/usr/bin/perl -w" \n
+         \n
+         "use strict;" \n \n
+         )))
+
+#+END_SRC
+
 
 * Others
 
