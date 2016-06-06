@@ -4,7 +4,7 @@
 
 * Introduction
 
-Most config are just copied from [[https://github.com/howardabrams/dot-files][howardabrams]]'s dotfiles
+Most config are just copied from [[https://github.com/howardabrams/dot-files][howardabrams]]'s and [[https://github.com/abo-abo/oremacs][abo-abo's]] dotfiles
 
 * Basic Settings
 
@@ -46,6 +46,8 @@ Disable scroll bar, tool-bar and menu-bar
 
   (defalias 'yes-or-no-p 'y-or-n-p)
   (show-paren-mode 1)
+
+  (global-set-key (kbd "<s-return>") 'toggle-frame-fullscreen)
 
 #+END_SRC
 
@@ -132,7 +134,7 @@ Setting the fonts
   (if window-system
       (when sd/fixed-font-family
         (set-frame-font sd/fixed-font-family)
-        (set-face-attribute 'default nil :font sd/fixed-font-family :height 140)
+        (set-face-attribute 'default nil :font sd/fixed-font-family :height 120)
         (set-face-font 'default sd/fixed-font-family)))
 
 #+END_SRC
@@ -393,6 +395,107 @@ cause we cannot input =[= and =]=, so here I unset this mappings. And redifined 
 
 * Misc Settings
 
+** [[https://github.com/abo-abo/hydra][Hydra]]
+
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+
+  (use-package hydra
+    :ensure t)
+
+#+END_SRC
+
+*** Font Zoom
+
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+
+  (defhydra sd/font-zoom (global-map "<f2>")
+    "zoom"
+    ("g" text-scale-increase "in")
+    ("l" text-scale-decrease "out"))
+
+#+END_SRC
+
+*** Windmove Splitter
+
+Refer [[https://github.com/abo-abo/hydra/blob/master/hydra-examples.el][hydra-example]], to enlarge or shrink the windows splitter
+
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+
+  (defun hydra-move-splitter-left (arg)
+    "Move window splitter left."
+    (interactive "p")
+    (if (let ((windmove-wrap-around))
+          (windmove-find-other-window 'right))
+        (shrink-window-horizontally arg)
+      (enlarge-window-horizontally arg)))
+
+  (defun hydra-move-splitter-right (arg)
+    "Move window splitter right."
+    (interactive "p")
+    (if (let ((windmove-wrap-around))
+          (windmove-find-other-window 'right))
+        (enlarge-window-horizontally arg)
+      (shrink-window-horizontally arg)))
+
+  (defun hydra-move-splitter-up (arg)
+    "Move window splitter up."
+    (interactive "p")
+    (if (let ((windmove-wrap-around))
+          (windmove-find-other-window 'up))
+        (enlarge-window arg)
+      (shrink-window arg)))
+
+  (defun hydra-move-splitter-down (arg)
+    "Move window splitter down."
+    (interactive "p")
+    (if (let ((windmove-wrap-around))
+          (windmove-find-other-window 'up))
+        (shrink-window arg)
+      (enlarge-window arg)))
+
+#+END_SRC
+
+*** hydra-window
+
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+
+  (winner-mode 1)
+
+  (defhydra sd/hydra-window (:color red :columns nil)
+    "window"
+    ("h" windmove-left nil)
+    ("j" windmove-down nil)
+    ("k" windmove-up nil)
+    ("l" windmove-right nil)
+    ("H" hydra-move-splitter-left nil)
+    ("J" hydra-move-splitter-down nil)
+    ("K" hydra-move-splitter-up nil)
+    ("L" hydra-move-splitter-right nil)
+    ("v" (lambda ()
+           (interactive)
+           (split-window-right)
+           (windmove-right))
+     "vert")
+    ("x" (lambda ()
+           (interactive)
+           (split-window-below)
+           (windmove-down))
+     "horz")
+    ("o" delete-other-windows "one" :exit t)
+    ("a" ace-window "ace")
+    ("s" ace-swap-window "swap")
+    ("d" ace-delete-window "ace-one" :exit t)
+    ("i" ace-maximize-window "ace-one" :exit t)
+    ("b" ido-switch-buffer "buf")
+    ("m" headlong-bookmark-jump "bmk")
+    ("q" nil "cancel")
+    ("u" (progn (winner-undo) (setq this-command 'winner-undo)) "undo")
+    ("f" nil))
+
+  (global-set-key (kbd "M-o") 'sd/hydra-window/body)
+
+#+END_SRC
+
 ** Line Number
 
 Enable linum mode on programming modes
@@ -469,6 +572,41 @@ Type =o= to go to the link
     :ensure t
     :init
     (ace-link-setup-default))
+
+#+END_SRC
+
+** Emux
+
+[[https://github.com/re5et/emux][emux]] is 
+
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+
+  (el-get-bundle re5et/emux)
+
+#+END_SRC
+
+** Smart Parens
+
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+
+  (use-package smartparens
+    :ensure t)
+
+#+END_SRC
+
+** Ace-Windows
+
+[[https://github.com/abo-abo/ace-window][ace-window]] 
+
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+
+  (use-package ace-window
+    :ensure t
+    :defer t
+  ;  :init
+  ;  (global-set-key (kbd "M-o") 'ace-window)
+    :config
+    (setq aw-keys '(?a ?s ?d ?f ?j ?k ?l)))
 
 #+END_SRC
 
@@ -640,10 +778,3 @@ Refer [[https://www.emacswiki.org/emacs/AutoInsertMode][AutoInsertMode]] Wiki
 #+END_SRC
 
 
-* Others
-
-** Shell pop mode
-
-** Smartparens mode
-
-*** 
