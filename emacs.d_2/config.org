@@ -395,6 +395,7 @@ cause we cannot input =[= and =]=, so here I unset this mappings. And redifined 
 
 * Misc Settings
 
+
 ** [[https://github.com/abo-abo/hydra][Hydra]]
 
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
@@ -490,8 +491,10 @@ Refer [[https://github.com/abo-abo/hydra/blob/master/hydra-examples.el][hydra-ex
     ("m" headlong-bookmark-jump "bmk")
     ("q" nil "cancel")
     ("u" (progn (winner-undo) (setq this-command 'winner-undo)) "undo")
+    ("r" (progn (winner-redo) (setq this-command 'winner-redo)) "redo")
     ("f" nil))
 
+  (global-unset-key (kbd "M-o"))
   (global-set-key (kbd "M-o") 'sd/hydra-window/body)
 
 #+END_SRC
@@ -624,6 +627,17 @@ Type =o= to go to the link
     (add-hook 'emacs-lisp-mode-hook 'color-identifiers-mode)
 
     :diminish color-identifiers-mode)
+
+#+END_SRC
+
+**** Lispy Mode
+
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+
+  (use-package lispy
+    :ensure t)
+
+  ;(add-hook 'emacs-lisp-mode-hook (lambda () (lispy-mode 1)))
 
 #+END_SRC
 
