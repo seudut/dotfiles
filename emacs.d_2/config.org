@@ -791,4 +791,17 @@ Refer [[https://www.emacswiki.org/emacs/AutoInsertMode][AutoInsertMode]] Wiki
 
 #+END_SRC
 
+** Completion
+
+company mode
+
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+
+  (use-package company
+    :ensure t
+    :diminish company-mode
+    :config
+    (global-company-mode))
+
+#+END_SRC
 
