@@ -593,7 +593,11 @@ Type =o= to go to the link
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
 
   (use-package smartparens
-    :ensure t)
+    :ensure t
+    :config
+    (progn
+      (require 'smartparens-config)
+      (add-hook 'prog-mode-hook 'smartparens-mode)))
 
 #+END_SRC
 
@@ -613,6 +617,26 @@ Type =o= to go to the link
 
 #+END_SRC
 
+** Projectile
+
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+
+  (use-package projectile
+    :ensure t
+    :init
+    (setq projectile-enable-caching t)
+    :config
+    (projectile-global-mode t))
+
+  (use-package persp-projectile
+    :ensure t
+    :config
+    (persp-mode)
+    :bind
+    (:map projectile-mode-map
+          ("s-p" . projectile-persp-switch-project)))
+
+#+END_SRC
 * Programming
 
 ** Languages
@@ -632,12 +656,19 @@ Type =o= to go to the link
 
 **** Lispy Mode
 
+In Lisp Mode, =M-o= is defined, but I use this for global hydra window. So here disable this key
+bindings in =lispy-mode-map= after loaded. see [[http://stackoverflow.com/questions/298048/how-to-handle-conflicting-keybindings][here]]
+
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
 
   (use-package lispy
-    :ensure t)
-
-  ;(add-hook 'emacs-lisp-mode-hook (lambda () (lispy-mode 1)))
+    :ensure t
+    :init
+    (eval-after-load 'lispy
+      '(progn
+         (define-key lispy-mode-map (kbd "M-o") nil)))
+    :config
+    (add-hook 'emacs-lisp-mode-hook (lambda () (lispy-mode 1))))
 
 #+END_SRC
 
