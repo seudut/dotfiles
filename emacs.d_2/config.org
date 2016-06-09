@@ -311,11 +311,12 @@ cause we cannot input =[= and =]=, so here I unset this mappings. And redifined 
     :ensure t
     :commands worf-mode
     :init (add-hook 'org-mode-hook 'worf-mode)
-    :config
-    (define-key worf-mode-map "[" nil)
-    (define-key worf-mode-map "]" nil)
-    (define-key worf-mode-map (kbd "M-[") 'worf-backward)
-    (define-key worf-mode-map (kbd "M-]") 'worf-forward))
+    ;; :config
+    ;; (define-key worf-mode-map "[" nil)
+    ;; (define-key worf-mode-map "]" nil)
+    ;; (define-key worf-mode-map (kbd "M-[") 'worf-backward)
+    ;; (define-key worf-mode-map (kbd "M-]") 'worf-forward)
+    )
 
 #+END_SRC
 
