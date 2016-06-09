@@ -31,7 +31,7 @@ Set the emacs load path
 
 #+END_SRC
 
-** Windows Setting
+** General Setting
 
 Disable scroll bar, tool-bar and menu-bar
 
@@ -48,6 +48,14 @@ Disable scroll bar, tool-bar and menu-bar
   (show-paren-mode 1)
 
   (global-set-key (kbd "<s-return>") 'toggle-frame-fullscreen)
+
+#+END_SRC
+
+Switch the focus to help window when it appears
+
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+
+  (setq help-window-select t)
 
 #+END_SRC
 
