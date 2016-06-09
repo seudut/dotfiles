@@ -402,6 +402,22 @@ cause we cannot input =[= and =]=, so here I unset this mappings. And redifined 
 
 #+END_SRC
 
+** Ido-ubiquitous
+
+Use [[https://github.com/DarwinAwardWinner/ido-ubiquitous][ido-ubiquitous]] for ido everywhere. It makes =describe-function= can also use ido
+
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+
+  (use-package ido-ubiquitous
+    :ensure t
+    :init
+    (setq magit-completing-read-function 'magit-ido-completing-read)
+    (setq gnus-completing-read-function 'gnus-ido-completing-read)
+    :config
+    (ido-ubiquitous-mode 1))
+
+#+END_SRC
+
 * Misc Settings
 
 
