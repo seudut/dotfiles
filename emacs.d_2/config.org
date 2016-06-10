@@ -439,7 +439,7 @@ Remove prefix =ESC=, refer [[http://emacs.stackexchange.com/questions/14755/how-
 
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
 
-  (define-key key-translation-map (kbd "ESC") (kbd "C-g"))
+  ;; (define-key key-translation-map (kbd "ESC") (kbd "C-g"))
 
 #+END_SRC
 
@@ -463,6 +463,7 @@ Use =ESC= to exit minibuffer. Also I map =Super-h= the same as =C-g=
   (define-key minibuffer-local-map (kbd "s-h") 'keyboard-escape-quit)
 
 #+END_SRC
+
 
 ** =Super= bindings for file, buffer and windows
 
@@ -555,11 +556,16 @@ I use the prefix =M-s= for searching in buffers
     (global-set-key key keymap))
 
   (global-set-key (kbd "M-s M-s") 'isearch-forward-regexp)
-  (global-set-key (kbd "M-s M-r") 'isearch-forward-regexp)
+  (global-set-key (kbd "M-s M-r") 'isearch-backward-regexp)
 
-  (define-key isearch-mode-map (kbd "M-s") 'isearch-forward-regexp)
+  (define-key isearch-mode-map "\M-s" 'isearch-repeat-forward)
+  (define-key isearch-mode-map "\M-r" 'isearch-repeat-backward)
+
+  ;; (global-set-key (kbd "M-s M-r") 'isearch-backward-regexp)
 
 #+END_SRC
+
+
 
 * Misc Settings
 
@@ -855,9 +861,7 @@ We can use [[https://www.gnu.org/software/emms/quickstart.html][Emms]] for multi
 
 ** GnoGo
 
-Play Go in Emacs
-
-gnugo xpm refert [[https://github.com/okanotor/dotemacs/blob/f95b774cb292d1169748bc0a62ba647bbd8c0652/etc/my-inits/my-inits-gnugo.el][to here]]
+Play Go in Emacs, gnugo xpm refert [[https://github.com/okanotor/dotemacs/blob/f95b774cb292d1169748bc0a62ba647bbd8c0652/etc/my-inits/my-inits-gnugo.el][to here]]. start at image display mode and grid mode
 
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
 
@@ -874,6 +878,7 @@ gnugo xpm refert [[https://github.com/okanotor/dotemacs/blob/f95b774cb292d116974
     (add-to-list 'gnugo-option-history (format "--boardsize 19 --color black --level 1")))
 
 #+END_SRC
+
 * Programming
 
 ** Languages
