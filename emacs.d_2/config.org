@@ -10,6 +10,15 @@ Most config are just copied from [[https://github.com/howardabrams/dot-files][ho
 
 ** Setting loading Path
 
+Set system PATH and emacs exec path
+
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+
+  (setenv "PATH" (concat (getenv "PATH") ":/usr/local/bin"))
+  (setq exec-path (append exec-path '("/usr/local/bin")))
+
+#+END_SRC
+
 Set the emacs load path
 
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
@@ -631,7 +640,9 @@ Refer [[https://github.com/abo-abo/hydra/blob/master/hydra-examples.el][hydra-ex
            (split-window-below)
            (windmove-down))
      "horz")
-    ("o" delete-other-windows "one" :exit t)
+    ;; ("o" delete-other-windows "one" :exit t)
+    ;; Todo define o to triggle delete others windows and restore windows layout
+    ("o" triggle-windows-max-size "maximize" :exit t)
     ("a" ace-window "ace")
     ("s" ace-swap-window "swap")
     ("d" ace-delete-window "ace-one" :exit t)
@@ -645,6 +656,12 @@ Refer [[https://github.com/abo-abo/hydra/blob/master/hydra-examples.el][hydra-ex
 
   (global-unset-key (kbd "M-o"))
   (global-set-key (kbd "M-o") 'sd/hydra-window/body)
+
+  (defun triggle-windows-max-size ()
+    (interactive)
+    (if (> (length (window-list)) 1)
+        (delete-other-windows)
+      (winner-undo)))
 
 #+END_SRC
 
@@ -784,6 +801,44 @@ Type =o= to go to the link
     :bind
     (:map projectile-mode-map
           ("s-p" . projectile-persp-switch-project)))
+
+  ;; projectile-find-file
+  ;; projectile-switch-buffer
+  ;; projectile-find-file-other-window
+#+END_SRC
+
+** Which key
+
+[[https://github.com/justbur/emacs-which-key][which-key]] show the key bindings 
+
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+
+  (use-package which-key
+    :ensure t
+    :config
+    (which-key-mode))
+
+#+END_SRC
+
+** Emms
+
+We can use [[https://www.gnu.org/software/emms/quickstart.html][Emms]] for multimedia in Emacs
+
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+
+  (use-package emms
+    :ensure t
+    :init
+    (setq emms-source-file-default-directory "~/Music/")
+    (define-emms-simple-player mplayer '(file url)
+      (regexp-opt '(".ogg" ".mp3" ".mgp" ".wav" ".wmv" ".wma"
+                    ".mov" ".avi" ".ogm" ".asf" ".mkv" ".divx" ".mpeg"
+                    "http://" "mms://" ".rm" ".rmvb" ".mp4" ".flac" ".vob"
+                    ".m4a" ".flv" ".ogv" ".pls"))
+      "mplayer" "-slave" "-quiet" "-really-quiet" "-fullscreen")
+    :config
+    (emms-standard)
+    (emms-default-players))
 
 #+END_SRC
 * Programming
