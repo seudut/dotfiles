@@ -551,6 +551,7 @@ I use the prefix =M-s= for searching in buffers
   (define-key isearch-mode-map (kbd "M-s") 'isearch-forward-regexp)
 
 #+END_SRC
+
 * Misc Settings
 
 
@@ -831,7 +832,7 @@ We can use [[https://www.gnu.org/software/emms/quickstart.html][Emms]] for multi
     :init
     (setq emms-source-file-default-directory "~/Music/")
     (define-emms-simple-player mplayer '(file url)
-      (regexp-opt '(".ogg" ".mp3" ".mgp" ".wav" ".wmv" ".wma"
+      (regexp-opt '(".ogg" ".mp3" ".mgp" ".wav" ".wmv" ".wma" ".ape"
                     ".mov" ".avi" ".ogm" ".asf" ".mkv" ".divx" ".mpeg"
                     "http://" "mms://" ".rm" ".rmvb" ".mp4" ".flac" ".vob"
                     ".m4a" ".flv" ".ogv" ".pls"))
