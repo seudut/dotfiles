@@ -830,16 +830,16 @@ We can use [[https://www.gnu.org/software/emms/quickstart.html][Emms]] for multi
   (use-package emms
     :ensure t
     :init
-    (setq emms-source-file-default-directory "~/Music/")
+    (setq emms-source-file-default-directory "~/Music/emms/")
+    :config
+    (emms-standard)
+    (emms-default-players)
     (define-emms-simple-player mplayer '(file url)
       (regexp-opt '(".ogg" ".mp3" ".mgp" ".wav" ".wmv" ".wma" ".ape"
                     ".mov" ".avi" ".ogm" ".asf" ".mkv" ".divx" ".mpeg"
                     "http://" "mms://" ".rm" ".rmvb" ".mp4" ".flac" ".vob"
                     ".m4a" ".flv" ".ogv" ".pls"))
-      "mplayer" "-slave" "-quiet" "-really-quiet" "-fullscreen")
-    :config
-    (emms-standard)
-    (emms-default-players))
+      "mplayer" "-slave" "-quiet" "-really-quiet" "-fullscreen"))
 
 #+END_SRC
 * Programming
