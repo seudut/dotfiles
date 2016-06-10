@@ -47,7 +47,7 @@ Disable scroll bar, tool-bar and menu-bar
   (defalias 'yes-or-no-p 'y-or-n-p)
   (show-paren-mode 1)
 
-  (global-set-key (kbd "<s-return>") 'toggle-frame-fullscreen)
+
 
 #+END_SRC
 
@@ -289,6 +289,9 @@ Always indents header, and hide header leading starts so that no need type =#+ST
      (sqlite . t)
      (js . t)))
 
+  ;; use current window for org source buffer editting
+  (setq org-src-window-setup 'current-window )
+
 #+END_SRC
 
 ** Org-bullets
@@ -362,6 +365,8 @@ cause we cannot input =[= and =]=, so here I unset this mappings. And redifined 
     (ido-everywhere 1)
     (add-to-list 'completion-ignored-extensions ".pyc"))
 
+  (icomplete-mode t)
+
 #+END_SRC
 
 ** FLX
@@ -378,7 +383,7 @@ cause we cannot input =[= and =]=, so here I unset this mappings. And redifined 
 
 ** IDO-vertically
 
-#+BEGIN_SRC emacs-lisp :tangle yes :result silent
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
 
   (use-package ido-vertical-mode
     :ensure t
@@ -391,7 +396,7 @@ cause we cannot input =[= and =]=, so here I unset this mappings. And redifined 
 
 ** SMEX
 
-#+BEGIN_SRC emacs-lisp :tangle yes :result silent
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
 
   (use-package smex
     :ensure t
@@ -418,6 +423,125 @@ Use [[https://github.com/DarwinAwardWinner/ido-ubiquitous][ido-ubiquitous]] for 
 
 #+END_SRC
 
+* File and Buffer Operation
+
+** Esc on Minibuffer
+
+Use =ESC= to exit minibuffer. Also I map =Super-h= the same as =C-g=
+
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+
+  (define-key minibuffer-local-map [escape] 'keyboard-escape-quit)
+  (define-key minibuffer-local-map [escape]  'keyboard-escape-quit)
+  (define-key minibuffer-local-ns-map [escape]  'keyboard-escape-quit)
+  (define-key minibuffer-local-isearch-map [escape]  'keyboard-escape-quit)
+  (define-key minibuffer-local-completion-map [escape]  'keyboard-escape-quit)
+  (define-key minibuffer-local-must-match-map [escape]  'keyboard-escape-quit)
+  (define-key minibuffer-local-must-match-filename-map [escape]  'keyboard-escape-quit)
+  (define-key minibuffer-local-filename-completion-map [escape]  'keyboard-escape-quit)
+  (define-key minibuffer-local-filename-must-match-map [escape]  'keyboard-escape-quit)
+
+  ;; Also map s-h same as C-g
+  (define-key minibuffer-local-map (kbd "s-h") 'keyboard-escape-quit)
+
+#+END_SRC
+
+** =Super= bindings for file, buffer and windows
+
+Some global bindings on =Super=, on Mac, it is =Command=
+
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+
+  (global-set-key (kbd "s-h") 'keyboard-quit)
+  (global-set-key (kbd "s-j") 'ido-switch-buffer)
+  ;; s-k  -->  kill-this-buffer
+  ;; s-l  -->  goto-line
+  ;; s-;  -->
+  ;; s-'  -->  'next-multiframe-window
+  (global-set-key (kbd "<s-return>") 'toggle-frame-fullscreen)
+
+  ;; (global-set-key (kbd "s-y") 'projectile-find-file)
+  (global-set-key (kbd "s-f") 'projectile-find-file)
+  (global-set-key (kbd "s-[") 'next-buffer)
+  (global-set-key (kbd "s-]") 'previous-buffer)
+
+  (global-set-key (kbd "s-`") 'mode-line-other-buffer)
+
+
+
+  ;; someothers default mapping on super (command) key
+  ;; s-s save-buffer
+  ;; s-k kill-this-buffer
+
+
+  ;; s-h  -->  ns-do-hide-emacs
+  ;; s-j  -->  ido-switch-buffer  +
+  ;; s-k  -->  kill-this-buffer
+  ;; s-l  -->  goto-line
+  ;; s-;  -->  undefined
+  ;; s-'  -->  next-multiframe-window
+  ;; s-ret --> toggle-frame-fullscreen +
+
+  ;; s-y  -->  ns-paste-secondary
+  ;; s-u  -->  revert-buffer
+  ;; s-i  -->  undefined - but used for iterm globally
+  ;; s-o  -->  used for emacs globally
+  ;; s-p  -->  projectile-persp-switch-project  +  
+  ;; s-[  -->  next-buffer  +    
+  ;; s-]  -->  previous-buffer +
+
+  ;; s-0  -->  undefined
+  ;; s-9  -->  undefined
+  ;; s-8  -->  undefined
+  ;; s-7  -->  undefined
+  ;; s-6  -->  undefined
+  ;; s--  -->  center-line
+  ;; s-=  -->  undefined
+
+  ;; s-n  -->  make-frame
+  ;; s-m  -->  iconify-frame
+  ;; s-b  -->  undefined
+  ;; s-,  -->  customize
+  ;; s-.  -->  undefined
+  ;; s-/  -->  undefined
+
+  ;; s-g  -->  isearch-repeat-forward
+  ;; s-f  -->  projectile-find-file   +
+  ;; s-d  -->  isearch-repeat-background
+  ;; s-s  -->  save-buffer
+  ;; s-a  -->  make-whole-buffer
+
+  ;; s-b  -->  undefined
+  ;; s-v  -->  yank
+  ;; s-c  -->  ns-copy-including-secondary
+
+  ;; s-t  -->  ns-popup-font-panel
+  ;; s-r  -->  undefined
+  ;; s-e  -->  isearch-yanqk-kill
+  ;; s-w  -->  delete-frame
+  ;; s-q  -->  same-buffers-kill-emacs
+
+  ;; s-`  -->  other-frame
+#+END_SRC
+
+** =M-s= bindings for searching
+
+I use the prefix =M-s= for searching in buffers
+
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+
+  (defun pl-make-keymap (key bindings)
+    (setq keymap (make-sparse-keymap))
+    (dolist (binding bindings)
+      (define-key keymap (car binding) (cdr binding)))
+    (global-set-key key keymap))
+
+  (global-set-key (kbd "M-s M-s") 'isearch-forward-regexp)
+  (global-set-key (kbd "M-s M-r") 'isearch-forward-regexp)
+
+  (define-key isearch-mode-map (kbd "M-s") 'isearch-forward-regexp)
+
+#+END_SRC
 * Misc Settings
 
 
@@ -778,7 +902,7 @@ Set the environments vairables in compilation mode
 
 Enable auto-insert mode
 
-#+BEGIN_SRC emacs-lisp :tangle yes :results silenc
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
 
   (auto-insert-mode t)
   (setq auto-insert-query nil)
@@ -856,8 +980,13 @@ company mode
   (use-package company
     :ensure t
     :diminish company-mode
+    :init (setq company-idle-delay 0.1)
     :config
     (global-company-mode))
 
 #+END_SRC
 
+* Todo 
+
+- change M-o to trigger to delete other windows and restore previous config
+- 
