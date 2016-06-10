@@ -29,16 +29,17 @@ Set the emacs load path
 
 ** Package Initialization
 
-#+BEGIN_SRC emacs-lisp :tangle yes
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
 
   (require 'package)
 
   (setq package-archives '(("mepla" . "http://melpa.milkbox.net/packages/")
+                           ("gnu" . "http://elpa.gnu.org/packages/")
                            ("org" . "http://orgmode.org/elpa/")))
 
   (package-initialize)
 
-#+END_SRC
+#+END_SRC       
 
 ** General Setting
 
@@ -433,6 +434,14 @@ Use [[https://github.com/DarwinAwardWinner/ido-ubiquitous][ido-ubiquitous]] for 
 #+END_SRC
 
 * File and Buffer Operation
+
+Remove prefix =ESC=, refer [[http://emacs.stackexchange.com/questions/14755/how-to-remove-bindings-to-the-esc-prefix-key][here]]
+
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+
+  (define-key key-translation-map (kbd "ESC") (kbd "C-g"))
+
+#+END_SRC
 
 ** Esc on Minibuffer
 
@@ -841,6 +850,28 @@ We can use [[https://www.gnu.org/software/emms/quickstart.html][Emms]] for multi
                     ".m4a" ".flv" ".ogv" ".pls"))
       "mplayer" "-slave" "-quiet" "-really-quiet" "-fullscreen")
     (emms-history-load))
+
+#+END_SRC
+
+** GnoGo
+
+Play Go in Emacs
+
+gnugo xpm refert [[https://github.com/okanotor/dotemacs/blob/f95b774cb292d1169748bc0a62ba647bbd8c0652/etc/my-inits/my-inits-gnugo.el][to here]]
+
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+
+  (use-package gnugo
+    :ensure t
+    :defer t
+    :init
+    (require 'gnugo-imgen)
+    (setq gnugo-xpms 'gnugo-imgen-create-xpms)
+    (add-hook 'gnugo-start-game-hook '(lambda ()
+                                        (gnugo-image-display-mode)
+                                        (gnugo-grid-mode)))
+      :config
+    (add-to-list 'gnugo-option-history (format "--boardsize 19 --color black --level 1")))
 
 #+END_SRC
 * Programming
