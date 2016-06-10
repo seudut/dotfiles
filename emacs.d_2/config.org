@@ -839,7 +839,8 @@ We can use [[https://www.gnu.org/software/emms/quickstart.html][Emms]] for multi
                     ".mov" ".avi" ".ogm" ".asf" ".mkv" ".divx" ".mpeg"
                     "http://" "mms://" ".rm" ".rmvb" ".mp4" ".flac" ".vob"
                     ".m4a" ".flv" ".ogv" ".pls"))
-      "mplayer" "-slave" "-quiet" "-really-quiet" "-fullscreen"))
+      "mplayer" "-slave" "-quiet" "-really-quiet" "-fullscreen")
+    (emms-history-load))
 
 #+END_SRC
 * Programming
