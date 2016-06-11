@@ -487,6 +487,11 @@ Some global bindings on =Super=, on Mac, it is =Command=
   (global-set-key (kbd "s-h") 'keyboard-quit)
   (global-set-key (kbd "s-j") 'ido-switch-buffer)
   ;; s-k  -->  kill-this-buffer
+  (global-set-key (kbd "s-k") (lambda ()
+                                (interactive)
+                                (if (> (length (window-list)) 1) 
+                                    (delete-window)
+                                  (message "Only one Windows now!"))))
   ;; s-l  -->  goto-line
   ;; s-;  -->
   ;; s-'  -->  'next-multiframe-window
