@@ -434,6 +434,7 @@ Install MacTex-basic and some tex packages
               (setq TeX-master t)))
 
 #+END_SRC
+
 * Magit
 
 [[https://github.com/magit/magit][Magit]] is a very cool git interface on Emacs.
@@ -567,6 +568,51 @@ Use =ESC= to exit minibuffer. Also I map =Super-h= the same as =C-g=
 
 #+END_SRC
 
+** =Ctrl= key bindings
+
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+  ;;
+
+  ;; C-h    help    
+  ;; C-j    newline and indent
+  ;; C-k    kill line
+  ;; C-l    recenter-top-bottom
+  ;; (global-set-key (kbd "C-;") 'ido-switch-buffer)
+  ;; C-;
+  ;; C-'   
+  ;; C-ret  
+
+  ;; C-n    next-line
+  ;; C-m
+  ;; C-,
+  ;; C-.
+  ;; C-/
+
+  ;; C-y
+  ;; C-u
+  ;; C-i
+  ;; C-o
+  ;; C-p
+  ;; C-[
+  ;; C-]
+  ;; C-\
+
+  ;; C-=
+  ;; C--
+  ;; C-0
+  ;; C-9
+  ;; C-8
+  ;; C-7
+
+  ;; C-Space
+
+
+
+
+
+
+
+#+END_SRC
 
 ** =Super= bindings for file, buffer and windows
 
@@ -576,13 +622,15 @@ Some global bindings on =Super=, on Mac, it is =Command=
 
   (global-set-key (kbd "s-h") 'keyboard-quit)
   (global-set-key (kbd "s-j") 'ido-switch-buffer)
+  (global-set-key (kbd "s-k") 'ido-find-file)
   ;; s-k  -->  kill-this-buffer
-  (global-set-key (kbd "s-k") (lambda ()
+  (global-set-key (kbd "s-l") (lambda ()
                                 (interactive)
                                 (if (> (length (window-list)) 1) 
                                     (delete-window)
                                   (message "Only one Windows now!"))))
   ;; s-l  -->  goto-line
+  (global-set-key (kbd "s-;") 'swiper)
   ;; s-;  -->
   ;; s-'  -->  'next-multiframe-window
   (global-set-key (kbd "<s-return>") 'toggle-frame-fullscreen)
@@ -663,20 +711,134 @@ I use the prefix =M-s= for searching in buffers
       (define-key keymap (car binding) (cdr binding)))
     (global-set-key key keymap))
 
-  (global-set-key (kbd "M-s M-s") 'isearch-forward-regexp)
-  (global-set-key (kbd "M-s M-r") 'isearch-backward-regexp)
+  (define-key minibuffer-local-map "\M-s" nil)
 
+  (global-set-key (kbd "M-s s") 'isearch-forward-regexp)
   (define-key isearch-mode-map "\M-s" 'isearch-repeat-forward)
+  (global-set-key (kbd "M-s r") 'isearch-backward-regexp)
   (define-key isearch-mode-map "\M-r" 'isearch-repeat-backward)
 
+  (global-set-key (kbd "s-/") 'isearch-forward-regexp)
+  (define-key isearch-mode-map (kbd  "s-/") 'isearch-repeat-forward)
+  (define-key isearch-mode-map (kbd  "C-n") 'isearch-repeat-forward)
+
+
+  (set-face-background 'ido-first-match "white")
+
+  ;; M-s o  -->  occur
+  ;; M-s s  -->  isearch-forward-regexp
+  ;; M-s r  -->  isearch-backward-regexp
+  ;; M-s w  -->  isearch-forward-word
+  ;; M-s .  -->  isearch-forward-symbol-at-point
+  ;; M-s _  -->  isearch-forward-symbol
+
+  ;; highlight bindings
+  ;; M-s h .  -->  highlight-symbol-at-point
+  ;; M-s h r  -->  highlight-regexp
+  ;; M-s h u  -->  unhighlight-regexp
+  ;; M-s h l  -->  highlight-lines-match-regexp
+  ;; M-s h p  -->  highlight-phrase
+  ;; M-s h f  -->  hi-lock-find-patterns
+
+  ;; 
   ;; (global-set-key (kbd "M-s M-r") 'isearch-backward-regexp)
+  ;;
+
+  ;; M-c
+  ;; M-r
+  ;; M-t
+  ;; M-u, 
+#+END_SRC
+
+Occur search key bindings
+
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+
+  (define-key occur-mode-map (kbd "C-n")
+    (lambda ()
+      (interactive)
+      (occur-next)
+      (occur-mode-goto-occurrence-other-window)
+      (recenter)
+      (other-window 1)))
+
+  (define-key occur-mode-map (kbd "C-p")
+    (lambda ()
+      (interactive)
+      (occur-prev)
+      (occur-mode-goto-occurrence-other-window)
+      (recenter)
+      (other-window 1)))
+
+#+END_SRC
+
+
+** =M-o= as prefix key for windows
+
+** =M-g= as prefix key for launcher
+
+** others
+
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+
+
+  ;; C-'    undefined
+  ;; C-.    undefined
+#+END_SRC
+
+* Eshell
+
+Eshell alias
+
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+
+  (defalias 'e 'ido-find-file)
+  (defalias 'ff 'ido-find-file)
+  (defalias 'ee 'ido-find-file-other-window)
+
+#+END_SRC
+
+Quickly start eshll in split window below, refer [[http://www.howardism.org/Technical/Emacs/eshell-fun.html][eshell-here]]
+
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+
+  (defun eshell-x ()
+    (insert "exit")
+    (eshell-send-input)
+    (delete-window))
+
+  (defun eshell-here ()
+    "Opens up a new shell in the directory associated with the
+  current buffer's file. The eshell is renamed to match that
+  directory to make multiple eshell windows easier."
+    (interactive)
+    (let* ((parent (if (buffer-file-name)
+                       (file-name-directory (buffer-file-name))
+                     default-directory))
+           (height (/ (window-total-height) 3))
+           (name   (car (last (split-string parent "/" t)))))
+      (split-window-vertically (- height))
+      (other-window 1)
+      (if (get-buffer (concat "*eshell: " name "*"))
+          (progn
+            (message "buffer exist")
+            (switch-to-buffer (concat "*eshell: " name "*")))
+        (progn
+          (eshell "new")
+          (rename-buffer (concat "*eshell: " name "*"))
+
+          (insert (concat "ls"))
+          (eshell-send-input)))))
+
+  ;; (global-set-key (kbd "M-`") (lambda ()
+  ;;                               (interactive)
+  ;;                               (if (buffer-name))))
 
 #+END_SRC
 
 
 
 * Misc Settings
-
 
 ** [[https://github.com/abo-abo/hydra][Hydra]]
 
@@ -764,9 +926,7 @@ Refer [[https://github.com/abo-abo/hydra/blob/master/hydra-examples.el][hydra-ex
            (split-window-below)
            (windmove-down))
      "horz")
-    ;; ("o" delete-other-windows "one" :exit t)
-    ;; Todo define o to triggle delete others windows and restore windows layout
-    ("o" triggle-windows-max-size "maximize" :exit t)
+    ("o" delete-other-windows "one" :exit t)
     ("a" ace-window "ace")
     ("s" ace-swap-window "swap")
     ("d" ace-delete-window "ace-one" :exit t)
@@ -984,6 +1144,46 @@ Play Go in Emacs, gnugo xpm refert [[https://github.com/okanotor/dotemacs/blob/f
                                         (gnugo-grid-mode)))
       :config
     (add-to-list 'gnugo-option-history (format "--boardsize 19 --color black --level 1")))
+
+#+END_SRC
+
+** undo-tree
+
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+
+  (use-package undo-tree
+    :ensure t
+    :config
+    (global-undo-tree-mode 1))
+
+#+END_SRC
+
+** swiper
+
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+
+  (use-package swiper
+    :ensure t)
+
+
+  (ivy-mode 1)
+  (setq ivy-use-virtual-buffers t)
+  (global-set-key "\C-s" 'swiper)
+  (global-set-key (kbd "C-c C-r") 'ivy-resume)
+  (global-set-key (kbd "<f6>") 'ivy-resume)
+  ;; (global-set-key (kbd "M-x") 'counsel-M-x)
+  ;; (global-set-key (kbd "C-x C-f") 'counsel-find-file)
+  (global-set-key (kbd "<f1> f") 'counsel-describe-function)
+  (global-set-key (kbd "<f1> v") 'counsel-describe-variable)
+  (global-set-key (kbd "<f1> l") 'counsel-load-library)
+  (global-set-key (kbd "<f2> i") 'counsel-info-lookup-symbol)
+  (global-set-key (kbd "<f2> u") 'counsel-unicode-char)
+  (global-set-key (kbd "C-c g") 'counsel-git)
+  (global-set-key (kbd "C-c j") 'counsel-git-grep)
+  (global-set-key (kbd "C-c k") 'counsel-ag)
+  (global-set-key (kbd "C-x l") 'counsel-locate)
+  (global-set-key (kbd "C-S-o") 'counsel-rhythmbox)
+  ;; (define-key read-expression-map (kbd "C-r") 'counsel-expression-history)
 
 #+END_SRC
 
