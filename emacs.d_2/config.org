@@ -14,8 +14,11 @@ Set system PATH and emacs exec path
 
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
 
-  (setenv "PATH" (concat (getenv "PATH") ":/usr/local/bin"))
+  (setenv "PATH" (concat (getenv "PATH")
+                         ":" "/usr/local/bin"
+                         ":" "/Library/TeX/texbin"))
   (setq exec-path (append exec-path '("/usr/local/bin")))
+  (setq exec-path (append exec-path '("/Library/TeX/texbin/")))
 
 #+END_SRC
 
@@ -345,6 +348,92 @@ cause we cannot input =[= and =]=, so here I unset this mappings. And redifined 
 
 ** Capture
 
+** Export PDF
+
+Install MacTex-basic and some tex packages
+
+#+BEGIN_SRC bash 
+
+  sudo tlmgr update --self
+
+  sudo tlmgr install titlesec framed threeparttable wrapfig multirow enumitem bbding titling tabu mdframed tcolorbox textpos import varwidth needspace tocloft ntheorem environ trimspaces collection-fontsrecommended capt-of
+
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+  ;; ;; allow for export=>beamer by placing
+
+  ;; http://emacs-fu.blogspot.com/2011/04/nice-looking-pdfs-with-org-mode-and.html
+  ;; #+LaTeX_CLASS: beamer in org files
+  (unless (boundp 'org-export-latex-classes)
+    (setq org-export-latex-classes nil))
+  (add-to-list 'org-export-latex-classes
+    ;; beamer class, for presentations
+    '("beamer"
+       "\\documentclass[11pt]{beamer}\n
+        \\mode<{{{beamermode}}}>\n
+        \\usetheme{{{{beamertheme}}}}\n
+        \\usecolortheme{{{{beamercolortheme}}}}\n
+        \\beamertemplateballitem\n
+        \\setbeameroption{show notes}
+        \\usepackage[utf8]{inputenc}\n
+        \\usepackage[T1]{fontenc}\n
+        \\usepackage{hyperref}\n
+        \\usepackage{color}
+        \\usepackage{listings}
+        \\lstset{numbers=none,language=[ISO]C++,tabsize=4,
+    frame=single,
+    basicstyle=\\small,
+    showspaces=false,showstringspaces=false,
+    showtabs=false,
+    keywordstyle=\\color{blue}\\bfseries,
+    commentstyle=\\color{red},
+    }\n
+        \\usepackage{verbatim}\n
+        \\institute{{{{beamerinstitute}}}}\n          
+         \\subject{{{{beamersubject}}}}\n"
+
+       ("\\section{%s}" . "\\section*{%s}")
+ 
+       ("\\begin{frame}[fragile]\\frametitle{%s}"
+         "\\end{frame}"
+         "\\begin{frame}[fragile]\\frametitle{%s}"
+         "\\end{frame}")))
+
+    ;; letter class, for formal letters
+
+    (add-to-list 'org-export-latex-classes
+
+    '("letter"
+       "\\documentclass[11pt]{letter}\n
+        \\usepackage[utf8]{inputenc}\n
+        \\usepackage[T1]{fontenc}\n
+        \\usepackage{color}"
+ 
+       ("\\section{%s}" . "\\section*{%s}")
+       ("\\subsection{%s}" . "\\subsection*{%s}")
+       ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+       ("\\paragraph{%s}" . "\\paragraph*{%s}")
+       ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
+
+
+  (require 'ox-md)
+  (require 'ox-beamer)
+
+  (setq org-latex-pdf-process
+        '("pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
+          "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
+          "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"))
+
+  (setq TeX-parse-self t)
+
+  (setq TeX-PDF-mode t)
+  (add-hook 'LaTeX-mode-hook
+            (lambda ()
+              (LaTeX-math-mode)
+              (setq TeX-master t)))
+
+#+END_SRC
 * Magit
 
 [[https://github.com/magit/magit][Magit]] is a very cool git interface on Emacs.
