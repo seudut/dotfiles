@@ -531,7 +531,8 @@ Use [[https://github.com/DarwinAwardWinner/ido-ubiquitous][ido-ubiquitous]] for 
   (use-package ido-exit-target
     :ensure t
     :init
-    (define-key ido-common-completion-map (kbd "C-j") #'ido-exit-target-other-window))
+    (define-key ido-common-completion-map (kbd "C-j") #'ido-exit-target-split-window-right)
+    (define-key ido-common-completion-map (kbd "C-l") #'ido-exit-target-split-window-below))
 
 #+END_SRC
 
@@ -1001,6 +1002,8 @@ Play Go in Emacs, gnugo xpm refert [[https://github.com/okanotor/dotemacs/blob/f
 
     :diminish color-identifiers-mode)
 
+  (global-prettify-symbols-mode t)
+
 #+END_SRC
 
 **** Lispy Mode
@@ -1189,4 +1192,4 @@ company mode
 * Todo 
 
 - change M-o to trigger to delete other windows and restore previous config
-- 
+
