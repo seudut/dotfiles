@@ -816,27 +816,26 @@ Quickly start eshll in split window below, refer [[http://www.howardism.org/Tech
                        (file-name-directory (buffer-file-name))
                      default-directory))
            (height (/ (window-total-height) 3))
-           (name   (car (last (split-string parent "/" t)))))
+           (name   (car (last (split-string parent "/" t))))
+           (eshell-name (concat "*eshell: " name "*")))
       (split-window-vertically (- height))
       (other-window 1)
-      (if (get-buffer (concat "*eshell: " name "*"))
+      (if (get-buffer eshell-name)
           (progn
             (message "buffer exist")
-            (switch-to-buffer (concat "*eshell: " name "*")))
+            (switch-to-buffer eshell-name))
         (progn
           (eshell "new")
-          (rename-buffer (concat "*eshell: " name "*"))
+          (rename-buffer eshell-name)
 
           (insert (concat "ls"))
           (eshell-send-input)))))
 
-  ;; (global-set-key (kbd "M-`") (lambda ()
-  ;;                               (interactive)
-  ;;                               (if (buffer-name))))
+  (global-set-key (kbd "M-`") (lambda ()
+                                (interactive)
+                                (eshell-here)))
 
 #+END_SRC
-
-
 
 * Misc Settings
 
