@@ -1398,6 +1398,17 @@ company mode
 
 #+END_SRC
 
+[[https://github.com/company-mode/company-statistics][company-statistics]]
+
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+
+  (use-package company-statistics
+    :ensure t
+    :config
+    (company-statistics-mode))
+
+#+END_SRC
+
 * Todo 
 
 - change M-o to trigger to delete other windows and restore previous config
