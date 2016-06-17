@@ -268,6 +268,16 @@ improve color for org-mode
 
 #+END_SRC
 
+** Rainbow-delimiter
+
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+
+  (use-package rainbow-delimiters
+    :ensure t
+    :init
+    (add-hook 'prog-mode-hook #'rainbow-delimiters-mode))
+
+#+END_SRC
 * Org-mode Settings
 
 ** Org-mode Basic setting
