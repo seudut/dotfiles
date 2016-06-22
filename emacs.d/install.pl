@@ -4,12 +4,21 @@ use 5.010;
 use strict;
 
 ##my ($sec,$min,$hour,$mday,$mon,$year,$wday,$yday,$isdst) = localtime;
-my $date = `date +%m%d`;
-chomp $date;
+chomp (my $date = `date +%m%d`);
 
 if (-e "$ENV{HOME}/.emacs.d" ) {
-    say "~/.emacs.d folder already exists, rename as ~/.emacs.d_bak_$date";
-    ! system "mv", "$ENV{HOME}/.emacs.d", "$ENV{HOME}/.emacs.d_bak_$date" or die;
+    print "~/.emacs.d folder already exists.\nRename as ~/.emacs.d_bak_$date and continue yes (y) or no (n)? ";
+    chomp (my $yorn = <STDIN>);
+
+    while ($yorn ne "y" and $yorn ne "n") {
+        print "Input y or n: ";
+        chomp ($yorn = <STDIN>);
+    }
+
+    exit if $yorn eq "n";
+
+    ! system "mv", "$ENV{HOME}/.emacs.d", "$ENV{HOME}/.emacs.d_bak_$date" or die
+        if $yorn eq "y";
 }
 
 ## link emacs.d folder
