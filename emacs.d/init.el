@@ -70,15 +70,86 @@
   (load-theme 'spolsky t)
   )
 
+(use-package avy
+  :ensure t
+  )
+
+(use-package use-package-chords
+  :ensure t
+  :config
+  (key-chord-mode 1)
+  (setq key-chord-two-keys-delay 0.5))
+
+(use-package evil
+  :ensure t
+  :config
+  (evil-mode t)
+  (defalias 'evil-insert-state 'evil-emacs-state)
+  (key-chord-define evil-insert-state-map "jj" 'evil-normal-state)
+  (key-chord-define evil-emacs-state-map "jj" 'evil-normal-state)
+;  (setq evil-emacs-state-cursor '("red" box))
+  (setq evil-emacs-state-cursor '("green" bar))
+  (setq evil-normal-state-cursor '("green" box))
+  (setq evil-visual-state-cursor '("orange" box))
+  (setq evil-insert-state-cursor '("red" bar))
+  (setq evil-replace-state-cursor '("red" bar))
+  (setq evil-operator-state-cursor '("red" hollow))
+  )
+
+(use-package multi-term
+  :ensure t
+  )
+
+
+
+;(use-package smex
+;  :ensure t
+;  :init (smex-initialize)
+;  :bind ("M-x" . smex)
+;        ("M-X" . smex-major-mode-commands))
+
+
+(add-to-list 'load-path "~/.emacs.d/pde")
+(load "pde-load")
+
+(add-to-list 'default-frame-alist '(fullscreen . maximized))
+
+
+(use-package org-bullets
+  :ensure t
+  :init
+  (add-hook 'org-mode-hook
+            (lambda ()
+              (org-bullets-mode t))))
+  
+(org-bullets-mode t)
+
+(setq org-hide-leading-stars t)
+
+(setq org-src-fontify-natively t)
+
+(font-lock-add-keywords 'org-mode
+                    '(("\\(src_\\)\\([^[{]+\\)\\(\\[:.*\\]\\){\\([^}]*\\)}"
+                       (1 '(:foreground "black" :weight 'normal :height 10)) ; src_ part
+                       (2 '(:foreground "cyan" :weight 'bold :height 75 :underline "red")) ; "lang" part.
+                       (3 '(:foreground "#555555" :height 70)) ; [:header arguments] part.
+                       (4 'org-code) ; "code..." part.
+                       )))
 
 
 
 
+;(setq lispy-mode-hooks
+;      '(clojure-mode-hook
+;        emacs-lisp-mode-hook
+;        lisp-mode-hook
+;        scheme-mode-hook))
 
-
-
-
-
+;(dolist (hook lispy-mode-hooks)
+;  (add-hook hook (lambda ()
+;                   (setq show-paren-style 'expression)
+;                   (paredit-mode)
+;                   (rainbow-delimiters-mode))))
 
 
 
