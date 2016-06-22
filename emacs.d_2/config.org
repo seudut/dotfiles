@@ -64,6 +64,15 @@ Disable scroll bar, tool-bar and menu-bar
 
 #+END_SRC
 
+set custom file 
+
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent 
+
+  (setq custom-file "~/.emacs.d/custom.el")
+  (load custom-file)
+
+#+END_SRC
+
 Switch the focus to help window when it appears
 
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
