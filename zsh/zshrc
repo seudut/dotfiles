@@ -257,3 +257,16 @@ export MANPATH=$MANPATH:/usr/local/man
 # https://github.com/Valloric/YouCompleteMe/issues/18
 #export DYLD_FORCE_FLAT_NAMESPACE=1
 
+## appended by cpan initializaion
+PATH="/Users/peli3/perl5/bin${PATH:+:${PATH}}"; export PATH;
+PERL5LIB="/Users/peli3/perl5/lib/perl5${PERL5LIB:+:${PERL5LIB}}"; export PERL5LIB;
+PERL_LOCAL_LIB_ROOT="/Users/peli3/perl5${PERL_LOCAL_LIB_ROOT:+:${PERL_LOCAL_LIB_ROOT}}"; export PERL_LOCAL_LIB_ROOT;
+PERL_MB_OPT="--install_base \"/Users/peli3/perl5\""; export PERL_MB_OPT;
+PERL_MM_OPT="INSTALL_BASE=/Users/peli3/perl5"; export PERL_MM_OPT;
+
+
+
+
+export MANPATH=$MANPATH:${HOME}/perl5/man
+
+export PATH=$PATH:"${HOME}/scripts"

@@ -171,7 +171,7 @@ nnoremap <Leader>r	:registers<CR>
 nnoremap <Leader>a :
 
 nmap <Leader>p	"*p
-
+" also works :r !pbpaste<CR>
 
 nmap <A-=> :resize<CR>:vertical resize<CR>
 nmap = :resize<CR>:vertical resize<CR>
