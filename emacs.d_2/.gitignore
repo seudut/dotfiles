@@ -6,3 +6,9 @@ ido.last
 *~
 recentf
 el-get/*
+custom.el
+projectile.cache
+projectile-bookmarks.eld
+semanticdb/*
+config.html
+company-statistics-cache.el
