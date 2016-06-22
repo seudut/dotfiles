@@ -278,6 +278,18 @@ improve color for org-mode
     (add-hook 'prog-mode-hook #'rainbow-delimiters-mode))
 
 #+END_SRC
+
+** page-break-lines
+
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+
+  (use-package page-break-lines
+    :ensure t
+    :config
+    (turn-on-page-break-lines-mode))
+
+#+END_SRC
+
 * Org-mode Settings
 
 ** Org-mode Basic setting
@@ -442,6 +454,31 @@ Install MacTex-basic and some tex packages
             (lambda ()
               (LaTeX-math-mode)
               (setq TeX-master t)))
+
+#+END_SRC
+
+** others
+
+refer to [[http://coldnew.github.io/coldnew-emacs/#orgheadline94][fancy todo states]]
+
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+
+  (setq org-todo-keywords '((sequence "☛ TODO(t)" "|" "✔ DONE(d)")
+                            (sequence "⚑ WAITING(w)" "|")
+                            (sequence "|" "✘ CANCELED(c)")))
+
+#+END_SRC
+
+extend org-mode's easy templates, refer to [[http://coldnew.github.io/coldnew-emacs/#orgheadline94][Extend org-modes' esay templates]]
+
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+
+  (add-to-list 'org-structure-template-alist
+               '("E" "#+BEGIN_SRC emacs-lisp\n?\n#+END_SRC"))
+  (add-to-list 'org-structure-template-alist
+               '("S" "#+BEGIN_SRC sh\n?\n#+END_SRC"))
+  (add-to-list 'org-structure-template-alist
+               '("p" "#+BEGIN_SRC plantuml :file uml.png \n?\n#+END_SRC"))
 
 #+END_SRC
 
@@ -647,10 +684,13 @@ Some global bindings on =Super=, on Mac, it is =Command=
 
   ;; (global-set-key (kbd "s-y") 'projectile-find-file)
   (global-set-key (kbd "s-f") 'projectile-find-file)
-  (global-set-key (kbd "s-[") 'next-buffer)
-  (global-set-key (kbd "s-]") 'previous-buffer)
+  (global-set-key (kbd "s-[") 'persp-next)
+  (global-set-key (kbd "s-]") 'persp-prev)
 
   (global-set-key (kbd "s-`") 'mode-line-other-buffer)
+
+  (global-set-key (kbd "s-n") 'persp-next)
+  (global-set-key (kbd "s-p") 'persp-prev)
 
 
 
@@ -841,9 +881,9 @@ Quickly start eshll in split window below, refer [[http://www.howardism.org/Tech
           (insert (concat "ls"))
           (eshell-send-input)))))
 
-  (global-set-key (kbd "M-`") (lambda ()
-                                (interactive)
-                                (eshell-here)))
+  ;; (global-set-key (kbd "M-`") (lambda ()
+  ;;                               (interactive)
+  ;;                               (if (buffer-name))))
 
 #+END_SRC
 
@@ -1093,7 +1133,7 @@ Type =o= to go to the link
     (persp-mode)
     :bind
     (:map projectile-mode-map
-          ("s-p" . projectile-persp-switch-project)))
+          ("s-t" . projectile-persp-switch-project)))
 
   ;; projectile-find-file
   ;; projectile-switch-buffer
@@ -1193,6 +1233,25 @@ Play Go in Emacs, gnugo xpm refert [[https://github.com/okanotor/dotemacs/blob/f
   (global-set-key (kbd "C-x l") 'counsel-locate)
   (global-set-key (kbd "C-S-o") 'counsel-rhythmbox)
   ;; (define-key read-expression-map (kbd "C-r") 'counsel-expression-history)
+
+#+END_SRC
+
+** Tabbar
+
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+
+  ;; (use-package tabbar-ruler
+  ;;   :ensure t
+  ;;   :init
+  ;;   (setq tabbar-ruler-global-tabbar t)
+  ;;   (setq tabbar-ruler-global-ruler t)
+  ;;   (setq tabbar-ruler-popu-menu t)
+  ;;   (setq tabbar-ruler-popu-toolbar t)
+  ;;   (setq tabbar-use-images t)
+  ;;   :config
+  ;;   (tabbar-ruler-group-by-projectile-project)
+  ;;   (global-set-key (kbd "s-1") 'tabbar-forward-group)
+  ;;   (global-set-key (kbd "s-2") 'tabbar-ruler-forward))
 
 #+END_SRC
 
