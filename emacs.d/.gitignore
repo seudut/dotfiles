@@ -13,3 +13,5 @@ semanticdb/*
 config.html
 company-statistics-cache.el
 emms/*
+smex-items
+eshell/*
