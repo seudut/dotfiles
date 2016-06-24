@@ -13,7 +13,8 @@ Bundle 'vim-scripts/FuzzyFinder'
 Bundle 'vim-scripts/L9'
 Bundle 'Valloric/YouCompleteMe'
 Bundle 'octol/vim-cpp-enhanced-highlight'
-Bundle 'bling/vim-airline'
+Bundle 'vim-airline/vim-airline'
+Bundle 'vim-airline/vim-airline-themes'
 Bundle 'payneseu/nerdtree'
 Bundle 'Townk/vim-autoclose'
 Bundle 'majutsushi/tagbar'
@@ -166,7 +167,8 @@ nnoremap  :tabprevious<CR>
 "nmap <A-SPACE>	:b#<CR>
 "nmap <Leader>d	:bd<CR>
 "" keymappig for register operations
-nnoremap <Leader>r	:registers<CR>
+""TODO check if this already mapping
+"nnoremap <Leader>r	:registers<CR>
 "noremap <Leader>x	:<C-p>
 nnoremap <Leader>a :
 
@@ -374,7 +376,8 @@ endfunction
 "endif
 " }}}
 " NerdTree ---------------------------------------------------------------- {{{
-nmap <Leader>n	:NERDTreeToggle<CR>
+" TODO check if this is already using in plugins
+"nmap <Leader>n	:NERDTreeToggle<CR>
 nmap <Leader>N	:NERDTreeFind<CR>
 " }}}
 " AutoClose --------------------------------------------------------------- {{{
