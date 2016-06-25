@@ -370,6 +370,8 @@ clean mode line, Refer to [[https://www.masteringemacs.org/article/hiding-replac
 
 ** Powerline mode
 
+Install powerline mode [[https://github.com/milkypostman/powerline][powerline]]
+
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
   (use-package powerline
     :ensure t
@@ -381,7 +383,11 @@ clean mode line, Refer to [[https://www.masteringemacs.org/article/hiding-replac
   ;;   :ensure t)
   ;; (use-package smart-mode-line-powerline-theme
   ;;   :ensure t)
+#+END_SRC
 
+Revised powerline-center-theme
+
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
   (defun sd/powerline-simpler-vc (s)
     (if s
         (replace-regexp-in-string "Git[:-]" "" s)
