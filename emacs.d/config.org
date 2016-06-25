@@ -165,7 +165,7 @@ Setting the fonts
   (if window-system
       (when sd/fixed-font-family
         (set-frame-font sd/fixed-font-family)
-        (set-face-attribute 'default nil :font sd/fixed-font-family :height 120)
+        (set-face-attribute 'default nil :font sd/fixed-font-family :height 140)
         (set-face-font 'default sd/fixed-font-family)))
 
 #+END_SRC
@@ -332,7 +332,11 @@ clean mode line, Refer to [[https://www.masteringemacs.org/article/hiding-replac
       ;; default is SP
       (smartparens-mode . "")
       ;; default is LR
-      (linum-mode . "")
+      (linum-relative-mode . "")
+      ;; default is ARev
+      (auto-revert-mode . "")
+      ;; default is Ind
+      (org-indent-mode . "")
       ;; Major modes
       (lisp-interaction-mode . "λ")
       (hi-lock-mode . "")
@@ -366,20 +370,76 @@ clean mode line, Refer to [[https://www.masteringemacs.org/article/hiding-replac
   (use-package powerline
     :ensure t
     :config
-    (powerline-center-theme))
+    ;; (powerline-center-theme)
+    )
 
   ;; (use-package smart-mode-line
   ;;   :ensure t)
   ;; (use-package smart-mode-line-powerline-theme
   ;;   :ensure t)
+
+  (defun sd/powerline-simpler-vc (s)
+    (if s
+        (replace-regexp-in-string "Git[:-]" "" s)
+      s))
+
+  (defun sd/powerline-center-theme_revised ()
+    "Setup a mode-line with major and minor modes centered."
+    (interactive)
+    (setq-default mode-line-format
+                  '("%e"
+                    (:eval
+                     (let* ((active (powerline-selected-window-active))
+                            (mode-line-buffer-id (if active 'mode-line-buffer-id 'mode-line-buffer-id-inactive))
+                            (mode-line (if active 'mode-line 'mode-line-inactive))
+                            (face1 (if active 'powerline-active1 'powerline-inactive1))
+                            (face2 (if active 'powerline-active2 'powerline-inactive2))
+                            (separator-left (intern (format "powerline-%s-%s"
+                                                            (powerline-current-separator)
+                                                            (car powerline-default-separator-dir))))
+                            (separator-right (intern (format "powerline-%s-%s"
+                                                             (powerline-current-separator)
+                                                             (cdr powerline-default-separator-dir))))
+                            (lhs (list (powerline-raw "%*" mode-line 'l)
+                                       ;; (powerline-buffer-size mode-line 'l)
+                                       (powerline-buffer-id mode-line-buffer-id 'l)
+                                       (powerline-raw " ")
+                                       (funcall separator-left mode-line face1)
+                                       (powerline-narrow face1 'l)
+                                       ;; (powerline-vc face1)
+                                       (sd/powerline-simpler-vc (powerline-vc face1))
+                                       ))
+                            (rhs (list (powerline-raw global-mode-string face1 'r)
+                                       (powerline-raw "%4l" face1 'r)
+                                       (powerline-raw ":" face1)
+                                       (powerline-raw "%3c" face1 'r)
+                                       (funcall separator-right face1 mode-line)
+                                       (powerline-raw " ")
+                                       (powerline-raw "%6p" mode-line 'r)
+                                       (powerline-hud face2 face1)))
+                            (center (list (powerline-raw " " face1)
+                                          (funcall separator-left face1 face2)
+                                          (when (and (boundp 'erc-track-minor-mode) erc-track-minor-mode)
+                                            (powerline-raw erc-modified-channels-object face2 'l))
+                                          (powerline-major-mode face2 'l)
+                                          (powerline-process face2)
+                                          (powerline-raw " :" face2)
+                                          (powerline-minor-modes face2 'l)
+                                          (powerline-raw " " face2)
+                                          (funcall separator-right face2 face1))))
+                       (concat (powerline-render lhs)
+                               (powerline-fill-center face1 (/ (powerline-width center) 2.0))
+                               (powerline-render center)
+                               (powerline-fill face1 (powerline-width rhs))
+                               (powerline-render rhs)))))))
+
+  (sd/powerline-center-theme_revised)
 #+END_SRC
 
 Fix the issue in mode line when showing triangle 
 
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
-    
   (setq ns-use-srgb-colorspace nil)
-
 #+END_SRC
 
 * Org-mode Settings
