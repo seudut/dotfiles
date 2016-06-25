@@ -313,7 +313,9 @@ Enable rainbow mode in emacs lisp mode
 
 #+END_SRC
 
-** Mode-line
+* Mode-line
+
+** clean mode line
 
 clean mode line, Refer to [[https://www.masteringemacs.org/article/hiding-replacing-modeline-strings][Marstering Emacs]]
 
@@ -365,6 +367,8 @@ clean mode line, Refer to [[https://www.masteringemacs.org/article/hiding-replac
 
   (add-hook 'after-change-major-mode-hook 'clean-mode-line)
 #+END_SRC
+
+** Powerline mode
 
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
   (use-package powerline
@@ -440,6 +444,18 @@ Fix the issue in mode line when showing triangle
 
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
   (setq ns-use-srgb-colorspace nil)
+#+END_SRC
+
+set height in mode line
+
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+
+  (custom-set-variables
+   '(powerline-height 14)
+   '(powerline-text-scale-factor 0.8))
+  ;; 100/140
+  (set-face-attribute 'mode-line nil :height 100)
+
 #+END_SRC
 
 * Org-mode Settings
