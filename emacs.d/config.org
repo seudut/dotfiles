@@ -300,6 +300,88 @@ improve color for org-mode
 
 #+END_SRC
 
+** rainbow-mode
+
+Enable rainbow mode in emacs lisp mode
+
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+  (use-package rainbow-mode
+    :ensure t
+  ;  :init
+  ;  (add-hook emacs-lisp-mode-hook 'rainbow-mode)
+    )
+
+#+END_SRC
+
+** Mode-line
+
+clean mode line, Refer to [[https://www.masteringemacs.org/article/hiding-replacing-modeline-strings][Marstering Emacs]]
+
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+  (defvar mode-line-cleaner-alist
+    `((auto-complete-mode . " α")
+      (yas/minor-mode . " υ")
+      (paredit-mode . " π")
+      (eldoc-mode . "")
+      (abbrev-mode . "")
+      (projectile-mode . "")
+      (ivy-mode . "")
+      (undo-tree-mode . "")
+      ;; default is WK
+      (which-key-mode . "")
+      ;; default is SP
+      (smartparens-mode . "")
+      ;; default is LR
+      (linum-mode . "")
+      ;; Major modes
+      (lisp-interaction-mode . "λ")
+      (hi-lock-mode . "")
+      (python-mode . "Py")
+      (emacs-lisp-mode . "EL")
+      (nxhtml-mode . "nx"))
+    "Alist for `clean-mode-line'.
+
+  When you add a new element to the alist, keep in mind that you
+  must pass the correct minor/major mode symbol and a string you
+  want to use in the modeline *in lieu of* the original.")
+
+
+  (defun clean-mode-line ()
+    (interactive)
+    (loop for cleaner in mode-line-cleaner-alist
+          do (let* ((mode (car cleaner))
+                   (mode-str (cdr cleaner))
+                   (old-mode-str (cdr (assq mode minor-mode-alist))))
+               (when old-mode-str
+                   (setcar old-mode-str mode-str))
+                 ;; major mode
+               (when (eq mode major-mode)
+                 (setq mode-name mode-str)))))
+
+
+  (add-hook 'after-change-major-mode-hook 'clean-mode-line)
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+  (use-package powerline
+    :ensure t
+    :config
+    (powerline-center-theme))
+
+  ;; (use-package smart-mode-line
+  ;;   :ensure t)
+  ;; (use-package smart-mode-line-powerline-theme
+  ;;   :ensure t)
+#+END_SRC
+
+Fix the issue in mode line when showing triangle 
+
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+    
+  (setq ns-use-srgb-colorspace nil)
+
+#+END_SRC
+
 * Org-mode Settings
 
 ** Org-mode Basic setting
@@ -1227,22 +1309,22 @@ Play Go in Emacs, gnugo xpm refert [[https://github.com/okanotor/dotemacs/blob/f
 
   (ivy-mode 1)
   (setq ivy-use-virtual-buffers t)
-  (global-set-key "\C-s" 'swiper)
-  (global-set-key (kbd "C-c C-r") 'ivy-resume)
-  (global-set-key (kbd "<f6>") 'ivy-resume)
-  ;; (global-set-key (kbd "M-x") 'counsel-M-x)
-  ;; (global-set-key (kbd "C-x C-f") 'counsel-find-file)
-  (global-set-key (kbd "<f1> f") 'counsel-describe-function)
-  (global-set-key (kbd "<f1> v") 'counsel-describe-variable)
-  (global-set-key (kbd "<f1> l") 'counsel-load-library)
-  (global-set-key (kbd "<f2> i") 'counsel-info-lookup-symbol)
-  (global-set-key (kbd "<f2> u") 'counsel-unicode-char)
-  (global-set-key (kbd "C-c g") 'counsel-git)
-  (global-set-key (kbd "C-c j") 'counsel-git-grep)
-  (global-set-key (kbd "C-c k") 'counsel-ag)
-  (global-set-key (kbd "C-x l") 'counsel-locate)
-  (global-set-key (kbd "C-S-o") 'counsel-rhythmbox)
-  ;; (define-key read-expression-map (kbd "C-r") 'counsel-expression-history)
+  ;; (global-set-key "\C-s" 'swiper)
+  ;; (global-set-key (kbd "C-c C-r") 'ivy-resume)
+  ;; (global-set-key (kbd "<f6>") 'ivy-resume)
+  ;; ;; (global-set-key (kbd "M-x") 'counsel-M-x)
+  ;; ;; (global-set-key (kbd "C-x C-f") 'counsel-find-file)
+  ;; (global-set-key (kbd "<f1> f") 'counsel-describe-function)
+  ;; (global-set-key (kbd "<f1> v") 'counsel-describe-variable)
+  ;; (global-set-key (kbd "<f1> l") 'counsel-load-library)
+  ;; (global-set-key (kbd "<f2> i") 'counsel-info-lookup-symbol)
+  ;; (global-set-key (kbd "<f2> u") 'counsel-unicode-char)
+  ;; (global-set-key (kbd "C-c g") 'counsel-git)
+  ;; (global-set-key (kbd "C-c j") 'counsel-git-grep)
+  ;; (global-set-key (kbd "C-c k") 'counsel-ag)
+  ;; (global-set-key (kbd "C-x l") 'counsel-locate)
+  ;; (global-set-key (kbd "C-S-o") 'counsel-rhythmbox)
+  ;; ;; (define-key read-expression-map (kbd "C-r") 'counsel-expression-history)
 
 #+END_SRC
 
