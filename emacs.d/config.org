@@ -603,6 +603,64 @@ timestamp for the state change.
                 )))
 #+END_SRC
 
+Fast todo selections
+
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+  (setq org-use-fast-todo-selection t)
+  (setq org-treat-S-cursor-todo-selection-as-state-change nil)
+#+END_SRC
+
+TODO state triggers and tags, [[http://doc.norang.ca/org-mode.html][Organize Your Life in Plain Text]]
+
+- Moving a task to =CANCELLED=, adds a =CANCELLED= tag
+- Moving a task to =WAITING=, adds a =WAITING= tag
+- Moving a task to =HOLD=, add =HOLD= tags
+- Moving a task to =DONE=, remove =WAITING=, =HOLD= tag
+- Moving a task to =NEXT=, remove all waiting/hold/cancelled tags
+
+This tags are used to filter tasks in agenda views
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+  (setq org-todo-state-tags-triggers
+        (quote (("CANCELLED" ("CANCELLED" . t))
+                ("WAITING" ("WAITING" . t))
+                ("HOLD" ("WAITING") ("HOLD" . t))
+                (done ("WAITING") ("HOLD"))
+                ("TODO" ("WAITING") ("CANCELLED") ("HOLD"))
+                ("NEXT" ("WAITING") ("CANCELLED") ("HOLD"))
+                ("DONE" ("WAITING") ("CANCELLED") ("HOLD")))))
+#+END_SRC
+
+*** Capture - Refile - Archive
+
+Capture lets you quickly store notes with little interruption of your work flow.
+
+**** Capture Templates
+
+When a new taks needs to be added, categorize it as 
+
+All captured file which need next actions are stored in =refile.org=, 
+- A new task / note (t) =refile.org=
+- A work task in office =office.org=
+- A jourenl =diary.org=
+- A new habit (h) =refile.org=
+
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+  (setq org-directory "~/org")
+  (setq org-default-notes-file "~/org/refile.org")
+  (setq sd/org-diary-file "~/org/diary.org")
+
+  (global-set-key (kbd "C-c c") 'org-capture)
+
+  (setq org-capture-templates
+        (quote (("t" "Todo" entry (file org-default-notes-file)
+                 "* TODO %?\n%a\n" :clock-in t :clock-resume t)
+                ("n" "Note" entry (file org-default-notes-file)
+                 "* %? :NOTE:\n%a\n" :clock-in t :clock-resume t)
+                ("j" "Journal" entry (file+datetree sd/org-diary-file)
+                 "* %?\n" :clock-in t :clock-resume t)
+                ("h" "Habit" entry (file org-default-notes-file)
+                 "* NEXT %?\n%a\nSCHEDULED: %(format-time-string \"%<<%Y-%m-%d %a .+1d/3d>>\")\n:PROPERTITES:\n:STYLE: habit\n:REPEAT_TO_STATE: NEXT\n:END:\n "))))
+#+END_SRC
 *** Agenda Setup
 
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
@@ -723,7 +781,6 @@ extend org-mode's easy templates, refer to [[http://coldnew.github.io/coldnew-em
   (use-package magit
     :ensure t
     :commands magit-status magit-blame)
-
 
 #+END_SRC
 
