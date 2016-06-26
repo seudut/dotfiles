@@ -661,6 +661,17 @@ All captured file which need next actions are stored in =refile.org=,
                 ("h" "Habit" entry (file org-default-notes-file)
                  "* NEXT %?\n%a\nSCHEDULED: %(format-time-string \"%<<%Y-%m-%d %a .+1d/3d>>\")\n:PROPERTITES:\n:STYLE: habit\n:REPEAT_TO_STATE: NEXT\n:END:\n "))))
 #+END_SRC
+
+**** Refiling Tasks
+
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+  (setq org-refile-targets (quote (;; (nil :maxlevel . 9)
+                                   (org-agenda-files :maxlevel . 9))))
+
+  (setq org-refile-use-outline-path t)
+
+  (setq org-refile-allow-creating-parent-nodes (quote confirm))
+#+END_SRC
 *** Agenda Setup
 
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
