@@ -344,6 +344,7 @@ clean mode line, Refer to [[https://www.masteringemacs.org/article/hiding-replac
       (hi-lock-mode . "")
       (python-mode . "Py")
       (emacs-lisp-mode . "EL")
+      (eshell-mode . "ε")
       (nxhtml-mode . "nx"))
     "Alist for `clean-mode-line'.
 
@@ -540,7 +541,74 @@ cause we cannot input =[= and =]=, so here I unset this mappings. And redifined 
 
 #+END_SRC
 
-** Task Management
+** Get Things Done
+
+Refer to [[http://doc.norang.ca/org-mode.html][Organize Your Life in Plain Text]]
+*** basic setup
+
+standard key binding
+
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+  (global-set-key "\C-cl" 'org-store-link)
+  (global-set-key "\C-ca" 'org-agenda)
+  (global-set-key "\C-cb" 'org-iswitchb)
+#+END_SRC
+
+*** Plain List 
+
+Replace the list bullet =-=, =+=,  with =•=, a litter change based [[https://github.com/howardabrams/dot-files/blob/master/emacs-org.org][here]]
+
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+  (use-package org-mode
+    :init
+    (font-lock-add-keywords 'org-mode
+     '(("^ *\\([-+]\\) "
+            (0 (prog1 () (compose-region (match-beginning 1) (match-end 1) "•")))))))
+#+END_SRC
+ 
+*** Todo Keywords
+
+refer to [[http://coldnew.github.io/coldnew-emacs/#orgheadline94][fancy todo states]], 
+
+To track TODO state changes, the =!= is to insert a timetamp, =@= is to insert a note with
+timestamp for the state change.
+
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+    ;; (setq org-todo-keywords
+    ;;        '((sequence "☛ TODO(t)" "|" "✔ DONE(d)")
+    ;;          (sequence "⚑ WAITING(w)" "|")
+    ;;          (sequence "|" "✘ CANCELLED(c)")))
+  ; (setq org-todo-keyword-faces
+  ;        (quote ("TODO" .  (:foreground "red" :weight bold))
+  ;               ("NEXT" .  (:foreground "blue" :weight bold))
+  ;               ("WAITING" . (:foreground "forest green" :weight bold))
+  ;               ("DONE" .  (:foreground "magenta" :weight bold))
+  ;               ("CANCELLED" . (:foreground "forest green" :weight bold))))
+
+
+  (setq org-todo-keywords
+        (quote ((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d!)")
+                ;; (sequence "WAITING(w@/!)" "HOLD(h@/!)" "|" "CANCELLED(c@/!)" "PHONE" "MEETING")
+                (sequence "WAITING(w@/!)" "HOLD(h@/!)" "|" "CANCELLED(c@/!)" ))))
+
+  (setq org-todo-keyword-faces
+        (quote (("TODO" :foreground "red" :weight bold)
+                ("NEXT" :foreground "blue" :weight bold)
+                ("DONE" :foreground "forest green" :weight bold)
+                ("WAITING" :foreground "orange" :weight bold)
+                ("HOLD" :foreground "magenta" :weight bold)
+                ("CANCELLED" :foreground "forest green" :weight bold)
+                ;; ("MEETING" :foreground "forest green" :weight bold)
+                ;; ("PHONE" :foreground "forest green" :weight bold)
+                )))
+#+END_SRC
+
+*** Agenda Setup
+
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+  (setq org-agenda-files (quote ("~/org/plan.org"
+                                 "~/org/test.org")))
+#+END_SRC
 
 ** Capture
 
@@ -633,22 +701,12 @@ Install MacTex-basic and some tex packages
 
 ** others
 
-refer to [[http://coldnew.github.io/coldnew-emacs/#orgheadline94][fancy todo states]]
-
-#+BEGIN_SRC emacs-lisp :tangle yes :results silent
-
-  (setq org-todo-keywords '((sequence "☛ TODO(t)" "|" "✔ DONE(d)")
-                            (sequence "⚑ WAITING(w)" "|")
-                            (sequence "|" "✘ CANCELED(c)")))
-
-#+END_SRC
-
 extend org-mode's easy templates, refer to [[http://coldnew.github.io/coldnew-emacs/#orgheadline94][Extend org-modes' esay templates]]
 
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
 
   (add-to-list 'org-structure-template-alist
-               '("E" "#+BEGIN_SRC emacs-lisp\n?\n#+END_SRC"))
+               '("E" "#+BEGIN_SRC emacs-lisp :tangle yes :results silent\n?\n#+END_SRC"))
   (add-to-list 'org-structure-template-alist
                '("S" "#+BEGIN_SRC sh\n?\n#+END_SRC"))
   (add-to-list 'org-structure-template-alist
