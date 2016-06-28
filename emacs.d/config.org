@@ -674,17 +674,16 @@ All captured file which need next actions are stored in =refile.org=,
 #+END_SRC
 
 *** Agenda Setup
-
+Setting agenda files and the agenda view
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
   (setq org-agenda-files (quote ("~/org/plan.org"
                                  "~/org/gtd.org"
                                  "~/org/work.org")))
-#+END_SRC
 
-Only show today's view in agenda view by default
-
-#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+  ;; only show today's tasks in agenda view
   (setq org-agenda-span 'day)
+  ;; Use current windows for agenda view
+  (setq org-agenda-window-setup 'current-window)
 #+END_SRC
 
 ** Capture
