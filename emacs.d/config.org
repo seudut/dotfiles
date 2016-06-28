@@ -672,11 +672,19 @@ All captured file which need next actions are stored in =refile.org=,
 
   (setq org-refile-allow-creating-parent-nodes (quote confirm))
 #+END_SRC
+
 *** Agenda Setup
 
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
   (setq org-agenda-files (quote ("~/org/plan.org"
-                                 "~/org/test.org")))
+                                 "~/org/gtd.org"
+                                 "~/org/work.org")))
+#+END_SRC
+
+Only show today's view in agenda view by default
+
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+  (setq org-agenda-span 'day)
 #+END_SRC
 
 ** Capture
