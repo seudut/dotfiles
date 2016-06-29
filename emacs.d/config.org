@@ -151,7 +151,7 @@ syntax highlighting
   (if window-system
       (defvar sd/fixed-font-family
         (cond ((x-list-fonts "Hasklig")         "Hasklig")
-              ((x-list-fonts "Source Code Pro") "Source Code Pro")
+              ((x-list-fonts "Source Code Pro") "Source Code Pro:weight:light")
               ((x-list-fonts "Anonymous Pro")   "Anonymous Pro")
               ((x-list-fonts "M+ 1mn")          "M+ 1mn"))
         "The fixed width font based on what is installed, `nil' if not defined."))
@@ -676,8 +676,7 @@ All captured file which need next actions are stored in =refile.org=,
 *** Agenda Setup
 Setting agenda files and the agenda view
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
-  (setq org-agenda-files (quote ("~/org/plan.org"
-                                 "~/org/gtd.org"
+  (setq org-agenda-files (quote ("~/org/gtd.org"
                                  "~/org/work.org")))
 
   ;; only show today's tasks in agenda view
