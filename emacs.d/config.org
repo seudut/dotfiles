@@ -563,11 +563,11 @@ standard key binding
 Replace the list bullet =-=, =+=,  with =•=, a litter change based [[https://github.com/howardabrams/dot-files/blob/master/emacs-org.org][here]]
 
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
-  (use-package org-mode
-    :init
-    (font-lock-add-keywords 'org-mode
-     '(("^ *\\([-+]\\) "
-            (0 (prog1 () (compose-region (match-beginning 1) (match-end 1) "•")))))))
+  ;; (use-package org-mode
+  ;;   :init
+  ;;   (font-lock-add-keywords 'org-mode
+  ;;    '(("^ *\\([-+]\\) "
+  ;;           (0 (prog1 () (compose-region (match-beginning 1) (match-end 1) "•")))))))
 #+END_SRC
  
 *** Todo Keywords
@@ -632,6 +632,30 @@ This tags are used to filter tasks in agenda views
                 ("TODO" ("WAITING") ("CANCELLED") ("HOLD"))
                 ("NEXT" ("WAITING") ("CANCELLED") ("HOLD"))
                 ("DONE" ("WAITING") ("CANCELLED") ("HOLD")))))
+#+END_SRC
+
+Logging Stuff 
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+  ;; log time when task done
+  (setq org-log-done (quote time))
+  ;; save clocking into to LOGBOOK
+  (setq org-clock-into-drawer t)
+  ;; save state change notes and time stamp into LOGBOOK drawer
+  (setq org-log-into-drawer t)
+#+END_SRC
+
+*** Tags
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+  (setq org-tag-alist (quote ((:startgroup)
+                              ("@office" . ?e)
+                              ("@home" . ?h)
+                              (:endgroup)
+                              ("WAITING" . ?w)
+                              ("HOLD" . ?h)
+                              ("CANCELLED" . ?c))))
+
+  ;; Allow setting single tags without the menu
+  (setq org-fast-tag-selection-single-key (quote expert))
 #+END_SRC
 
 *** Capture - Refile - Archive
