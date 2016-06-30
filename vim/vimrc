@@ -376,8 +376,9 @@ endfunction
 "endif
 " }}}
 " NerdTree ---------------------------------------------------------------- {{{
-" TODO check if this is already using in plugins
-"nmap <Leader>n	:NERDTreeToggle<CR>
+" Fix keymapping conflict
+nmap <unique> <Leader>, <Plug>MarkClear
+nmap <Leader>n	:NERDTreeToggle<CR>
 nmap <Leader>N	:NERDTreeFind<CR>
 " }}}
 " AutoClose --------------------------------------------------------------- {{{
