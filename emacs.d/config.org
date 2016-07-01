@@ -681,7 +681,7 @@ All captured file which need next actions are stored in =refile.org=,
 
   (setq org-capture-templates
         (quote (("t" "Todo" entry (file org-default-notes-file)
-                 "* TODO %^{Description}\n%?\n:LOGBOOK:\n- Added: %U\t\tAt: %a\n:END:")
+                 "* TODO %?\n:LOGBOOK:\n- Added: %U\t\tAt: %a\n:END:")
                 ("n" "Note" entry (file org-default-notes-file)
                  "* %? :NOTE:\n:LOGBOOK:\n- Added: %U\t\tAt: %a\n:END:")
                 ("j" "Journal" entry (file+datetree sd/org-diary-file)
