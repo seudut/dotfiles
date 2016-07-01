@@ -513,7 +513,6 @@ Always indents header, and hide header leading starts so that no need type =#+ST
 use [[https://github.com/sabof/org-bullets][org-bullets]] package to show utf-8 charactes
 
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
-
   (use-package org-bullets
     :ensure t
     :init
@@ -521,6 +520,7 @@ use [[https://github.com/sabof/org-bullets][org-bullets]] package to show utf-8 
               (lambda ()
                 (org-bullets-mode t))))
 
+  (setq org-bullets-bullet-list '("⦿" "✪" "⚫" "◉" "○" "►" "◆"))
 #+END_SRC
 
 ** Worf Mode
@@ -637,7 +637,7 @@ This tags are used to filter tasks in agenda views
 Logging Stuff 
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
   ;; log time when task done
-  (setq org-log-done (quote time))
+  ;; (setq org-log-done (quote time))
   ;; save clocking into to LOGBOOK
   (setq org-clock-into-drawer t)
   ;; save state change notes and time stamp into LOGBOOK drawer
@@ -681,13 +681,13 @@ All captured file which need next actions are stored in =refile.org=,
 
   (setq org-capture-templates
         (quote (("t" "Todo" entry (file org-default-notes-file)
-                 "* TODO %?\n%a\n" :clock-in t :clock-resume t)
+                 "* TODO %^{Description}\n%?\n:LOGBOOK:\n- Added: %U\t\tAt: %a\n:END:")
                 ("n" "Note" entry (file org-default-notes-file)
-                 "* %? :NOTE:\n%a\n" :clock-in t :clock-resume t)
+                 "* %? :NOTE:\n:LOGBOOK:\n- Added: %U\t\tAt: %a\n:END:")
                 ("j" "Journal" entry (file+datetree sd/org-diary-file)
-                 "* %?\n" :clock-in t :clock-resume t)
+                 "* %?\n:LOGBOOK:\n:END:" :clock-in t :clock-resume t)
                 ("h" "Habit" entry (file org-default-notes-file)
-                 "* NEXT %?\n%a\nSCHEDULED: %(format-time-string \"%<<%Y-%m-%d %a .+1d/3d>>\")\n:PROPERTITES:\n:STYLE: habit\n:REPEAT_TO_STATE: NEXT\n:END:\n "))))
+                 "* NEXT %?\n:LOGBOOK:\n%a\nSCHEDULED: %(format-time-string \"%<<%Y-%m-%d %a .+1d/3d>>\")\n:END:\n:PROPERTIES:\n:STYLE: habit\n:REPEAT_TO_STATE: NEXT\n:END:\n "))))
 #+END_SRC
 
 **** Refiling Tasks
@@ -711,9 +711,15 @@ Setting agenda files and the agenda view
   (setq org-agenda-span 'day)
   ;; Use current windows for agenda view
   (setq org-agenda-window-setup 'current-window)
+
+  ;; show all feature entries for repeating tasks,
+  ;; this is already setting by default
+  (setq org-agenda-repeating-timestamp-show-all t)
+
+  ;; Show all agenda dates - even if they are empty
+  (setq org-agenda-show-all-dates t)
 #+END_SRC
 
-** Capture
 
 ** Export PDF
 
