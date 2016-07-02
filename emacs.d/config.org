@@ -1257,13 +1257,11 @@ Quickly start eshll in split window below, refer [[http://www.howardism.org/Tech
       (progn
         (split-window-vertically (- (/ (window-total-height) 3)))
         (other-window 1)
-        (unless (get-buffer eshell-buffer-name)
+        (unless (and (boundp 'eshell-buffer-name) (get-buffer eshell-buffer-name))
           (eshell))
         (switch-to-buffer eshell-buffer-name)
         (goto-char (point-max))
         (eshell-kill-input)
-        (message "wowo is %s" default-directory)
-        (message "wowo is %s" (file-name-directory (buffer-name)))
         (insert (format "cd %s" default-directory))
         (eshell-send-input))))
 
