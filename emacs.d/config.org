@@ -642,6 +642,7 @@ Logging Stuff
   (setq org-clock-into-drawer t)
   ;; save state change notes and time stamp into LOGBOOK drawer
   (setq org-log-into-drawer t)
+  (setq org-clock-into-drawer "CLOCK")
 #+END_SRC
 
 *** Tags
@@ -1037,8 +1038,8 @@ Some global bindings on =Super=, on Mac, it is =Command=
 
   ;; (global-set-key (kbd "s-y") 'projectile-find-file)
   (global-set-key (kbd "s-f") 'projectile-find-file)
-  (global-set-key (kbd "s-[") 'persp-next)
-  (global-set-key (kbd "s-]") 'persp-prev)
+  ;; (global-set-key (kbd "s-[") 'persp-next)
+  ;; (global-set-key (kbd "s-]") 'persp-prev)
 
   (global-set-key (kbd "s-`") 'mode-line-other-buffer)
 
@@ -1233,15 +1234,14 @@ Quickly start eshll in split window below, refer [[http://www.howardism.org/Tech
           (insert (concat "ls"))
           (eshell-send-input)))))
 
-  ;; (global-set-key (kbd "M-`") (lambda ()
-  ;;                               (interactive)
-  ;;                               (if (buffer-name))))
+  (global-unset-key (kbd "M-`"))
+  (global-set-key (kbd "M-`") #'eshell-here)
 #+END_SRC
 
 * Misc Settings
 
 ** [[https://github.com/abo-abo/hydra][Hydra]]
-
+*** hydra install
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
   (use-package hydra
     :ensure t)
@@ -1306,10 +1306,10 @@ Refer [[https://github.com/abo-abo/hydra/blob/master/hydra-examples.el][hydra-ex
 
   (defhydra sd/hydra-window (:color red :columns nil)
     "window"
-    ("h" windmove-left nil)
-    ("j" windmove-down nil)
-    ("k" windmove-up nil)
-    ("l" windmove-right nil)
+    ("h" windmove-left nil :exit t)
+    ("j" windmove-down nil :exit t)
+    ("k" windmove-up nil :exit t)
+    ("l" windmove-right nil :exit t)
     ("H" hydra-move-splitter-left nil)
     ("J" hydra-move-splitter-down nil)
     ("K" hydra-move-splitter-up nil)
@@ -1318,12 +1318,12 @@ Refer [[https://github.com/abo-abo/hydra/blob/master/hydra-examples.el][hydra-ex
            (interactive)
            (split-window-right)
            (windmove-right))
-     "vert")
+     "vert" :exit t)
     ("x" (lambda ()
            (interactive)
            (split-window-below)
            (windmove-down))
-     "horz")
+     "horz" :exit)
     ("o" delete-other-windows "one" :exit t)
     ("a" ace-window "ace")
     ("s" ace-swap-window "swap")
@@ -1507,11 +1507,10 @@ Type =o= to go to the link
 We can use [[https://www.gnu.org/software/emms/quickstart.html][Emms]] for multimedia in Emacs
 
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
-
   (use-package emms
     :ensure t
     :init
-    (setq emms-source-file-default-directory "~/Music/emms/")
+    (setq emms-source-file-default-directory "~/Music/")
     :config
     (emms-standard)
     (emms-default-players)
