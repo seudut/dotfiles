@@ -469,6 +469,347 @@ set height in mode line
 
 #+END_SRC
 
+* IDO & SMEX
+
+** IDO
+
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+
+  (use-package ido
+    :ensure t
+    :init (setq ido-enable-flex-matching t
+                ido-ignore-extensions t
+                ido-use-virtual-buffers t
+                ido-everywhere t)
+    :config
+    (ido-mode 1)
+    (ido-everywhere 1)
+    (add-to-list 'completion-ignored-extensions ".pyc"))
+
+  (icomplete-mode t)
+
+#+END_SRC
+
+** FLX
+
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+
+  (use-package flx-ido
+    :ensure t
+    :init (setq ido-enable-flex-matching t
+                ido-use-faces nil)
+    :config (flx-ido-mode 1))
+
+#+END_SRC
+
+** IDO-vertically
+
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+
+  (use-package ido-vertical-mode
+    :ensure t
+    :init
+    (setq ido-vertical-define-keys 'C-n-C-p-up-and-down)
+    :config
+    (ido-vertical-mode 1))
+
+#+END_SRC
+
+** SMEX
+
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+
+  (use-package smex
+    :ensure t
+    :init (smex-initialize)
+    :bind
+    ("M-x" . smex)
+    ("M-X" . smex-major-mode-commands))
+
+#+END_SRC
+
+** Ido-ubiquitous
+
+Use [[https://github.com/DarwinAwardWinner/ido-ubiquitous][ido-ubiquitous]] for ido everywhere. It makes =describe-function= can also use ido
+
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+
+  (use-package ido-ubiquitous
+    :ensure t
+    :init
+    (setq magit-completing-read-function 'magit-ido-completing-read)
+    (setq gnus-completing-read-function 'gnus-ido-completing-read)
+    :config
+    (ido-ubiquitous-mode 1))
+
+#+END_SRC
+
+** Ido-exit-target
+
+[[https://github.com/waymondo/ido-exit-target][ido-exit-target]] let you open file/buffer on =other-windows= when call =ido-switch-buffer=
+
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+
+  (use-package ido-exit-target
+    :ensure t
+    :init
+    (define-key ido-common-completion-map (kbd "C-j") #'ido-exit-target-split-window-right)
+    (define-key ido-common-completion-map (kbd "C-l") #'ido-exit-target-split-window-below))
+
+#+END_SRC
+
+* Key bindings
+
+** Remove prefix =ESC=, refer [[http://emacs.stackexchange.com/questions/14755/how-to-remove-bindings-to-the-esc-prefix-key][here]]
+
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+
+  ;; (define-key key-translation-map (kbd "ESC") (kbd "C-g"))
+
+#+END_SRC
+
+** Esc on Minibuffer
+
+Use =ESC= to exit minibuffer. Also I map =Super-h= the same as =C-g=
+
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+
+  (define-key minibuffer-local-map [escape] 'keyboard-escape-quit)
+  (define-key minibuffer-local-map [escape]  'keyboard-escape-quit)
+  (define-key minibuffer-local-ns-map [escape]  'keyboard-escape-quit)
+  (define-key minibuffer-local-isearch-map [escape]  'keyboard-escape-quit)
+  (define-key minibuffer-local-completion-map [escape]  'keyboard-escape-quit)
+  (define-key minibuffer-local-must-match-map [escape]  'keyboard-escape-quit)
+  (define-key minibuffer-local-must-match-filename-map [escape]  'keyboard-escape-quit)
+  (define-key minibuffer-local-filename-completion-map [escape]  'keyboard-escape-quit)
+  (define-key minibuffer-local-filename-must-match-map [escape]  'keyboard-escape-quit)
+
+  ;; Also map s-h same as C-g
+  (define-key minibuffer-local-map (kbd "s-h") 'keyboard-escape-quit)
+
+#+END_SRC
+
+** =Ctrl= key bindings
+
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+  ;;
+
+  ;; C-h    help    
+  ;; C-j    newline and indent
+  ;; C-k    kill line
+  ;; C-l    recenter-top-bottom
+  ;; (global-set-key (kbd "C-;") 'ido-switch-buffer)
+  ;; C-;
+  ;; C-'   
+  ;; C-ret  
+
+  ;; C-n    next-line
+  ;; C-m
+  ;; C-,
+  ;; C-.
+  ;; C-/
+
+  ;; C-y
+  ;; C-u
+  ;; C-i
+  ;; C-o
+  ;; C-p
+  ;; C-[
+  ;; C-]
+  ;; C-\
+
+  ;; C-=
+  ;; C--
+  ;; C-0
+  ;; C-9
+  ;; C-8
+  ;; C-7
+
+  ;; C-Space
+
+
+
+
+
+
+
+#+END_SRC
+
+** =Super= bindings for file, buffer and windows
+
+Some global bindings on =Super=, on Mac, it is =Command=
+
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+
+  (global-set-key (kbd "s-h") 'keyboard-quit)
+  (global-set-key (kbd "s-j") 'ido-switch-buffer)
+  (global-set-key (kbd "s-k") 'ido-find-file)
+  ;; s-k  -->  kill-this-buffer
+  (global-set-key (kbd "s-l") (lambda ()
+                                (interactive)
+                                (if (> (length (window-list)) 1) 
+                                    (delete-window)
+                                  (message "Only one Windows now!"))))
+  ;; s-l  -->  goto-line
+  (global-set-key (kbd "s-;") 'swiper)
+  ;; s-;  -->
+  ;; s-'  -->  'next-multiframe-window
+  (global-set-key (kbd "<s-return>") 'toggle-frame-fullscreen)
+
+  ;; (global-set-key (kbd "s-y") 'projectile-find-file)
+  (global-set-key (kbd "s-f") 'projectile-find-file)
+  ;; (global-set-key (kbd "s-[") 'persp-next)
+  ;; (global-set-key (kbd "s-]") 'persp-prev)
+
+  (global-set-key (kbd "s-`") 'mode-line-other-buffer)
+
+  (global-set-key (kbd "s-n") 'persp-next)
+  (global-set-key (kbd "s-p") 'persp-prev)
+
+
+
+  ;; someothers default mapping on super (command) key
+  ;; s-s save-buffer
+  ;; s-k kill-this-buffer
+
+
+  ;; s-h  -->  ns-do-hide-emacs
+  ;; s-j  -->  ido-switch-buffer  +
+  ;; s-k  -->  kill-this-buffer
+  ;; s-l  -->  goto-line
+  ;; s-;  -->  undefined
+  ;; s-'  -->  next-multiframe-window
+  ;; s-ret --> toggle-frame-fullscreen +
+
+  ;; s-y  -->  ns-paste-secondary
+  ;; s-u  -->  revert-buffer
+  ;; s-i  -->  undefined - but used for iterm globally
+  ;; s-o  -->  used for emacs globally
+  ;; s-p  -->  projectile-persp-switch-project  +  
+  ;; s-[  -->  next-buffer  +    
+  ;; s-]  -->  previous-buffer +
+
+  ;; s-0  -->  undefined
+  ;; s-9  -->  undefined
+  ;; s-8  -->  undefined
+  ;; s-7  -->  undefined
+  ;; s-6  -->  undefined
+  ;; s--  -->  center-line
+  ;; s-=  -->  undefined
+
+  ;; s-n  -->  make-frame
+  ;; s-m  -->  iconify-frame
+  ;; s-b  -->  undefined
+  ;; s-,  -->  customize
+  ;; s-.  -->  undefined
+  ;; s-/  -->  undefined
+
+  ;; s-g  -->  isearch-repeat-forward
+  ;; s-f  -->  projectile-find-file   +
+  ;; s-d  -->  isearch-repeat-background
+  ;; s-s  -->  save-buffer
+  ;; s-a  -->  make-whole-buffer
+
+  ;; s-b  -->  undefined
+  ;; s-v  -->  yank
+  ;; s-c  -->  ns-copy-including-secondary
+
+  ;; s-t  -->  ns-popup-font-panel
+  ;; s-r  -->  undefined
+  ;; s-e  -->  isearch-yanqk-kill
+  ;; s-w  -->  delete-frame
+  ;; s-q  -->  same-buffers-kill-emacs
+
+  ;; s-`  -->  other-frame
+#+END_SRC
+
+** =M-s= bindings for searching
+
+I use the prefix =M-s= for searching in buffers
+
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+
+  (defun pl-make-keymap (key bindings)
+    (setq keymap (make-sparse-keymap))
+    (dolist (binding bindings)
+      (define-key keymap (car binding) (cdr binding)))
+    (global-set-key key keymap))
+
+  (define-key minibuffer-local-map "\M-s" nil)
+
+  (global-set-key (kbd "M-s s") 'isearch-forward-regexp)
+  (define-key isearch-mode-map "\M-s" 'isearch-repeat-forward)
+  (global-set-key (kbd "M-s r") 'isearch-backward-regexp)
+  (define-key isearch-mode-map "\M-r" 'isearch-repeat-backward)
+
+  (global-set-key (kbd "s-/") 'isearch-forward-regexp)
+  (define-key isearch-mode-map (kbd  "s-/") 'isearch-repeat-forward)
+  (define-key isearch-mode-map (kbd  "C-n") 'isearch-repeat-forward)
+
+
+  (set-face-background 'ido-first-match "white")
+
+  ;; M-s o  -->  occur
+  ;; M-s s  -->  isearch-forward-regexp
+  ;; M-s r  -->  isearch-backward-regexp
+  ;; M-s w  -->  isearch-forward-word
+  ;; M-s .  -->  isearch-forward-symbol-at-point
+  ;; M-s _  -->  isearch-forward-symbol
+
+  ;; highlight bindings
+  ;; M-s h .  -->  highlight-symbol-at-point
+  ;; M-s h r  -->  highlight-regexp
+  ;; M-s h u  -->  unhighlight-regexp
+  ;; M-s h l  -->  highlight-lines-match-regexp
+  ;; M-s h p  -->  highlight-phrase
+  ;; M-s h f  -->  hi-lock-find-patterns
+
+  ;; 
+  ;; (global-set-key (kbd "M-s M-r") 'isearch-backward-regexp)
+  ;;
+
+  ;; M-c
+  ;; M-r
+  ;; M-t
+  ;; M-u, 
+#+END_SRC
+
+Occur search key bindings
+
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+
+  (define-key occur-mode-map (kbd "C-n")
+    (lambda ()
+      (interactive)
+      (occur-next)
+      (occur-mode-goto-occurrence-other-window)
+      (recenter)
+      (other-window 1)))
+
+  (define-key occur-mode-map (kbd "C-p")
+    (lambda ()
+      (interactive)
+      (occur-prev)
+      (occur-mode-goto-occurrence-other-window)
+      (recenter)
+      (other-window 1)))
+
+#+END_SRC
+
+
+** =M-o= as prefix key for windows
+
+** =M-g= as prefix key for launcher
+
+** others
+
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+
+
+  ;; C-'    undefined
+  ;; C-.    undefined
+#+END_SRC
+
 * Org-mode Settings
 
 ** Org-mode Basic setting
@@ -842,347 +1183,6 @@ and Defined keys, using vi keybindings, Refer abo-abo's setting [[https://github
       (define-key map "p" nil)
       (define-key map "v" 'recenter-top-bottom)
       (define-key map "i" 'magit-section-toggle)))
-#+END_SRC
-
-* IDO & SMEX
-
-** IDO
-
-#+BEGIN_SRC emacs-lisp :tangle yes :results silent
-
-  (use-package ido
-    :ensure t
-    :init (setq ido-enable-flex-matching t
-                ido-ignore-extensions t
-                ido-use-virtual-buffers t
-                ido-everywhere t)
-    :config
-    (ido-mode 1)
-    (ido-everywhere 1)
-    (add-to-list 'completion-ignored-extensions ".pyc"))
-
-  (icomplete-mode t)
-
-#+END_SRC
-
-** FLX
-
-#+BEGIN_SRC emacs-lisp :tangle yes :results silent
-
-  (use-package flx-ido
-    :ensure t
-    :init (setq ido-enable-flex-matching t
-                ido-use-faces nil)
-    :config (flx-ido-mode 1))
-
-#+END_SRC
-
-** IDO-vertically
-
-#+BEGIN_SRC emacs-lisp :tangle yes :results silent
-
-  (use-package ido-vertical-mode
-    :ensure t
-    :init
-    (setq ido-vertical-define-keys 'C-n-C-p-up-and-down)
-    :config
-    (ido-vertical-mode 1))
-
-#+END_SRC
-
-** SMEX
-
-#+BEGIN_SRC emacs-lisp :tangle yes :results silent
-
-  (use-package smex
-    :ensure t
-    :init (smex-initialize)
-    :bind
-    ("M-x" . smex)
-    ("M-X" . smex-major-mode-commands))
-
-#+END_SRC
-
-** Ido-ubiquitous
-
-Use [[https://github.com/DarwinAwardWinner/ido-ubiquitous][ido-ubiquitous]] for ido everywhere. It makes =describe-function= can also use ido
-
-#+BEGIN_SRC emacs-lisp :tangle yes :results silent
-
-  (use-package ido-ubiquitous
-    :ensure t
-    :init
-    (setq magit-completing-read-function 'magit-ido-completing-read)
-    (setq gnus-completing-read-function 'gnus-ido-completing-read)
-    :config
-    (ido-ubiquitous-mode 1))
-
-#+END_SRC
-
-** Ido-exit-target
-
-[[https://github.com/waymondo/ido-exit-target][ido-exit-target]] let you open file/buffer on =other-windows= when call =ido-switch-buffer=
-
-#+BEGIN_SRC emacs-lisp :tangle yes :results silent
-
-  (use-package ido-exit-target
-    :ensure t
-    :init
-    (define-key ido-common-completion-map (kbd "C-j") #'ido-exit-target-split-window-right)
-    (define-key ido-common-completion-map (kbd "C-l") #'ido-exit-target-split-window-below))
-
-#+END_SRC
-
-* Key bindings
-
-** Remove prefix =ESC=, refer [[http://emacs.stackexchange.com/questions/14755/how-to-remove-bindings-to-the-esc-prefix-key][here]]
-
-#+BEGIN_SRC emacs-lisp :tangle yes :results silent
-
-  ;; (define-key key-translation-map (kbd "ESC") (kbd "C-g"))
-
-#+END_SRC
-
-** Esc on Minibuffer
-
-Use =ESC= to exit minibuffer. Also I map =Super-h= the same as =C-g=
-
-#+BEGIN_SRC emacs-lisp :tangle yes :results silent
-
-  (define-key minibuffer-local-map [escape] 'keyboard-escape-quit)
-  (define-key minibuffer-local-map [escape]  'keyboard-escape-quit)
-  (define-key minibuffer-local-ns-map [escape]  'keyboard-escape-quit)
-  (define-key minibuffer-local-isearch-map [escape]  'keyboard-escape-quit)
-  (define-key minibuffer-local-completion-map [escape]  'keyboard-escape-quit)
-  (define-key minibuffer-local-must-match-map [escape]  'keyboard-escape-quit)
-  (define-key minibuffer-local-must-match-filename-map [escape]  'keyboard-escape-quit)
-  (define-key minibuffer-local-filename-completion-map [escape]  'keyboard-escape-quit)
-  (define-key minibuffer-local-filename-must-match-map [escape]  'keyboard-escape-quit)
-
-  ;; Also map s-h same as C-g
-  (define-key minibuffer-local-map (kbd "s-h") 'keyboard-escape-quit)
-
-#+END_SRC
-
-** =Ctrl= key bindings
-
-#+BEGIN_SRC emacs-lisp :tangle yes :results silent
-  ;;
-
-  ;; C-h    help    
-  ;; C-j    newline and indent
-  ;; C-k    kill line
-  ;; C-l    recenter-top-bottom
-  ;; (global-set-key (kbd "C-;") 'ido-switch-buffer)
-  ;; C-;
-  ;; C-'   
-  ;; C-ret  
-
-  ;; C-n    next-line
-  ;; C-m
-  ;; C-,
-  ;; C-.
-  ;; C-/
-
-  ;; C-y
-  ;; C-u
-  ;; C-i
-  ;; C-o
-  ;; C-p
-  ;; C-[
-  ;; C-]
-  ;; C-\
-
-  ;; C-=
-  ;; C--
-  ;; C-0
-  ;; C-9
-  ;; C-8
-  ;; C-7
-
-  ;; C-Space
-
-
-
-
-
-
-
-#+END_SRC
-
-** =Super= bindings for file, buffer and windows
-
-Some global bindings on =Super=, on Mac, it is =Command=
-
-#+BEGIN_SRC emacs-lisp :tangle yes :results silent
-
-  (global-set-key (kbd "s-h") 'keyboard-quit)
-  (global-set-key (kbd "s-j") 'ido-switch-buffer)
-  (global-set-key (kbd "s-k") 'ido-find-file)
-  ;; s-k  -->  kill-this-buffer
-  (global-set-key (kbd "s-l") (lambda ()
-                                (interactive)
-                                (if (> (length (window-list)) 1) 
-                                    (delete-window)
-                                  (message "Only one Windows now!"))))
-  ;; s-l  -->  goto-line
-  (global-set-key (kbd "s-;") 'swiper)
-  ;; s-;  -->
-  ;; s-'  -->  'next-multiframe-window
-  (global-set-key (kbd "<s-return>") 'toggle-frame-fullscreen)
-
-  ;; (global-set-key (kbd "s-y") 'projectile-find-file)
-  (global-set-key (kbd "s-f") 'projectile-find-file)
-  ;; (global-set-key (kbd "s-[") 'persp-next)
-  ;; (global-set-key (kbd "s-]") 'persp-prev)
-
-  (global-set-key (kbd "s-`") 'mode-line-other-buffer)
-
-  (global-set-key (kbd "s-n") 'persp-next)
-  (global-set-key (kbd "s-p") 'persp-prev)
-
-
-
-  ;; someothers default mapping on super (command) key
-  ;; s-s save-buffer
-  ;; s-k kill-this-buffer
-
-
-  ;; s-h  -->  ns-do-hide-emacs
-  ;; s-j  -->  ido-switch-buffer  +
-  ;; s-k  -->  kill-this-buffer
-  ;; s-l  -->  goto-line
-  ;; s-;  -->  undefined
-  ;; s-'  -->  next-multiframe-window
-  ;; s-ret --> toggle-frame-fullscreen +
-
-  ;; s-y  -->  ns-paste-secondary
-  ;; s-u  -->  revert-buffer
-  ;; s-i  -->  undefined - but used for iterm globally
-  ;; s-o  -->  used for emacs globally
-  ;; s-p  -->  projectile-persp-switch-project  +  
-  ;; s-[  -->  next-buffer  +    
-  ;; s-]  -->  previous-buffer +
-
-  ;; s-0  -->  undefined
-  ;; s-9  -->  undefined
-  ;; s-8  -->  undefined
-  ;; s-7  -->  undefined
-  ;; s-6  -->  undefined
-  ;; s--  -->  center-line
-  ;; s-=  -->  undefined
-
-  ;; s-n  -->  make-frame
-  ;; s-m  -->  iconify-frame
-  ;; s-b  -->  undefined
-  ;; s-,  -->  customize
-  ;; s-.  -->  undefined
-  ;; s-/  -->  undefined
-
-  ;; s-g  -->  isearch-repeat-forward
-  ;; s-f  -->  projectile-find-file   +
-  ;; s-d  -->  isearch-repeat-background
-  ;; s-s  -->  save-buffer
-  ;; s-a  -->  make-whole-buffer
-
-  ;; s-b  -->  undefined
-  ;; s-v  -->  yank
-  ;; s-c  -->  ns-copy-including-secondary
-
-  ;; s-t  -->  ns-popup-font-panel
-  ;; s-r  -->  undefined
-  ;; s-e  -->  isearch-yanqk-kill
-  ;; s-w  -->  delete-frame
-  ;; s-q  -->  same-buffers-kill-emacs
-
-  ;; s-`  -->  other-frame
-#+END_SRC
-
-** =M-s= bindings for searching
-
-I use the prefix =M-s= for searching in buffers
-
-#+BEGIN_SRC emacs-lisp :tangle yes :results silent
-
-  (defun pl-make-keymap (key bindings)
-    (setq keymap (make-sparse-keymap))
-    (dolist (binding bindings)
-      (define-key keymap (car binding) (cdr binding)))
-    (global-set-key key keymap))
-
-  (define-key minibuffer-local-map "\M-s" nil)
-
-  (global-set-key (kbd "M-s s") 'isearch-forward-regexp)
-  (define-key isearch-mode-map "\M-s" 'isearch-repeat-forward)
-  (global-set-key (kbd "M-s r") 'isearch-backward-regexp)
-  (define-key isearch-mode-map "\M-r" 'isearch-repeat-backward)
-
-  (global-set-key (kbd "s-/") 'isearch-forward-regexp)
-  (define-key isearch-mode-map (kbd  "s-/") 'isearch-repeat-forward)
-  (define-key isearch-mode-map (kbd  "C-n") 'isearch-repeat-forward)
-
-
-  (set-face-background 'ido-first-match "white")
-
-  ;; M-s o  -->  occur
-  ;; M-s s  -->  isearch-forward-regexp
-  ;; M-s r  -->  isearch-backward-regexp
-  ;; M-s w  -->  isearch-forward-word
-  ;; M-s .  -->  isearch-forward-symbol-at-point
-  ;; M-s _  -->  isearch-forward-symbol
-
-  ;; highlight bindings
-  ;; M-s h .  -->  highlight-symbol-at-point
-  ;; M-s h r  -->  highlight-regexp
-  ;; M-s h u  -->  unhighlight-regexp
-  ;; M-s h l  -->  highlight-lines-match-regexp
-  ;; M-s h p  -->  highlight-phrase
-  ;; M-s h f  -->  hi-lock-find-patterns
-
-  ;; 
-  ;; (global-set-key (kbd "M-s M-r") 'isearch-backward-regexp)
-  ;;
-
-  ;; M-c
-  ;; M-r
-  ;; M-t
-  ;; M-u, 
-#+END_SRC
-
-Occur search key bindings
-
-#+BEGIN_SRC emacs-lisp :tangle yes :results silent
-
-  (define-key occur-mode-map (kbd "C-n")
-    (lambda ()
-      (interactive)
-      (occur-next)
-      (occur-mode-goto-occurrence-other-window)
-      (recenter)
-      (other-window 1)))
-
-  (define-key occur-mode-map (kbd "C-p")
-    (lambda ()
-      (interactive)
-      (occur-prev)
-      (occur-mode-goto-occurrence-other-window)
-      (recenter)
-      (other-window 1)))
-
-#+END_SRC
-
-
-** =M-o= as prefix key for windows
-
-** =M-g= as prefix key for launcher
-
-** others
-
-#+BEGIN_SRC emacs-lisp :tangle yes :results silent
-
-
-  ;; C-'    undefined
-  ;; C-.    undefined
 #+END_SRC
 
 * Eshell
