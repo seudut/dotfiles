@@ -520,7 +520,7 @@ use [[https://github.com/sabof/org-bullets][org-bullets]] package to show utf-8 
               (lambda ()
                 (org-bullets-mode t))))
 
-  (setq org-bullets-bullet-list '("⦿" "✪" "⚫" "◉" "○" "►" "◆"))
+  (setq org-bullets-bullet-list '("⦿" "✪" "◉" "○" "►" "◆"))
 #+END_SRC
 
 ** Worf Mode
@@ -719,7 +719,6 @@ Setting agenda files and the agenda view
   ;; Show all agenda dates - even if they are empty
   (setq org-agenda-show-all-dates t)
 #+END_SRC
-
 
 ** Export PDF
 
@@ -1191,7 +1190,6 @@ Eshell alias
 Quickly start eshll in split window below, refer [[http://www.howardism.org/Technical/Emacs/eshell-fun.html][eshell-here]]
 
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
-
   (defun eshell-x ()
     (insert "exit")
     (eshell-send-input)
@@ -1224,7 +1222,6 @@ Quickly start eshll in split window below, refer [[http://www.howardism.org/Tech
   ;; (global-set-key (kbd "M-`") (lambda ()
   ;;                               (interactive)
   ;;                               (if (buffer-name))))
-
 #+END_SRC
 
 * Misc Settings
