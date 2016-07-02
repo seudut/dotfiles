@@ -1238,6 +1238,42 @@ Quickly start eshll in split window below, refer [[http://www.howardism.org/Tech
   (global-set-key (kbd "M-`") #'eshell-here)
 #+END_SRC
 
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+  (defun sd/window-has-eshell ()
+    "Check if current windows list has a eshell buffer, and return the window"
+    (interactive)
+    (let ((ret nil))
+      (dolist (window (window-list))
+        (let ((modename (with-current-buffer (window-buffer window)
+                          major-mode)))
+          (if (equal modename 'eshell-mode)
+              (setq ret window))))
+      ret))
+
+  (defun sd/toggle-eshell-here ()
+    "Toggle a eshell buffer vertically"
+    (interactive)
+    (if (sd/window-has-eshell)
+        (if (equal major-mode 'eshell-mode)
+            (delete-window)
+          (select-window (sd/window-has-eshell)))
+      (progn
+        (split-window-vertically (- (/ (window-total-height) 3)))
+        (other-window 1)
+        (unless (get-buffer eshell-buffer-name)
+          (eshell))
+        (switch-to-buffer eshell-buffer-name)
+        (goto-char (point-max))
+        (eshell-kill-input)
+        (message "wowo is %s" default-directory)
+        (message "wowo is %s" (file-name-directory (buffer-name)))
+        (insert (format "cd %s" default-directory))
+        (eshell-send-input))))
+
+  (global-unset-key (kbd "M-`"))
+  (global-set-key (kbd "M-`") 'sd/toggle-eshell-here)
+#+END_SRC
+
 * Misc Settings
 
 ** [[https://github.com/abo-abo/hydra][Hydra]]
@@ -1323,7 +1359,7 @@ Refer [[https://github.com/abo-abo/hydra/blob/master/hydra-examples.el][hydra-ex
            (interactive)
            (split-window-below)
            (windmove-down))
-     "horz" :exit)
+     "horz" :exit t)
     ("o" delete-other-windows "one" :exit t)
     ("a" ace-window "ace")
     ("s" ace-swap-window "swap")
