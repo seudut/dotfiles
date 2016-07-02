@@ -824,11 +824,8 @@ extend org-mode's easy templates, refer to [[http://coldnew.github.io/coldnew-em
 #+END_SRC
 
 * Magit
-
 [[https://github.com/magit/magit][Magit]] is a very cool git interface on Emacs.
-
 and Defined keys, using vi keybindings, Refer abo-abo's setting [[https://github.com/abo-abo/oremacs/blob/c5cafdcebc88afe9e73cc8bd40c49b70675509c7/modes/ora-nextmagit.el][here]]
-
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
   (use-package magit
     :ensure t
@@ -840,6 +837,7 @@ and Defined keys, using vi keybindings, Refer abo-abo's setting [[https://github
                        magit-staged-section-map))
       (define-key map "j" 'magit-section-forward)
       (define-key map "k" 'magit-section-backward)
+      (define-key map "D" 'magit-discard-file)
       (define-key map "n" nil)
       (define-key map "p" nil)
       (define-key map "v" 'recenter-top-bottom)
