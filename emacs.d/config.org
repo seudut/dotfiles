@@ -1215,11 +1215,11 @@ Toggle an eshell in split window below, refer [[http://www.howardism.org/Technic
     "Check if current windows list has a eshell buffer, and return the window"
     (interactive)
     (let ((ret nil))
-      (dolist (window (window-list))
-        (let ((modename (with-current-buffer (window-buffer window)
-                          major-mode)))
-          (if (equal modename 'eshell-mode)
-              (setq ret window))))
+      (walk-windows (lambda (window)
+                      (if (equal (with-current-buffer (window-buffer window) major-mode)
+                                 'eshell-mode)
+                          (setq ret window)))
+                    nil nil)
       ret))
 
   (defun sd/toggle-eshell-here ()
@@ -1227,7 +1227,10 @@ Toggle an eshell in split window below, refer [[http://www.howardism.org/Technic
     (interactive)
     (if (sd/window-has-eshell)
         (if (equal major-mode 'eshell-mode)
-            (delete-window)
+            (progn
+              (if (equal (length (window-list)) 1)
+                  (mode-line-other-buffer)
+                (delete-window)))
           (select-window (sd/window-has-eshell)))
       (progn
         (let ((dir default-directory))
