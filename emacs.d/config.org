@@ -1229,21 +1229,20 @@ Quickly start eshll in split window below, refer [[http://www.howardism.org/Tech
 ** [[https://github.com/abo-abo/hydra][Hydra]]
 
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
-
   (use-package hydra
     :ensure t)
-
+  ;; disable new line in minibuffer when hint hydra
+  (setq hydra-lv nil)
 #+END_SRC
 
 *** Font Zoom
 
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
+    (defhydra sd/font-zoom (global-map "<f2>")
 
-  (defhydra sd/font-zoom (global-map "<f2>")
     "zoom"
     ("g" text-scale-increase "in")
     ("l" text-scale-decrease "out"))
-
 #+END_SRC
 
 *** Windmove Splitter
@@ -1289,7 +1288,6 @@ Refer [[https://github.com/abo-abo/hydra/blob/master/hydra-examples.el][hydra-ex
 *** hydra-window
 
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
-
   (winner-mode 1)
 
   (defhydra sd/hydra-window (:color red :columns nil)
@@ -1318,14 +1316,14 @@ Refer [[https://github.com/abo-abo/hydra/blob/master/hydra-examples.el][hydra-ex
     ("d" ace-delete-window "ace-one" :exit t)
     ("i" ace-maximize-window "ace-one" :exit t)
     ("b" ido-switch-buffer "buf")
-    ("m" headlong-bookmark-jump "bmk")
+    ;; ("m" headlong-bookmark-jump "bmk")
     ("q" nil "cancel")
     ("u" (progn (winner-undo) (setq this-command 'winner-undo)) "undo")
     ("r" (progn (winner-redo) (setq this-command 'winner-redo)) "redo")
     ("f" nil))
 
-  (global-unset-key (kbd "M-o"))
-  (global-set-key (kbd "M-o") 'sd/hydra-window/body)
+  (global-unset-key (kbd "C-o"))
+  (global-set-key (kbd "C-o") 'sd/hydra-window/body)
 
   (defun triggle-windows-max-size ()
     (interactive)
