@@ -1612,6 +1612,25 @@ Play Go in Emacs, gnugo xpm refert [[https://github.com/okanotor/dotemacs/blob/f
 
 #+END_SRC
 
+** dired
+=C-o= is defined as a global key for window operation, here unset it in dired mode
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+  (add-hook 'dired-mode-hook (lambda ()
+                               (local-unset-key (kbd "C-o"))
+                               (local-set-key (kbd "o") 'dired-display-file)))
+#+END_SRC
+
+** Info plus
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+  ;(el-get-bundle info+
+  ;  :url "https://raw.githubusercontent.com/emacsmirror/emacswiki.org/master/info%2B.el"
+  ;  (require 'info+))
+#+END_SRC
+
+** TODO bookmark
+
+** TODO Calendar
+
 * Programming
 
 ** Languages
