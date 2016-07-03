@@ -1247,6 +1247,7 @@ Toggle an eshell in split window below, refer [[http://www.howardism.org/Technic
   (global-set-key (kbd "M-`") 'sd/toggle-eshell-here)
 #+END_SRC
 
+*** TODO smart display
 * Misc Settings
 
 ** [[https://github.com/abo-abo/hydra][Hydra]]
@@ -1622,9 +1623,9 @@ Play Go in Emacs, gnugo xpm refert [[https://github.com/okanotor/dotemacs/blob/f
 
 ** Info plus
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
-  ;(el-get-bundle info+
-  ;  :url "https://raw.githubusercontent.com/emacsmirror/emacswiki.org/master/info%2B.el"
-  ;  (require 'info+))
+  (el-get-bundle info+
+    :url "https://raw.githubusercontent.com/emacsmirror/emacswiki.org/master/info+.el"
+    (require 'info+))
 #+END_SRC
 
 ** TODO bookmark
@@ -1844,7 +1845,4 @@ company mode
 
 #+END_SRC
 
-* Todo 
-
-- change M-o to trigger to delete other windows and restore previous config
 
