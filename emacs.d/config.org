@@ -1188,9 +1188,9 @@ and Defined keys, using vi keybindings, Refer abo-abo's setting [[https://github
 * Eshell
 *** Eshell alias
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
-  (defalias 'e 'ido-find-file)
-  (defalias 'ff 'ido-find-file)
-  (defalias 'ee 'ido-find-file-other-window)
+  (defalias 'e 'find-file)
+  (defalias 'ff 'find-file)
+  (defalias 'ee 'find-files)
 #+END_SRC
 
 *** Eshell erase buffer
