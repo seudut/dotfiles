@@ -1357,6 +1357,30 @@ Refer [[https://github.com/abo-abo/hydra/blob/master/hydra-examples.el][hydra-ex
 
 #+END_SRC
 
+*** hydra misc
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+  (defhydra sd/hydra-misc ()
+    "Miscellaneous Commands"
+    ("e" eshell "eshell" :color red :exit t)
+    ("p" (lambda ()
+           (interactive)
+           (if (sd/buffer-exist "*Packages*")
+               (switch-to-buffer "*Packages*")
+             (package-list-packages)))
+     "list-package" :color red :exit t)
+    ("g" magit-status "git-status" :color red :exit t))
+#+END_SRC
+
+*** hydra launcher
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+  (defhydra hydra-launcher (:color blue :columns 2)
+    "Launch"
+    ("h" man "man")
+    ("s" eshell "eshell")
+    ("p" package-list-packages  "Package")
+    ("q" nil "cancel"))
+#+END_SRC
+
 ** Line Number
 
 Enable linum mode on programming modes
