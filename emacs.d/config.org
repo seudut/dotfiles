@@ -640,7 +640,6 @@ Use =ESC= to exit minibuffer. Also I map =Super-h= the same as =C-g=
 Some global bindings on =Super=, on Mac, it is =Command=
 
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
-
   (global-set-key (kbd "s-h") 'keyboard-quit)
   (global-set-key (kbd "s-j") 'ido-switch-buffer)
   (global-set-key (kbd "s-k") 'ido-find-file)
@@ -666,6 +665,8 @@ Some global bindings on =Super=, on Mac, it is =Command=
   (global-set-key (kbd "s-n") 'persp-next)
   (global-set-key (kbd "s-p") 'persp-prev)
 
+  (global-set-key (kbd "s-=") 'text-scale-increase)
+  (global-set-key (kbd "s--") 'text-scale-decrease)
 
 
   ;; someothers default mapping on super (command) key
