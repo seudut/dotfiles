@@ -1886,3 +1886,56 @@ company mode
     :ensure t)
 #+END_SRC
 
+* Gnus
+Refer [[https://www.emacswiki.org/emacs/GnusGmail][GnusGmail]]
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+  (setq user-mail-address "seudut@gmail.com"
+        user-full-name "Peng Li")
+
+  (setq gnus-select-method
+        '(nnimap "gmail"
+                 (nnimap-address "imap.gmail.com")
+                 (nnimap-server-port "imaps")
+                 (nnimap-stream ssl)))
+
+  (setq smtpmail-smtp-service 587
+        gnus-ignored-newsgroups "^to\\.\\|^[0-9. ]+\\( \\|$\\)\\|^[\"]\"[#'()]")
+
+  ;; Use gmail sending mail
+  (setq message-send-mail-function 'smtpmail-send-it
+        smtpmail-starttls-credentials '(("smtp.gmail.com" 587 nil nil))
+        smtpmail-auth-credentials '(("smtp.gmail.com" 587 "seudut@gmail.com" nil))
+        smtpmail-default-smtp-server "smtp.gmail.com"
+        smtpmail-smtp-server "smtp.gmail.com"
+        smtpmail-smtp-service 587
+        starttls-use-gnutls t)
+#+END_SRC
+
+And put the following in =~/.authinfo= file, replacing =<USE>= with your email address
+and =<PASSWORD>= with the password
+#+BEGIN_EXAMPLE
+  machine imap.gmail.com login <USER> password <PASSWORD> port imaps
+  machine smtp.gmail.com login <USER> password <PASSWORD> port 587
+#+END_EXAMPLE
+
+Then Run =M-x gnus=
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+  (setq gnus-fetch-old-headers 't)
+
+
+
+  (setq gnus-extract-address-components
+        'mail-extract-address-components)
+
+  (setq gnus-summary-line-format "%U%R%z%I%(%[%-20,20f%]%)  %s%-67=   %11&user-date;\n")
+  (setq gnus-user-date-format-alist '(((gnus-seconds-today) . "%H:%M")
+                                      ((+ 86400 (gnus-seconds-today)) . "%a %H:%M")
+                                      (604800 . "%a, %b %-d")
+                                      (15778476 . "%b %-d")
+                                      (t . "%Y-%m-%d")))
+#+END_SRC
+
+* key
+- passion
+- vision
+- mission
