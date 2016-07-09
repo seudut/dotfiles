@@ -1336,11 +1336,13 @@ Refer [[https://github.com/abo-abo/hydra/blob/master/hydra-examples.el][hydra-ex
            (windmove-down))
      "horz" :exit t)
     ("o" delete-other-windows "one" :exit t)
+    ("C-o" delete-other-windows "one" :exit t)
     ("a" ace-window "ace")
     ("s" ace-swap-window "swap")
     ("d" ace-delete-window "ace-one" :exit t)
     ("i" ace-maximize-window "ace-one" :exit t)
-    ("b" ido-switch-buffer "buf")
+    ("b" ido-switch-buffer "buf" :exit t)
+    ("C-b" ido-switch-buffer "buf" :exit t)
     ;; ("m" headlong-bookmark-jump "bmk")
     ("q" nil "cancel")
     ("u" (progn (winner-undo) (setq this-command 'winner-undo)) "undo")
@@ -1682,16 +1684,15 @@ In Lisp Mode, =M-o= is defined, but I use this for global hydra window. So here 
 bindings in =lispy-mode-map= after loaded. see [[http://stackoverflow.com/questions/298048/how-to-handle-conflicting-keybindings][here]]
 
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
-
   (use-package lispy
     :ensure t
     :init
     (eval-after-load 'lispy
-      '(progn
-         (define-key lispy-mode-map (kbd "M-o") nil)))
+      `(progn
+         (define-key lispy-mode-map (kbd "M-o") nil)
+         (define-key lispy-mode-map (kbd "C-d") nil)))
     :config
     (add-hook 'emacs-lisp-mode-hook (lambda () (lispy-mode 1))))
-
 #+END_SRC
 
 *** Perl
