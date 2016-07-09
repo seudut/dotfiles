@@ -640,15 +640,17 @@ Use =ESC= to exit minibuffer. Also I map =Super-h= the same as =C-g=
 Some global bindings on =Super=, on Mac, it is =Command=
 
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
+  (defun sd/delete-current-window ()
+    (interactive)
+    (if (> (length (window-list)) 1)
+        (delete-window)
+      (message "Only one Windows now!")))
+
   (global-set-key (kbd "s-h") 'keyboard-quit)
   (global-set-key (kbd "s-j") 'ido-switch-buffer)
   (global-set-key (kbd "s-k") 'ido-find-file)
   ;; s-k  -->  kill-this-buffer
-  (global-set-key (kbd "s-l") (lambda ()
-                                (interactive)
-                                (if (> (length (window-list)) 1) 
-                                    (delete-window)
-                                  (message "Only one Windows now!"))))
+  (global-set-key (kbd "s-l") 'sd/delete-current-window)
   ;; s-l  -->  goto-line
   (global-set-key (kbd "s-;") 'swiper)
   ;; s-;  -->
@@ -1336,6 +1338,7 @@ Refer [[https://github.com/abo-abo/hydra/blob/master/hydra-examples.el][hydra-ex
      "horz" :exit t)
     ("o" delete-other-windows "one" :exit t)
     ("C-o" ido-switch-buffer "buf" :exit t)
+    ("C-k" sd/delete-current-window "del" :exit t)
     ("a" ace-window "ace")
     ("s" ace-swap-window "swap")
     ("d" ace-delete-window "ace-one" :exit t)
@@ -1574,14 +1577,15 @@ Play Go in Emacs, gnugo xpm refert [[https://github.com/okanotor/dotemacs/blob/f
 #+END_SRC
 
 ** undo-tree
-
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
-
   (use-package undo-tree
     :ensure t
     :config
+    (define-key undo-tree-visualizer-mode-map "j" 'undo-tree-visualize-redo)
+    (define-key undo-tree-visualizer-mode-map "k" 'undo-tree-visualize-undo)
+    (define-key undo-tree-visualizer-mode-map "h" 'undo-tree-visualize-switch-branch-left)
+    (define-key undo-tree-visualizer-mode-map "l" 'undo-tree-visualize-switch-branch-right)
     (global-undo-tree-mode 1))
-
 #+END_SRC
 
 ** swiper
@@ -1679,10 +1683,9 @@ bindings in =lispy-mode-map= after loaded. see [[http://stackoverflow.com/questi
   (use-package lispy
     :ensure t
     :init
-    (eval-after-load 'lispy
+    (eval-after-load "lispy"
       `(progn
-         (define-key lispy-mode-map (kbd "M-o") nil)
-         (define-key lispy-mode-map (kbd "C-d") nil)))
+         (define-key lispy-mode-map (kbd "M-o") nil)))
     :config
     (add-hook 'emacs-lisp-mode-hook (lambda () (lispy-mode 1))))
 #+END_SRC
@@ -2000,11 +2003,18 @@ See [[https://www.emacswiki.org/emacs/GnusWindowLayout][GnusWindowLayout]]
                            (summary 0.50 point)
                            (article 1.0)))))
 
+  (with-eval-after-load 'gnus-group-mode
+    (gnus-group-select-group "INBOX"))
   ;; (add-hook 'gnus-group-mode-map (lambda ()
-  ;;                                  (gnus-group-select-group "INBOX")))
+  ;;                               (gnus-group-select-group "INBOX")))
 #+END_SRC
 
 * key
 - passion
 - vision
 - mission
+
+
+
+
+
