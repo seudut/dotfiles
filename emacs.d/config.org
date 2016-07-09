@@ -1949,15 +1949,12 @@ Then Run =M-x gnus=
             (t . my-group-face-5))))
 
 
-  ;; key-remapping
-  (defun sd/gnus-map ()
-    (interactive)
-    (define-key gnus-group-mode-map "k" 'gnus-group-prev-group)
-    (define-key gnus-group-mode-map "j" 'gnus-group-next-group)
-    (define-key gnus-group-mode-map "g" 'gnus-group-jump-to-group)
-    (define-key gnus-group-mode-map "v" (lambda () (interactive) (gnus-group-select-group t))))
-
-  (add-hook 'gnus-group-mode-hook 'sd/gnus-map)
+  ;; key-
+  (add-hook 'gnus-group-mode-hook (lambda ()
+                                    (define-key gnus-group-mode-map "k" 'gnus-group-prev-group)
+                                    (define-key gnus-group-mode-map "j" 'gnus-group-next-group)
+                                    (define-key gnus-group-mode-map "g" 'gnus-group-jump-to-group)
+                                    (define-key gnus-group-mode-map "v" (lambda () (interactive) (gnus-group-select-group t)))))
 #+END_SRC
 
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
