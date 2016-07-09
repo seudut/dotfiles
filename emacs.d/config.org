@@ -1311,7 +1311,6 @@ Refer [[https://github.com/abo-abo/hydra/blob/master/hydra-examples.el][hydra-ex
 #+END_SRC
 
 *** hydra-window
-
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
   (winner-mode 1)
 
@@ -1336,7 +1335,7 @@ Refer [[https://github.com/abo-abo/hydra/blob/master/hydra-examples.el][hydra-ex
            (windmove-down))
      "horz" :exit t)
     ("o" delete-other-windows "one" :exit t)
-    ("C-o" delete-other-windows "one" :exit t)
+    ("C-o" ido-switch-buffer "buf" :exit t)
     ("a" ace-window "ace")
     ("s" ace-swap-window "swap")
     ("d" ace-delete-window "ace-one" :exit t)
@@ -1351,13 +1350,6 @@ Refer [[https://github.com/abo-abo/hydra/blob/master/hydra-examples.el][hydra-ex
 
   (global-unset-key (kbd "C-o"))
   (global-set-key (kbd "C-o") 'sd/hydra-window/body)
-
-  (defun triggle-windows-max-size ()
-    (interactive)
-    (if (> (length (window-list)) 1)
-        (delete-other-windows)
-      (winner-undo)))
-
 #+END_SRC
 
 *** hydra misc
@@ -1979,8 +1971,13 @@ Then Run =M-x gnus=
   ;; thread
   (setq gnus-thread-hide-subtree t)
 
+  ;; (with-eval-after-load 'gnus-summary-mode
+  ;;   (define-key gnus-summary-mode-map (kbd "C-o") 'sd/hydra-window/body))
 
-  
+  (add-hook 'gnus-summary-mode-hook (lambda ()
+                                      (define-key gnus-summary-mode-map (kbd "C-o") nil)))
+
+
 #+END_SRC
 
 ** Windows layout
