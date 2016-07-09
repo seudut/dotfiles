@@ -1887,6 +1887,7 @@ company mode
 #+END_SRC
 
 * Gnus
+** Gmail setting 
 Refer [[https://www.emacswiki.org/emacs/GnusGmail][GnusGmail]]
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
   (setq user-mail-address "seudut@gmail.com"
@@ -1925,8 +1926,6 @@ Then Run =M-x gnus=
   (use-package gnus
     :init
     (setq gnus-permanently-visible-groups "\.*")
-    :defer t
-    :commands gnus
     :config
     (cond (window-system
            (setq custom-background-mode 'light)
@@ -1964,13 +1963,47 @@ Then Run =M-x gnus=
 
   (setq gnus-extract-address-components
         'mail-extract-address-components)
-
-  (setq gnus-summary-line-format "%U%R%z%I%(%[%-20,20f%]%)  %s%-67=   %11&user-date;\n")
+  ;; summary buffer 
+  (setq gnus-summary-line-format "%U%R%z%I%(%[%-20,20f%]%)  %s%-80=   %11&user-date;\n")
   (setq gnus-user-date-format-alist '(((gnus-seconds-today) . "%H:%M")
                                       ((+ 86400 (gnus-seconds-today)) . "%a %H:%M")
                                       (604800 . "%a, %b %-d")
                                       (15778476 . "%b %-d")
                                       (t . "%Y-%m-%d")))
+
+  (setq gnus-thread-sort-functions '((not gnus-thread-sort-by-number)))
+  (setq gnus-unread-mark ?\.)
+  (setq gnus-use-correct-string-widths t)
+
+  ;; thread
+  (setq gnus-thread-hide-subtree t)
+
+
+  
+#+END_SRC
+
+** Windows layout
+See [[https://www.emacswiki.org/emacs/GnusWindowLayout][GnusWindowLayout]]
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+  (gnus-add-configuration
+   '(summary
+     (horizontal 1.0
+                 (vertical 35
+                           (group 1.0))
+                 (vertical 1.0
+                           (summary 1.0 poine)))))
+
+  (gnus-add-configuration
+   '(article
+     (horizontal 1.0
+                 (vertical 35
+                           (group 1.0))
+                 (vertical 1.0
+                           (summary 0.50 point)
+                           (article 1.0)))))
+
+  ;; (add-hook 'gnus-group-mode-map (lambda ()
+  ;;                                  (gnus-group-select-group "INBOX")))
 #+END_SRC
 
 * key
