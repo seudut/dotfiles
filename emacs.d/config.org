@@ -44,7 +44,7 @@ Set the emacs load path
 
 #+END_SRC       
 
-** General Setting
+** Window Setting
 
 Disable scroll bar, tool-bar and menu-bar
 
@@ -84,6 +84,13 @@ Setting scroll right/left
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
   ;  (global-set-key (kbd "C-,") 'scoll-left)
   ;  (global-set-key (kbd "C-.") 'scoll-right)
+#+END_SRC
+
+Set default window size
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+  (setq initial-frame-alist
+        '((width . 120)
+          (height . 50)))
 #+END_SRC
 
 * Package Management Tools
