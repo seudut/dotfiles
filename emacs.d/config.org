@@ -741,13 +741,19 @@ Some global bindings on =Super=, on Mac, it is =Command=
                     ("\M-w" . save-buffer)
                     ("e" . revert-buffer)
                     ("s" . isearch-forward-regexp)
-                    ("r" . isearch-backward-regexp)))
+                    ("r" . isearch-backward-regexp)
+                    ("o" . occur)))
 
   ;; (define-key isearch-mode-map (kbd "s") 'isearch-repeat-forward)
   ;; (define-key isearch-mode-map (kbd "r") 'isearch-repeat-forward)
   (define-key isearch-mode-map (kbd "M-s") 'isearch-repeat-forward)
   (define-key isearch-mode-map (kbd "M-r") 'isearch-repeat-backward)
 
+  ;; auto select occur window 
+  (add-hook 'occur-hook (lambda () (switch-to-buffer-other-window "*Occur*")))
+
+  ;; increase font size when enter org-src-mode
+  (add-hook 'org-src-mode-hook (lambda () (text-scale-increase 2)))
 
 
   (define-key minibuffer-local-map "\M-s" nil)
