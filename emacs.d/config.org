@@ -727,30 +727,52 @@ Some global bindings on =Super=, on Mac, it is =Command=
 #+END_SRC
 
 ** =M-s= bindings for searching
-
-I use the prefix =M-s= for searching in buffers
+ use the prefix =M-s= for searching in buffers
 
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
-
-  (defun pl-make-keymap (key bindings)
+  (defun sd/make-keymap (key bindings)
     (setq keymap (make-sparse-keymap))
     (dolist (binding bindings)
       (define-key keymap (car binding) (cdr binding)))
     (global-set-key key keymap))
 
+  (sd/make-keymap "\M-s"
+                  '(("w" . save-buffer)
+                    ("\M-w" . save-buffer)
+                    ("e" . revert-buffer)
+                    ("s" . isearch-forward-regexp)
+                    ("r" . isearch-backward-regexp)))
+
+  ;; (define-key isearch-mode-map (kbd "s") 'isearch-repeat-forward)
+  ;; (define-key isearch-mode-map (kbd "r") 'isearch-repeat-forward)
+  (define-key isearch-mode-map (kbd "M-s") 'isearch-repeat-forward)
+  (define-key isearch-mode-map (kbd "M-r") 'isearch-repeat-backward)
+
+
+
   (define-key minibuffer-local-map "\M-s" nil)
 
-  (global-set-key (kbd "M-s s") 'isearch-forward-regexp)
-  (define-key isearch-mode-map "\M-s" 'isearch-repeat-forward)
-  (global-set-key (kbd "M-s r") 'isearch-backward-regexp)
-  (define-key isearch-mode-map "\M-r" 'isearch-repeat-backward)
-
-  (global-set-key (kbd "s-/") 'isearch-forward-regexp)
-  (define-key isearch-mode-map (kbd  "s-/") 'isearch-repeat-forward)
-  (define-key isearch-mode-map (kbd  "C-n") 'isearch-repeat-forward)
-
-
   (set-face-background 'ido-first-match "white")
+
+  (defhydra sd/search-buffer (:color red :columns nil)
+    "M-s"
+    ("w" save-buffer "save" :exit)
+    ("s" isearch-forward-regrexp "search-forward" :exit)
+    ("r" isearch-backward-regrexp "search-backward" :exit)
+    ("s" save-buffer "save" :exit)
+    ("s" save-buffer "save" :exit)
+    ("s" save-buffer "save" :exit)
+    ("s" save-buffer "save" :exit)
+    ("s" save-buffer "save" :exit)
+    ("s" save-buffer "save" :exit)
+    ("s" save-buffer "save" :exit)
+    ("s" save-buffer "save" :exit)
+    ("q" nil "quil")
+    ("f" nil))
+
+
+  ;; (global-unset-key (kbd "M-s"))
+  ;; (global-set-key (kbd "M-s") 'sd/search-buffer)
 
   ;; M-s o  -->  occur
   ;; M-s s  -->  isearch-forward-regexp
