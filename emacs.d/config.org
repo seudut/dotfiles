@@ -727,8 +727,7 @@ Some global bindings on =Super=, on Mac, it is =Command=
 #+END_SRC
 
 ** =M-s= bindings for searching
- use the prefix =M-s= for searching in buffers
-
+use the prefix =M-s= for searching in buffers
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
   (defun sd/make-keymap (key bindings)
     (setq keymap (make-sparse-keymap))
@@ -749,32 +748,11 @@ Some global bindings on =Super=, on Mac, it is =Command=
   (define-key isearch-mode-map (kbd "M-s") 'isearch-repeat-forward)
   (define-key isearch-mode-map (kbd "M-r") 'isearch-repeat-backward)
 
-  ;; auto select occur window 
-  (add-hook 'occur-hook (lambda () (switch-to-buffer-other-window "*Occur*")))
-
-  ;; increase font size when enter org-src-mode
-  (add-hook 'org-src-mode-hook (lambda () (text-scale-increase 2)))
-
 
   (define-key minibuffer-local-map "\M-s" nil)
 
   (set-face-background 'ido-first-match "white")
 
-  (defhydra sd/search-buffer (:color red :columns nil)
-    "M-s"
-    ("w" save-buffer "save" :exit)
-    ("s" isearch-forward-regrexp "search-forward" :exit)
-    ("r" isearch-backward-regrexp "search-backward" :exit)
-    ("s" save-buffer "save" :exit)
-    ("s" save-buffer "save" :exit)
-    ("s" save-buffer "save" :exit)
-    ("s" save-buffer "save" :exit)
-    ("s" save-buffer "save" :exit)
-    ("s" save-buffer "save" :exit)
-    ("s" save-buffer "save" :exit)
-    ("s" save-buffer "save" :exit)
-    ("q" nil "quil")
-    ("f" nil))
 
 
   ;; (global-unset-key (kbd "M-s"))
@@ -808,6 +786,8 @@ Some global bindings on =Super=, on Mac, it is =Command=
 Occur search key bindings
 
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
+  (add-hook 'occur-hook (lambda () (switch-to-buffer-other-window "*Occur*")))
+  ;; auto select occur window
 
   (define-key occur-mode-map (kbd "C-n")
     (lambda ()
@@ -824,22 +804,12 @@ Occur search key bindings
       (occur-mode-goto-occurrence-other-window)
       (recenter)
       (other-window 1)))
-
 #+END_SRC
 
 
 ** =M-o= as prefix key for windows
 
 ** =M-g= as prefix key for launcher
-
-** others
-
-#+BEGIN_SRC emacs-lisp :tangle yes :results silent
-
-
-  ;; C-'    undefined
-  ;; C-.    undefined
-#+END_SRC
 
 * Org-mode Settings
 
@@ -893,6 +863,9 @@ use [[https://github.com/sabof/org-bullets][org-bullets]] package to show utf-8 
                 (org-bullets-mode t))))
 
   (setq org-bullets-bullet-list '("⦿" "✪" "◉" "○" "►" "◆"))
+
+  ;; increase font size when enter org-src-mode
+  (add-hook 'org-src-mode-hook (lambda () (text-scale-increase 2)))
 #+END_SRC
 
 ** Worf Mode
