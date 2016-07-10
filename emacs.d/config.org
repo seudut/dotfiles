@@ -582,6 +582,35 @@ Use [[https://github.com/DarwinAwardWinner/ido-ubiquitous][ido-ubiquitous]] for 
 #+END_SRC
 
 ** Motion
+*** Avy
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+  (use-package avy
+    :ensure t
+    :config
+    (avy-setup-default))
+#+END_SRC
+
+*** =M-g= prefix
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+  (global-set-key (kbd "M-g g") 'avy-goto-line)
+  (global-set-key (kbd "M-g e") 'avy-goto-word-0)
+  (global-set-key (kbd "M-g w") 'avy-goto-word-1)
+  (global-set-key (kbd "M-g c") 'avy-goto-char-timer)
+  (global-set-key (kbd "M-g f") 'avy-goto-char-in-line)
+
+  ;; M-g TAB              move-to-column
+  ;; M-g ESC              Prefix Command
+  ;; M-g c                goto-char
+  ;; M-g g                goto-line
+  ;; M-g n                next-error
+  ;; M-g p                previous-error
+
+  ;; M-g M-g              goto-line
+  ;; M-g M-n              next-error
+  ;; M-g M-p              previous-error
+#+END_SRC
+
+
 ** Search & highlight
 * Key bindings
 
@@ -818,7 +847,7 @@ use the prefix =M-s= for searching in buffers
   (sd/make-keymap "\M-s"
                   '(("w" . save-buffer)
                     ;; ("\M-w" . save-buffer)
-                    ("W" . revert-buffer)
+                    ("e" . revert-buffer)
                     ("s" . isearch-forward-regexp)
                     ("r" . isearch-backward-regexp)
                     ("." . isearch-forward-symbol-at-point)
