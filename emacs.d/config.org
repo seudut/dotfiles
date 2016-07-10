@@ -1725,7 +1725,20 @@ Play Go in Emacs, gnugo xpm refert [[https://github.com/okanotor/dotemacs/blob/f
 ** TODO bookmark
 
 ** TODO Calendar
+** TODO advice info
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+  (defun sd/info-mode ()
+    (interactive)
+    (unless (equal major-mode 'Info-mode)
+      (unless (> (length (window-list)) 1)
+        (split-window-right))
+      (other-window 1)
+      (info)))
 
+  (global-set-key (kbd "C-h i") 'sd/info-mode)
+  ;; (add-hook 'Info-mode-hook (lambda ()
+  ;;                          (define-key Info-mode-map "q" )))
+#+END_SRC
 * Programming
 
 ** Languages
