@@ -742,47 +742,49 @@ use the prefix =M-s= for searching in buffers
       (define-key keymap (car binding) (cdr binding)))
     (global-set-key key keymap))
 
+  (use-package highlight-symbol
+    :ensure t)
+
   (sd/make-keymap "\M-s"
                   '(("w" . save-buffer)
-                    ("\M-w" . save-buffer)
-                    ("e" . revert-buffer)
+                    ;; ("\M-w" . save-buffer)
+                    ("W" . revert-buffer)
                     ("s" . isearch-forward-regexp)
                     ("r" . isearch-backward-regexp)
-                    ("o" . occur)))
+                    ("." . isearch-forward-symbol-at-point)
+                    ("o" . occur)
+                    ;; ("h" . highlight-symbol-at-point)
+                    ("h" . highlight-symbol)
+                    ("m" . highlight-regexp)
+                    ("l" . highlight-lines-matching-regexp)
+                    ("M" . unhighlight-regexp)
+                    ("f" . keyboard-quit)
+                    ("q" . keyboard-quit)))
 
-  ;; (define-key isearch-mode-map (kbd "s") 'isearch-repeat-forward)
-  ;; (define-key isearch-mode-map (kbd "r") 'isearch-repeat-forward)
+  ;; search and replace
   (define-key isearch-mode-map (kbd "M-s") 'isearch-repeat-forward)
   (define-key isearch-mode-map (kbd "M-r") 'isearch-repeat-backward)
+  (global-set-key (kbd "s-[") 'highlight-symbol-next)
+  (global-set-key (kbd "s-]") 'highlight-symbol-prev)
+  (global-set-key (kbd "s-\\") 'highlight-symbol-query-replace)
 
 
   (define-key minibuffer-local-map "\M-s" nil)
+
 
   (set-face-background 'ido-first-match "white")
 
 
 
-  ;; (global-unset-key (kbd "M-s"))
-  ;; (global-set-key (kbd "M-s") 'sd/search-buffer)
+  ;; M-s h .              highlight-symbol-at-point
+  ;; M-s h f              hi-lock-find-patterns
+  ;; M-s h l              highlight-lines-matching-regexp
+  ;; M-s h p              highlight-phrase
+  ;; M-s h r              highlight-regexp
+  ;; M-s h u              unhighlight-regexp
+  ;; M-s h w              hi-lock-write-interactive-patterns
 
-  ;; M-s o  -->  occur
-  ;; M-s s  -->  isearch-forward-regexp
-  ;; M-s r  -->  isearch-backward-regexp
-  ;; M-s w  -->  isearch-forward-word
-  ;; M-s .  -->  isearch-forward-symbol-at-point
-  ;; M-s _  -->  isearch-forward-symbol
-
-  ;; highlight bindings
-  ;; M-s h .  -->  highlight-symbol-at-point
-  ;; M-s h r  -->  highlight-regexp
-  ;; M-s h u  -->  unhighlight-regexp
-  ;; M-s h l  -->  highlight-lines-match-regexp
-  ;; M-s h p  -->  highlight-phrase
-  ;; M-s h f  -->  hi-lock-find-patterns
-
-  ;; 
-  ;; (global-set-key (kbd "M-s M-r") 'isearch-backward-regexp)
-  ;;
+  ;; M-s M-w              eww-search-words
 
   ;; M-c
   ;; M-r
@@ -791,9 +793,10 @@ use the prefix =M-s= for searching in buffers
 #+END_SRC
 
 Occur search key bindings
-
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
-  (add-hook 'occur-hook (lambda () (switch-to-buffer-other-window "*Occur*")))
+  (add-hook 'occur-hook (lambda ()
+                          (switch-to-buffer-other-window "*Occur*")
+                          (define-key occur-mode-map (kbd "C-o") nil)))
   ;; auto select occur window
 
   (define-key occur-mode-map (kbd "C-n")
@@ -811,8 +814,15 @@ Occur search key bindings
       (occur-mode-goto-occurrence-other-window)
       (recenter)
       (other-window 1)))
-#+END_SRC
 
+  (use-package color-moccur
+    :ensure t
+    :commands (isearch-moccur isearch-all)
+    :init
+    (setq isearch-lazy-highlight t)
+    :config
+    (use-package moccur-edit))
+#+END_SRC
 
 ** =M-o= as prefix key for windows
 
@@ -2021,8 +2031,3 @@ See [[https://www.emacswiki.org/emacs/GnusWindowLayout][GnusWindowLayout]]
 - passion
 - vision
 - mission
-
-
-
-
-
