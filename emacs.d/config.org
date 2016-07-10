@@ -565,15 +565,25 @@ Use [[https://github.com/DarwinAwardWinner/ido-ubiquitous][ido-ubiquitous]] for 
 
 #+END_SRC
 
-* Key bindings
-
-** Remove prefix =ESC=, refer [[http://emacs.stackexchange.com/questions/14755/how-to-remove-bindings-to-the-esc-prefix-key][here]]
-
+* Normal Text Operation
+** Edit
+*** undo-tree
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
+  (use-package undo-tree
+    :ensure t
+    :config
+    (define-key undo-tree-visualizer-mode-map "j" 'undo-tree-visualize-redo)
+    (define-key undo-tree-visualizer-mode-map "k" 'undo-tree-visualize-undo)
+    (define-key undo-tree-visualizer-mode-map "h" 'undo-tree-visualize-switch-branch-left)
+    (define-key undo-tree-visualizer-mode-map "l" 'undo-tree-visualize-switch-branch-right)
+    (global-undo-tree-mode 1))
 
-  ;; (define-key key-translation-map (kbd "ESC") (kbd "C-g"))
-
+  (global-set-key (kbd "s-u") 'undo-tree-visualize)
 #+END_SRC
+
+** Motion
+** Search & highlight
+* Key bindings
 
 ** Esc on Minibuffer
 
@@ -672,6 +682,8 @@ Some global bindings on =Super=, on Mac, it is =Command=
 
   (global-set-key (kbd "s-=") 'text-scale-increase)
   (global-set-key (kbd "s--") 'text-scale-decrease)
+
+  ;; (global-set-key (kbd "s-u") 'undo-tree-visualize)
 
 
   ;; someothers default mapping on super (command) key
@@ -1607,18 +1619,6 @@ Play Go in Emacs, gnugo xpm refert [[https://github.com/okanotor/dotemacs/blob/f
       :config
     (add-to-list 'gnugo-option-history (format "--boardsize 19 --color black --level 1")))
 
-#+END_SRC
-
-** undo-tree
-#+BEGIN_SRC emacs-lisp :tangle yes :results silent
-  (use-package undo-tree
-    :ensure t
-    :config
-    (define-key undo-tree-visualizer-mode-map "j" 'undo-tree-visualize-redo)
-    (define-key undo-tree-visualizer-mode-map "k" 'undo-tree-visualize-undo)
-    (define-key undo-tree-visualizer-mode-map "h" 'undo-tree-visualize-switch-branch-left)
-    (define-key undo-tree-visualizer-mode-map "l" 'undo-tree-visualize-switch-branch-right)
-    (global-undo-tree-mode 1))
 #+END_SRC
 
 ** Tabbar
