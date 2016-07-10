@@ -581,6 +581,44 @@ Use [[https://github.com/DarwinAwardWinner/ido-ubiquitous][ido-ubiquitous]] for 
   (global-set-key (kbd "s-u") 'undo-tree-visualize)
 #+END_SRC
 
+*** flyspell
+Stolen from [[https://github.com/redguardtoo/emacs.d/blob/master/lisp/init-spelling.el][here]], hunspell will search dictionary in =DICPATH=
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+  (setenv "DICPATH" "/usr/local/share/hunspell")
+
+  (when (executable-find "hunspell")
+    (setq-default ispell-program-name "hunspell")
+    (setq ispell-really-hunspell t))
+
+  ;; (defun text-mode-hook-setup ()
+  ;;   ;; Turn off RUN-TOGETHER option when spell check text-mode
+  ;;   (setq-local ispell-extra-args (flyspell-detect-ispell-args)))
+  ;; (add-hook 'text-mode-hook 'text-mode-hook-setup)
+  (add-hook 'text-mode-hook 'flyspell-mode)
+
+  ;; enable flyspell check on comments and strings in progmamming modes
+  (add-hook 'prog-mode-hook 'flyspell-prog-mode)
+#+END_SRC
+
+Make flyspell enabled for org-mode, see [[http://emacs.stackexchange.com/questions/9333/how-does-one-use-flyspell-in-org-buffers-without-flyspell-triggering-on-tangled][here]]
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+  ;; NO spell check for embedded snippets
+  (defadvice org-mode-flyspell-verify (after org-mode-flyspell-verify-hack activate)
+    (let ((rlt ad-return-value)
+          (begin-regexp "^[ \t]*#\\+begin_\\(src\\|html\\|latex\\)")
+          (end-regexp "^[ \t]*#\\+end_\\(src\\|html\\|latex\\)")
+          old-flag
+          b e)
+      (when ad-return-value
+        (save-excursion
+          (setq old-flag case-fold-search)
+          (setq case-fold-search t)
+          (setq b (re-search-backward begin-regexp nil t))
+          (if b (setq e (re-search-forward end-regexp nil t)))
+          (setq case-fold-search old-flag))
+        (if (and b e (< (point) e)) (setq rlt nil)))
+      (setq ad-return-value rlt)))
+#+END_SRC
 ** Motion
 *** Avy
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
