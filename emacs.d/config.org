@@ -619,6 +619,15 @@ Make flyspell enabled for org-mode, see [[http://emacs.stackexchange.com/questio
         (if (and b e (< (point) e)) (setq rlt nil)))
       (setq ad-return-value rlt)))
 #+END_SRC
+
+*** Expand-region
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+  (use-package expand-region
+    :ensure t
+    :config
+    (global-set-key (kbd "C-=") 'er/expand-region))
+#+END_SRC
+
 ** Motion
 *** Avy
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
@@ -1725,7 +1734,7 @@ Play Go in Emacs, gnugo xpm refert [[https://github.com/okanotor/dotemacs/blob/f
 ** TODO bookmark
 
 ** TODO Calendar
-** TODO advice info
+** advice info
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
   (defun sd/info-mode ()
     (interactive)
