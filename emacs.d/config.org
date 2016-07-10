@@ -656,18 +656,14 @@ Some global bindings on =Super=, on Mac, it is =Command=
   (global-set-key (kbd "s-h") 'keyboard-quit)
   (global-set-key (kbd "s-j") 'ido-switch-buffer)
   (global-set-key (kbd "s-k") 'ido-find-file)
-  ;; s-k  -->  kill-this-buffer
   (global-set-key (kbd "s-l") 'sd/delete-current-window)
   ;; s-l  -->  goto-line
-  (global-set-key (kbd "s-;") 'swiper)
+  ;; (global-set-key (kbd "s-/") 'swiper)
   ;; s-;  -->
   ;; s-'  -->  'next-multiframe-window
   (global-set-key (kbd "<s-return>") 'toggle-frame-fullscreen)
 
-  ;; (global-set-key (kbd "s-y") 'projectile-find-file)
   (global-set-key (kbd "s-f") 'projectile-find-file)
-  ;; (global-set-key (kbd "s-[") 'persp-next)
-  ;; (global-set-key (kbd "s-]") 'persp-prev)
 
   (global-set-key (kbd "s-`") 'mode-line-other-buffer)
 
@@ -733,65 +729,8 @@ Some global bindings on =Super=, on Mac, it is =Command=
   ;; s-`  -->  other-frame
 #+END_SRC
 
-** =M-s= bindings for searching
-use the prefix =M-s= for searching in buffers
-#+BEGIN_SRC emacs-lisp :tangle yes :results silent
-  (defun sd/make-keymap (key bindings)
-    (setq keymap (make-sparse-keymap))
-    (dolist (binding bindings)
-      (define-key keymap (car binding) (cdr binding)))
-    (global-set-key key keymap))
-
-  (use-package highlight-symbol
-    :ensure t)
-
-  (sd/make-keymap "\M-s"
-                  '(("w" . save-buffer)
-                    ;; ("\M-w" . save-buffer)
-                    ("W" . revert-buffer)
-                    ("s" . isearch-forward-regexp)
-                    ("r" . isearch-backward-regexp)
-                    ("." . isearch-forward-symbol-at-point)
-                    ("o" . occur)
-                    ;; ("h" . highlight-symbol-at-point)
-                    ("h" . highlight-symbol)
-                    ("m" . highlight-regexp)
-                    ("l" . highlight-lines-matching-regexp)
-                    ("M" . unhighlight-regexp)
-                    ("f" . keyboard-quit)
-                    ("q" . keyboard-quit)))
-
-  ;; search and replace
-  (define-key isearch-mode-map (kbd "M-s") 'isearch-repeat-forward)
-  (define-key isearch-mode-map (kbd "M-r") 'isearch-repeat-backward)
-  (global-set-key (kbd "s-[") 'highlight-symbol-next)
-  (global-set-key (kbd "s-]") 'highlight-symbol-prev)
-  (global-set-key (kbd "s-\\") 'highlight-symbol-query-replace)
-
-
-  (define-key minibuffer-local-map "\M-s" nil)
-
-
-  (set-face-background 'ido-first-match "white")
-
-
-
-  ;; M-s h .              highlight-symbol-at-point
-  ;; M-s h f              hi-lock-find-patterns
-  ;; M-s h l              highlight-lines-matching-regexp
-  ;; M-s h p              highlight-phrase
-  ;; M-s h r              highlight-regexp
-  ;; M-s h u              unhighlight-regexp
-  ;; M-s h w              hi-lock-write-interactive-patterns
-
-  ;; M-s M-w              eww-search-words
-
-  ;; M-c
-  ;; M-r
-  ;; M-t
-  ;; M-u, 
-#+END_SRC
-
+** Search Replace and highlight
+*** Occur
 Occur search key bindings
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
   (add-hook 'occur-hook (lambda ()
@@ -822,6 +761,82 @@ Occur search key bindings
     (setq isearch-lazy-highlight t)
     :config
     (use-package moccur-edit))
+#+END_SRC
+
+*** swiper
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+  (use-package swiper
+    :ensure t)
+
+  (ivy-mode 1)
+  (setq ivy-use-virtual-buffers t)
+  (global-set-key (kbd "s-/") 'swiper)
+  ;;* 
+  ;; (global-set-key "\C-s" 'swiper)
+  ;; (global-set-key (kbd "C-c C-r") 'ivy-resume)
+  ;; (global-set-key (kbd "<f6>") 'ivy-resume)
+  ;; ;; (global-set-key (kbd "M-x") 'counsel-M-x)
+  ;; ;; (global-set-key (kbd "C-x C-f") 'counsel-find-file)
+  ;; (global-set-key (kbd "<f1> f") 'counsel-describe-function)
+  ;; (global-set-key (kbd "<f1> v") 'counsel-describe-variable)
+  ;; (global-set-key (kbd "<f1> l") 'counsel-load-library)
+  ;; (global-set-key (kbd "<f2> i") 'counsel-info-lookup-symbol)
+  ;; (global-set-key (kbd "<f2> u") 'counsel-unicode-char)
+  ;; (global-set-key (kbd "C-c g") 'counsel-git)
+  ;; (global-set-key (kbd "C-c j") 'counsel-git-grep)
+  ;; (global-set-key (kbd "C-c k") 'counsel-ag)
+  ;; (global-set-key (kbd "C-x l") 'counsel-locate)
+  ;; (global-set-key (kbd "C-S-o") 'counsel-rhythmbox)
+  ;; ;; (define-key read-expression-map (kbd "C-r") 'counsel-expression-history)
+
+#+END_SRC
+
+*** =M-s= prefix
+use the prefix =M-s= for searching in buffers
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+  (defun sd/make-keymap (key bindings)
+    (setq keymap (make-sparse-keymap))
+    (dolist (binding bindings)
+      (define-key keymap (car binding) (cdr binding)))
+    (global-set-key key keymap))
+
+  (use-package highlight-symbol
+    :ensure t)
+
+  (sd/make-keymap "\M-s"
+                  '(("w" . save-buffer)
+                    ;; ("\M-w" . save-buffer)
+                    ("W" . revert-buffer)
+                    ("s" . isearch-forward-regexp)
+                    ("r" . isearch-backward-regexp)
+                    ("." . isearch-forward-symbol-at-point)
+                    ("o" . occur)
+                    ;; ("h" . highlight-symbol-at-point)
+                    ("h" . highlight-symbol)
+                    ("m" . highlight-regexp)
+                    ("l" . highlight-lines-matching-regexp)
+                    ("M" . unhighlight-regexp)
+                    ("f" . keyboard-quit)
+                    ("q" . keyboard-quit)))
+
+  ;; search and replace and highlight
+  (define-key isearch-mode-map (kbd "M-s") 'isearch-repeat-forward)
+  (define-key isearch-mode-map (kbd "M-r") 'isearch-repeat-backward)
+  (global-set-key (kbd "s-[") 'highlight-symbol-next)
+  (global-set-key (kbd "s-]") 'highlight-symbol-prev)
+  (global-set-key (kbd "s-\\") 'highlight-symbol-query-replace)
+
+
+  (define-key minibuffer-local-map "\M-s" nil)
+
+  (set-face-background 'ido-first-match "yellow")
+
+  ;; M-s M-w              eww-search-words
+
+  ;; M-c
+  ;; M-r
+  ;; M-t
+  ;; M-u, 
 #+END_SRC
 
 ** =M-o= as prefix key for windows
@@ -1604,35 +1619,6 @@ Play Go in Emacs, gnugo xpm refert [[https://github.com/okanotor/dotemacs/blob/f
     (define-key undo-tree-visualizer-mode-map "h" 'undo-tree-visualize-switch-branch-left)
     (define-key undo-tree-visualizer-mode-map "l" 'undo-tree-visualize-switch-branch-right)
     (global-undo-tree-mode 1))
-#+END_SRC
-
-** swiper
-
-#+BEGIN_SRC emacs-lisp :tangle yes :results silent
-
-  (use-package swiper
-    :ensure t)
-
-
-  (ivy-mode 1)
-  (setq ivy-use-virtual-buffers t)
-  ;; (global-set-key "\C-s" 'swiper)
-  ;; (global-set-key (kbd "C-c C-r") 'ivy-resume)
-  ;; (global-set-key (kbd "<f6>") 'ivy-resume)
-  ;; ;; (global-set-key (kbd "M-x") 'counsel-M-x)
-  ;; ;; (global-set-key (kbd "C-x C-f") 'counsel-find-file)
-  ;; (global-set-key (kbd "<f1> f") 'counsel-describe-function)
-  ;; (global-set-key (kbd "<f1> v") 'counsel-describe-variable)
-  ;; (global-set-key (kbd "<f1> l") 'counsel-load-library)
-  ;; (global-set-key (kbd "<f2> i") 'counsel-info-lookup-symbol)
-  ;; (global-set-key (kbd "<f2> u") 'counsel-unicode-char)
-  ;; (global-set-key (kbd "C-c g") 'counsel-git)
-  ;; (global-set-key (kbd "C-c j") 'counsel-git-grep)
-  ;; (global-set-key (kbd "C-c k") 'counsel-ag)
-  ;; (global-set-key (kbd "C-x l") 'counsel-locate)
-  ;; (global-set-key (kbd "C-S-o") 'counsel-rhythmbox)
-  ;; ;; (define-key read-expression-map (kbd "C-r") 'counsel-expression-history)
-
 #+END_SRC
 
 ** Tabbar
