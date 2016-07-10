@@ -1736,9 +1736,15 @@ Play Go in Emacs, gnugo xpm refert [[https://github.com/okanotor/dotemacs/blob/f
       (info)))
 
   (global-set-key (kbd "C-h i") 'sd/info-mode)
-  ;; (add-hook 'Info-mode-hook (lambda ()
-  ;;                          (define-key Info-mode-map "q" )))
+
+  ;; open Info buffer in other window instead of current window
+  (defadvice Info (before my-info activate)
+    (sd/info-mode))
+
+  (defadvice Info-exit (after my-info-exit activate)
+    (sd/delete-current-window))
 #+END_SRC
+
 * Programming
 
 ** Languages
