@@ -641,11 +641,13 @@ Make flyspell enabled for org-mode, see [[http://emacs.stackexchange.com/questio
 
 *** =M-g= prefix
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
-  (global-set-key (kbd "M-g g") 'avy-goto-line)
+  (global-set-key (kbd "M-g j") 'avy-goto-line-below)
+  (global-set-key (kbd "M-g k") 'avy-goto-line-above)
+  (global-set-key (kbd "M-g w") 'avy-goto-word-1-below)
+  (global-set-key (kbd "M-g b") 'avy-goto-word-1-above)
   (global-set-key (kbd "M-g e") 'avy-goto-word-0)
-  (global-set-key (kbd "M-g w") 'avy-goto-word-1)
-  (global-set-key (kbd "M-g c") 'avy-goto-char-timer)
-  (global-set-key (kbd "M-g f") 'avy-goto-char-in-line)
+  (global-set-key (kbd "M-g f") 'avy-goto-char-timer)
+  (global-set-key (kbd "M-g c") 'avy-goto-char-in-line)
 
   ;; M-g TAB              move-to-column
   ;; M-g ESC              Prefix Command
@@ -721,13 +723,6 @@ Use =ESC= to exit minibuffer. Also I map =Super-h= the same as =C-g=
   ;; C-7
 
   ;; C-Space
-
-
-
-
-
-
-
 #+END_SRC
 
 ** =Super= bindings for file, buffer and windows
