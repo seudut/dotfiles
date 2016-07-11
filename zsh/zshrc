@@ -270,3 +270,5 @@ PERL_MM_OPT="INSTALL_BASE=/Users/peli3/perl5"; export PERL_MM_OPT;
 export MANPATH=$MANPATH:${HOME}/perl5/man
 
 export PATH=$PATH:"${HOME}/scripts"
+## hunspell path
+export DICPATH="/usr/local/share/hunspell/"
