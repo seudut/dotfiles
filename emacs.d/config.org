@@ -600,6 +600,12 @@ Stolen from [[https://github.com/redguardtoo/emacs.d/blob/master/lisp/init-spell
 
   ;; enable flyspell check on comments and strings in progmamming modes
   (add-hook 'prog-mode-hook 'flyspell-prog-mode)
+
+  ;; I don't use the default mappings
+  (with-eval-after-load 'flyspell
+    (define-key flyspell-mode-map (kbd "C-;") nil)
+    (define-key flyspell-mode-map (kbd "C-,") nil)
+    (define-key flyspell-mode-map (kbd "C-.") nil))
 #+END_SRC
 
 Make flyspell enabled for org-mode, see [[http://emacs.stackexchange.com/questions/9333/how-does-one-use-flyspell-in-org-buffers-without-flyspell-triggering-on-tangled][here]]
@@ -935,7 +941,6 @@ use the prefix =M-s= for searching in buffers
 Always indents header, and hide header leading starts so that no need type =#+STATUP: indent= 
 
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
-
   (use-package org
     :ensure t
     :init
@@ -965,6 +970,7 @@ Always indents header, and hide header leading starts so that no need type =#+ST
   ;; use current window for org source buffer editting
   (setq org-src-window-setup 'current-window )
 
+  (define-key org-mode-map (kbd "C-'") nil)
 #+END_SRC
 
 ** Org-bullets
@@ -1382,10 +1388,8 @@ Toggle an eshell in split window below, refer [[http://www.howardism.org/Technic
 #+END_SRC
 
 *** Font Zoom
-
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
-    (defhydra sd/font-zoom (global-map "<f2>")
-
+  (defhydra sd/font-zoom (global-map "<f2>")
     "zoom"
     ("g" text-scale-increase "in")
     ("l" text-scale-decrease "out"))
@@ -1458,6 +1462,7 @@ Refer [[https://github.com/abo-abo/hydra/blob/master/hydra-examples.el][hydra-ex
     ("o" delete-other-windows "one" :exit t)
     ("C-o" ido-switch-buffer "buf" :exit t)
     ("C-k" sd/delete-current-window "del" :exit t)
+    ("'" other-window "other" :exit t)
     ("a" ace-window "ace")
     ("s" ace-swap-window "swap")
     ("d" ace-delete-window "ace-one" :exit t)
@@ -1476,25 +1481,30 @@ Refer [[https://github.com/abo-abo/hydra/blob/master/hydra-examples.el][hydra-ex
 
 *** hydra misc
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
-  (defhydra sd/hydra-misc ()
+  (defhydra sd/hydra-misc (:color red :columns nil)
     "Miscellaneous Commands"
-    ("e" eshell "eshell" :color red :exit t)
+    ("e" eshell "eshell" :exit t)
     ("p" (lambda ()
            (interactive)
-           (if (sd/buffer-exist "*Packages*")
+           (if (not (eq nil (get-buffer "*Packages*")))
                (switch-to-buffer "*Packages*")
              (package-list-packages)))
-     "list-package" :color red :exit t)
-    ("g" magit-status "git-status" :color red :exit t))
+     "list-package" :exit t)
+    ("g" magit-status "git-status" :exit t)
+    ("'" mode-line-other-buffer "last buffer" :exit t)
+    ("C-'" mode-line-other-buffer "last buffer" :exit t)
+    ("m" man "man" :exit t)
+    ("q" nil "quit")
+    ("f" nil "quit"))
+
+  (global-set-key (kbd "C-'") 'sd/hydra-misc/body)
 #+END_SRC
 
 *** hydra launcher
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
-  (defhydra hydra-launcher (:color blue :columns 2)
+  (defhydra sd/hydra-launcher (:color blue :columns 2)
     "Launch"
-    ("h" man "man")
-    ("s" eshell "eshell")
-    ("p" package-list-packages  "Package")
+    ("e" emms "emms" :exit t)
     ("q" nil "cancel"))
 #+END_SRC
 
@@ -1751,6 +1761,14 @@ Play Go in Emacs, gnugo xpm refert [[https://github.com/okanotor/dotemacs/blob/f
 
   (defadvice Info-exit (after my-info-exit activate)
     (sd/delete-current-window))
+#+END_SRC
+
+** TODO Man mode
+Color for Man-mode
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+  ;; (add-hook 'Man-mode-hook (lambda ()
+  ;;                         (interactive)
+  ;;                         (setenv "GROFF_NO_SRG")))
 #+END_SRC
 
 * Programming
@@ -2105,6 +2123,11 @@ See [[https://www.emacswiki.org/emacs/GnusWindowLayout][GnusWindowLayout]]
     (gnus-group-select-group "INBOX"))
   ;; (add-hook 'gnus-group-mode-map (lambda ()
   ;;                               (gnus-group-select-group "INBOX")))
+#+END_SRC
+
+* Blog
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+
 #+END_SRC
 
 * key
