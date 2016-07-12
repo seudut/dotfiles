@@ -93,6 +93,14 @@ Set default window size
           (height . 50)))
 #+END_SRC
 
+Stop auto save
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+  (setq auto-save-default nil)
+
+  ;; restore last session
+  (desktop-save-mode t)
+#+END_SRC
+
 * Package Management Tools
 
 ** Use-package
@@ -1771,6 +1779,7 @@ Color for Man-mode
   ;;                         (setenv "GROFF_NO_SRG")))
 #+END_SRC
 
+** TODO swiper to occur
 * Programming
 
 ** Languages
