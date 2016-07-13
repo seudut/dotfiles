@@ -1305,6 +1305,9 @@ and Defined keys, using vi keybindings, Refer abo-abo's setting [[https://github
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
   (use-package magit
     :ensure t
+    :init
+    ;; don't ask me to confirm the unsaved change 
+    (setq magit-save-repository-buffers nil)
     :commands magit-status magit-blame
     :config
     (dolist (map (list magit-status-mode-map
@@ -1502,6 +1505,7 @@ Refer [[https://github.com/abo-abo/hydra/blob/master/hydra-examples.el][hydra-ex
     ("'" mode-line-other-buffer "last buffer" :exit t)
     ("C-'" mode-line-other-buffer "last buffer" :exit t)
     ("m" man "man" :exit t)
+    ("d" dired-jump "dired" :exit t)
     ("q" nil "quit")
     ("f" nil "quit"))
 
