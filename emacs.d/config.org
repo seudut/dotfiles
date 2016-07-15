@@ -25,9 +25,7 @@ Set system PATH and emacs exec path
 Set the emacs load path
 
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
-
-  (add-to-list 'load-path "~/.emacs.d/elisp")
-
+  ;; (add-to-list 'load-path "~/.emacs.d/elisp")
 #+END_SRC
 
 ** Package Initialization
@@ -53,7 +51,7 @@ Disable scroll bar, tool-bar and menu-bar
   (tool-bar-mode 0)
   (menu-bar-mode 1)
 
-  (setq debug-on-error t)
+  ;; (setq debug-on-error t)
   (setq inhibit-startup-message t)
 
   (defalias 'yes-or-no-p 'y-or-n-p)
