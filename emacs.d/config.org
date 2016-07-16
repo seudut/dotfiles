@@ -1929,27 +1929,26 @@ to call =compilation=  interactively.
 #+END_SRC
 
 ** Compile
-
 Set the environments vairables in compilation mode
-
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
-
   (use-package compile
     :commands compile
     :config
     (setq compilation-environment (cons "LC_ALL=C" compilation-environment)))
 
+  ;; super-r to compile
+  (with-eval-after-load "compile"
+    (define-key compilation-mode-map (kbd "C-o") nil)
+    (define-key compilation-mode-map (kbd "n") 'compilation-next-error)
+    (define-key compilation-mode-map (kbd "p") 'compilation-previous-error)
+    (define-key compilation-mode-map (kbd "r") #'recompile))
 #+END_SRC
 
 ** Auto-Insert
-
-Enable auto-insert mode
-
+*** Enable auto-insert mode
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
-
   (auto-insert-mode t)
   (setq auto-insert-query nil)
-
 #+END_SRC
 
 *** C++ Auto Insert
