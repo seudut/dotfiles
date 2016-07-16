@@ -903,6 +903,7 @@ use the prefix =M-s= for searching in buffers
                     ;; ("\M-w" . save-buffer)
                     ("e" . revert-buffer)
                     ("s" . isearch-forward-regexp)
+                    ("M-s" . isearch-forward-regexp)
                     ("r" . isearch-backward-regexp)
                     ("." . isearch-forward-symbol-at-point)
                     ("o" . occur)
@@ -1934,7 +1935,10 @@ Set the environments vairables in compilation mode
   (use-package compile
     :commands compile
     :config
-    (setq compilation-environment (cons "LC_ALL=C" compilation-environment)))
+    (setq compilation-environment (cons "LC_ALL=C" compilation-environment))
+    (setq compilation-auto-jump-to-first-error t)
+    (setq compilation-auto-jump-to-next t)
+    (setq compilation-scroll-output 'first-error))
 
   ;; super-r to compile
   (with-eval-after-load "compile"
@@ -1952,9 +1956,7 @@ Set the environments vairables in compilation mode
 #+END_SRC
 
 *** C++ Auto Insert
-
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
-
   (eval-after-load 'autoinsert
     '(define-auto-insert '("\\.cpp\\'" . "C++ skeleton")
        '(
@@ -1993,7 +1995,6 @@ Set the environments vairables in compilation mode
          "return 1;\n"
          "}" > \n
          )))
-       
 #+END_SRC
 
 *** Perl Auto Insert
