@@ -1997,20 +1997,28 @@ Set the environments vairables in compilation mode
 #+END_SRC
 
 *** Perl Auto Insert
-
 Refer [[https://www.emacswiki.org/emacs/AutoInsertMode][AutoInsertMode]] Wiki
-
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
-
   (eval-after-load 'autoinsert
     '(define-auto-insert '("\\.pl\\'" . "Perl skeleton")
        '(
-         "Description: "
+         "Empty"
          "#!/usr/bin/perl -w" \n
          \n
-         "use strict;" \n \n
+         "use strict;" >  \n \n
+         > _
          )))
+#+END_SRC
 
+*** Python template
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+  (eval-after-load 'autoinsert
+    '(define-auto-insert '("\\.\\(py\\)\\'" . "Python skeleton")
+       '(
+         "Empty"
+         "#import os,sys" \n
+         \n \n
+         )))
 #+END_SRC
 
 *** Elisp 
