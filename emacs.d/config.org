@@ -566,7 +566,7 @@ Use [[https://github.com/DarwinAwardWinner/ido-ubiquitous][ido-ubiquitous]] for 
               (define-key map (kbd "C-j") #'ido-exit-target-split-window-right)
               (define-key map (kbd "C-k") #'ido-exit-target-split-window-below))
             (list ido-buffer-completion-map
-                  ido-common-completion-map
+                  ;; ido-common-completion-map
                   ido-file-completion-map
                   ido-file-dir-completion-map)))
 #+END_SRC
