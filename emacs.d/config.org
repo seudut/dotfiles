@@ -1502,6 +1502,7 @@ Refer [[https://github.com/abo-abo/hydra/blob/master/hydra-examples.el][hydra-ex
     ("C-'" mode-line-other-buffer "last buffer" :exit t)
     ("m" man "man" :exit t)
     ("d" dired-jump "dired" :exit t)
+    ("b" ibuffer "ibuffer" :exit t)
     ("q" nil "quit")
     ("f" nil "quit"))
 
@@ -1783,21 +1784,37 @@ Color for Man-mode
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
   ;; (el-get-bundle howardabrams/demo-it)
 
-  ;; (use-package org-tree-slide
-  ;;   :ensure t)
+  (use-package org-tree-slide
+    :ensure t)
 
   ;; (use-package yasnippet
   ;;   :ensure t)
 #+END_SRC
 
+** Presentation
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+  (use-package org-tree-slide
+    :ensure
+    :config
+    ;; (define-key org-mode-map "\C-ccp" 'org-tree-slide-mode)
+    (define-key org-tree-slide-mode-map (kbd "<ESC>") 'org-tree-slide-content)
+    (define-key org-tree-slide-mode-map (kbd "<SPACE>") 'org-tree-slide-move-next-tree)
+    (define-key org-tree-slide-mode-map [escape] 'org-tree-slide-move-previous-tree))
+#+END_SRC
+
 * dired
 =C-o= is defined as a global key for window operation, here unset it in dired mode
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
-  (add-hook 'dired-mode-hook (lambda ()
-                               (local-unset-key (kbd "C-o"))
-                               (local-set-key (kbd "o") 'dired-display-file)))
-
-  (define-key dired-mode-map (kbd "DEL") (lambda () (interactive) (find-alternate-file "..")))
+  (use-package dired
+    :config
+    (require 'dired-x)
+    (setq dired-omit-mode t)
+    (setq dired-omit-files (concat dired-omit-files "\\|^\\..+$"))
+    (add-hook 'dired-mode-hook (lambda ()
+                                 (define-key dired-mode-map (kbd "C-o") nil)
+                                 (define-key dired-mode-map (kbd "H") 'dired-omit-mode)
+                                 (define-key dired-mode-map (kbd "DEL") (lambda () (interactive) (find-alternate-file "..")))
+                                 (dired-omit-mode))))
 #+END_SRC
 
 Dired+
