@@ -518,16 +518,13 @@ set height in mode line
 #+END_SRC
 
 ** IDO-vertically
-
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
-
   (use-package ido-vertical-mode
     :ensure t
     :init
     (setq ido-vertical-define-keys 'C-n-C-p-up-and-down)
     :config
     (ido-vertical-mode 1))
-
 #+END_SRC
 
 ** SMEX
@@ -560,17 +557,18 @@ Use [[https://github.com/DarwinAwardWinner/ido-ubiquitous][ido-ubiquitous]] for 
 #+END_SRC
 
 ** Ido-exit-target
-
 [[https://github.com/waymondo/ido-exit-target][ido-exit-target]] let you open file/buffer on =other-windows= when call =ido-switch-buffer=
-
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
-
   (use-package ido-exit-target
     :ensure t
     :init
-    (define-key ido-common-completion-map (kbd "C-j") #'ido-exit-target-split-window-right)
-    (define-key ido-common-completion-map (kbd "C-l") #'ido-exit-target-split-window-below))
-
+    (mapcar (lambda (map)
+              (define-key map (kbd "C-j") #'ido-exit-target-split-window-right)
+              (define-key map (kbd "C-k") #'ido-exit-target-split-window-below))
+            (list ido-buffer-completion-map
+                  ido-common-completion-map
+                  ido-file-completion-map
+                  ido-file-dir-completion-map)))
 #+END_SRC
 
 * Normal Text Operation
