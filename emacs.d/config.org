@@ -2024,9 +2024,10 @@ Emacs lisp auto-insert, based on the default module in =autoinsert.el=, but repl
          ";;; " (file-name-nondirectory (buffer-file-name)) " --- " str
          (make-string (max 2 (- 80 (current-column) 27)) ?\s)
          "-*- lexical-binding: t; -*-" '(setq lexical-binding t)
-         "
+         "\n
   ;; Copyright (C) " (format-time-string "%Y") "  "
          (getenv "ORGANIZATION") | (progn user-full-name) "
+
   ;; Author: " (user-full-name)
          '(if (search-backward "&" (line-beginning-position) t)
               (replace-match (capitalize (user-login-name)) t t))
@@ -2042,23 +2043,45 @@ Emacs lisp auto-insert, based on the default module in =autoinsert.el=, but repl
          ((let ((minibuffer-help-form v2))
             (completing-read-ido-ubiquitous "Keyword, C-h: " v1 nil t))
           str ", ") & -2 "
+
   \;; This program is free software; you can redistribute it and/or modify
   \;; it under the terms of the GNU General Public License as published by
   \;; the Free Software Foundation, either version 3 of the License, or
   \;; (at your option) any later version.
+
   \;; This program is distributed in the hope that it will be useful,
   \;; but WITHOUT ANY WARRANTY; without even the implied warranty of
   \;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   \;; GNU General Public License for more details.
+
   \;; You should have received a copy of the GNU General Public License
   \;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
   \;;; Commentary:
+
   \;; " _ "
+
   \;;; Code:
+
+
   \(provide '"
          (file-name-base)
          ")
   \;;; " (file-name-nondirectory (buffer-file-name)) " ends here\n")))
+#+END_SRC
+
+*** Org file template
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+  (eval-after-load 'autoinsert
+    '(define-auto-insert '("\\.\\(org\\)\\'" . "Org-mode skeleton")
+       '(
+         "title: "
+         "#+TITLE: " str (make-string 30 ?\s) > \n
+         "#+AUTHOR: Peng Li\n"
+         "#+EMAIL: seudut@gmail.com\n"
+         "#+DATE: " (shell-command-to-string "echo -n $(date +%Y-%m-%d)") > \n
+         > \n
+         > _)))
 #+END_SRC
 
 ** Completion
