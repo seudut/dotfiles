@@ -1735,6 +1735,23 @@ Play Go in Emacs, gnugo xpm refert [[https://github.com/okanotor/dotemacs/blob/f
 
 #+END_SRC
 
+** View only for some directory
+When see function by =C-h f=, and visit the source code, I would like the buffer is read only. See [[http://emacs.stackexchange.com/questions/3676/how-to-enter-view-only-mode-when-browsing-emacs-source-code-from-help/3681#3681][here]]
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+  (dir-locals-set-class-variables
+   'emacs
+   '((nil . ((buffer-read-only . t)
+             (show-trailing-whitespace . nil)
+             (tab-width . 8)
+             (eval . (whitespace-mode -1))))))
+
+  ;; (dir-locals-set-directory-class (expand-file-name "/usr/local/share/emacs") 'emacs)
+  (dir-locals-set-directory-class "/usr/local/Cellar/emacs" 'emacs)
+  ;; (dir-locals-set-directory-class "~/.emacs.d/elpa" 'emacs)
+  (dir-locals-set-directory-class "~/dotfiles/emacs.d/elpa" 'emacs)
+  (dir-locals-set-directory-class "~/dotfiles/emacs.d/el-get" 'emacs)
+#+END_SRC
+
 ** Info plus
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
   (el-get-bundle info+
