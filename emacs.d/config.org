@@ -1911,6 +1911,15 @@ Refer [[https://www.emacswiki.org/emacs/AutoInsertMode][AutoInsertMode]] Wiki
          )))
 #+END_SRC
 
+*** Keywords
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+  (font-lock-add-keywords 'cperl-mode
+                          '(("\\(say\\)" . font-lock-function-name-face)))
+
+  (font-lock-add-keywords 'Man-mode
+                          '(("\\(NAME\\)" . font-lock-function-name-face)))
+#+END_SRC
+
 *** Run Perl
 Change the compile-command to set the default command run when call =compile=
 Mapping =s-r= (on Mac, it's =Command + R= to run the script. Here =current-prefix-arg= is set
