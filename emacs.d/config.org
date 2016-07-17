@@ -1831,11 +1831,8 @@ Dired+
     (define-key dired-mode-map (kbd "g") 'dired-goto-file))
 #+END_SRC
 
-* Programming
-
-** Languages
-
-*** Emacs Lisp
+* Programming Language
+** Emacs Lisp
 
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
 
@@ -1866,12 +1863,13 @@ bindings in =lispy-mode-map= after loaded. see [[http://stackoverflow.com/questi
     (add-hook 'emacs-lisp-mode-hook (lambda () (lispy-mode 1))))
 #+END_SRC
 
-*** Perl
+** Perl
 [[https://www.emacswiki.org/emacs/CPerlMode][CPerl mode]] has more features than =PerlMode= for perl programming. Alias this to =CPerlMode=
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
   (defalias 'perl-mode 'cperl-mode)
 
-  (setq cperl-hairy t) ;; Turns on most of the CPerlMode options
+  ;; (setq cperl-hairy t)
+  ;; Turns on most of the CPerlMode options
   (setq cperl-auto-newline t)
   (setq cperl-highlight-variables-indiscriminately t)
   ;(setq cperl-indent-level 4)
@@ -1915,7 +1913,7 @@ to call =compilation=  interactively.
 
 #+END_SRC
 
-*** C & C++
+** C & C++
 
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
 
@@ -1924,7 +1922,7 @@ to call =compilation=  interactively.
 
 #+END_SRC
 
-** Compile
+* Compile
 Set the environments vairables in compilation mode
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
   (use-package compile
@@ -1943,14 +1941,14 @@ Set the environments vairables in compilation mode
     (define-key compilation-mode-map (kbd "r") #'recompile))
 #+END_SRC
 
-** Auto-Insert
-*** Enable auto-insert mode
+* Auto-Insert
+** Enable auto-insert mode
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
   (auto-insert-mode t)
   (setq auto-insert-query nil)
 #+END_SRC
 
-*** C++ Auto Insert
+** C++ Auto Insert
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
   (eval-after-load 'autoinsert
     '(define-auto-insert '("\\.cpp\\'" . "C++ skeleton")
@@ -1992,7 +1990,7 @@ Set the environments vairables in compilation mode
          )))
 #+END_SRC
 
-*** Perl Auto Insert
+** Perl Auto Insert
 Refer [[https://www.emacswiki.org/emacs/AutoInsertMode][AutoInsertMode]] Wiki
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
   (eval-after-load 'autoinsert
@@ -2006,7 +2004,7 @@ Refer [[https://www.emacswiki.org/emacs/AutoInsertMode][AutoInsertMode]] Wiki
          )))
 #+END_SRC
 
-*** Python template
+** Python template
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
   (eval-after-load 'autoinsert
     '(define-auto-insert '("\\.\\(py\\)\\'" . "Python skeleton")
@@ -2017,7 +2015,7 @@ Refer [[https://www.emacswiki.org/emacs/AutoInsertMode][AutoInsertMode]] Wiki
          )))
 #+END_SRC
 
-*** Elisp 
+** Elisp 
 Emacs lisp auto-insert, based on the default module in =autoinsert.el=, but replace =completing-read= as 
 =completing-read-ido-ubiquitous= to fix the edge case of that =ido= cannot handle.
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
@@ -2074,7 +2072,7 @@ Emacs lisp auto-insert, based on the default module in =autoinsert.el=, but repl
   \;;; " (file-name-nondirectory (buffer-file-name)) " ends here\n")))
 #+END_SRC
 
-*** Org file template
+** Org file template
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
   (eval-after-load 'autoinsert
     '(define-auto-insert '("\\.\\(org\\)\\'" . "Org-mode skeleton")
@@ -2088,7 +2086,7 @@ Emacs lisp auto-insert, based on the default module in =autoinsert.el=, but repl
          > _)))
 #+END_SRC
 
-** Completion
+* Completion
 
 company mode
 
@@ -2305,5 +2303,16 @@ Use =gnuplot= on =Org-mode= file, see [[http://orgmode.org/worg/org-contrib/babe
 - vision
 - mission
 * TODO Convert ASCII to key
-map =function-key-map= [[http://academic.evergreen.edu/projects/biophysics/technotes/program/ascii_ctrl.htm][ascii_ctrl]]
+** map =function-key-map= [[http://academic.evergreen.edu/projects/biophysics/technotes/program/ascii_ctrl.htm][ascii_ctrl]]
 new file =C-x C-f C-f=
+
+** write color syntax for =Man-mode=
+
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+  (font-lock-add-keywords 'perl-mode '(("\\(|\\w+?\\(,\\w+?\\)?|\\)" 1 'py-builtins-face)))
+
+  (font-lock-add-keywords
+   'cperl-mode
+  '(("\\(say\\)" . font-lock-constant-face)))
+#+END_SRC
+
