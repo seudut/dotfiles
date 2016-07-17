@@ -2277,7 +2277,7 @@ To fix some issue that =toolbar-make-button-list= is void, see the [[https://git
 #+END_SRC
 
 Use =gnuplot= on =Org-mode= file, see [[http://orgmode.org/worg/org-contrib/babel/languages/ob-doc-gnuplot.html][ob-doc-gnuplot]]
-#+BEGIN_SRC gnuplot :exports code :file file.png
+#+BEGIN_SRC gnuplot :exports code :file ./temp/file.png
   reset
 
   set title "Putting it All Together"
@@ -2299,7 +2299,7 @@ Use =gnuplot= on =Org-mode= file, see [[http://orgmode.org/worg/org-contrib/babe
 #+END_SRC
 
 #+RESULTS:
-[[file:file.png]]
+[[file:./temp/file.png]]
 
 * Blog
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
