@@ -903,7 +903,7 @@ use the prefix =M-s= for searching in buffers
                     ;; ("\M-w" . save-buffer)
                     ("e" . revert-buffer)
                     ("s" . isearch-forward-regexp)
-                    ("M-s" . isearch-forward-regexp)
+                    ("\M-s" . isearch-forward-regexp)
                     ("r" . isearch-backward-regexp)
                     ("." . isearch-forward-symbol-at-point)
                     ("o" . occur)
@@ -1867,14 +1867,11 @@ bindings in =lispy-mode-map= after loaded. see [[http://stackoverflow.com/questi
 #+END_SRC
 
 *** Perl
-
 [[https://www.emacswiki.org/emacs/CPerlMode][CPerl mode]] has more features than =PerlMode= for perl programming. Alias this to =CPerlMode=
-
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
-
   (defalias 'perl-mode 'cperl-mode)
 
-  ;(setq cperl-hairy t) ;; Turns on most of the CPerlMode options
+  (setq cperl-hairy t) ;; Turns on most of the CPerlMode options
   (setq cperl-auto-newline t)
   (setq cperl-highlight-variables-indiscriminately t)
   ;(setq cperl-indent-level 4)
@@ -1888,10 +1885,7 @@ bindings in =lispy-mode-map= after loaded. see [[http://stackoverflow.com/questi
             '(lambda ()
                (cperl-set-style "C++")))
 
-  ;(require 'template)
-  ;(template-initialize)
-  ;(require 'perlnow)
-
+  (defalias 'perldoc 'cperl-perldoc)
 #+END_SRC
 
 - auto insert
