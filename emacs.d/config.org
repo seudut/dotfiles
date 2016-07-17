@@ -1831,11 +1831,25 @@ Dired+
     (define-key dired-mode-map (kbd "g") 'dired-goto-file))
 #+END_SRC
 
+* Completion
+company mode and company-statistics
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+  (use-package company
+    :ensure t
+    :diminish company-mode
+    :init (setq company-idle-delay 0.1)
+    :config
+    (global-company-mode))
+
+  (use-package company-statistics
+    :ensure t
+    :config
+    (company-statistics-mode))
+#+END_SRC
+
 * Programming Language
 ** Emacs Lisp
-
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
-
   (use-package color-identifiers-mode
     :ensure t
     :init
@@ -1844,14 +1858,10 @@ Dired+
     :diminish color-identifiers-mode)
 
   (global-prettify-symbols-mode t)
-
 #+END_SRC
-
-**** Lispy Mode
 
 In Lisp Mode, =M-o= is defined, but I use this for global hydra window. So here disable this key
 bindings in =lispy-mode-map= after loaded. see [[http://stackoverflow.com/questions/298048/how-to-handle-conflicting-keybindings][here]]
-
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
   (use-package lispy
     :ensure t
@@ -1864,6 +1874,7 @@ bindings in =lispy-mode-map= after loaded. see [[http://stackoverflow.com/questi
 #+END_SRC
 
 ** Perl
+*** CPerl mode
 [[https://www.emacswiki.org/emacs/CPerlMode][CPerl mode]] has more features than =PerlMode= for perl programming. Alias this to =CPerlMode=
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
   (defalias 'perl-mode 'cperl-mode)
@@ -1886,15 +1897,25 @@ bindings in =lispy-mode-map= after loaded. see [[http://stackoverflow.com/questi
   (defalias 'perldoc 'cperl-perldoc)
 #+END_SRC
 
-- auto insert
-- run script 
+*** Perl template
+Refer [[https://www.emacswiki.org/emacs/AutoInsertMode][AutoInsertMode]] Wiki
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+  (eval-after-load 'autoinsert
+    '(define-auto-insert '("\\.pl\\'" . "Perl skeleton")
+       '(
+         "Empty"
+         "#!/usr/bin/perl -w" \n
+         \n
+         "use strict;" >  \n \n
+         > _
+         )))
+#+END_SRC
 
+*** Run Perl
 Change the compile-command to set the default command run when call =compile=
 Mapping =s-r= (on Mac, it's =Command + R= to run the script. Here =current-prefix-arg= is set
 to call =compilation=  interactively.
-
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
-
   (defun my-perl-hook ()
     (progn
       (setq-local compilation-read-command nil)
@@ -1903,23 +1924,18 @@ to call =compilation=  interactively.
                    (if buffer-file-name
                        (shell-quote-argument buffer-file-name))))
       (local-set-key (kbd "s-r")
-                       (lambda ()
-                         (interactive)
-  ;                       (setq current-prefix-arg '(4)) ; C-u
-                         (call-interactively 'compile)))))
+                     (lambda ()
+                       (interactive)
+                                          ;                       (setq current-prefix-arg '(4)) ; C-u
+                       (call-interactively 'compile)))))
 
   (add-hook 'cperl-mode-hook 'my-perl-hook)
-
-
 #+END_SRC
 
 ** C & C++
-
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
-
   (setq c-default-style "stroustrup"
         c-basic-offset 4)
-
 #+END_SRC
 
 * Compile
@@ -1987,20 +2003,6 @@ Set the environments vairables in compilation mode
          > _ \n
          "return 1;\n"
          "}" > \n
-         )))
-#+END_SRC
-
-** Perl Auto Insert
-Refer [[https://www.emacswiki.org/emacs/AutoInsertMode][AutoInsertMode]] Wiki
-#+BEGIN_SRC emacs-lisp :tangle yes :results silent
-  (eval-after-load 'autoinsert
-    '(define-auto-insert '("\\.pl\\'" . "Perl skeleton")
-       '(
-         "Empty"
-         "#!/usr/bin/perl -w" \n
-         \n
-         "use strict;" >  \n \n
-         > _
          )))
 #+END_SRC
 
@@ -2084,32 +2086,6 @@ Emacs lisp auto-insert, based on the default module in =autoinsert.el=, but repl
          "#+DATE: " (shell-command-to-string "echo -n $(date +%Y-%m-%d)") > \n
          > \n
          > _)))
-#+END_SRC
-
-* Completion
-
-company mode
-
-#+BEGIN_SRC emacs-lisp :tangle yes :results silent
-
-  (use-package company
-    :ensure t
-    :diminish company-mode
-    :init (setq company-idle-delay 0.1)
-    :config
-    (global-company-mode))
-
-#+END_SRC
-
-[[https://github.com/company-mode/company-statistics][company-statistics]]
-
-#+BEGIN_SRC emacs-lisp :tangle yes :results silent
-
-  (use-package company-statistics
-    :ensure t
-    :config
-    (company-statistics-mode))
-
 #+END_SRC
 
 * Markdown mode
