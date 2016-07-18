@@ -420,6 +420,10 @@ Revised powerline-center-theme
     "My Powerline face 1 based on powerline-active1."
     :group 'powerline)
 
+  (defface sd/buffer-view-active1 '((t (:background "green" :foreground "black" :inherit mode-line)))
+    "My Powerline face 1 based on powerline-active1."
+    :group 'powerline)
+
   (defface sd/mode-line-buffer-id
     '((t (:background "yellow" :foreground "black" :inherit mode-line-buffer-id)))
     "My powerline mode-line face, based on mode-line-buffer-id"
@@ -445,7 +449,8 @@ Revised powerline-center-theme
                             (my-face1 (if active 'sd/powerline-active1 'powerline-inactive1))
                             (my-face-buffer-modified (if (and (sd/buffer-show-modified) (buffer-modified-p)) 
                                                          'sd/buffer-modified-active1
-                                                       my-face1))
+                                                       (if buffer-read-only 'sd/buffer-view-active1
+                                                         my-face1)))
                             (face1 (if active 'powerline-active1 'powerline-inactive1))
                             (face2 (if active 'powerline-active2 'powerline-inactive2))
                             (separator-left (intern (format "powerline-%s-%s"
@@ -904,7 +909,6 @@ Occur search key bindings
   ;; (global-set-key (kbd "C-x l") 'counsel-locate)
   ;; (global-set-key (kbd "C-S-o") 'counsel-rhythmbox)
   ;; ;; (define-key read-expression-map (kbd "C-r") 'counsel-expression-history)
-
 #+END_SRC
 
 *** =M-s= prefix
@@ -2343,3 +2347,5 @@ new file =C-x C-f C-f=
 * TODO modified indicator 
 * TODO highlight selected ido candicate
 * TODO show time in right of mode-line
+* TODO ediff mode
+* TODO jump last change point
