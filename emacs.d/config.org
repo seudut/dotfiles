@@ -406,7 +406,6 @@ Install powerline mode [[https://github.com/milkypostman/powerline][powerline]]
 #+END_SRC
 
 Revised powerline-center-theme
-
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
   (defun sd/powerline-simpler-vc (s)
     (if s
@@ -426,6 +425,14 @@ Revised powerline-center-theme
     "My powerline mode-line face, based on mode-line-buffer-id"
     :group 'powerline)
 
+  ;; Don't show buffer modified for scratch and eshell mode
+  (defun sd/buffer-show-modified ()
+    "Dot not show modified indicator for buffers"
+    (interactive)
+    (unless (or (string-match "*scratch*" (buffer-name))
+                (equal major-mode 'eshell-mode))
+      t))
+
   (defun sd/powerline-center-theme_revised ()
     "Setup a mode-line with major and minor modes centered."
     (interactive)
@@ -436,10 +443,9 @@ Revised powerline-center-theme
                             (mode-line-buffer-id (if active 'sd/mode-line-buffer-id 'mode-line-buffer-id-inactive))
                             (mode-line (if active 'mode-line 'mode-line-inactive))
                             (my-face1 (if active 'sd/powerline-active1 'powerline-inactive1))
-                            (my-face-buffer-modified (if (buffer-modified-p)
+                            (my-face-buffer-modified (if (and (sd/buffer-show-modified) (buffer-modified-p)) 
                                                          'sd/buffer-modified-active1
-                                                       (if active  'sd/powerline-active1
-                                                         'powerline-inactive1)))
+                                                       my-face1))
                             (face1 (if active 'powerline-active1 'powerline-inactive1))
                             (face2 (if active 'powerline-active2 'powerline-inactive2))
                             (separator-left (intern (format "powerline-%s-%s"
@@ -448,8 +454,7 @@ Revised powerline-center-theme
                             (separator-right (intern (format "powerline-%s-%s"
                                                              (powerline-current-separator)
                                                              (cdr powerline-default-separator-dir))))
-                            (lhs (list (powerline-raw "%*" my-face-buffer-modified 'l)
-                                       (powerline-raw " " my-face-buffer-modified)
+                            (lhs (list (powerline-raw "%* " my-face-buffer-modified 'l)
                                        ;; (powerline-buffer-size mode-line 'l)
                                        (powerline-buffer-id mode-line-buffer-id 'l)
                                        (powerline-raw " " my-face1)
@@ -2333,3 +2338,9 @@ new file =C-x C-f C-f=
   (font-lock-add-keywords 'perl-mode '(("\\(|\\w+?\\(,\\w+?\\)?|\\)" 1 'py-builtins-face)))
 #+END_SRC
 
+* TODO set fly-spell binding
+
+* TODO imenu bindings
+
+* TODO modified indicator 
+* TODO highlight selected ido candicate
