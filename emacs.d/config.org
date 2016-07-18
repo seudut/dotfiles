@@ -413,13 +413,17 @@ Revised powerline-center-theme
         (replace-regexp-in-string "Git[:-]" "" s)
       s))
 
-  (defface sd/powerline-active1 '((t (:background "yellow" :foreground "red" :inherit mode-line)))
+  (defface sd/powerline-active1 '((t (:background "yellow" :foreground "black" :inherit mode-line)))
+    "My Powerline face 1 based on powerline-active1."
+    :group 'powerline)
+
+  (defface sd/buffer-modified-active1 '((t (:background "red" :foreground "black" :inherit mode-line)))
     "My Powerline face 1 based on powerline-active1."
     :group 'powerline)
 
   (defface sd/mode-line-buffer-id
     '((t (:background "yellow" :foreground "black" :inherit mode-line-buffer-id)))
-    "Powerline mode-line face"
+    "My powerline mode-line face, based on mode-line-buffer-id"
     :group 'powerline)
 
   (defun sd/powerline-center-theme_revised ()
@@ -432,6 +436,10 @@ Revised powerline-center-theme
                             (mode-line-buffer-id (if active 'sd/mode-line-buffer-id 'mode-line-buffer-id-inactive))
                             (mode-line (if active 'mode-line 'mode-line-inactive))
                             (my-face1 (if active 'sd/powerline-active1 'powerline-inactive1))
+                            (my-face-buffer-modified (if (buffer-modified-p)
+                                                         'sd/buffer-modified-active1
+                                                       (if active  'sd/powerline-active1
+                                                         'powerline-inactive1)))
                             (face1 (if active 'powerline-active1 'powerline-inactive1))
                             (face2 (if active 'powerline-active2 'powerline-inactive2))
                             (separator-left (intern (format "powerline-%s-%s"
@@ -440,7 +448,7 @@ Revised powerline-center-theme
                             (separator-right (intern (format "powerline-%s-%s"
                                                              (powerline-current-separator)
                                                              (cdr powerline-default-separator-dir))))
-                            (lhs (list (powerline-raw "%*" my-face1 'l)
+                            (lhs (list (powerline-raw "%*" my-face-buffer-modified 'l)
                                        ;; (powerline-buffer-size mode-line 'l)
                                        (powerline-buffer-id mode-line-buffer-id 'l)
                                        (powerline-raw " " my-face1)
