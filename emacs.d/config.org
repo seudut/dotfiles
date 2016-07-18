@@ -468,7 +468,7 @@ Revised powerline-center-theme
                                        (powerline-raw "%3c" face1 'r)
                                        (funcall separator-right face1 my-face1)
                                        ;; (powerline-raw " " my-face1)
-                                       (powerline-raw (format-time-string " %I:%M %p %m-%d %a ") my-face1 'r)
+                                       (powerline-raw (format-time-string " %I:%M %p ") my-face1 'r)
                                        ;; (powerline-raw "%6p" my-face1 'r)
                                        ;; (powerline-hud my-face1 face1 )
                                        ))
