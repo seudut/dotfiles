@@ -503,9 +503,11 @@ Fix the issue in mode line when showing triangle
 
 set height in mode line
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
-  (custom-set-variables
-   '(powerline-height 14)
-   '(powerline-text-scale-factor (/ (float 100) 140)))
+  (set-variable 'powerline-height 14)
+  (set-variable 'powerline-text-scale-factor (/ (float 100) 140))
+  ;; (custom-set-variables
+  ;;  '(powerline-height 14)
+  ;;  '(powerline-text-scale-factor (/ (float 100) 140)))
   ;; 100/140;0.8
   (set-face-attribute 'mode-line nil :height 100)
 #+END_SRC
@@ -896,10 +898,10 @@ Occur search key bindings
   ;; (global-set-key "\C-s" 'swiper)
   ;; (global-set-key (kbd "C-c C-r") 'ivy-resume)
   ;; (global-set-key (kbd "<f6>") 'ivy-resume)
-  ;; ;; (global-set-key (kbd "M-x") 'counsel-M-x)
+  (global-set-key (kbd "M-x") 'counsel-M-x)
   ;; ;; (global-set-key (kbd "C-x C-f") 'counsel-find-file)
-  ;; (global-set-key (kbd "<f1> f") 'counsel-describe-function)
-  ;; (global-set-key (kbd "<f1> v") 'counsel-describe-variable)
+  (global-set-key (kbd "C-h f") 'counsel-describe-function)
+  (global-set-key (kbd "C-h v") 'counsel-describe-variable)
   ;; (global-set-key (kbd "<f1> l") 'counsel-load-library)
   ;; (global-set-key (kbd "<f2> i") 'counsel-info-lookup-symbol)
   ;; (global-set-key (kbd "<f2> u") 'counsel-unicode-char)
@@ -909,6 +911,11 @@ Occur search key bindings
   ;; (global-set-key (kbd "C-x l") 'counsel-locate)
   ;; (global-set-key (kbd "C-S-o") 'counsel-rhythmbox)
   ;; ;; (define-key read-expression-map (kbd "C-r") 'counsel-expression-history)
+
+  (set-face-attribute
+   'ivy-current-match nil
+   :background "Orange"
+   :foreground "black")
 #+END_SRC
 
 *** =M-s= prefix
@@ -2358,8 +2365,17 @@ new file =C-x C-f C-f=
 :LOGBOOK:
 - State "DONE"       from "TODO"       [2016-07-18 Mon 23:35]
 :END:
-* TODO highlight selected ido candicate
-* TODO show time in right of mode-line
-* TODO ediff mode
+* DONE highlight selected ido candicate
+:LOGBOOK:
+- State "DONE"       from "TODO"       [2016-07-19 Tue 01:49]
+:END:
+* DONE show time in right of mode-line
+:LOGBOOK:
+- State "DONE"       from "TODO"       [2016-07-19 Tue 01:11]
+:END:
+* DONE ediff mode
+:LOGBOOK:
+- State "DONE"       from "TODO"       [2016-07-19 Tue 01:11]
+:END:
 * TODO jump last change point
 * TODO emms mode-line
