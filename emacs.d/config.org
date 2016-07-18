@@ -467,9 +467,11 @@ Revised powerline-center-theme
                                        (powerline-raw ":" face1)     
                                        (powerline-raw "%3c" face1 'r)
                                        (funcall separator-right face1 my-face1)
-                                       (powerline-raw " " my-face1)              
-                                       (powerline-raw "%6p" my-face1 'r)
-                                       (powerline-hud my-face1 face1 )))
+                                       ;; (powerline-raw " " my-face1)
+                                       (powerline-raw (format-time-string " %I:%M %p %m-%d %a ") my-face1 'r)
+                                       ;; (powerline-raw "%6p" my-face1 'r)
+                                       ;; (powerline-hud my-face1 face1 )
+                                       ))
                             (center (list (powerline-raw " " face1)
                                           (funcall separator-left face1 face2)
                                           (when (and (boundp 'erc-track-minor-mode) erc-track-minor-mode)
@@ -490,21 +492,17 @@ Revised powerline-center-theme
 #+END_SRC
 
 Fix the issue in mode line when showing triangle 
-
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
   (setq ns-use-srgb-colorspace nil)
 #+END_SRC
 
 set height in mode line
-
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
-
   (custom-set-variables
    '(powerline-height 14)
-   '(powerline-text-scale-factor 0.8))
-  ;; 100/140
+   '(powerline-text-scale-factor (/ (float 100) 140)))
+  ;; 100/140;0.8
   (set-face-attribute 'mode-line nil :height 100)
-
 #+END_SRC
 
 * IDO & SMEX
@@ -2344,3 +2342,4 @@ new file =C-x C-f C-f=
 
 * TODO modified indicator 
 * TODO highlight selected ido candicate
+* TODO show time in right of mode-line
