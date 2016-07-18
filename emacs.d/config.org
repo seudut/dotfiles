@@ -2330,6 +2330,16 @@ Use =gnuplot= on =Org-mode= file, see [[http://orgmode.org/worg/org-contrib/babe
 - passion
 - vision
 - mission
+* Ediff
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+  (with-eval-after-load 'ediff
+    (setq ediff-split-window-function 'split-window-horizontally)
+    (setq ediff-window-setup-function 'ediff-setup-windows-plain)
+    (add-hook 'ediff-startup-hook 'ediff-toggle-wide-display)
+    (add-hook 'ediff-cleanup-hook 'ediff-toggle-wide-display)
+    (add-hook 'ediff-suspend-hook 'ediff-toggle-wide-display))
+#+END_SRC
+
 * TODO Convert ASCII to key
 ** map =function-key-map= [[http://academic.evergreen.edu/projects/biophysics/technotes/program/ascii_ctrl.htm][ascii_ctrl]]
 new file =C-x C-f C-f=
@@ -2344,8 +2354,12 @@ new file =C-x C-f C-f=
 
 * TODO imenu bindings
 
-* TODO modified indicator 
+* DONE modified indicator
+:LOGBOOK:
+- State "DONE"       from "TODO"       [2016-07-18 Mon 23:35]
+:END:
 * TODO highlight selected ido candicate
 * TODO show time in right of mode-line
 * TODO ediff mode
 * TODO jump last change point
+* TODO emms mode-line
