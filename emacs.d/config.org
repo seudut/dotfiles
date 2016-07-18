@@ -449,6 +449,7 @@ Revised powerline-center-theme
                                                              (powerline-current-separator)
                                                              (cdr powerline-default-separator-dir))))
                             (lhs (list (powerline-raw "%*" my-face-buffer-modified 'l)
+                                       (powerline-raw " " my-face-buffer-modified)
                                        ;; (powerline-buffer-size mode-line 'l)
                                        (powerline-buffer-id mode-line-buffer-id 'l)
                                        (powerline-raw " " my-face1)
