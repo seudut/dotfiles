@@ -617,10 +617,10 @@ Stolen from [[https://github.com/redguardtoo/emacs.d/blob/master/lisp/init-spell
   ;;   ;; Turn off RUN-TOGETHER option when spell check text-mode
   ;;   (setq-local ispell-extra-args (flyspell-detect-ispell-args)))
   ;; (add-hook 'text-mode-hook 'text-mode-hook-setup)
-  (add-hook 'text-mode-hook 'flyspell-mode)
+  ;; (add-hook 'text-mode-hook 'flyspell-mode)
 
   ;; enable flyspell check on comments and strings in progmamming modes
-  (add-hook 'prog-mode-hook 'flyspell-prog-mode)
+  ;; (add-hook 'prog-mode-hook 'flyspell-prog-mode)
 
   ;; I don't use the default mappings
   (with-eval-after-load 'flyspell
@@ -988,7 +988,8 @@ Always indents header, and hide header leading starts so that no need type =#+ST
      (sh . t)
      (sqlite . t)
      (js . t)
-     (gnuplot . t)))
+     (gnuplot . t)
+     (ditaa . t)))
 
   ;; use current window for org source buffer editting
   (setq org-src-window-setup 'current-window )
@@ -1802,11 +1803,6 @@ When see function by =C-h f=, and visit the source code, I would like the buffer
 
 ** TODO Man mode
 Color for Man-mode
-#+BEGIN_SRC emacs-lisp :tangle yes :results silent
-  ;; (add-hook 'Man-mode-hook (lambda ()
-  ;;                         (interactive)
-  ;;                         (setenv "GROFF_NO_SRG")))
-#+END_SRC
 
 ** TODO swiper to occur
 
@@ -1945,13 +1941,18 @@ Refer [[https://www.emacswiki.org/emacs/AutoInsertMode][AutoInsertMode]] Wiki
          )))
 #+END_SRC
 
-*** Keywords
+*** Perl Keywords
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
   (font-lock-add-keywords 'cperl-mode
-                          '(("\\(say\\)" . font-lock-function-name-face)))
+                          '(("\\(say\\)" . cperl-nonoverridable-face)
+                            ("\\([0-9.]\\)*" . font-lock-constant-face)
+                            ("\".*\\(\\\n\\).*\"" . font-lock-constant-face)
+                            ("\n" . font-lock-constant-face)
+                            ("\\(^#!.*\\)$" .  cperl-nonoverridable-face)))
 
-  (font-lock-add-keywords 'Man-mode
-                          '(("\\(NAME\\)" . font-lock-function-name-face)))
+    ;; (font-lock-add-keywords 'Man-mode
+    ;;                         '(("\\(NAME\\)" . font-lock-function-name-face)))
+
 #+END_SRC
 
 *** Run Perl
@@ -2329,9 +2330,5 @@ new file =C-x C-f C-f=
 
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
   (font-lock-add-keywords 'perl-mode '(("\\(|\\w+?\\(,\\w+?\\)?|\\)" 1 'py-builtins-face)))
-
-  (font-lock-add-keywords
-   'cperl-mode
-  '(("\\(say\\)" . font-lock-constant-face)))
 #+END_SRC
 
