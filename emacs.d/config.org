@@ -899,7 +899,6 @@ use the prefix =M-s= for searching in buffers
   ;; M-u, 
 #+END_SRC
 
-
 * Org-mode Settings
 
 ** Org-mode Basic setting
@@ -941,6 +940,12 @@ Always indents header, and hide header leading starts so that no need type =#+ST
   (define-key org-mode-map (kbd "C-'") nil)
   ;; C-M-i is mapped to imenu globally
   (define-key org-mode-map (kbd "C-M-i") nil)
+
+  ;; set the ditta.jar path
+  (setq org-ditaa-jar-path "/usr/local/Cellar/ditaa/0.9/libexec/ditaa0_9.jar")
+  (unless 
+      (file-exists-p org-ditaa-jar-path)
+    (error "seudut: ditaa.jar not found at %s " org-ditaa-jar-path))
 #+END_SRC
 
 ** Org-bullets
@@ -1444,9 +1449,9 @@ Refer [[https://github.com/abo-abo/hydra/blob/master/hydra-examples.el][hydra-ex
 Enable linum mode on programming modes
 
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
-
   (add-hook 'prog-mode-hook 'linum-mode)
-
+  ;; (add-hook 'prog-mode-hook (lambda ()
+  ;;                             (setq-default indicate-empty-lines t)))
 #+END_SRC
 
 Fix the font size of line number
@@ -2394,5 +2399,22 @@ Use =Avy= for motion
   ;;   ("s" . isearch-forward-regexp "search-forward" :exit t)
   ;;   ("r" . isearch-backward-regexp "search-backward" :exit t)
   ;;   )
+
+  ;; (setq-default indicate-empty-lines t)
 #+END_SRC
 
+* test
+#+BEGIN_SRC ditaa :file temp/hello-world.png :cmdline -r
++--------------+
+|              |
+| Hello World! |
+|              |
++--------------+
+#+END_SRC
+
+#+RESULTS:
+[[file:temp/hello-world.png]]
+
+
+* =C-u C-h a= search funtions 
+=apropos-command= 
