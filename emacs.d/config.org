@@ -668,9 +668,6 @@ Make flyspell enabled for org-mode, see [[http://emacs.stackexchange.com/questio
     (global-set-key (kbd "C-=") 'er/expand-region))
 #+END_SRC
 
-** Motion
-** Search & highlight
-
 * Key bindings
 
 ** Esc on Minibuffer
@@ -692,45 +689,6 @@ Use =ESC= to exit minibuffer. Also I map =Super-h= the same as =C-g=
   ;; Also map s-h same as C-g
   (define-key minibuffer-local-map (kbd "s-h") 'keyboard-escape-quit)
 
-#+END_SRC
-
-** =Ctrl= key bindings
-
-#+BEGIN_SRC emacs-lisp :tangle yes :results silent
-  ;;
-
-  ;; C-h    help    
-  ;; C-j    newline and indent
-  ;; C-k    kill line
-  ;; C-l    recenter-top-bottom
-  ;; (global-set-key (kbd "C-;") 'ido-switch-buffer)
-  ;; C-;
-  ;; C-'   
-  ;; C-ret  
-
-  ;; C-n    next-line
-  ;; C-m
-  ;; C-,
-  ;; C-.
-  ;; C-/
-
-  ;; C-y
-  ;; C-u
-  ;; C-i
-  ;; C-o
-  ;; C-p
-  ;; C-[
-  ;; C-]
-  ;; C-\
-
-  ;; C-=
-  ;; C--
-  ;; C-0
-  ;; C-9
-  ;; C-8
-  ;; C-7
-
-  ;; C-Space
 #+END_SRC
 
 ** =Super= bindings for file, buffer and windows
@@ -941,9 +899,6 @@ use the prefix =M-s= for searching in buffers
   ;; M-u, 
 #+END_SRC
 
-** =M-o= as prefix key for windows
-
-** =M-g= as prefix key for launcher
 
 * Org-mode Settings
 
@@ -984,6 +939,8 @@ Always indents header, and hide header leading starts so that no need type =#+ST
   (setq org-src-window-setup 'current-window )
 
   (define-key org-mode-map (kbd "C-'") nil)
+  ;; C-M-i is mapped to imenu globally
+  (define-key org-mode-map (kbd "C-M-i") nil)
 #+END_SRC
 
 ** Org-bullets
@@ -2350,20 +2307,20 @@ Most use =C-o C-o= to switch buffers; =C-o x, v= to split window; =C-o o= to del
     ("i" ace-maximize-window "ace-one" :exit t)
     ("b" ido-switch-buffer "buf" :exit t)
     ("C-b" ido-switch-buffer "buf" :exit t)
-    ("m" bookmark-jump-other-window "open bmk")
-    ("M" bookmark-set "set bmk")
+    ("m" bookmark-jump-other-window "open bmk" :exit t)
+    ("M" bookmark-set "set bmk" :exit t)
     ("q" nil "cancel")
     ("u" (progn (winner-undo) (setq this-command 'winner-undo)) "undo")
     ("r" (progn (winner-redo) (setq this-command 'winner-redo)) "redo")
-    ("C-h" nil :exit t)
-    ("C-j" nil :exit t)
+    ("C-h" nil nil :exit t)
+    ("C-j" nil nil :exit t)
     ;; ("C-k" nil :exit t)
-    ("C-l" nil :exit t)
-    ("C-;" nil :exit t)
-    ("p" nil :exit t)
-    ("n" nil :exit t)
-    ("[" nil :exit t)
-    ("]" nil :exit t)
+    ("C-l" nil nil :exit t)
+    ("C-;" nil nil :exit t)
+    ("p" nil nil :exit t)
+    ("n" nil nil :exit t)
+    ("[" nil nil :exit t)
+    ("]" nil nil :exit t)
     ("f" nil))
 
   (global-unset-key (kbd "C-o"))
@@ -2376,8 +2333,8 @@ Most use =C-o C-o= to switch buffers; =C-o x, v= to split window; =C-o o= to del
 - undo, redo - undo-tree
 - select, expand-region
 - spell check, flyspell
-- 
-** Motion - =M=g=
+
+** Motion - =C-M-=
 Use =Avy= for motion
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
   (use-package avy
@@ -2419,7 +2376,23 @@ Use =Avy= for motion
   ;; M-g M-p              previous-error
 #+END_SRC
 
+=imenu=, mapping =C-M-i= to =counsel-imenu=
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+  (global-unset-key (kbd "C-M-i"))
+  (global-set-key (kbd "C-M-i") #'counsel-imenu)
+#+END_SRC
+
 ** Search & Replace / hightlight =M-s=
 *** search
 *** replace
 *** hightlight
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+
+  ;; (defhydra sd/search-highlight (:color red :columns nil)
+  ;;   "search"
+  ;;   ("M-s" . isearch-forward-regexp "search-forward" :exit t)
+  ;;   ("s" . isearch-forward-regexp "search-forward" :exit t)
+  ;;   ("r" . isearch-backward-regexp "search-backward" :exit t)
+  ;;   )
+#+END_SRC
+
