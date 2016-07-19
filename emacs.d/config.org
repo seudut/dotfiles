@@ -473,7 +473,7 @@ Revised powerline-center-theme
                                        (powerline-raw "%3c" face1 'r)
                                        (funcall separator-right face1 my-face1)
                                        ;; (powerline-raw " " my-face1)
-                                       (powerline-raw (format-time-string " %I:%M %p ") my-face1 'r)
+                                       (powerline-raw (format-time-string " %I:%M %p  ") my-face1 'r)
                                        ;; (powerline-raw "%6p" my-face1 'r)
                                        ;; (powerline-hud my-face1 face1 )
                                        ))
@@ -669,38 +669,8 @@ Make flyspell enabled for org-mode, see [[http://emacs.stackexchange.com/questio
 #+END_SRC
 
 ** Motion
-*** Avy
-#+BEGIN_SRC emacs-lisp :tangle yes :results silent
-  (use-package avy
-    :ensure t
-    :config
-    (avy-setup-default))
-#+END_SRC
-
-*** =M-g= prefix
-#+BEGIN_SRC emacs-lisp :tangle yes :results silent
-  (global-set-key (kbd "M-g j") 'avy-goto-line-below)
-  (global-set-key (kbd "M-g k") 'avy-goto-line-above)
-  (global-set-key (kbd "M-g w") 'avy-goto-word-1-below)
-  (global-set-key (kbd "M-g b") 'avy-goto-word-1-above)
-  (global-set-key (kbd "M-g e") 'avy-goto-word-0)
-  (global-set-key (kbd "M-g f") 'avy-goto-char-timer)
-  (global-set-key (kbd "M-g c") 'avy-goto-char-in-line)
-
-  ;; M-g TAB              move-to-column
-  ;; M-g ESC              Prefix Command
-  ;; M-g c                goto-char
-  ;; M-g g                goto-line
-  ;; M-g n                next-error
-  ;; M-g p                previous-error
-
-  ;; M-g M-g              goto-line
-  ;; M-g M-n              next-error
-  ;; M-g M-p              previous-error
-#+END_SRC
-
-
 ** Search & highlight
+
 * Key bindings
 
 ** Esc on Minibuffer
@@ -1479,50 +1449,6 @@ Refer [[https://github.com/abo-abo/hydra/blob/master/hydra-examples.el][hydra-ex
         (shrink-window arg)
       (enlarge-window arg)))
 
-#+END_SRC
-
-*** hydra-window
-#+BEGIN_SRC emacs-lisp :tangle yes :results silent
-  (winner-mode 1)
-
-  (defhydra sd/hydra-window (:color red :columns nil)
-    "window"
-    ("h" windmove-left nil :exit t)
-    ("j" windmove-down nil :exit t)
-    ("k" windmove-up nil :exit t)
-    ("l" windmove-right nil :exit t)
-    ("H" hydra-move-splitter-left nil)
-    ("J" hydra-move-splitter-down nil)
-    ("K" hydra-move-splitter-up nil)
-    ("L" hydra-move-splitter-right nil)
-    ("v" (lambda ()
-           (interactive)
-           (split-window-right)
-           (windmove-right))
-     "vert" :exit t)
-    ("x" (lambda ()
-           (interactive)
-           (split-window-below)
-           (windmove-down))
-     "horz" :exit t)
-    ("o" delete-other-windows "one" :exit t)
-    ("C-o" ido-switch-buffer "buf" :exit t)
-    ("C-k" sd/delete-current-window "del" :exit t)
-    ("'" other-window "other" :exit t)
-    ("a" ace-window "ace")
-    ("s" ace-swap-window "swap")
-    ("d" ace-delete-window "ace-one" :exit t)
-    ("i" ace-maximize-window "ace-one" :exit t)
-    ("b" ido-switch-buffer "buf" :exit t)
-    ("C-b" ido-switch-buffer "buf" :exit t)
-    ;; ("m" headlong-bookmark-jump "bmk")
-    ("q" nil "cancel")
-    ("u" (progn (winner-undo) (setq this-command 'winner-undo)) "undo")
-    ("r" (progn (winner-redo) (setq this-command 'winner-redo)) "redo")
-    ("f" nil))
-
-  (global-unset-key (kbd "C-o"))
-  (global-set-key (kbd "C-o") 'sd/hydra-window/body)
 #+END_SRC
 
 *** hydra misc
@@ -2383,3 +2309,117 @@ new file =C-x C-f C-f=
 :END:
 * TODO jump last change point
 * TODO emms mode-line
+
+* NEXT Key Bindings
+Here are some global key bindings for basic editting
+** Project operations - =super=
+=projectile= settins
+** Windown & Buffer - =C-o=
+Defind a =hydra= function for windows, buffer & bookmark operations. And map it to =C-o= globally.
+Most use =C-o C-o= to switch buffers; =C-o x, v= to split window; =C-o o= to delete other windows
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+  (winner-mode 1)
+
+  (defhydra sd/hydra-window (:color red :columns nil)
+    "window"
+    ("h" windmove-left nil :exit t)
+    ("j" windmove-down nil :exit t)
+    ("k" windmove-up nil :exit t)
+    ("l" windmove-right nil :exit t)
+    ("H" hydra-move-splitter-left nil)
+    ("J" hydra-move-splitter-down nil)
+    ("K" hydra-move-splitter-up nil)
+    ("L" hydra-move-splitter-right nil)
+    ("v" (lambda ()
+           (interactive)
+           (split-window-right)
+           (windmove-right))
+     "vert" :exit t)
+    ("x" (lambda ()
+           (interactive)
+           (split-window-below)
+           (windmove-down))
+     "horz" :exit t)
+    ("o" delete-other-windows "one" :exit t)
+    ("C-o" ido-switch-buffer "buf" :exit t)
+    ("C-k" sd/delete-current-window "del" :exit t)
+    ("'" other-window "other" :exit t)
+    ("a" ace-window "ace")
+    ("s" ace-swap-window "swap")
+    ("d" ace-delete-window "ace-one" :exit t)
+    ("i" ace-maximize-window "ace-one" :exit t)
+    ("b" ido-switch-buffer "buf" :exit t)
+    ("C-b" ido-switch-buffer "buf" :exit t)
+    ("m" bookmark-jump-other-window "open bmk")
+    ("M" bookmark-set "set bmk")
+    ("q" nil "cancel")
+    ("u" (progn (winner-undo) (setq this-command 'winner-undo)) "undo")
+    ("r" (progn (winner-redo) (setq this-command 'winner-redo)) "redo")
+    ("C-h" nil :exit t)
+    ("C-j" nil :exit t)
+    ;; ("C-k" nil :exit t)
+    ("C-l" nil :exit t)
+    ("C-;" nil :exit t)
+    ("p" nil :exit t)
+    ("n" nil :exit t)
+    ("[" nil :exit t)
+    ("]" nil :exit t)
+    ("f" nil))
+
+  (global-unset-key (kbd "C-o"))
+  (global-set-key (kbd "C-o") 'sd/hydra-window/body)
+#+END_SRC
+
+** Edit
+- cut, yank, =C-w=, =C-y=
+- save, revert
+- undo, redo - undo-tree
+- select, expand-region
+- spell check, flyspell
+- 
+** Motion - =M=g=
+Use =Avy= for motion
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+  (use-package avy
+    :ensure t
+    :config
+    (avy-setup-default)
+    )
+
+  (global-set-key (kbd "C-M-j") 'avy-goto-line-below)
+  (global-set-key (kbd "C-M-n") 'avy-goto-line-below)
+  (global-set-key (kbd "C-M-k") 'avy-goto-line-above)
+  (global-set-key (kbd "C-M-p") 'avy-goto-line-above)
+
+  (global-set-key (kbd "C-M-f") 'avy-goto-word-1-below)
+  (global-set-key (kbd "C-M-b") 'avy-goto-word-1-above)
+
+  ;; (global-set-key (kbd "M-g e") 'avy-goto-word-0)
+  (global-set-key (kbd "C-M-w") 'avy-goto-char-timer)
+  (global-set-key (kbd "C-M-l") 'avy-goto-char-in-line)
+
+  ;; will delete above 
+  (global-set-key (kbd "M-g j") 'avy-goto-line-below)
+  (global-set-key (kbd "M-g k") 'avy-goto-line-above)
+  (global-set-key (kbd "M-g w") 'avy-goto-word-1-below)
+  (global-set-key (kbd "M-g b") 'avy-goto-word-1-above)
+  (global-set-key (kbd "M-g e") 'avy-goto-word-0)
+  (global-set-key (kbd "M-g f") 'avy-goto-char-timer)
+  (global-set-key (kbd "M-g c") 'avy-goto-char-in-line)
+
+  ;; M-g TAB              move-to-column
+  ;; M-g ESC              Prefix Command
+  ;; M-g c                goto-char
+  ;; M-g g                goto-line
+  ;; M-g n                next-error
+  ;; M-g p                previous-error
+
+  ;; M-g M-g              goto-line
+  ;; M-g M-n              next-error
+  ;; M-g M-p              previous-error
+#+END_SRC
+
+** Search & Replace / hightlight =M-s=
+*** search
+*** replace
+*** hightlight
