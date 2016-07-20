@@ -7,7 +7,6 @@
 Most config are just copied from [[https://github.com/howardabrams/dot-files][howardabrams]]'s and [[https://github.com/abo-abo/oremacs][abo-abo's]] dotfiles
 
 * Basic Settings
-
 ** Setting loading Path
 
 Set system PATH and emacs exec path
@@ -42,10 +41,8 @@ Set the emacs load path
 
 #+END_SRC       
 
-** Window Setting
-
-Disable scroll bar, tool-bar and menu-bar
-
+** General Setting
+*** scroll bar, tool-bar and menu-bar
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
   (scroll-bar-mode 0)
   (tool-bar-mode 0)
@@ -60,43 +57,37 @@ Disable scroll bar, tool-bar and menu-bar
   (setq make-backup-files nil)
 #+END_SRC
 
-set custom file 
-
+*** Custom file 
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent 
-
   (setq custom-file "~/.emacs.d/custom.el")
   (if (file-exists-p custom-file)
       (load custom-file))
-
 #+END_SRC
 
-Switch the focus to help window when it appears
-
+*** Switch the focus to help window when it appears
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
-
   (setq help-window-select t)
-
 #+END_SRC
 
-Setting scroll right/left
-#+BEGIN_SRC emacs-lisp :tangle yes :results silent
-  ;  (global-set-key (kbd "C-,") 'scoll-left)
-  ;  (global-set-key (kbd "C-.") 'scoll-right)
-#+END_SRC
-
-Set default window size
+*** Set default window size
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
   (setq initial-frame-alist
         '((width . 120)
           (height . 50)))
 #+END_SRC
 
-Stop auto save
+*** Stop auto save
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
   (setq auto-save-default nil)
 
   ;; restore last session
   ;; (desktop-save-mode t)
+#+END_SRC
+
+*** Save minibuffer history
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+  (savehist-mode 1)
+  (setq history-length 1000)
 #+END_SRC
 
 * Package Management Tools
@@ -2405,6 +2396,7 @@ Occur search key bindings
 #+END_SRC
 
 *** Swiper
+stolen from [[https://github.com/mariolong/emacs.d/blob/f6a061594ef1b5d1f4750e9dad9dc97d6e122840/emacs-init.org][here]]
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
   (use-package swiper
     :ensure t
@@ -2419,7 +2411,20 @@ Occur search key bindings
    'ivy-current-match nil
    :background "Orange"
    :foreground "black")
+
+  (eval-after-load 'swiper
+    '(progn
+       (define-key swiper-map (kbd "C-.")
+         (lambda () 
+           (interactive)
+           (insert (format "%s" (with-ivy-window (thing-at-point 'word))))))
+       (define-key swiper-map (kbd "M-.")
+         (lambda ()
+           (interactive)
+           (insert (format "%s" (with-ivy-window (thing-at-point 'symbol))))))
+       ))
 #+END_SRC
+
 * test
 #+BEGIN_SRC ditaa :file temp/hello-world.png :cmdline -r
 +--------------+
