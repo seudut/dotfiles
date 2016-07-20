@@ -781,39 +781,6 @@ Some global bindings on =Super=, on Mac, it is =Command=
 #+END_SRC
 
 ** Search Replace and highlight
-*** Occur
-Occur search key bindings
-#+BEGIN_SRC emacs-lisp :tangle yes :results silent
-  (add-hook 'occur-hook (lambda ()
-                          (switch-to-buffer-other-window "*Occur*")
-                          (define-key occur-mode-map (kbd "C-o") nil)))
-  ;; auto select occur window
-
-  (define-key occur-mode-map (kbd "C-n")
-    (lambda ()
-      (interactive)
-      (occur-next)
-      (occur-mode-goto-occurrence-other-window)
-      (recenter)
-      (other-window 1)))
-
-  (define-key occur-mode-map (kbd "C-p")
-    (lambda ()
-      (interactive)
-      (occur-prev)
-      (occur-mode-goto-occurrence-other-window)
-      (recenter)
-      (other-window 1)))
-
-  (use-package color-moccur
-    :ensure t
-    :commands (isearch-moccur isearch-all)
-    :init
-    (setq isearch-lazy-highlight t)
-    :config
-    (use-package moccur-edit))
-#+END_SRC
-
 *** swiper
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
   (use-package swiper
@@ -2345,8 +2312,7 @@ Use =Avy= for motion
   (use-package avy
     :ensure t
     :config
-    (avy-setup-default)
-    )
+    (avy-setup-default))
 
   (global-set-key (kbd "C-M-j") 'avy-goto-line-below)
   (global-set-key (kbd "C-M-n") 'avy-goto-line-below)
@@ -2401,6 +2367,38 @@ Use =Avy= for motion
   ;;   )
 
   ;; (setq-default indicate-empty-lines t)
+#+END_SRC
+
+*** Occur
+Occur search key bindings
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+  (defun sd/occur-keys ()
+    "My key bindings in occur-mode"
+    (interactive)
+    (switch-to-buffer-other-window "*Occur*")
+    (define-key occur-mode-map (kbd "C-o") nil)
+    (define-key occur-mode-map (kbd "C-n") (lambda ()
+                                             (interactive)
+                                             (occur-next)
+                                             (occur-mode-goto-occurrence-other-window)
+                                             (recenter)
+                                             (other-window 1)))
+    (define-key occur-mode-map (kbd "C-p") (lambda ()
+                                             (interactive)
+                                             (occur-prev)
+                                             (occur-mode-goto-occurrence-other-window)
+                                             (recenter)
+                                             (other-window 1))))
+
+  (add-hook 'occur-hook #'sd/occur-keys)
+
+  (use-package color-moccur
+    :ensure t
+    :commands (isearch-moccur isearch-all)
+    :init
+    (setq isearch-lazy-highlight t)
+    :config
+    (use-package moccur-edit))
 #+END_SRC
 
 * test
