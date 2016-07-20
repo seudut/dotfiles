@@ -90,6 +90,16 @@ Set the emacs load path
   (setq history-length 1000)
 #+END_SRC
 
+*** temp folder
+Make a temp directory for all cache/history files
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+  (defconst sd-temp-directory
+    (file-name-as-directory "~/.emacs.d/temp"))
+
+  (unless (file-exists-p sd-temp-directory)
+    (mkdir sd-temp-directory))
+#+END_SRC
+
 * Package Management Tools
 
 ** Use-package
@@ -1260,6 +1270,12 @@ and Defined keys, using vi keybindings, Refer abo-abo's setting [[https://github
   (defalias 'ee 'find-files)
 #+END_SRC
 
+*** eshell temp directory
+set default eshell history folder
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+  (setq eshell-directory-name (concat  sd-temp-directory "eshell"))
+#+END_SRC
+
 *** Eshell erase buffer
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
   (defun sd/eshell-clear-buffer ()
@@ -2423,6 +2439,35 @@ stolen from [[https://github.com/mariolong/emacs.d/blob/f6a061594ef1b5d1f4750e9d
            (interactive)
            (insert (format "%s" (with-ivy-window (thing-at-point 'symbol))))))
        ))
+#+END_SRC
+
+* TODO Temp directory for cached/history/temp files
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+  (use-package recentf
+    :config
+    (setq recentf-save-file (concat sd-temp-directory "recentf")))
+
+  (use-package projectile
+    :config
+    (setq projectile-cache-file (concat sd-temp-directory "projectile.cache")))
+
+  (use-package ido
+    :config
+    (setq ido-save-directory-list-file (concat sd-temp-directory "ido.last")))
+
+  (use-package savehist
+    :config
+    (setq savehist-file (concat sd-temp-directory "history")))
+
+  (use-package emms
+    :config
+    (setq emms-directory (concat sd-temp-directory "emms")))
+
+  (setq auto-save-list-file-prefix (concat sd-temp-directory "auto-save-list/.saves-")) 
+
+  (use-package smex
+    :config
+    (setq smex-save-file (concat sd-temp-directory "smex-items")))
 #+END_SRC
 
 * test
