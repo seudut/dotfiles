@@ -783,12 +783,12 @@ Some global bindings on =Super=, on Mac, it is =Command=
 ** Search Replace and highlight
 *** swiper
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
-  (use-package swiper
-    :ensure t)
+  ;; (use-package swiper
+  ;;   :ensure t)
 
-  (ivy-mode 1)
-  (setq ivy-use-virtual-buffers t)
-  (global-set-key (kbd "s-/") 'swiper)
+  ;; (ivy-mode 1)
+  ;; (setq ivy-use-virtual-buffers t)
+  ;; (global-set-key (kbd "s-/") 'swiper)
 
   (use-package counsel
     :ensure t
@@ -811,10 +811,13 @@ Some global bindings on =Super=, on Mac, it is =Command=
   ;; (global-set-key (kbd "C-S-o") 'counsel-rhythmbox)
   ;; ;; (define-key read-expression-map (kbd "C-r") 'counsel-expression-history)
 
-  (set-face-attribute
-   'ivy-current-match nil
-   :background "Orange"
-   :foreground "black")
+  ;; (set-face-attribute
+  ;;  'ivy-current-match nil
+  ;;  :background "Orange"
+  ;;  :foreground "black")
+
+  ;; ivy-resume
+  ;; (define-key swiper-map (kbd "M-%") 'swiper-aa-replace)
 #+END_SRC
 
 *** =M-s= prefix
@@ -2401,6 +2404,22 @@ Occur search key bindings
     (use-package moccur-edit))
 #+END_SRC
 
+*** Swiper
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+  (use-package swiper
+    :ensure t
+    :init
+    (setq ivy-use-virtual-buffers t)
+    :config
+    (ivy-mode)
+    (global-set-key (kbd "s-/") 'swiper)
+    (define-key swiper-map (kbd "M-r") 'swiper-query-replace))
+
+  (set-face-attribute
+   'ivy-current-match nil
+   :background "Orange"
+   :foreground "black")
+#+END_SRC
 * test
 #+BEGIN_SRC ditaa :file temp/hello-world.png :cmdline -r
 +--------------+
