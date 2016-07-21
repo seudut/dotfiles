@@ -2418,27 +2418,17 @@ stolen from [[https://github.com/mariolong/emacs.d/blob/f6a061594ef1b5d1f4750e9d
     :ensure t
     :init
     (setq ivy-use-virtual-buffers t)
+    (set-face-attribute 'ivy-current-match nil :background "Orange" :foreground "black")
     :config
     (ivy-mode)
     (global-set-key (kbd "s-/") 'swiper)
-    (define-key swiper-map (kbd "M-r") 'swiper-query-replace))
-
-  (set-face-attribute
-   'ivy-current-match nil
-   :background "Orange"
-   :foreground "black")
-
-  (eval-after-load 'swiper
-    '(progn
-       (define-key swiper-map (kbd "C-.")
-         (lambda () 
-           (interactive)
-           (insert (format "%s" (with-ivy-window (thing-at-point 'word))))))
-       (define-key swiper-map (kbd "M-.")
-         (lambda ()
-           (interactive)
-           (insert (format "%s" (with-ivy-window (thing-at-point 'symbol))))))
-       ))
+    (define-key swiper-map (kbd "M-r") 'swiper-query-replace)
+    (define-key swiper-map (kbd "C-.") (lambda ()
+                                         (interactive)
+                                         (insert (format "%s" (with-ivy-window (thing-at-point 'word))))))
+    (define-key swiper-map (kbd "M-.") (lambda ()
+                                         (interactive)
+                                         (insert (format "%s" (with-ivy-window (thing-at-point 'symbol)))))))
 #+END_SRC
 
 * TODO Temp directory for cached/history/temp files
