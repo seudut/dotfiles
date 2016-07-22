@@ -2525,6 +2525,15 @@ stolen from [[https://github.com/mariolong/emacs.d/blob/f6a061594ef1b5d1f4750e9d
                                          (insert (format "%s" (with-ivy-window (thing-at-point 'symbol)))))))
 #+END_SRC
 
+* Dictionary
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+  (use-package bing-dict
+    :ensure t
+    :commands (bing-dict-brief)
+    :config
+    (global-set-key (kbd "s-d") 'bing-dict-brief))
+#+END_SRC
+
 * TODO Temp directory for cached/history/temp files
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
   (use-package recentf
