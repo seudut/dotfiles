@@ -703,10 +703,10 @@ Some global bindings on =Super=, on Mac, it is =Command=
         (delete-window)
       (message "Only one Windows now!")))
 
-  (global-set-key (kbd "s-h") 'keyboard-quit)
-  (global-set-key (kbd "s-j") 'ido-switch-buffer)
-  (global-set-key (kbd "s-k") 'ido-find-file)
-  (global-set-key (kbd "s-l") 'sd/delete-current-window)
+  ;; (global-set-key (kbd "s-h") 'keyboard-quit)
+  ;; (global-set-key (kbd "s-j") 'ido-switch-buffer)
+  ;; (global-set-key (kbd "s-k") 'ido-find-file)
+  ;; (global-set-key (kbd "s-l") 'sd/delete-current-window)
   ;; s-l  -->  goto-line
   ;; (global-set-key (kbd "s-/") 'swiper)
   ;; s-;  -->
@@ -2316,8 +2316,9 @@ Most use =C-o C-o= to switch buffers; =C-o x, v= to split window; =C-o o= to del
 - select, expand-region
 - spell check, flyspell
 
-** Motion - =C-M-=
-Use =Avy= for motion
+** Motion
+- =C-M-=
+*** Use =Avy= for motion
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
   (use-package avy
     :ensure t
@@ -2357,12 +2358,75 @@ Use =Avy= for motion
   ;; M-g M-p              previous-error
 #+END_SRC
 
-=imenu=, mapping =C-M-i= to =counsel-imenu=
+*** =imenu=
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
-  (global-unset-key (kbd "C-M-i"))
-  (global-set-key (kbd "C-M-i") #'counsel-imenu)
+  ;; (global-unset-key (kbd "C-M-i"))
+  ;; (global-set-key (kbd "C-M-i") #'counsel-imenu)
+  (global-set-key (kbd "M-i") #'counsel-imenu)
+
+  (global-set-key (kbd "M-l") 'goto-line)
 #+END_SRC
 
+*** Movement effective
+[[https://www.masteringemacs.org/article/effective-editing-movement][effective-editing-movement]]
+**** Command arguments, numeric argument
+=C-u 4= same as =C-4=, =M-4=
+**** movement by word
+=M-b=, =M-f=
+**** movement by paragraph/sentence
+=M-e=, =M-a=
+**** scrolling
+=C-v=, =M-v=
+**** Move to begin/end buffer
+=M->=, =M-<=
+**** Advanced movement
+***** movement by s-expression
+***** isearch
+=C-s=, =C-r=
+=C-w=, put the word into search minibuffer, =M-y=
+=M-c=, toggle case sensitivity
+=M-n=, =M-p=, history
+***** back to indentation
+=M-m=
+***** Registers/Bookmarks
+Register, =C-x r SPC=, =C-x r j=
+Bookmarks, =C-x r m=, =C-x r b=, =C-x r l=
+***** Mark
+Stolen [[https://www.masteringemacs.org/article/fixing-mark-commands-transient-mark-mode][fixing-mark-commands-transient-mark-mode]]
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+  (defun push-mark-no-activate ()
+    "Pushes `point' to `mark-ring' and does not activate the region
+     Equivalent to \\[set-mark-command] when \\[transient-mark-mode] is disabled"
+    (interactive)
+    (push-mark (point) t nil)
+    (message "Pushed mark to ring"))
+
+  (global-set-key (kbd "C-`") 'push-mark-no-activate)
+
+  (defun jump-to-mark ()
+    "Jumps to the local mark, respecting the `mark-ring' order.
+    This is the same as using \\[set-mark-command] with the prefix argument."
+    (interactive)
+    (set-mark-command 1))
+
+  (global-set-key (kbd "M-`") 'jump-to-mark)
+
+  (defun exchange-point-and-mark-no-activate ()
+    "Identical to \\[exchange-point-and-mark] but will not activate the region."
+    (interactive)
+    (exchange-point-and-mark)
+    (deactivate-mark nil))
+
+  (define-key global-map [remap exchange-point-and-mark] 'exchange-point-and-mark-no-activate)
+#+END_SRC
+***** Repositioning Point
+=M-r=
+***** Imenu
+ido-goto-symbol
+***** tagss
+***** got-to-line
+***** Next/Prev error
+***** begin/end of defun
 ** Search & Replace / hightlight =M-s=
 *** search
 *** replace
@@ -2472,6 +2536,74 @@ stolen from [[https://github.com/mariolong/emacs.d/blob/f6a061594ef1b5d1f4750e9d
 #+RESULTS:
 [[file:temp/hello-world.png]]
 
+#+BEGIN_SRC ditaa :file temp/hello.png
+  +------------+
+  |            |
+  |   hello    |       
+  |            |
+  +------------+      
+
+ 
+#+END_SRC
+
+#+RESULTS:
+[[file:temp/hello.png]]
 
 * =C-u C-h a= search funtions 
 =apropos-command= 
+
+* TODO Questions
+- interactive for anonymous function
+When define a key to a anonymous function, the lambda function should be interactive
+
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+  ;; (require 'saveplace)
+  ;; (setq-default save-place t)
+  ;; (delete-selection-mode 1)
+#+END_SRC
+
+
+* M prefix
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+
+  ;; M-h - mark-paragraph
+  ;; M-j - new line indent
+  ;; M-k - kill-sentence
+  ;; M-l - downcase words     ====== goto-line
+  ;; M-; - comments
+  ;; M-'- abbrev-prefix-mark  =======
+  ;; M-RET none                ======
+
+  ;; M-y - yank
+  ;; M-u - upcase word
+  ;; M-i -                 ====== imenu
+  ;; M-o             ====== prefix
+  ;; M-p
+  ;; M-[                   =====
+  ;; M-]              ========
+  ;; M-\   deleter horizontal space =====
+
+  ;; M-n 
+  ;; M-m ---- indent
+  ;; M-, --- mark stack====== =
+  ;; M-. lisp-goto-symboo, find definitation
+
+  ;; M-a 
+  ;; M-s ===== 
+  ;; M-d
+  ;; M-f
+  ;; M-g - prefix
+
+  ;; M-q - lisp fill, fill paragraph
+  ;; M-w 
+  ;; M-e
+  ;; M-r  - rePositioning 
+  ;; M-t transpose word 
+
+  ;; M-z zap-to-char
+  ;; M-x
+  ;; M-c  capitalize-word
+  ;; M-v 
+  ;; M-b 
+#+END_SRC
+
