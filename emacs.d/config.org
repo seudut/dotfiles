@@ -2361,16 +2361,28 @@ Stolen [[https://www.masteringemacs.org/article/fixing-mark-commands-transient-m
   ;; (define-key global-map [remap exchange-point-and-mark] 'exchange-point-and-mark-no-activate)
 #+END_SRC
 
-Show the mark ring using =helm-mark-ring=
+Show the mark ring using =helm-mark-ring=, also mapping =M-`= to quit minibuffer. so that =M-`= can 
+toggle the mark ring. the best way is add a new action and mapping to =helm-source-mark-ring=,  but 
+since there is no map such as =helm-mark-ring=map=, so I cannot binding a key to the quit action.
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
+  ;; (defun sd/helm-quit-mark-ring (key)
+  ;;   "exit"
+  ;;   (keyboard-quit))
+
+  ;; (helm-add-action-to-source "Exit helm" 'sd/helm-quit-mark-ring helm-source-mark-ring 1)
   (global-set-key (kbd "M-`") #'helm-mark-ring)
+
+  (define-key minibuffer-local-map (kbd "M-`") 'keyboard-escape-quit)
 #+END_SRC
 
 =M-h= marks the next paragraph
 =C-x h= marks the whole buffer
 =C-M-h= marks the next defun
 =C-x C-p= marks the next page
-**** TODO Mapping toggle mark ring=
+**** DONE Mapping toggle mark ring=
+:LOGBOOK:
+- State "DONE"       from "TODO"       [2016-07-22 Fri 23:18]
+:END:
 *** Registers
 Registers can save text, position, rectangles, file and configuration and other things.
 Here for movement, we can use register to save/jump position
@@ -2409,33 +2421,26 @@ Search, replace and hightlight will in later paragraph
   (global-set-key (kbd "C-M-w") 'avy-goto-char-timer)
   (global-set-key (kbd "C-M-l") 'avy-goto-char-in-line)
 
-  ;; will delete above 
-  (global-set-key (kbd "M-g j") 'avy-goto-line-below)
-  (global-set-key (kbd "M-g k") 'avy-goto-line-above)
-  (global-set-key (kbd "M-g w") 'avy-goto-word-1-below)
-  (global-set-key (kbd "M-g b") 'avy-goto-word-1-above)
-  (global-set-key (kbd "M-g e") 'avy-goto-word-0)
-  (global-set-key (kbd "M-g f") 'avy-goto-char-timer)
-  (global-set-key (kbd "M-g c") 'avy-goto-char-in-line)
-
-  ;; M-g TAB              move-to-column
-  ;; M-g ESC              Prefix Command
-  ;; M-g c                goto-char
-  ;; M-g g                goto-line
-  ;; M-g n                next-error
-  ;; M-g p                previous-error
-
-  ;; M-g M-g              goto-line
-  ;; M-g M-n              next-error
-  ;; M-g M-p              previous-error
+  ;; ;; will delete above 
+  ;; (global-set-key (kbd "M-g j") 'avy-goto-line-below)
+  ;; (global-set-key (kbd "M-g k") 'avy-goto-line-above)
+  ;; (global-set-key (kbd "M-g w") 'avy-goto-word-1-below)
+  ;; (global-set-key (kbd "M-g b") 'avy-goto-word-1-above)
+  ;; (global-set-key (kbd "M-g e") 'avy-goto-word-0)
+  ;; (global-set-key (kbd "M-g f") 'avy-goto-char-timer)
+  ;; (global-set-key (kbd "M-g c") 'avy-goto-char-in-line)
 #+END_SRC
 
 *** =Imenu= goto tag
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
-  ;; (global-unset-key (kbd "C-M-i"))
-  ;; (global-set-key (kbd "C-M-i") #'counsel-imenu)
-  (global-set-key (kbd "M-i") #'counsel-imenu)
+  ;; (global-set-key (kbd "M-i") #'counsel-imenu)
+  (global-set-key (kbd "M-i") #'imenu)
 
+  ;; (global-set-key (kbd "M-l") 'goto-line)
+#+END_SRC
+
+*** Go-to line
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
   (global-set-key (kbd "M-l") 'goto-line)
 #+END_SRC
 
@@ -2446,10 +2451,6 @@ Search, replace and hightlight will in later paragraph
 =M-c=, toggle case sensitivity
 =M-n=, =M-p=, history
 **** tagss
-**** got-to-line
-
-
-
 ** Edit
 - cut, yank, =C-w=, =C-y=
 - save, revert
