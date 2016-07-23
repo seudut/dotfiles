@@ -2192,6 +2192,7 @@ Show the mark ring using =helm-mark-ring=, also mapping =M-`= to quit minibuffer
 toggle the mark ring. the best way is add a new action and mapping to =helm-source-mark-ring=,  but 
 since there is no map such as =helm-mark-ring=map=, so I cannot binding a key to the quit action.
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
+  (setq mark-ring-max 50)
   (global-set-key (kbd "M-`") #'helm-mark-ring)
 
   (define-key minibuffer-local-map (kbd "M-`") 'keyboard-escape-quit)
@@ -2284,6 +2285,7 @@ Search, replace and hightlight will in later paragraph
 *** Kill ring
 =helm-show-kill-ring=
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
+  (setq kill-ring-max 100)                ; default is 60p
   (global-set-key (kbd "M-y") #'helm-show-kill-ring)
 #+END_SRC
 
@@ -2355,7 +2357,7 @@ Make flyspell enabled for org-mode, see [[http://emacs.stackexchange.com/questio
 #+END_SRC
 
 ** Search & Replace / hightlight =M-s=
-*** search
+*** isearch
 =C-s=, =C-r=, 
 =C-w= add word at point to search string, 
 =M-%= query replace
@@ -2364,6 +2366,12 @@ Make flyspell enabled for org-mode, see [[http://emacs.stackexchange.com/questio
 =C-y= yank from clipboard to search string
 =M-n=, =M-p=, history
 =C-M-i= complete search string
+set the isearch history size, the default is only =16=
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+  (setq history-length 5000)
+  (set-variable regexp-search-ring-max 1000)
+  (set-variable search-ring-max 1000)
+#+END_SRC
 
 *** =M-s= prefix
 use the prefix =M-s= for searching in buffers
