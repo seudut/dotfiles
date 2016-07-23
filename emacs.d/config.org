@@ -524,6 +524,7 @@ set height in mode line
                 ido-ignore-extensions t
                 ido-use-virtual-buffers t
                 ido-everywhere t)
+    (setq ido-save-directory-list-file (concat sd-temp-directory "ido.last"))
     :config
     (ido-mode 1)
     (ido-everywhere 1)
@@ -555,7 +556,9 @@ set height in mode line
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
   (use-package smex
     :ensure t
-    :init (smex-initialize)
+    :init
+    (smex-initialize)
+    (setq smex-save-file (concat sd-temp-directory "smex-items"))
     :bind
     ("M-x" . smex)
     ("M-X" . smex-major-mode-commands))
@@ -619,6 +622,13 @@ Use [[https://github.com/DarwinAwardWinner/ido-ubiquitous][ido-ubiquitous]] for 
 
   ;; ivy-resume
   ;; (define-key swiper-map (kbd "M-%") 'swiper-aa-replace)
+#+END_SRC
+
+** helm
+let helm windows split inside current window
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+  (with-eval-after-load 'helm
+    (setq helm-split-window-in-side-p t))
 #+END_SRC
 
 * Org-mode Settings
@@ -1093,14 +1103,6 @@ Toggle an eshell in split window below, refer [[http://www.howardism.org/Technic
   (setq hydra-lv nil)
 #+END_SRC
 
-*** Font Zoom
-#+BEGIN_SRC emacs-lisp :tangle yes :results silent
-  (defhydra sd/font-zoom (global-map "<f2>")
-    "zoom"
-    ("g" text-scale-increase "in")
-    ("l" text-scale-decrease "out"))
-#+END_SRC
-
 *** Windmove Splitter
 
 Refer [[https://github.com/abo-abo/hydra/blob/master/hydra-examples.el][hydra-example]], to enlarge or shrink the windows splitter
@@ -1304,14 +1306,13 @@ Type =o= to go to the link
 #+END_SRC
 
 ** Emms
-
 We can use [[https://www.gnu.org/software/emms/quickstart.html][Emms]] for multimedia in Emacs
-
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
   (use-package emms
     :ensure t
     :init
     (setq emms-source-file-default-directory "~/Music/")
+    (setq emms-directory (concat sd-temp-directory "emms"))
     :config
     (emms-standard)
     (emms-default-players)
@@ -1322,7 +1323,6 @@ We can use [[https://www.gnu.org/software/emms/quickstart.html][Emms]] for multi
                     ".m4a" ".flv" ".ogv" ".pls"))
       "mplayer" "-slave" "-quiet" "-really-quiet" "-fullscreen")
     (emms-history-load))
-
 #+END_SRC
 
 ** GnoGo
@@ -2117,9 +2117,10 @@ Most use =C-o C-o= to switch buffers; =C-o x, v= to split window; =C-o o= to del
     ("C-b" ido-switch-buffer "buf" :exit t)
     ("m" bookmark-jump-other-window "open bmk" :exit t)
     ("M" bookmark-set "set bmk" :exit t)
-    ("q" nil "cancel")
     ("u" (progn (winner-undo) (setq this-command 'winner-undo)) "undo")
     ("r" (progn (winner-redo) (setq this-command 'winner-redo)) "redo")
+    ("q" nil "cancel")
+    ("<ESC>" nil)
     ("C-h" nil nil :exit t)
     ("C-j" nil nil :exit t)
     ;; ("C-k" nil :exit t)
@@ -2373,9 +2374,6 @@ use the prefix =M-s= for searching in buffers
       (define-key keymap (car binding) (cdr binding)))
     (global-set-key key keymap))
 
-  ;; (use-package highlight-symbol
-  ;;   :ensure t)
-
   ;; (sd/make-keymap "\M-s"
   ;;                 '(("w" . save-buffer)
   ;;                   ;; ("\M-w" . save-buffer)
@@ -2392,25 +2390,6 @@ use the prefix =M-s= for searching in buffers
   ;;                   ("M" . unhighlight-regexp)
   ;;                   ("f" . keyboard-quit)
   ;;                   ("q" . keyboard-quit)))
-
-  ;; ;; search and replace and highlight
-  ;; (define-key isearch-mode-map (kbd "M-s") 'isearch-repeat-forward)
-  ;; (define-key isearch-mode-map (kbd "M-r") 'isearch-repeat-backward)
-  ;; (global-set-key (kbd "s-[") 'highlight-symbol-next)
-  ;; (global-set-key (kbd "s-]") 'highlight-symbol-prev)
-  ;; (global-set-key (kbd "s-\\") 'highlight-symbol-query-replace)
-
-
-  ;; (define-key minibuffer-local-map "\M-s" nil)
-
-  ;; (set-face-background 'ido-first-match "yellow")
-
-  ;; M-s M-w              eww-search-words
-
-  ;; M-c
-  ;; M-r
-  ;; M-t
-  ;; M-u, 
 #+END_SRC
 
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
@@ -2421,17 +2400,19 @@ use the prefix =M-s= for searching in buffers
     "Search"
     ("w" save-buffer "save" :exit t)
     ("e" revert-buffer "revert" :exit t)
+    ("u" undo-tree-visualize "undo" :exit t)
     ("s" isearch-forward-regexp "s-search" :exit t)
     ("M-s" isearch-forward-regexp "s-search" :exit t)
     ("r" isearch-backward-regexp "r-search" :exit t)
-    ("o" occur "occur " :exit t)
     ("." isearch-forward-symbol-at-point "search point" :exit t)
+    ("/" swiper "swiper" :exit t)
+    ("o" occur "occur" :exit t)
     ("h" highlight-symbol "higlight" :exit t)
     ("l" highlight-lines-matching-regexp "higlight line" :exit t)
     ("m" highlight-regexp "higlight" :exit t)
     ("M" unhighlight-regexp "unhiglight" :exit t)
-    ("f" nil nil :exit t)
-    ("q" nil nil :exit t))
+    ("q" nil "quit")
+    ("f" nil))
 
   (global-unset-key (kbd "M-s"))
   (global-set-key (kbd "M-s") 'sd/search-replace/body)
@@ -2509,26 +2490,6 @@ new file =C-x C-f C-f=
   (font-lock-add-keywords 'perl-mode '(("\\(|\\w+?\\(,\\w+?\\)?|\\)" 1 'py-builtins-face)))
 #+END_SRC
 
-* TODO set fly-spell binding
-
-* TODO imenu bindings
-
-* DONE modified indicator
-:LOGBOOK:
-- State "DONE"       from "TODO"       [2016-07-18 Mon 23:35]
-:END:
-* DONE highlight selected ido candicate
-:LOGBOOK:
-- State "DONE"       from "TODO"       [2016-07-19 Tue 01:49]
-:END:
-* DONE show time in right of mode-line
-:LOGBOOK:
-- State "DONE"       from "TODO"       [2016-07-19 Tue 01:11]
-:END:
-* DONE ediff mode
-:LOGBOOK:
-- State "DONE"       from "TODO"       [2016-07-19 Tue 01:11]
-:END:
 * TODO jump last change point
 * TODO emms mode-line
 
@@ -2542,49 +2503,24 @@ new file =C-x C-f C-f=
   ;;   :init
   ;;   (setq projectile-cache-file (concat sd-temp-directory "projectile.cache")))
 
-  (use-package ido
-    :init
-    (setq ido-save-directory-list-file (concat sd-temp-directory "ido.last")))
+  ;; (use-package ido
+  ;;   :init
+  ;;   (setq ido-save-directory-list-file (concat sd-temp-directory "ido.last")))
 
   (use-package savehist
     :init
     (setq savehist-file (concat sd-temp-directory "history")))
 
-  (use-package emms
-    :init
-    (setq emms-directory (concat sd-temp-directory "emms")))
+  ;; (use-package emms
+  ;;   :init
+  ;;   (setq emms-directory (concat sd-temp-directory "emms")))
 
   (setq auto-save-list-file-prefix (concat sd-temp-directory "auto-save-list/.saves-")) 
 
-  (use-package smex
-    :init
-    (setq smex-save-file (concat sd-temp-directory "smex-items")))
+  ;; use-package smex
+  ;;   :init
+  ;;   (setq smex-save-file (concat sd-temp-directory "smex-items"))
 #+END_SRC
-
-* test
-#+BEGIN_SRC ditaa :file temp/hello-world.png :cmdline -r
-+--------------+
-|              |
-| Hello World! |
-|              |
-+--------------+
-#+END_SRC
-
-#+RESULTS:
-[[file:temp/hello-world.png]]
-
-#+BEGIN_SRC ditaa :file temp/hello.png
-  +------------+
-  |            |
-  |   hello    |       
-  |            |
-  +------------+      
-
- 
-#+END_SRC
-
-#+RESULTS:
-[[file:temp/hello.png]]
 
 * =C-u C-h a= search funtions 
 =apropos-command= 
@@ -2649,3 +2585,4 @@ When define a key to a anonymous function, the lambda function should be interac
   ;; M-b 
 #+END_SRC
 
+* TODO ibuffer hydra
