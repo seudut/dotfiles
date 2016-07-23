@@ -692,95 +692,6 @@ Use =ESC= to exit minibuffer. Also I map =Super-h= the same as =C-g=
 
 #+END_SRC
 
-** =Super= bindings for file, buffer and windows
-
-Some global bindings on =Super=, on Mac, it is =Command=
-
-#+BEGIN_SRC emacs-lisp :tangle yes :results silent
-  (defun sd/delete-current-window ()
-    (interactive)
-    (if (> (length (window-list)) 1)
-        (delete-window)
-      (message "Only one Windows now!")))
-
-  ;; (global-set-key (kbd "s-h") 'keyboard-quit)
-  ;; (global-set-key (kbd "s-j") 'ido-switch-buffer)
-  ;; (global-set-key (kbd "s-k") 'ido-find-file)
-  ;; (global-set-key (kbd "s-l") 'sd/delete-current-window)
-  ;; s-l  -->  goto-line
-  ;; (global-set-key (kbd "s-/") 'swiper)
-  ;; s-;  -->
-  ;; s-'  -->  'next-multiframe-window
-  (global-set-key (kbd "<s-return>") 'toggle-frame-fullscreen)
-
-  (global-set-key (kbd "s-f") 'projectile-find-file)
-
-  (global-set-key (kbd "s-`") 'mode-line-other-buffer)
-
-  (global-set-key (kbd "s-n") 'persp-next)
-  (global-set-key (kbd "s-p") 'persp-prev)
-
-  (global-set-key (kbd "s-=") 'text-scale-increase)
-  (global-set-key (kbd "s--") 'text-scale-decrease)
-
-  ;; (global-set-key (kbd "s-u") 'undo-tree-visualize)
-
-
-  ;; someothers default mapping on super (command) key
-  ;; s-s save-buffer
-  ;; s-k kill-this-buffer
-
-
-  ;; s-h  -->  ns-do-hide-emacs
-  ;; s-j  -->  ido-switch-buffer  +
-  ;; s-k  -->  kill-this-buffer
-  ;; s-l  -->  goto-line
-  ;; s-;  -->  undefined
-  ;; s-'  -->  next-multiframe-window
-  ;; s-ret --> toggle-frame-fullscreen +
-
-  ;; s-y  -->  ns-paste-secondary
-  ;; s-u  -->  revert-buffer
-  ;; s-i  -->  undefined - but used for iterm globally
-  ;; s-o  -->  used for emacs globally
-  ;; s-p  -->  projectile-persp-switch-project  +  
-  ;; s-[  -->  next-buffer  +    
-  ;; s-]  -->  previous-buffer +
-
-  ;; s-0  -->  undefined
-  ;; s-9  -->  undefined
-  ;; s-8  -->  undefined
-  ;; s-7  -->  undefined
-  ;; s-6  -->  undefined
-  ;; s--  -->  center-line
-  ;; s-=  -->  undefined
-
-  ;; s-n  -->  make-frame
-  ;; s-m  -->  iconify-frame
-  ;; s-b  -->  undefined
-  ;; s-,  -->  customize
-  ;; s-.  -->  undefined
-  ;; s-/  -->  undefined
-
-  ;; s-g  -->  isearch-repeat-forward
-  ;; s-f  -->  projectile-find-file   +
-  ;; s-d  -->  isearch-repeat-background
-  ;; s-s  -->  save-buffer
-  ;; s-a  -->  make-whole-buffer
-
-  ;; s-b  -->  undefined
-  ;; s-v  -->  yank
-  ;; s-c  -->  ns-copy-including-secondary
-
-  ;; s-t  -->  ns-popup-font-panel
-  ;; s-r  -->  undefined
-  ;; s-e  -->  isearch-yanqk-kill
-  ;; s-w  -->  delete-frame
-  ;; s-q  -->  same-buffers-kill-emacs
-
-  ;; s-`  -->  other-frame
-#+END_SRC
-
 ** Search Replace and highlight
 *** swiper
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
@@ -1315,7 +1226,7 @@ Toggle an eshell in split window below, refer [[http://www.howardism.org/Technic
           (select-window (sd/window-has-eshell)))
       (progn
         (let ((dir default-directory))
-          
+        
           (split-window-vertically (- (/ (window-total-height) 3)))
           (other-window 1)
           (unless (and (boundp 'eshell-buffer-name) (get-buffer eshell-buffer-name))
@@ -1326,8 +1237,8 @@ Toggle an eshell in split window below, refer [[http://www.howardism.org/Technic
           (insert (format "cd %s" dir))
           (eshell-send-input)))))
 
-  (global-unset-key (kbd "M-`"))
-  (global-set-key (kbd "M-`") 'sd/toggle-eshell-here)
+  ;; (global-unset-key (kbd "M-`"))
+  (global-set-key (kbd "s-e") 'sd/toggle-eshell-here)
 #+END_SRC
 
 *** TODO smart display
@@ -1537,30 +1448,6 @@ Type =o= to go to the link
     :config
     (setq aw-keys '(?a ?s ?d ?f ?j ?k ?l)))
 
-#+END_SRC
-
-** Projectile
-
-#+BEGIN_SRC emacs-lisp :tangle yes :results silent
-
-  (use-package projectile
-    :ensure t
-    :init
-    (setq projectile-enable-caching t)
-    :config
-    (projectile-global-mode t))
-
-  (use-package persp-projectile
-    :ensure t
-    :config
-    (persp-mode)
-    :bind
-    (:map projectile-mode-map
-          ("s-t" . projectile-persp-switch-project)))
-
-  ;; projectile-find-file
-  ;; projectile-switch-buffer
-  ;; projectile-find-file-other-window
 #+END_SRC
 
 ** Which key
@@ -2252,12 +2139,118 @@ new file =C-x C-f C-f=
 * NEXT Key Bindings
 Here are some global key bindings for basic editting
 ** Project operations - =super=
-=projectile= settins
+*** Projectile
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+  (use-package projectile
+    :ensure t
+    :init
+    (setq projectile-enable-caching t)
+    :config
+    (projectile-global-mode t))
+
+  (use-package persp-projectile
+    :ensure t
+    :config
+    (persp-mode)
+    :bind
+    (:map projectile-mode-map
+          ("s-t" . projectile-persp-switch-project)))
+
+  ;; projectile-find-file
+  ;; projectile-switch-buffer
+  ;; projectile-find-file-other-window
+#+END_SRC
+
+*** project config =super= keybindings
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+  ;; (global-set-key (kbd "s-h") 'keyboard-quit)
+  ;; (global-set-key (kbd "s-j") 'ido-switch-buffer)
+  ;; (global-set-key (kbd "s-k") 'ido-find-file)
+  ;; (global-set-key (kbd "s-l") 'sd/delete-current-window)
+  ;; s-l  -->  goto-line
+  ;; (global-set-key (kbd "s-/") 'swiper)
+  ;; s-;  -->
+  ;; s-'  -->  'next-multiframe-window
+  (global-set-key (kbd "<s-return>") 'toggle-frame-fullscreen)
+
+  (global-set-key (kbd "s-f") 'projectile-find-file)
+  (global-set-key (kbd "s-`") 'mode-line-other-buffer)
+
+  (global-set-key (kbd "s-n") 'persp-next)
+  (global-set-key (kbd "s-p") 'persp-prev)
+
+  (global-set-key (kbd "s-=") 'text-scale-increase)
+  (global-set-key (kbd "s--") 'text-scale-decrease)
+
+  ;; (global-set-key (kbd "s-u") 'undo-tree-visualize)
+
+
+  ;; someothers default mapping on super (command) key
+  ;; s-s save-buffer
+  ;; s-k kill-this-buffer
+
+
+  ;; s-h  -->  ns-do-hide-emacs
+  ;; s-j  -->  ido-switch-buffer  +
+  ;; s-k  -->  kill-this-buffer
+  ;; s-l  -->  goto-line
+  ;; s-;  -->  undefined
+  ;; s-'  -->  next-multiframe-window
+  ;; s-ret --> toggle-frame-fullscreen +
+
+  ;; s-y  -->  ns-paste-secondary
+  ;; s-u  -->  revert-buffer
+  ;; s-i  -->  undefined - but used for iterm globally
+  ;; s-o  -->  used for emacs globally
+  ;; s-p  -->  projectile-persp-switch-project  +  
+  ;; s-[  -->  next-buffer  +    
+  ;; s-]  -->  previous-buffer +
+
+  ;; s-0  -->  undefined
+  ;; s-9  -->  undefined
+  ;; s-8  -->  undefined
+  ;; s-7  -->  undefined
+  ;; s-6  -->  undefined
+  ;; s--  -->  center-line
+  ;; s-=  -->  undefined
+
+  ;; s-n  -->  make-frame
+  ;; s-m  -->  iconify-frame
+  ;; s-b  -->  undefined
+  ;; s-,  -->  customize
+  ;; s-.  -->  undefined
+  ;; s-/  -->  undefined
+
+  ;; s-g  -->  isearch-repeat-forward
+  ;; s-f  -->  projectile-find-file   +
+  ;; s-d  -->  isearch-repeat-background
+  ;; s-s  -->  save-buffer
+  ;; s-a  -->  make-whole-buffer
+
+  ;; s-b  -->  undefined
+  ;; s-v  -->  yank
+  ;; s-c  -->  ns-copy-including-secondary
+
+  ;; s-t  -->  ns-popup-font-panel
+  ;; s-r  -->  undefined
+  ;; s-e  -->  isearch-yanqk-kill
+  ;; s-w  -->  delete-frame
+  ;; s-q  -->  same-buffers-kill-emacs
+
+  ;; s-`  -->  other-frame
+#+END_SRC
+
 ** Windown & Buffer - =C-o=
 Defind a =hydra= function for windows, buffer & bookmark operations. And map it to =C-o= globally.
 Most use =C-o C-o= to switch buffers; =C-o x, v= to split window; =C-o o= to delete other windows
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
   (winner-mode 1)
+
+  (defun sd/delete-current-window ()
+    (interactive)
+    (if (> (length (window-list)) 1)
+        (delete-window)
+      (message "Only one Windows now!")))
 
   (defun sd/toggle-max-windows ()
     "Set maximize current if there are multiple windows, if only
@@ -2374,11 +2367,6 @@ Show the mark ring using =helm-mark-ring=, also mapping =M-`= to quit minibuffer
 toggle the mark ring. the best way is add a new action and mapping to =helm-source-mark-ring=,  but 
 since there is no map such as =helm-mark-ring=map=, so I cannot binding a key to the quit action.
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
-  ;; (defun sd/helm-quit-mark-ring (key)
-  ;;   "exit"
-  ;;   (keyboard-quit))
-
-  ;; (helm-add-action-to-source "Exit helm" 'sd/helm-quit-mark-ring helm-source-mark-ring 1)
   (global-set-key (kbd "M-`") #'helm-mark-ring)
 
   (define-key minibuffer-local-map (kbd "M-`") 'keyboard-escape-quit)
