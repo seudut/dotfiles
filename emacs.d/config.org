@@ -74,6 +74,8 @@ Set the emacs load path
   (setq initial-frame-alist
         '((width . 120)
           (height . 50)))
+
+  ;; (setq-default indicate-empty-lines t)
 #+END_SRC
 
 *** Stop auto save
@@ -514,11 +516,8 @@ set height in mode line
 #+END_SRC
 
 * IDO & SMEX
-
 ** IDO
-
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
-
   (use-package ido
     :ensure t
     :init (setq ido-enable-flex-matching t
@@ -531,19 +530,15 @@ set height in mode line
     (add-to-list 'completion-ignored-extensions ".pyc"))
 
   (icomplete-mode t)
-
 #+END_SRC
 
 ** FLX
-
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
-
   (use-package flx-ido
     :ensure t
     :init (setq ido-enable-flex-matching t
                 ido-use-faces nil)
     :config (flx-ido-mode 1))
-
 #+END_SRC
 
 ** IDO-vertically
@@ -557,24 +552,18 @@ set height in mode line
 #+END_SRC
 
 ** SMEX
-
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
-
   (use-package smex
     :ensure t
     :init (smex-initialize)
     :bind
     ("M-x" . smex)
     ("M-X" . smex-major-mode-commands))
-
 #+END_SRC
 
 ** Ido-ubiquitous
-
 Use [[https://github.com/DarwinAwardWinner/ido-ubiquitous][ido-ubiquitous]] for ido everywhere. It makes =describe-function= can also use ido
-
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
-
   (use-package ido-ubiquitous
     :ensure t
     :init
@@ -582,7 +571,6 @@ Use [[https://github.com/DarwinAwardWinner/ido-ubiquitous][ido-ubiquitous]] for 
     (setq gnus-completing-read-function 'gnus-ido-completing-read)
     :config
     (ido-ubiquitous-mode 1))
-
 #+END_SRC
 
 ** Ido-exit-target
@@ -600,119 +588,20 @@ Use [[https://github.com/DarwinAwardWinner/ido-ubiquitous][ido-ubiquitous]] for 
                   ido-file-dir-completion-map)))
 #+END_SRC
 
-* Normal Text Operation
-** Edit
-*** undo-tree
+** Counsel
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
-  (use-package undo-tree
-    :ensure t
-    :config
-    (define-key undo-tree-visualizer-mode-map "j" 'undo-tree-visualize-redo)
-    (define-key undo-tree-visualizer-mode-map "k" 'undo-tree-visualize-undo)
-    (define-key undo-tree-visualizer-mode-map "h" 'undo-tree-visualize-switch-branch-left)
-    (define-key undo-tree-visualizer-mode-map "l" 'undo-tree-visualize-switch-branch-right)
-    (global-undo-tree-mode 1))
-
-  (global-set-key (kbd "s-u") 'undo-tree-visualize)
-#+END_SRC
-
-*** flyspell
-Stolen from [[https://github.com/redguardtoo/emacs.d/blob/master/lisp/init-spelling.el][here]], hunspell will search dictionary in =DICPATH=
-#+BEGIN_SRC emacs-lisp :tangle yes :results silent
-  (setenv "DICPATH" "/usr/local/share/hunspell")
-
-  (when (executable-find "hunspell")
-    (setq-default ispell-program-name "hunspell")
-    (setq ispell-really-hunspell t))
-
-  ;; (defun text-mode-hook-setup ()
-  ;;   ;; Turn off RUN-TOGETHER option when spell check text-mode
-  ;;   (setq-local ispell-extra-args (flyspell-detect-ispell-args)))
-  ;; (add-hook 'text-mode-hook 'text-mode-hook-setup)
-  ;; (add-hook 'text-mode-hook 'flyspell-mode)
-
-  ;; enable flyspell check on comments and strings in progmamming modes
-  ;; (add-hook 'prog-mode-hook 'flyspell-prog-mode)
-
-  ;; I don't use the default mappings
-  (with-eval-after-load 'flyspell
-    (define-key flyspell-mode-map (kbd "C-;") nil)
-    (define-key flyspell-mode-map (kbd "C-,") nil)
-    (define-key flyspell-mode-map (kbd "C-.") nil))
-#+END_SRC
-
-Make flyspell enabled for org-mode, see [[http://emacs.stackexchange.com/questions/9333/how-does-one-use-flyspell-in-org-buffers-without-flyspell-triggering-on-tangled][here]]
-#+BEGIN_SRC emacs-lisp :tangle yes :results silent
-  ;; NO spell check for embedded snippets
-  (defadvice org-mode-flyspell-verify (after org-mode-flyspell-verify-hack activate)
-    (let ((rlt ad-return-value)
-          (begin-regexp "^[ \t]*#\\+begin_\\(src\\|html\\|latex\\)")
-          (end-regexp "^[ \t]*#\\+end_\\(src\\|html\\|latex\\)")
-          old-flag
-          b e)
-      (when ad-return-value
-        (save-excursion
-          (setq old-flag case-fold-search)
-          (setq case-fold-search t)
-          (setq b (re-search-backward begin-regexp nil t))
-          (if b (setq e (re-search-forward end-regexp nil t)))
-          (setq case-fold-search old-flag))
-        (if (and b e (< (point) e)) (setq rlt nil)))
-      (setq ad-return-value rlt)))
-#+END_SRC
-
-*** Expand-region
-#+BEGIN_SRC emacs-lisp :tangle yes :results silent
-  (use-package expand-region
-    :ensure t
-    :config
-    (global-set-key (kbd "C-=") 'er/expand-region))
-#+END_SRC
-
-* Key bindings
-
-** Esc on Minibuffer
-
-Use =ESC= to exit minibuffer. Also I map =Super-h= the same as =C-g=
-
-#+BEGIN_SRC emacs-lisp :tangle yes :results silent
-
-  (define-key minibuffer-local-map [escape] 'keyboard-escape-quit)
-  (define-key minibuffer-local-map [escape]  'keyboard-escape-quit)
-  (define-key minibuffer-local-ns-map [escape]  'keyboard-escape-quit)
-  (define-key minibuffer-local-isearch-map [escape]  'keyboard-escape-quit)
-  (define-key minibuffer-local-completion-map [escape]  'keyboard-escape-quit)
-  (define-key minibuffer-local-must-match-map [escape]  'keyboard-escape-quit)
-  (define-key minibuffer-local-must-match-filename-map [escape]  'keyboard-escape-quit)
-  (define-key minibuffer-local-filename-completion-map [escape]  'keyboard-escape-quit)
-  (define-key minibuffer-local-filename-must-match-map [escape]  'keyboard-escape-quit)
-
-  ;; Also map s-h same as C-g
-  (define-key minibuffer-local-map (kbd "s-h") 'keyboard-escape-quit)
-
-#+END_SRC
-
-** Search Replace and highlight
-*** swiper
-#+BEGIN_SRC emacs-lisp :tangle yes :results silent
-  ;; (use-package swiper
-  ;;   :ensure t)
-
-  ;; (ivy-mode 1)
-  ;; (setq ivy-use-virtual-buffers t)
-  ;; (global-set-key (kbd "s-/") 'swiper)
-
   (use-package counsel
     :ensure t
-    :defer t)
-  ;;* 
+    :defer t
+    :init
+    (global-set-key (kbd "M-x") 'counsel-M-x)
+    (global-set-key (kbd "C-h f") 'counsel-describe-function)
+    (global-set-key (kbd "C-h v") 'counsel-describe-variable))
+
   ;; (global-set-key "\C-s" 'swiper)
   ;; (global-set-key (kbd "C-c C-r") 'ivy-resume)
   ;; (global-set-key (kbd "<f6>") 'ivy-resume)
-  (global-set-key (kbd "M-x") 'counsel-M-x)
   ;; ;; (global-set-key (kbd "C-x C-f") 'counsel-find-file)
-  (global-set-key (kbd "C-h f") 'counsel-describe-function)
-  (global-set-key (kbd "C-h v") 'counsel-describe-variable)
   ;; (global-set-key (kbd "<f1> l") 'counsel-load-library)
   ;; (global-set-key (kbd "<f2> i") 'counsel-info-lookup-symbol)
   ;; (global-set-key (kbd "<f2> u") 'counsel-unicode-char)
@@ -730,55 +619,6 @@ Use =ESC= to exit minibuffer. Also I map =Super-h= the same as =C-g=
 
   ;; ivy-resume
   ;; (define-key swiper-map (kbd "M-%") 'swiper-aa-replace)
-#+END_SRC
-
-*** =M-s= prefix
-use the prefix =M-s= for searching in buffers
-#+BEGIN_SRC emacs-lisp :tangle yes :results silent
-  (defun sd/make-keymap (key bindings)
-    (setq keymap (make-sparse-keymap))
-    (dolist (binding bindings)
-      (define-key keymap (car binding) (cdr binding)))
-    (global-set-key key keymap))
-
-  (use-package highlight-symbol
-    :ensure t)
-
-  (sd/make-keymap "\M-s"
-                  '(("w" . save-buffer)
-                    ;; ("\M-w" . save-buffer)
-                    ("e" . revert-buffer)
-                    ("s" . isearch-forward-regexp)
-                    ("\M-s" . isearch-forward-regexp)
-                    ("r" . isearch-backward-regexp)
-                    ("." . isearch-forward-symbol-at-point)
-                    ("o" . occur)
-                    ;; ("h" . highlight-symbol-at-point)
-                    ("h" . highlight-symbol)
-                    ("m" . highlight-regexp)
-                    ("l" . highlight-lines-matching-regexp)
-                    ("M" . unhighlight-regexp)
-                    ("f" . keyboard-quit)
-                    ("q" . keyboard-quit)))
-
-  ;; search and replace and highlight
-  (define-key isearch-mode-map (kbd "M-s") 'isearch-repeat-forward)
-  (define-key isearch-mode-map (kbd "M-r") 'isearch-repeat-backward)
-  (global-set-key (kbd "s-[") 'highlight-symbol-next)
-  (global-set-key (kbd "s-]") 'highlight-symbol-prev)
-  (global-set-key (kbd "s-\\") 'highlight-symbol-query-replace)
-
-
-  (define-key minibuffer-local-map "\M-s" nil)
-
-  (set-face-background 'ido-first-match "yellow")
-
-  ;; M-s M-w              eww-search-words
-
-  ;; M-c
-  ;; M-r
-  ;; M-t
-  ;; M-u, 
 #+END_SRC
 
 * Org-mode Settings
@@ -2083,16 +1923,6 @@ Use =gnuplot= on =Org-mode= file, see [[http://orgmode.org/worg/org-contrib/babe
 
 #+RESULTS:
 [[file:./temp/file.png]]
-
-* Blog
-#+BEGIN_SRC emacs-lisp :tangle yes :results silent
-
-#+END_SRC
-
-* key
-- passion
-- vision
-- mission
 * Ediff
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
   (with-eval-after-load 'ediff
@@ -2103,41 +1933,34 @@ Use =gnuplot= on =Org-mode= file, see [[http://orgmode.org/worg/org-contrib/babe
     (add-hook 'ediff-suspend-hook 'ediff-toggle-wide-display))
 #+END_SRC
 
-* TODO Convert ASCII to key
-** map =function-key-map= [[http://academic.evergreen.edu/projects/biophysics/technotes/program/ascii_ctrl.htm][ascii_ctrl]]
-new file =C-x C-f C-f=
-
-** write color syntax for =Man-mode=
-
+* Dictionary
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
-  (font-lock-add-keywords 'perl-mode '(("\\(|\\w+?\\(,\\w+?\\)?|\\)" 1 'py-builtins-face)))
+  (use-package bing-dict
+    :ensure t
+    :init
+    (global-set-key (kbd "s-d") 'bing-dict-brief)
+    :commands (bing-dict-brief))
 #+END_SRC
-
-* TODO set fly-spell binding
-
-* TODO imenu bindings
-
-* DONE modified indicator
-:LOGBOOK:
-- State "DONE"       from "TODO"       [2016-07-18 Mon 23:35]
-:END:
-* DONE highlight selected ido candicate
-:LOGBOOK:
-- State "DONE"       from "TODO"       [2016-07-19 Tue 01:49]
-:END:
-* DONE show time in right of mode-line
-:LOGBOOK:
-- State "DONE"       from "TODO"       [2016-07-19 Tue 01:11]
-:END:
-* DONE ediff mode
-:LOGBOOK:
-- State "DONE"       from "TODO"       [2016-07-19 Tue 01:11]
-:END:
-* TODO jump last change point
-* TODO emms mode-line
 
 * NEXT Key Bindings
 Here are some global key bindings for basic editting
+** Esc in minibuffer
+Use =ESC= to exit minibuffer. Also I map =Super-h= the same as =C-g=
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+  (define-key minibuffer-local-map [escape] 'keyboard-escape-quit)
+  (define-key minibuffer-local-map [escape]  'keyboard-escape-quit)
+  (define-key minibuffer-local-ns-map [escape]  'keyboard-escape-quit)
+  (define-key minibuffer-local-isearch-map [escape]  'keyboard-escape-quit)
+  (define-key minibuffer-local-completion-map [escape]  'keyboard-escape-quit)
+  (define-key minibuffer-local-must-match-map [escape]  'keyboard-escape-quit)
+  (define-key minibuffer-local-must-match-filename-map [escape]  'keyboard-escape-quit)
+  (define-key minibuffer-local-filename-completion-map [escape]  'keyboard-escape-quit)
+  (define-key minibuffer-local-filename-must-match-map [escape]  'keyboard-escape-quit)
+
+  ;; Also map s-h same as C-g
+  (define-key minibuffer-local-map (kbd "s-h") 'keyboard-escape-quit)
+#+END_SRC
+
 ** Project operations - =super=
 *** Projectile
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
@@ -2463,22 +2286,167 @@ Search, replace and hightlight will in later paragraph
   (global-set-key (kbd "M-y") #'helm-show-kill-ring)
 #+END_SRC
 
-** Search & Replace / hightlight =M-s=
-*** search
-*** replace
-*** hightlight
+*** Expand-region
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
-
-  ;; (defhydra sd/search-highlight (:color red :columns nil)
-  ;;   "search"
-  ;;   ("M-s" . isearch-forward-regexp "search-forward" :exit t)
-  ;;   ("s" . isearch-forward-regexp "search-forward" :exit t)
-  ;;   ("r" . isearch-backward-regexp "search-backward" :exit t)
-  ;;   )
-
-  ;; (setq-default indicate-empty-lines t)
+  (use-package expand-region
+    :ensure t
+    :config
+    (global-set-key (kbd "C-=") 'er/expand-region))
 #+END_SRC
 
+*** undo-tree
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+  (use-package undo-tree
+    :ensure t
+    :config
+    (define-key undo-tree-visualizer-mode-map "j" 'undo-tree-visualize-redo)
+    (define-key undo-tree-visualizer-mode-map "k" 'undo-tree-visualize-undo)
+    (define-key undo-tree-visualizer-mode-map "h" 'undo-tree-visualize-switch-branch-left)
+    (define-key undo-tree-visualizer-mode-map "l" 'undo-tree-visualize-switch-branch-right)
+    (global-undo-tree-mode 1))
+
+  (global-set-key (kbd "s-u") 'undo-tree-visualize)
+#+END_SRC
+
+*** flyspell
+Stolen from [[https://github.com/redguardtoo/emacs.d/blob/master/lisp/init-spelling.el][here]], hunspell will search dictionary in =DICPATH=
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+  (setenv "DICPATH" "/usr/local/share/hunspell")
+
+  (when (executable-find "hunspell")
+    (setq-default ispell-program-name "hunspell")
+    (setq ispell-really-hunspell t))
+
+  ;; (defun text-mode-hook-setup ()
+  ;;   ;; Turn off RUN-TOGETHER option when spell check text-mode
+  ;;   (setq-local ispell-extra-args (flyspell-detect-ispell-args)))
+  ;; (add-hook 'text-mode-hook 'text-mode-hook-setup)
+  ;; (add-hook 'text-mode-hook 'flyspell-mode)
+
+  ;; enable flyspell check on comments and strings in progmamming modes
+  ;; (add-hook 'prog-mode-hook 'flyspell-prog-mode)
+
+  ;; I don't use the default mappings
+  (with-eval-after-load 'flyspell
+    (define-key flyspell-mode-map (kbd "C-;") nil)
+    (define-key flyspell-mode-map (kbd "C-,") nil)
+    (define-key flyspell-mode-map (kbd "C-.") nil))
+#+END_SRC
+
+Make flyspell enabled for org-mode, see [[http://emacs.stackexchange.com/questions/9333/how-does-one-use-flyspell-in-org-buffers-without-flyspell-triggering-on-tangled][here]]
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+  ;; NO spell check for embedded snippets
+  (defadvice org-mode-flyspell-verify (after org-mode-flyspell-verify-hack activate)
+    (let ((rlt ad-return-value)
+          (begin-regexp "^[ \t]*#\\+begin_\\(src\\|html\\|latex\\)")
+          (end-regexp "^[ \t]*#\\+end_\\(src\\|html\\|latex\\)")
+          old-flag
+          b e)
+      (when ad-return-value
+        (save-excursion
+          (setq old-flag case-fold-search)
+          (setq case-fold-search t)
+          (setq b (re-search-backward begin-regexp nil t))
+          (if b (setq e (re-search-forward end-regexp nil t)))
+          (setq case-fold-search old-flag))
+        (if (and b e (< (point) e)) (setq rlt nil)))
+      (setq ad-return-value rlt)))
+#+END_SRC
+
+** Search & Replace / hightlight =M-s=
+*** search
+=C-s=, =C-r=, 
+=C-w= add word at point to search string, 
+=M-%= query replace
+=C-M-y= add character at point to search string
+=M-s C-e= add reset of line at point
+=C-y= yank from clipboard to search string
+=M-n=, =M-p=, history
+=C-M-i= complete search string
+
+*** =M-s= prefix
+use the prefix =M-s= for searching in buffers
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+  (defun sd/make-keymap (key bindings)
+    (setq keymap (make-sparse-keymap))
+    (dolist (binding bindings)
+      (define-key keymap (car binding) (cdr binding)))
+    (global-set-key key keymap))
+
+  ;; (use-package highlight-symbol
+  ;;   :ensure t)
+
+  ;; (sd/make-keymap "\M-s"
+  ;;                 '(("w" . save-buffer)
+  ;;                   ;; ("\M-w" . save-buffer)
+  ;;                   ("e" . revert-buffer)
+  ;;                   ("s" . isearch-forward-regexp)
+  ;;                   ("\M-s" . isearch-forward-regexp)
+  ;;                   ("r" . isearch-backward-regexp)
+  ;;                   ("." . isearch-forward-symbol-at-point)
+  ;;                   ("o" . occur)
+  ;;                   ;; ("h" . highlight-symbol-at-point)
+  ;;                   ("h" . highlight-symbol)
+  ;;                   ("m" . highlight-regexp)
+  ;;                   ("l" . highlight-lines-matching-regexp)
+  ;;                   ("M" . unhighlight-regexp)
+  ;;                   ("f" . keyboard-quit)
+  ;;                   ("q" . keyboard-quit)))
+
+  ;; ;; search and replace and highlight
+  ;; (define-key isearch-mode-map (kbd "M-s") 'isearch-repeat-forward)
+  ;; (define-key isearch-mode-map (kbd "M-r") 'isearch-repeat-backward)
+  ;; (global-set-key (kbd "s-[") 'highlight-symbol-next)
+  ;; (global-set-key (kbd "s-]") 'highlight-symbol-prev)
+  ;; (global-set-key (kbd "s-\\") 'highlight-symbol-query-replace)
+
+
+  ;; (define-key minibuffer-local-map "\M-s" nil)
+
+  ;; (set-face-background 'ido-first-match "yellow")
+
+  ;; M-s M-w              eww-search-words
+
+  ;; M-c
+  ;; M-r
+  ;; M-t
+  ;; M-u, 
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+  (use-package highlight-symbol
+    :ensure t)
+
+  (defhydra sd/search-replace (:color red :columns nil)
+    "Search"
+    ("w" save-buffer "save" :exit t)
+    ("e" revert-buffer "revert" :exit t)
+    ("s" isearch-forward-regexp "s-search" :exit t)
+    ("M-s" isearch-forward-regexp "s-search" :exit t)
+    ("r" isearch-backward-regexp "r-search" :exit t)
+    ("o" occur "occur " :exit t)
+    ("." isearch-forward-symbol-at-point "search point" :exit t)
+    ("h" highlight-symbol "higlight" :exit t)
+    ("l" highlight-lines-matching-regexp "higlight line" :exit t)
+    ("m" highlight-regexp "higlight" :exit t)
+    ("M" unhighlight-regexp "unhiglight" :exit t)
+    ("f" nil nil :exit t)
+    ("q" nil nil :exit t))
+
+  (global-unset-key (kbd "M-s"))
+  (global-set-key (kbd "M-s") 'sd/search-replace/body)
+
+
+  ;; search and replace and highlight
+  (define-key isearch-mode-map (kbd "M-s") 'isearch-repeat-forward)
+  (define-key isearch-mode-map (kbd "M-r") 'isearch-repeat-backward)
+  (global-set-key (kbd "s-[") 'highlight-symbol-next)
+  (global-set-key (kbd "s-]") 'highlight-symbol-prev)
+  (global-set-key (kbd "s-\\") 'highlight-symbol-query-replace)
+#+END_SRC
+
+*** replace
+*** hightlight
 *** Occur
 Occur search key bindings
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
@@ -2531,14 +2499,38 @@ stolen from [[https://github.com/mariolong/emacs.d/blob/f6a061594ef1b5d1f4750e9d
                                          (insert (format "%s" (with-ivy-window (thing-at-point 'symbol)))))))
 #+END_SRC
 
-* Dictionary
+* TODO Convert ASCII to key
+** map =function-key-map= [[http://academic.evergreen.edu/projects/biophysics/technotes/program/ascii_ctrl.htm][ascii_ctrl]]
+new file =C-x C-f C-f=
+
+** write color syntax for =Man-mode=
+
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
-  (use-package bing-dict
-    :ensure t
-    :init
-    (global-set-key (kbd "s-d") 'bing-dict-brief)
-    :commands (bing-dict-brief))
+  (font-lock-add-keywords 'perl-mode '(("\\(|\\w+?\\(,\\w+?\\)?|\\)" 1 'py-builtins-face)))
 #+END_SRC
+
+* TODO set fly-spell binding
+
+* TODO imenu bindings
+
+* DONE modified indicator
+:LOGBOOK:
+- State "DONE"       from "TODO"       [2016-07-18 Mon 23:35]
+:END:
+* DONE highlight selected ido candicate
+:LOGBOOK:
+- State "DONE"       from "TODO"       [2016-07-19 Tue 01:49]
+:END:
+* DONE show time in right of mode-line
+:LOGBOOK:
+- State "DONE"       from "TODO"       [2016-07-19 Tue 01:11]
+:END:
+* DONE ediff mode
+:LOGBOOK:
+- State "DONE"       from "TODO"       [2016-07-19 Tue 01:11]
+:END:
+* TODO jump last change point
+* TODO emms mode-line
 
 * TODO Temp directory for cached/history/temp files
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
@@ -2606,6 +2598,11 @@ When define a key to a anonymous function, the lambda function should be interac
   ;; (setq-default save-place t)
   ;; (delete-selection-mode 1)
 #+END_SRC
+
+* key
+- passion
+- vision
+- mission
 
 
 * M prefix
