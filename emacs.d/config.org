@@ -2259,6 +2259,14 @@ Most use =C-o C-o= to switch buffers; =C-o x, v= to split window; =C-o o= to del
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
   (winner-mode 1)
 
+  (defun sd/toggle-max-windows ()
+    "Set maximize current if there are multiple windows, if only
+  one window, window undo"
+    (interactive)
+    (if (equal  (length (window-list)) 1)
+        (winner-undo)
+      (delete-other-windows)))
+
   (defhydra sd/hydra-window (:color red :columns nil)
     "window"
     ("h" windmove-left nil :exit t)
@@ -2279,7 +2287,8 @@ Most use =C-o C-o= to switch buffers; =C-o x, v= to split window; =C-o o= to del
            (split-window-below)
            (windmove-down))
      "horz" :exit t)
-    ("o" delete-other-windows "one" :exit t)
+    ;; ("o" delete-other-windows "one" :exit t)
+    ("o" sd/toggle-max-windows "one" :exit t)
     ("C-o" ido-switch-buffer "buf" :exit t)
     ("C-k" sd/delete-current-window "del" :exit t)
     ("'" other-window "other" :exit t)
