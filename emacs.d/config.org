@@ -559,8 +559,8 @@ set height in mode line
   (use-package smex
     :ensure t
     :init
-    (smex-initialize)
     (setq smex-save-file (concat sd-temp-directory "smex-items"))
+    (smex-initialize)
     :bind
     ("M-x" . smex)
     ("M-X" . smex-major-mode-commands))
@@ -599,12 +599,16 @@ Use [[https://github.com/DarwinAwardWinner/ido-ubiquitous][ido-ubiquitous]] for 
     :ensure t
     :defer t
     :init
-    (global-set-key (kbd "M-x") 'counsel-M-x)
+    ;; (global-set-key (kbd "M-x") 'counsel-M-x)
     (global-set-key (kbd "C-h f") 'counsel-describe-function)
-    (global-set-key (kbd "C-h v") 'counsel-describe-variable))
+    (global-set-key (kbd "C-h v") 'counsel-describe-variable)
+    ;; (set-face-attribute 'ivy-current-match nil :background "Orange" :foreground "black")
+    (define-key read-expression-map (kbd "C-r") 'counsel-expression-history)
+    (global-set-key (kbd "C-c C-r") 'ivy-resume))
+
+
 
   ;; (global-set-key "\C-s" 'swiper)
-  ;; (global-set-key (kbd "C-c C-r") 'ivy-resume)
   ;; (global-set-key (kbd "<f6>") 'ivy-resume)
   ;; ;; (global-set-key (kbd "C-x C-f") 'counsel-find-file)
   ;; (global-set-key (kbd "<f1> l") 'counsel-load-library)
@@ -615,7 +619,6 @@ Use [[https://github.com/DarwinAwardWinner/ido-ubiquitous][ido-ubiquitous]] for 
   ;; (global-set-key (kbd "C-c k") 'counsel-ag)
   ;; (global-set-key (kbd "C-x l") 'counsel-locate)
   ;; (global-set-key (kbd "C-S-o") 'counsel-rhythmbox)
-  ;; ;; (define-key read-expression-map (kbd "C-r") 'counsel-expression-history)
 
   ;; (set-face-attribute
   ;;  'ivy-current-match nil
@@ -1313,8 +1316,8 @@ We can use [[https://www.gnu.org/software/emms/quickstart.html][Emms]] for multi
   (use-package emms
     :ensure t
     :init
-    (setq emms-source-file-default-directory "~/Music/")
     (setq emms-directory (concat sd-temp-directory "emms"))
+    (setq emms-source-file-default-directory "~/Music/")
     :config
     (emms-standard)
     (emms-default-players)
@@ -2269,13 +2272,6 @@ Search, replace and hightlight will in later paragraph
   (global-set-key (kbd "M-l") 'goto-line)
 #+END_SRC
 
-*** Movement effective
-**** isearch
-=C-s=, =C-r=
-=C-w=, put the word into search minibuffer, =M-y=
-=M-c=, toggle case sensitivity
-=M-n=, =M-p=, history
-**** tagss
 ** Edit
 *** basic editting
 - cut, yank, =C-w=, =C-y=
@@ -2373,6 +2369,19 @@ set the isearch history size, the default is only =16=
   (setq history-length 5000)
   (setq regexp-search-ring-max 1000)
   (setq search-ring-max 1000)
+
+  (defadvice isearch-update-ring (after sd/isearch-update-ring (string &optional regexp) activate)
+    "Add search-ring to regexp-search-ring"
+    (unless regexp
+      (add-to-history 'regexp-search-ring string regexp-search-ring-max)))
+
+  ;; (defun isearch-update-ring (string &optional regexp)
+  ;;   "Add STRING to the beginning of the search ring.
+  ;; REGEXP if non-nil says use the regexp search ring."
+  ;;   (add-to-history
+  ;;    (if regexp 'regexp-search-ring 'search-ring)
+  ;;    string
+  ;;    (if regexp regexp-search-ring-max search-ring-max)))
 #+END_SRC
 
 *** =M-s= prefix
@@ -2577,3 +2586,4 @@ When define a key to a anonymous function, the lambda function should be interac
 #+END_SRC
 
 * TODO ibuffer hydra
+* TODO expand region action, selected mode map
