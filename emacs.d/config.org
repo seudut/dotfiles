@@ -86,12 +86,6 @@ Set the emacs load path
   ;; (desktop-save-mode t)
 #+END_SRC
 
-*** Save minibuffer history
-#+BEGIN_SRC emacs-lisp :tangle yes :results silent
-  (savehist-mode 1)
-  (setq history-length 1000)
-#+END_SRC
-
 *** temp folder
 Make a temp directory for all cache/history files
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
@@ -100,6 +94,14 @@ Make a temp directory for all cache/history files
 
   (unless (file-exists-p sd-temp-directory)
     (mkdir sd-temp-directory))
+#+END_SRC
+
+*** Save minibuffer history
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+  (setq savehist-file (concat sd-temp-directory "history"))
+  (setq history-length 1000)
+  (setq savehist-additional-variables '(kill-ring search-ring regexp-search-ring))
+  (savehist-mode 1)
 #+END_SRC
 
 * Package Management Tools
@@ -2369,8 +2371,8 @@ Make flyspell enabled for org-mode, see [[http://emacs.stackexchange.com/questio
 set the isearch history size, the default is only =16=
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
   (setq history-length 5000)
-  (set-variable regexp-search-ring-max 1000)
-  (set-variable search-ring-max 1000)
+  (setq regexp-search-ring-max 1000)
+  (setq search-ring-max 1000)
 #+END_SRC
 
 *** =M-s= prefix
@@ -2507,27 +2509,8 @@ new file =C-x C-f C-f=
     :init
     (setq recentf-save-file (concat sd-temp-directory "recentf")))
 
-  ;; (use-package projectile
-  ;;   :init
-  ;;   (setq projectile-cache-file (concat sd-temp-directory "projectile.cache")))
-
-  ;; (use-package ido
-  ;;   :init
-  ;;   (setq ido-save-directory-list-file (concat sd-temp-directory "ido.last")))
-
-  (use-package savehist
-    :init
-    (setq savehist-file (concat sd-temp-directory "history")))
-
-  ;; (use-package emms
-  ;;   :init
-  ;;   (setq emms-directory (concat sd-temp-directory "emms")))
-
   (setq auto-save-list-file-prefix (concat sd-temp-directory "auto-save-list/.saves-")) 
 
-  ;; use-package smex
-  ;;   :init
-  ;;   (setq smex-save-file (concat sd-temp-directory "smex-items"))
 #+END_SRC
 
 * =C-u C-h a= search funtions 
