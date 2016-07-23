@@ -2461,11 +2461,19 @@ Search, replace and hightlight will in later paragraph
 =M-n=, =M-p=, history
 **** tagss
 ** Edit
+*** basic editting
 - cut, yank, =C-w=, =C-y=
 - save, revert
 - undo, redo - undo-tree
 - select, expand-region
 - spell check, flyspell
+
+*** Kill ring
+=helm-show-kill-ring=
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+  (global-set-key (kbd "M-y") #'helm-show-kill-ring)
+#+END_SRC
+
 ** Search & Replace / hightlight =M-s=
 *** search
 *** replace
@@ -2538,9 +2546,9 @@ stolen from [[https://github.com/mariolong/emacs.d/blob/f6a061594ef1b5d1f4750e9d
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
   (use-package bing-dict
     :ensure t
-    :commands (bing-dict-brief)
-    :config
-    (global-set-key (kbd "s-d") 'bing-dict-brief))
+    :init
+    (global-set-key (kbd "s-d") 'bing-dict-brief)
+    :commands (bing-dict-brief))
 #+END_SRC
 
 * TODO Temp directory for cached/history/temp files
