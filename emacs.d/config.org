@@ -1155,7 +1155,7 @@ Refer [[https://github.com/abo-abo/hydra/blob/master/hydra-examples.el][hydra-ex
 *** hydra misc
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
   (defhydra sd/hydra-misc (:color red :columns nil)
-    "Miscellaneous Commands"
+    "Misc"
     ("e" eshell "eshell" :exit t)
     ("p" (lambda ()
            (interactive)
@@ -1481,7 +1481,7 @@ Dired+
     (define-key dired-mode-map (kbd "g") 'dired-goto-file))
 #+END_SRC
 
-* TODO ibuffer
+* ibuffer
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
   (global-set-key (kbd "s-b") 'ibuffer)
 
@@ -2106,7 +2106,8 @@ Most use =C-o C-o= to switch buffers; =C-o x, v= to split window; =C-o o= to del
       (delete-other-windows)))
 
   (defhydra sd/hydra-window (:color red :columns nil)
-    "window"
+    "Window"
+    ;; windows split
     ("h" windmove-left nil :exit t)
     ("j" windmove-down nil :exit t)
     ("k" windmove-up nil :exit t)
@@ -2125,21 +2126,27 @@ Most use =C-o C-o= to switch buffers; =C-o x, v= to split window; =C-o o= to del
            (split-window-below)
            (windmove-down))
      "horz" :exit t)
-    ;; ("o" delete-other-windows "one" :exit t)
+
+    ;; buffer / windows switch
     ("o" sd/toggle-max-windows "one" :exit t)
-    ("C-o" ido-switch-buffer "buf" :exit t)
     ("C-k" sd/delete-current-window "del" :exit t)
     ("'" other-window "other" :exit t)
-    ("a" ace-window "ace")
+    ;; ("a" ace-window "ace")
     ("s" ace-swap-window "swap")
-    ("d" ace-delete-window "ace-one" :exit t)
-    ("i" ace-maximize-window "ace-one" :exit t)
-    ("b" ido-switch-buffer "buf" :exit t)
-    ("C-b" ido-switch-buffer "buf" :exit t)
-    ("m" bookmark-jump-other-window "open bmk" :exit t)
-    ("M" bookmark-set "set bmk" :exit t)
+    ;; ("i" ace-maximize-window "ace-one" :exit t)
+
     ("u" (progn (winner-undo) (setq this-command 'winner-undo)) "undo")
     ("r" (progn (winner-redo) (setq this-command 'winner-redo)) "redo")
+
+    ;; ibuffer, dired, eshell, bookmarks
+    ;; ("d" ace-delete-window "ace-one" :exit t)
+    ("C-o" ido-switch-buffer "buf" :exit t)
+    ("d" dired-jump "dired" :exit t)
+    ("b" ibuffer "ibuffer" :exit t)
+    ("m" bookmark-jump-other-window "open bmk" :exit t)
+    ("M" bookmark-set "set bmk" :exit t)
+
+    ;; quit
     ("q" nil "cancel")
     ("<ESC>" nil)
     ("C-h" nil nil :exit t)
@@ -2516,8 +2523,10 @@ stolen from [[https://github.com/mariolong/emacs.d/blob/f6a061594ef1b5d1f4750e9d
                                        :post (deactivate-mark))
     "Selected"
     ;; select
-    ("e"  er/expand-region "+")
-    ("c"  er/contract-region "-")
+    ;; ("e"  er/expand-region "+")
+    ("SPC"  er/expand-region "+")
+    ;; ("c"  er/contract-region "-")
+    ("S-SPC"  er/contract-region "-")
     ("r"  (lambda ()
             (interactive)
             (er/contract-region 0))
@@ -2547,13 +2556,13 @@ stolen from [[https://github.com/mariolong/emacs.d/blob/f6a061594ef1b5d1f4750e9d
     ;; ("j" next-line nil)
     ;; ("k" previous-line nil)
     ;; ("l" foreward-char nil)
-  
+
     ;; Search
     ;; higlight
-  
+
     ;; exit
     ("d" kill-region "delete" :exit t)
-  
+
     ("y" kill-ring-save "yank" :exit t)
     ("M-SPC" nil "quit" :exit t)
     ("C-SPC" nil "quit" :exit t)
@@ -2583,21 +2592,10 @@ new file =C-x C-f C-f=
 * =C-u C-h a= search funtions 
 =apropos-command= 
 
-* TODO Questions
-- interactive for anonymous function
-When define a key to a anonymous function, the lambda function should be interactive
-
-#+BEGIN_SRC emacs-lisp :tangle yes :results silent
-  ;; (require 'saveplace)
-  ;; (setq-default save-place t)
-  ;; (delete-selection-mode 1)
-#+END_SRC
-
 * key
 - passion
 - vision
 - mission
-
 
 * M prefix
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
@@ -2643,4 +2641,3 @@ When define a key to a anonymous function, the lambda function should be interac
   ;; M-b 
 #+END_SRC
 
-* TODO ibuffer hydra
