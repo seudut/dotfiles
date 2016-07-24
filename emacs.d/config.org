@@ -2291,14 +2291,6 @@ Search, replace and hightlight will in later paragraph
   (global-set-key (kbd "M-y") #'helm-show-kill-ring)
 #+END_SRC
 
-*** Expand-region
-#+BEGIN_SRC emacs-lisp :tangle yes :results silent
-  (use-package expand-region
-    :ensure t
-    :config
-    (global-set-key (kbd "C-=") 'er/expand-region))
-#+END_SRC
-
 *** undo-tree
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
   (use-package undo-tree
@@ -2494,22 +2486,58 @@ stolen from [[https://github.com/mariolong/emacs.d/blob/f6a061594ef1b5d1f4750e9d
                                          (insert (format "%s" (with-ivy-window (thing-at-point 'symbol)))))))
 #+END_SRC
 
-** TODO Expand region map
+** Expand region map
+*** Install =expand-region=
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
+  (use-package expand-region
+    :ensure t
+    :config
+    ;; (global-set-key (kbd "C-=") 'er/expand-region)
+    )
+#+END_SRC
+
+*** Add a =hydra= map for =expand-region= operations
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+  (defun sd/mark-line ()
+    "Mark current line without whitespace beginning"
+    (interactive)
+    (back-to-indentation)
+    (set-mark (line-end-position)))
+
   (defhydra sd/expand-selected (:color red :columns nil
                                        :post (deactivate-mark))
     "Selected"
     ;; select
-    ("e" er/expand-region "+")
-    ("c" er/contract-region "-")
-    ;; ("\"" er/mark-inside-quotes "inside \"")
-    ;; ("a\"" er/mark-outside-quotes "inside \"")
+    ("e"  er/expand-region "+")
+    ("c"  er/contract-region "-")
+    ("r"  (lambda ()
+            (interactive)
+            (er/contract-region 0))
+     "reset")
+
+    ("i'" er/mark-inside-quotes "in")
+    ("i\"" er/mark-inside-quotes nil)
+    ("o'" er/mark-outside-quotes "out")
+    ("o\"" er/mark-outside-quotes nil)
+
+    ("i{" er/mark-inside-pairs nil)
+    ("i(" er/mark-inside-pairs nil)
+    ("o{" er/mark-inside-pairs nil)
+    ("o(" er/mark-inside-pairs nil)
+
+    ("p"  er/mark-paragraph "paragraph")
+
+    ("l"  sd/mark-line "line")
+    ("u"  er/mark-url "url")
+    ("f"  er/mark-defun "fun")
+    ("n"  er/mark-next-accessor "next")
+
     ;; exchange
     ("x" exchange-point-and-mark "exchange")
-    ("o" exchange-point-and-mark "exchange")
+    ;; ("o" exchange-point-and-mark "exchange")
     ;; exit
     ("d" kill-region "delete" :exit t)
-    ("i" kill-region "delete" :exit t)
+    ;; ("i" kill-region "delete" :exit t)
     ("y" kill-ring-save "yank" :exit t)
     ("q" nil "quit" :exit t))
 
@@ -2532,6 +2560,8 @@ stolen from [[https://github.com/mariolong/emacs.d/blob/f6a061594ef1b5d1f4750e9d
   ;; er/mark-email
   ;; er/mark-defun
 #+END_SRC
+
+*** TODO make expand-region hydra work with lispy selected
 
 * TODO Convert ASCII to key
 ** map =function-key-map= [[http://academic.evergreen.edu/projects/biophysics/technotes/program/ascii_ctrl.htm][ascii_ctrl]]
