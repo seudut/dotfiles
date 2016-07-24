@@ -2211,10 +2211,6 @@ since there is no map such as =helm-mark-ring=map=, so I cannot binding a key to
 =C-x h= marks the whole buffer
 =C-M-h= marks the next defun
 =C-x C-p= marks the next page
-**** DONE Mapping toggle mark ring=
-:LOGBOOK:
-- State "DONE"       from "TODO"       [2016-07-22 Fri 23:18]
-:END:
 *** Registers
 Registers can save text, position, rectangles, file and configuration and other things.
 Here for movement, we can use register to save/jump position
@@ -2504,7 +2500,7 @@ stolen from [[https://github.com/mariolong/emacs.d/blob/f6a061594ef1b5d1f4750e9d
     (back-to-indentation)
     (set-mark (line-end-position)))
 
-  (defhydra sd/expand-selected (:color red :columns nil
+  (defhydra sd/expand-selected (:color pink :columns nil
                                        :post (deactivate-mark))
     "Selected"
     ;; select
@@ -2532,33 +2528,29 @@ stolen from [[https://github.com/mariolong/emacs.d/blob/f6a061594ef1b5d1f4750e9d
     ("f"  er/mark-defun "fun")
     ("n"  er/mark-next-accessor "next")
 
-    ;; exchange
     ("x" exchange-point-and-mark "exchange")
-    ;; ("o" exchange-point-and-mark "exchange")
+
+    ;; Move
+    ;; ("h" backward-char nil)
+    ;; ("j" next-line nil)
+    ;; ("k" previous-line nil)
+    ;; ("l" foreward-char nil)
+  
+    ;; Search
+    ;; higlight
+  
     ;; exit
     ("d" kill-region "delete" :exit t)
-    ;; ("i" kill-region "delete" :exit t)
+  
     ("y" kill-ring-save "yank" :exit t)
+    ("M-SPC" nil "quit" :exit t)
+    ("C-SPC" nil "quit" :exit t)
     ("q" nil "quit" :exit t))
 
-  (global-set-key (kbd "C-=") (lambda ()
+  (global-set-key (kbd "M-SPC") (lambda ()
                                 (interactive)
                                 (er/mark-word)
                                 (sd/expand-selected/body)))
-
-  ;; er/mark-word
-  ;; er/mark-symbol
-  ;; er/mark-symbol-with-prefix
-  ;; er/mark-next-accessor
-  ;; er/mark-method-call
-  ;; er/mark-inside-quotes
-  ;; er/mark-outside-quotes
-  ;; er/mark-inside-pairs
-  ;; er/mark-outside-pairs
-  ;; er/mark-comment
-  ;; er/mark-url
-  ;; er/mark-email
-  ;; er/mark-defun
 #+END_SRC
 
 *** TODO make expand-region hydra work with lispy selected
