@@ -1314,46 +1314,6 @@ Type =o= to go to the link
 
 #+END_SRC
 
-** Emms
-We can use [[https://www.gnu.org/software/emms/quickstart.html][Emms]] for multimedia in Emacs
-#+BEGIN_SRC emacs-lisp :tangle yes :results silent
-  (use-package emms
-    :ensure t
-    :init
-    (setq emms-directory (concat sd-temp-directory "emms"))
-    (setq emms-source-file-default-directory "~/Music/")
-    :config
-    (emms-standard)
-    (emms-default-players)
-    (define-emms-simple-player mplayer '(file url)
-      (regexp-opt '(".ogg" ".mp3" ".mgp" ".wav" ".wmv" ".wma" ".ape"
-                    ".mov" ".avi" ".ogm" ".asf" ".mkv" ".divx" ".mpeg"
-                    "http://" "mms://" ".rm" ".rmvb" ".mp4" ".flac" ".vob"
-                    ".m4a" ".flv" ".ogv" ".pls"))
-      "mplayer" "-slave" "-quiet" "-really-quiet" "-fullscreen")
-    (emms-history-load))
-#+END_SRC
-
-** GnoGo
-
-Play Go in Emacs, gnugo xpm refert [[https://github.com/okanotor/dotemacs/blob/f95b774cb292d1169748bc0a62ba647bbd8c0652/etc/my-inits/my-inits-gnugo.el][to here]]. start at image display mode and grid mode
-
-#+BEGIN_SRC emacs-lisp :tangle yes :results silent
-
-  (use-package gnugo
-    :ensure t
-    :defer t
-    :init
-    (require 'gnugo-imgen)
-    (setq gnugo-xpms 'gnugo-imgen-create-xpms)
-    (add-hook 'gnugo-start-game-hook '(lambda ()
-                                        (gnugo-image-display-mode)
-                                        (gnugo-grid-mode)))
-      :config
-    (add-to-list 'gnugo-option-history (format "--boardsize 19 --color black --level 1")))
-
-#+END_SRC
-
 ** Tabbar
 
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
@@ -1954,6 +1914,43 @@ Use =gnuplot= on =Org-mode= file, see [[http://orgmode.org/worg/org-contrib/babe
     (add-hook 'ediff-suspend-hook 'ediff-toggle-wide-display))
 #+END_SRC
 
+* Entertainment
+** GnoGo
+Play Go in Emacs, gnugo xpm refert [[https://github.com/okanotor/dotemacs/blob/f95b774cb292d1169748bc0a62ba647bbd8c0652/etc/my-inits/my-inits-gnugo.el][to here]]. start at image display mode and grid mode
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+  (use-package gnugo
+    :ensure t
+    :defer t
+    :init
+    (require 'gnugo-imgen)
+    (setq gnugo-xpms 'gnugo-imgen-create-xpms)
+    (add-hook 'gnugo-start-game-hook '(lambda ()
+                                        (gnugo-image-display-mode)
+                                        (gnugo-grid-mode)))
+    :config
+    (add-to-list 'gnugo-option-history (format "--boardsize 19 --color black --level 1")))
+#+END_SRC
+
+** Emms
+We can use [[https://www.gnu.org/software/emms/quickstart.html][Emms]] for multimedia in Emacs
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+  (use-package emms
+    :ensure t
+    :init
+    (setq emms-directory (concat sd-temp-directory "emms"))
+    (setq emms-source-file-default-directory "~/Music/")
+    :config
+    (emms-standard)
+    (emms-default-players)
+    (define-emms-simple-player mplayer '(file url)
+      (regexp-opt '(".ogg" ".mp3" ".mgp" ".wav" ".wmv" ".wma" ".ape"
+                    ".mov" ".avi" ".ogm" ".asf" ".mkv" ".divx" ".mpeg"
+                    "http://" "mms://" ".rm" ".rmvb" ".mp4" ".flac" ".vob"
+                    ".m4a" ".flv" ".ogv" ".pls"))
+      "mplayer" "-slave" "-quiet" "-really-quiet" "-fullscreen")
+    (emms-history-load))
+#+END_SRC
+
 * Dictionary
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
   (use-package bing-dict
@@ -2143,6 +2140,7 @@ Most use =C-o C-o= to switch buffers; =C-o x, v= to split window; =C-o o= to del
     ("C-o" ido-switch-buffer "buf" :exit t)
     ("d" dired-jump "dired" :exit t)
     ("b" ibuffer "ibuffer" :exit t)
+    ("e" eshell "eshell" :exit t)
     ("m" bookmark-jump-other-window "open bmk" :exit t)
     ("M" bookmark-set "set bmk" :exit t)
 
