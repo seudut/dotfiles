@@ -102,6 +102,10 @@ Make a temp directory for all cache/history files
   (setq history-length 1000)
   (setq savehist-additional-variables '(kill-ring search-ring regexp-search-ring))
   (savehist-mode 1)
+
+  ;; set temp file path for recentf and auto-save
+  (setq recentf-save-file (concat sd-temp-directory "recentf"))
+  (setq auto-save-list-file-prefix (concat sd-temp-directory "auto-save-list/.saves-"))
 #+END_SRC
 
 * Package Management Tools
@@ -2370,18 +2374,11 @@ set the isearch history size, the default is only =16=
   (setq regexp-search-ring-max 1000)
   (setq search-ring-max 1000)
 
+  ;; when search a word or a symbol , also add the word into regexp-search-ring
   (defadvice isearch-update-ring (after sd/isearch-update-ring (string &optional regexp) activate)
     "Add search-ring to regexp-search-ring"
     (unless regexp
       (add-to-history 'regexp-search-ring string regexp-search-ring-max)))
-
-  ;; (defun isearch-update-ring (string &optional regexp)
-  ;;   "Add STRING to the beginning of the search ring.
-  ;; REGEXP if non-nil says use the regexp search ring."
-  ;;   (add-to-history
-  ;;    (if regexp 'regexp-search-ring 'search-ring)
-  ;;    string
-  ;;    (if regexp regexp-search-ring-max search-ring-max)))
 #+END_SRC
 
 *** =M-s= prefix
@@ -2445,8 +2442,6 @@ use the prefix =M-s= for searching in buffers
   (global-set-key (kbd "s-\\") 'highlight-symbol-query-replace)
 #+END_SRC
 
-*** replace
-*** hightlight
 *** Occur
 Occur search key bindings
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
@@ -2511,16 +2506,6 @@ new file =C-x C-f C-f=
 
 * TODO jump last change point
 * TODO emms mode-line
-
-* TODO Temp directory for cached/history/temp files
-#+BEGIN_SRC emacs-lisp :tangle yes :results silent
-  (use-package recentf
-    :init
-    (setq recentf-save-file (concat sd-temp-directory "recentf")))
-
-  (setq auto-save-list-file-prefix (concat sd-temp-directory "auto-save-list/.saves-")) 
-
-#+END_SRC
 
 * =C-u C-h a= search funtions 
 =apropos-command= 
