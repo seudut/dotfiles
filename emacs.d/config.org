@@ -599,7 +599,7 @@ Use [[https://github.com/DarwinAwardWinner/ido-ubiquitous][ido-ubiquitous]] for 
     :ensure t
     :defer t
     :init
-    ;; (global-set-key (kbd "M-x") 'counsel-M-x)
+    (global-set-key (kbd "M-x") 'counsel-M-x)
     (global-set-key (kbd "C-h f") 'counsel-describe-function)
     (global-set-key (kbd "C-h v") 'counsel-describe-variable)
     ;; (set-face-attribute 'ivy-current-match nil :background "Orange" :foreground "black")
