@@ -2566,10 +2566,11 @@ stolen from [[https://github.com/mariolong/emacs.d/blob/f6a061594ef1b5d1f4750e9d
     ("C-SPC" nil "quit" :exit t)
     ("q" nil "quit" :exit t))
 
-  (global-set-key (kbd "M-SPC") (lambda ()
-                                (interactive)
-                                (er/mark-word)
-                                (sd/expand-selected/body)))
+  (global-set-key (kbd "C-SPC") (lambda ()
+                                  (interactive)
+                                  (set-mark-command nil)
+                                  (er/mark-word)
+                                  (sd/expand-selected/body)))
 #+END_SRC
 
 *** TODO make expand-region hydra work with lispy selected
