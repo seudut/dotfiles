@@ -110,32 +110,29 @@ Make a temp directory for all cache/history files
 
 * Package Management Tools
 
-** Use-package
-
-Using [[https://github.com/jwiegley/use-package][use-package]] to manage emacs packages
-
+** paradox
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
-
+  (use-package paradox
+    :ensure t)
+#+END_SRC
+** Use-package
+Using [[https://github.com/jwiegley/use-package][use-package]] to manage emacs packages
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
   (unless (package-installed-p 'use-package)
     (package-refresh-contents)
     (package-install 'use-package))
 
   (require 'use-package)
-
 #+END_SRC
 
 ** El-get
-
 [[https://github.com/dimitri/el-get][El-get]] is package management tool, whicl allows to install external elisp package from any git repository not in mepla. 
 Check out [[http://tapoueh.org/emacs/el-get.html][el-get]].
-
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
-
   (use-package el-get
     :ensure t
     :init
     (add-to-list 'load-path "~/.emacs.d/el-get"))
-
 #+END_SRC
 
 * Color and Fonts Settings
@@ -2144,12 +2141,14 @@ Most use =C-o C-o= to switch buffers; =C-o x, v= to split window; =C-o o= to del
 
     ;; ibuffer, dired, eshell, bookmarks
     ;; ("d" ace-delete-window "ace-one" :exit t)
-    ("C-o" ido-switch-buffer "buf" :exit t)
-    ("d" dired-jump "dired" :exit t)
-    ("b" ibuffer "ibuffer" :exit t)
-    ("e" eshell "eshell" :exit t)
-    ("m" bookmark-jump-other-window "open bmk" :exit t)
-    ("M" bookmark-set "set bmk" :exit t)
+    ("C-o" ido-switch-buffer nil :exit t)
+    ("d" dired-jump nil :exit t)
+    ("b" ibuffer nil n:exit t)
+    ("e" eshell nil :exit t)
+    ("m" bookmark-jump-other-window nil :exit t)
+    ("M" bookmark-set nil :exit t)
+    ("g" magit-status nil :exit t)
+    ("p" package-list-packages nil :exit t)
 
     ;; quit
     ("q" nil "cancel")
@@ -2159,7 +2158,6 @@ Most use =C-o C-o= to switch buffers; =C-o x, v= to split window; =C-o o= to del
     ;; ("C-k" nil :exit t)
     ("C-l" nil nil :exit t)
     ("C-;" nil nil :exit t)
-    ("p" nil nil :exit t)
     ("n" nil nil :exit t)
     ("[" nil nil :exit t)
     ("]" nil nil :exit t)
