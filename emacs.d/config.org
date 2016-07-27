@@ -2523,8 +2523,9 @@ stolen from [[https://github.com/mariolong/emacs.d/blob/f6a061594ef1b5d1f4750e9d
     (back-to-indentation)
     (set-mark (line-end-position)))
 
-  (defhydra sd/expand-selected (:color pink :columns nil
-                                       :post (deactivate-mark))
+  (defhydra sd/expand-selected (:color red :columns nil
+                                       ;; :post (deactivate-mark)
+                                       )
     "Selected"
     ;; select
     ;; ("e"  er/expand-region "+")
@@ -2568,7 +2569,7 @@ stolen from [[https://github.com/mariolong/emacs.d/blob/f6a061594ef1b5d1f4750e9d
     ("d" kill-region "delete" :exit t)
 
     ("y" kill-ring-save "yank" :exit t)
-    ("M-SPC" nil "quit" :exit t)
+    ;; ("M-SPC" nil "quit" :exit t)
     ("C-SPC" nil "quit" :exit t)
     ("q" nil "quit" :exit t))
 
