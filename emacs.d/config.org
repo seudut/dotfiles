@@ -1260,16 +1260,6 @@ Type =o= to go to the link
 
 #+END_SRC
 
-** Emux
-
-[[https://github.com/re5et/emux][emux]] is 
-
-#+BEGIN_SRC emacs-lisp :tangle yes :results silent
-
-  (el-get-bundle re5et/emux)
-
-#+END_SRC
-
 ** Smart Parens
 
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
@@ -1382,8 +1372,6 @@ When see function by =C-h f=, and visit the source code, I would like the buffer
 ** TODO Man mode
 Color for Man-mode
 
-** TODO swiper to occur
-
 ** TODO UTF8
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
   ;; (set-language-environment "UTF-8")
@@ -1412,7 +1400,7 @@ Color for Man-mode
     (define-key org-tree-slide-mode-map [escape] 'org-tree-slide-move-previous-tree))
 #+END_SRC
 
-* dired
+* Dired
 ** Dired config
 =C-o= is defined as a global key for window operation, here unset it in dired mode
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
@@ -1444,9 +1432,18 @@ Color for Man-mode
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
   (use-package dired-hacks-utils
     :ensure t)
+
+
+  (defconst my-dired-media-files-extensions '("mp3" "mp4" "MP3" "MP4" "avi" "mpg" "flv" "ogg" "wmv" "mkv" "mov" "wma")
+  "Media file extensions that should launch in VLC.")
+
+    (add-to-list 'dired-guess-shell-alist-user
+                 (list (concat "\\."
+                               (regexp-opt my-dired-media-files-extensions)
+                               "\\'") "mplayer"))
 #+END_SRC
 
-* ibuffer
+* Ibuffer
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
   (global-set-key (kbd "s-b") 'ibuffer)
 
