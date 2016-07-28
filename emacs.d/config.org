@@ -109,11 +109,6 @@ Make a temp directory for all cache/history files
 #+END_SRC
 
 * Package Management Tools
-** paradox
-#+BEGIN_SRC emacs-lisp :tangle yes :results silent
-  (use-package paradox
-    :ensure t)
-#+END_SRC
 
 ** Use-package
 Using [[https://github.com/jwiegley/use-package][use-package]] to manage emacs packages
@@ -133,6 +128,12 @@ Check out [[http://tapoueh.org/emacs/el-get.html][el-get]].
     :ensure t
     :init
     (add-to-list 'load-path "~/.emacs.d/el-get"))
+#+END_SRC
+
+** paradox
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+  (use-package paradox
+    :ensure t)
 #+END_SRC
 
 * Color and Fonts Settings
