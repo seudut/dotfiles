@@ -904,9 +904,7 @@ Setting agenda files and the agenda view
 #+END_SRC
 
 ** Export PDF
-
 Install MacTex-basic and some tex packages
-
 #+BEGIN_SRC bash 
 
   sudo tlmgr update --self
@@ -1413,6 +1411,11 @@ Color for Man-mode
     (pdf-tools-install)
     :config
     (add-to-list 'auto-mode-alist '("\.pdf$" . pdf-view-mode))
+    (add-hook 'pdf-outline-buffer-mode-hook #'sd/pdf-outline-map))
+
+  (defun sd/pdf-outline-map ()
+    "My keybindings in pdf-outline-map"
+    (interactive)
     (define-key pdf-outline-buffer-mode-map (kbd "C-o") nil)
     (define-key pdf-outline-buffer-mode-map (kbd "i") 'outline-toggle-children)
     (define-key pdf-outline-buffer-mode-map (kbd "j") 'next-line)
