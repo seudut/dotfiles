@@ -1400,19 +1400,43 @@ Color for Man-mode
     (define-key org-tree-slide-mode-map [escape] 'org-tree-slide-move-previous-tree))
 #+END_SRC
 
+** pdf-tools
+#+BEGIN_SRC bash
+  brew install poppler
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+  (use-package pdf-tools
+    :ensure t
+    :init
+    ;; run to complete the installation
+    (pdf-tools-install)
+    :config
+    (add-to-list 'auto-mode-alist '("\.pdf$" . pdf-view-mode)))
+#+END_SRC
+
 * Dired
 ** Dired config
 =C-o= is defined as a global key for window operation, here unset it in dired mode
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
+  (defun sd/dired-key-map ()
+    "My keybindings for dired"
+    (interactive)
+    (define-key dired-mode-map (kbd "SPC") 'scroll-up-command)
+    (define-key dired-mode-map (kbd "S-SPC") 'scroll-down-command)
+    (define-key dired-mode-map (kbd "C-o") nil)
+    (define-key dired-mode-map (kbd "M-s") nil)
+    (define-key dired-mode-map (kbd "l") 'dired-isearch-filenames)
+    (define-key dired-mode-map (kbd "H") 'dired-omit-mode)
+    (define-key dired-mode-map (kbd "DEL") (lambda () (interactive) (find-alternate-file ".."))))
+
   (use-package dired
     :config
     (require 'dired-x)
     (setq dired-omit-mode t)
     (setq dired-omit-files (concat dired-omit-files "\\|^\\..+$"))
     (add-hook 'dired-mode-hook (lambda ()
-                                 (define-key dired-mode-map (kbd "C-o") nil)
-                                 (define-key dired-mode-map (kbd "H") 'dired-omit-mode)
-                                 (define-key dired-mode-map (kbd "DEL") (lambda () (interactive) (find-alternate-file "..")))
+                                 (sd/dired-key-map)
                                  (dired-omit-mode))))
 #+END_SRC
 
@@ -2553,7 +2577,7 @@ stolen from [[https://github.com/mariolong/emacs.d/blob/f6a061594ef1b5d1f4750e9d
     ("n" er/mark-next-accessor "next")
 
     ("x" exchange-point-and-mark "exchange")
-  
+
     ;; Search
     ;; higlight
 
