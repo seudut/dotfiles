@@ -2522,17 +2522,17 @@ stolen from [[https://github.com/mariolong/emacs.d/blob/f6a061594ef1b5d1f4750e9d
     (set-mark (line-end-position)))
 
   (defhydra sd/expand-selected (:color red :columns nil
-                                       ;; :post (deactivate-mark)
+                                       :post (deactivate-mark)
                                        )
     "Selected"
     ;; select
     ;; ("e"  er/expand-region "+")
-    ("SPC"  er/expand-region "+")
+    ("SPC" er/expand-region "+")
     ;; ("c"  er/contract-region "-")
-    ("S-SPC"  er/contract-region "-")
-    ("r"  (lambda ()
-            (interactive)
-            (er/contract-region 0))
+    ("S-SPC" er/contract-region "-")
+    ("r" (lambda ()
+           (interactive)
+           (er/contract-region 0))
      "reset")
 
     ("i'" er/mark-inside-quotes "in")
@@ -2545,21 +2545,15 @@ stolen from [[https://github.com/mariolong/emacs.d/blob/f6a061594ef1b5d1f4750e9d
     ("o{" er/mark-inside-pairs nil)
     ("o(" er/mark-inside-pairs nil)
 
-    ("p"  er/mark-paragraph "paragraph")
+    ("p" er/mark-paragraph "paragraph")
 
-    ("l"  sd/mark-line "line")
-    ("u"  er/mark-url "url")
-    ("f"  er/mark-defun "fun")
-    ("n"  er/mark-next-accessor "next")
+    ("l" sd/mark-line "line")
+    ("u" er/mark-url "url")
+    ("f" er/mark-defun "fun")
+    ("n" er/mark-next-accessor "next")
 
     ("x" exchange-point-and-mark "exchange")
-
-    ;; Move
-    ;; ("h" backward-char nil)
-    ;; ("j" next-line nil)
-    ;; ("k" previous-line nil)
-    ;; ("l" foreward-char nil)
-
+  
     ;; Search
     ;; higlight
 
@@ -2567,13 +2561,14 @@ stolen from [[https://github.com/mariolong/emacs.d/blob/f6a061594ef1b5d1f4750e9d
     ("d" kill-region "delete" :exit t)
 
     ("y" kill-ring-save "yank" :exit t)
-    ;; ("M-SPC" nil "quit" :exit t)
-    ("C-SPC" nil "quit" :exit t)
-    ("q" nil "quit" :exit t))
+    ("M-SPC" nil "quit" :exit t)
+    ;; ("C-SPC" "quit" :exit t)
+    ("q" deactivate-mark "quit" :exit t))
 
-  (global-set-key (kbd "C-SPC") (lambda ()
+  (global-set-key (kbd "M-SPC") (lambda ()
                                   (interactive)
                                   (set-mark-command nil)
+                                  ;; (er/expand-region 1)
                                   (er/mark-word)
                                   (sd/expand-selected/body)))
 #+END_SRC
