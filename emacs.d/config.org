@@ -1338,6 +1338,10 @@ When see function by =C-h f=, and visit the source code, I would like the buffer
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
   (el-get-bundle info+
     :url "https://raw.githubusercontent.com/emacsmirror/emacswiki.org/master/info+.el"
+    ;; (require 'info+)
+    )
+
+  (with-eval-after-load 'info
     (require 'info+))
 #+END_SRC
 
