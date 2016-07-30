@@ -2264,7 +2264,7 @@ Most use =C-o C-o= to switch buffers; =C-o x, v= to split window; =C-o o= to del
     ;; ibuffer, dired, eshell, bookmarks
     ;; ("d" ace-delete-window "ace-one" :exit t)
     ("C-o" ido-switch-buffer nil :exit t)
-    ("d" projectile-dired nil :exit t)
+    ("d" sd/project-or-dired-jump nil :exit t)
     ("b" ibuffer nil n:exit t)
     ("e" eshell nil :exit t)
     ("m" bookmark-jump-other-window nil :exit t)
@@ -2287,6 +2287,14 @@ Most use =C-o C-o= to switch buffers; =C-o x, v= to split window; =C-o o= to del
 
   (global-unset-key (kbd "C-o"))
   (global-set-key (kbd "C-o") 'sd/hydra-window/body)
+
+  (defun sd/project-or-dired-jump ()
+    "If under project, jump to the root directory, otherwise
+  jump to dired of current file"
+    (interactive)
+    (if (projectile-project-p)
+        (projectile-dired)
+      (dired-jump)))
 #+END_SRC
 
 ** Motion
