@@ -2254,7 +2254,11 @@ toggle the mark ring. the best way is add a new action and mapping to =helm-sour
 since there is no map such as =helm-mark-ring=map=, so I cannot binding a key to the quit action.
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
   (setq mark-ring-max 50)
-  (global-set-key (kbd "M-`") #'helm-mark-ring)
+
+  (use-package helm
+    :ensure t
+    :init
+    (global-set-key (kbd "M-`") #'helm-mark-ring))
 
   (define-key minibuffer-local-map (kbd "M-`") 'keyboard-escape-quit)
 #+END_SRC
@@ -2313,10 +2317,8 @@ Search, replace and hightlight will in later paragraph
 
 *** =Imenu= goto tag
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
-  ;; (global-set-key (kbd "M-i") #'counsel-imenu)
-  (global-set-key (kbd "M-i") #'imenu)
-
-  ;; (global-set-key (kbd "M-l") 'goto-line)
+  (global-set-key (kbd "M-i") #'counsel-imenu)
+  ;; (global-set-key (kbd "M-i") #'imenu)
 #+END_SRC
 
 *** Go-to line
@@ -2336,7 +2338,11 @@ Search, replace and hightlight will in later paragraph
 =helm-show-kill-ring=
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
   (setq kill-ring-max 100)                ; default is 60p
-  (global-set-key (kbd "M-y") #'helm-show-kill-ring)
+
+  (use-package helm
+    :ensure t
+    :init
+    (global-set-key (kbd "M-y") #'helm-show-kill-ring))
 #+END_SRC
 
 *** undo-tree
