@@ -1474,6 +1474,7 @@ Color for Man-mode
     (dired-why)
     (message
      "Δ: d-delete, u-ndelete, x-punge, f-ind, o-ther window, R-ename, C-opy, c-create, +new dir, r-evert, h-summary, ?-help,"))
+
   (setq dired-guess-shell-alist-user
         '(("\\.pdf\\'" "evince" "okular")
           ("\\.\\(?:djvu\\|eps\\)\\'" "evince")
@@ -2247,6 +2248,11 @@ Most use =C-o C-o= to switch buffers; =C-o x, v= to split window; =C-o o= to del
     ;; buffer / windows switch
     ("o" sd/toggle-max-windows "one" :exit t)
     ("C-k" sd/delete-current-window "del" :exit t)
+    ("D" (lambda ()
+             (interactive)
+             (kill-buffer)
+             (sd/delete-current-window))
+     "kill" :exit t)
     ("'" other-window "other" :exit t)
     ;; ("a" ace-window "ace")
     ("s" ace-swap-window "swap")
