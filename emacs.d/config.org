@@ -904,13 +904,11 @@ Setting agenda files and the agenda view
 #+END_SRC
 
 ** Export PDF
-Install MacTex-basic and some tex packages
-#+BEGIN_SRC bash 
-
+Install MacTex-basic [[http://www.tug.org/mactex/morepackages.html][MacTex-basic]]  and some tex packages
+#+BEGIN_SRC sh 
   sudo tlmgr update --self
 
   sudo tlmgr install titlesec framed threeparttable wrapfig multirow enumitem bbding titling tabu mdframed tcolorbox textpos import varwidth needspace tocloft ntheorem environ trimspaces collection-fontsrecommended capt-of
-
 #+END_SRC
 
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
@@ -1399,7 +1397,7 @@ Color for Man-mode
 #+END_SRC
 
 ** pdf-tools
-#+BEGIN_SRC bash
+#+BEGIN_SRC sh
   brew install poppler
 #+END_SRC
 
