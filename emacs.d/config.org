@@ -1443,7 +1443,51 @@ Color for Man-mode
     (add-hook 'dired-mode-hook (lambda ()
                                  (sd/dired-key-map)
                                  (dired-omit-mode))))
+
+  (setq dired-guess-shell-alist-user
+        '(("\\.pdf\\'" "evince" "okular")
+          ("\\.\\(?:djvu\\|eps\\)\\'" "evince")
+          ("\\.\\(?:jpg\\|jpeg\\|png\\|gif\\|xpm\\)\\'" "eog")
+          ("\\.\\(?:xcf\\)\\'" "gimp")
+          ("\\.csv\\'" "libreoffice")
+          ("\\.tex\\'" "pdflatex" "latex")
+          ("\\.\\(?:mp4\\|mkv\\|avi\\|flv\\|ogv\\)\\(?:\\.part\\)?\\'"
+           "vlc")
+          ("\\.\\(?:mp3\\|flac\\)\\'" "rhythmbox")
+          ("\\.html?\\'" "firefox")
+          ("\\.cue?\\'" "audacious")))
+
 #+END_SRC
+
+I would like change the default dired summary 
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+  (defadvice dired-summary (around sd/dired-summary activate)
+    "Revisied dired summary."
+    (interactive)
+    (dired-why)
+    (message
+     "Δ: d-delete, u-ndelete, x-punge, f-ind, o-ther window, R-ename, C-opy, +new dir, ?-summary"))
+#+END_SRC
+
+When create a new directory, I want to disalbe =ido= completion. see [[http://stackoverflow.com/questions/7479565/emacs-ido-mode-and-creating-new-files-in-directories-it-keeps-changing-the-dire][here]]. Thhis code snippets copied
+from [[https://emacs.stackexchange.com/questions/13713/how-to-disable-ido-in-dired-create-directory/13795#13795?newreg%3Ddb17c20f7af3490fb11cf15f1d888e9e][How to disable IDO in ‘dired-create-directory’]]
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+  (defun mk-anti-ido-advice (func &rest args)
+    "Temporarily disable IDO and call function FUNC with arguments ARGS."
+    (interactive)
+    (let ((read-file-name-function #'read-file-name-default))
+      (if (called-interactively-p 'any)
+          (call-interactively func)
+        (apply func args))))
+
+  (defun mk-disable-ido (command)
+    "Disable IDO when command COMMAND is called."
+    (advice-add command :around #'mk-anti-ido-advice))
+
+  ;; call the function which you want to disable ido
+  (mk-disable-ido 'dired-create-directory)
+#+END_SRC
+
 
 ** Dired+
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
