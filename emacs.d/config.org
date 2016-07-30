@@ -1433,11 +1433,6 @@ Color for Man-mode
 ** Dired config
 =C-o= is defined as a global key for window operation, here unset it in dired mode
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
-  (defun sd/dired-new-file ()
-    "Create a new file in dired mode"
-    (interactive)
-    (call-interactively 'find-file))
-
   (defun sd/dired-key-map ()
     "My keybindings for dired"
     (interactive)
@@ -1448,7 +1443,11 @@ Color for Man-mode
     (define-key dired-mode-map (kbd "l") 'dired-isearch-filenames)
     (define-key dired-mode-map (kbd "H") 'dired-omit-mode)
     (define-key dired-mode-map (kbd "DEL") (lambda () (interactive) (find-alternate-file "..")))
-    (define-key dired-mode-map (kbd "c") 'sd/dired-new-file))
+    (define-key dired-mode-map (kbd "c") 'sd/dired-new-file)
+    (define-key dired-mode-map (kbd "h") 'dired-summary)
+    (define-key dired-mode-map (kbd "?") 'describe-mode)
+    (define-key dired-mode-map (kbd "r") 'revert-buffer)
+    (define-key dired-mode-map (kbd "z") #'sd/dired-get-size))
 
   (use-package dired
     :config
@@ -1459,6 +1458,12 @@ Color for Man-mode
                                  (sd/dired-key-map)
                                  (dired-omit-mode))))
 
+  (defadvice dired-summary (around sd/dired-summary activate)
+    "Revisied dired summary."
+    (interactive)
+    (dired-why)
+    (message
+     "Δ: d-delete, u-ndelete, x-punge, f-ind, o-ther window, R-ename, C-opy, c-create, +new dir, r-evert, h-summary, ?-help,"))
   (setq dired-guess-shell-alist-user
         '(("\\.pdf\\'" "evince" "okular")
           ("\\.\\(?:djvu\\|eps\\)\\'" "evince")
@@ -1474,14 +1479,24 @@ Color for Man-mode
 
 #+END_SRC
 
-I would like change the default dired summary 
+dired utils
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
-  (defadvice dired-summary (around sd/dired-summary activate)
-    "Revisied dired summary."
+  (defun sd/dired-new-file ()
+    "Create a new file in dired mode"
     (interactive)
-    (dired-why)
-    (message
-     "Δ: d-delete, u-ndelete, x-punge, f-ind, o-ther window, R-ename, C-opy, c-create, +new dir, ?-summary"))
+    (call-interactively 'find-file))
+
+  ;; copied from abo-abo's config
+  (defun sd/dired-get-size ()
+    (interactive)
+    (let ((files (dired-get-marked-files)))
+      (with-temp-buffer
+        (apply 'call-process "/usr/bin/du" nil t nil "-sch" files)
+        (message
+         "Size of all marked files: %s"
+         (progn
+           (re-search-backward "\\(^[ 0-9.,]+[A-Za-z]+\\).*total$")
+           (match-string 1))))))
 #+END_SRC
 
 When create a new directory, I want to disalbe =ido= completion. see [[http://stackoverflow.com/questions/7479565/emacs-ido-mode-and-creating-new-files-in-directories-it-keeps-changing-the-dire][here]]. Thhis code snippets copied
