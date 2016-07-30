@@ -1436,28 +1436,36 @@ Color for Man-mode
   (defun sd/dired-key-map ()
     "My keybindings for dired"
     (interactive)
-    (define-key dired-mode-map (kbd "SPC") 'scroll-up-command)
-    (define-key dired-mode-map (kbd "S-SPC") 'scroll-down-command)
+    ;; these two prefix are used globally
     (define-key dired-mode-map (kbd "C-o") nil)
     (define-key dired-mode-map (kbd "M-s") nil)
-    ;; (define-key dired-mode-map (kbd "l") 'dired-isearch-filenames)
+    ;; toggle hidden files
     (define-key dired-mode-map (kbd "H") 'dired-omit-mode)
+    ;; scroll 
+    (define-key dired-mode-map (kbd "SPC") 'scroll-up-command)
+    (define-key dired-mode-map (kbd "DEL") 'scroll-down-command)
+    ;; (define-key dired-mode-map (kbd "S-SPC") 'scroll-down-command)
+    ;; jump to fil/dirs
+    (define-key dired-mode-map (kbd "f") 'dired-isearch-filenames)
+    ;; subdir
     ;; i dired-maybe-insert-subdir
     ;; o dired-find-file-other-window (switch to other window)
     ;; O dired-display-file
+    (define-key dired-mode-map (kbd "G") 'ido-dired)
     (define-key dired-mode-map (kbd "c") 'sd/dired-new-file)
     (define-key dired-mode-map (kbd "h") 'dired-summary)
     (define-key dired-mode-map (kbd "r") 'revert-buffer)
-    (define-key dired-mode-map (kbd "f") 'dired-isearch-filenames)
-    (define-key dired-mode-map (kbd "DEL") (lambda () (interactive) (find-alternate-file "..")))
+    (define-key dired-mode-map (kbd "l") 'dired-display-file)
+    (define-key dired-mode-map [C-backspace] 'sd/dired-high-level-dir)
     (define-key dired-mode-map (kbd "?") 'describe-mode)
     (define-key dired-mode-map (kbd "z") #'sd/dired-get-size)
     (define-key dired-mode-map (kbd "C-d") 'dired-kill-subdir)
     (define-key dired-mode-map (kbd "M-d") 'dired-kill-subdir)
     (define-key dired-mode-map (kbd "J") 'diredp-next-subdir)
+    (define-key dired-mode-map (kbd "TAB") 'diredp-next-subdir)
     (define-key dired-mode-map (kbd "K") 'diredp-prev-subdir)
     (define-key dired-mode-map (kbd "O") 'dired-display-file)
-    (define-key dired-mode-map (kbd "I") 'other-window))
+    (define-key dired-mode-map (kbd "I") 'other-window)) 
 
   (use-package dired
     :config
@@ -1474,6 +1482,11 @@ Color for Man-mode
     (dired-why)
     (message
      "Δ: d-delete, u-ndelete, x-punge, f-ind, o-ther window, R-ename, C-opy, c-create, +new dir, r-evert, h-summary, ?-help,"))
+
+  (defun sd/dired-high-level-dir ()
+    "Go to higher level directory"
+    (interactive)
+    (find-alternate-file ".."))
 
   (setq dired-guess-shell-alist-user
         '(("\\.pdf\\'" "evince" "okular")
