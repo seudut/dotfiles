@@ -1440,14 +1440,24 @@ Color for Man-mode
     (define-key dired-mode-map (kbd "S-SPC") 'scroll-down-command)
     (define-key dired-mode-map (kbd "C-o") nil)
     (define-key dired-mode-map (kbd "M-s") nil)
-    (define-key dired-mode-map (kbd "l") 'dired-isearch-filenames)
+    ;; (define-key dired-mode-map (kbd "l") 'dired-isearch-filenames)
     (define-key dired-mode-map (kbd "H") 'dired-omit-mode)
-    (define-key dired-mode-map (kbd "DEL") (lambda () (interactive) (find-alternate-file "..")))
+    ;; i dired-maybe-insert-subdir
+    ;; o dired-find-file-other-window (switch to other window)
+    ;; O dired-display-file
     (define-key dired-mode-map (kbd "c") 'sd/dired-new-file)
     (define-key dired-mode-map (kbd "h") 'dired-summary)
-    (define-key dired-mode-map (kbd "?") 'describe-mode)
     (define-key dired-mode-map (kbd "r") 'revert-buffer)
-    (define-key dired-mode-map (kbd "z") #'sd/dired-get-size))
+    (define-key dired-mode-map (kbd "f") 'dired-isearch-filenames)
+    (define-key dired-mode-map (kbd "DEL") (lambda () (interactive) (find-alternate-file "..")))
+    (define-key dired-mode-map (kbd "?") 'describe-mode)
+    (define-key dired-mode-map (kbd "z") #'sd/dired-get-size)
+    (define-key dired-mode-map (kbd "C-d") 'dired-kill-subdir)
+    (define-key dired-mode-map (kbd "M-d") 'dired-kill-subdir)
+    (define-key dired-mode-map (kbd "J") 'diredp-next-subdir)
+    (define-key dired-mode-map (kbd "K") 'diredp-prev-subdir)
+    (define-key dired-mode-map (kbd "O") 'dired-display-file)
+    (define-key dired-mode-map (kbd "I") 'other-window))
 
   (use-package dired
     :config
@@ -2094,6 +2104,7 @@ Use =ESC= to exit minibuffer. Also I map =Super-h= the same as =C-g=
     :ensure t
     :init
     (setq projectile-enable-caching t)
+    (setq projectile-switch-project-action 'projectile-dired)
     (setq projectile-cache-file (concat sd-temp-directory "projectile.cache"))
     :config
     (add-to-list 'projectile-globally-ignored-files "GTAGS")
@@ -2247,7 +2258,7 @@ Most use =C-o C-o= to switch buffers; =C-o x, v= to split window; =C-o o= to del
     ;; ibuffer, dired, eshell, bookmarks
     ;; ("d" ace-delete-window "ace-one" :exit t)
     ("C-o" ido-switch-buffer nil :exit t)
-    ("d" dired-jump nil :exit t)
+    ("d" projectile-dired nil :exit t)
     ("b" ibuffer nil n:exit t)
     ("e" eshell nil :exit t)
     ("m" bookmark-jump-other-window nil :exit t)
