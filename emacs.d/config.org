@@ -437,7 +437,7 @@ Revised powerline-center-theme
     :group 'powerline)
 
   ;; Don't show buffer modified for scratch and eshell mode
-  (defun sd/buffer-show-modified ()
+  (defun sd/buffer-is-eshel-or-scratch ()
     "Dot not show modified indicator for buffers"
     (interactive)
     (unless (or (string-match "*scratch*" (buffer-name))
@@ -454,7 +454,7 @@ Revised powerline-center-theme
                             (mode-line-buffer-id (if active 'sd/mode-line-buffer-id 'mode-line-buffer-id-inactive))
                             (mode-line (if active 'mode-line 'mode-line-inactive))
                             (my-face1 (if active 'sd/powerline-active1 'powerline-inactive1))
-                            (my-face-buffer-modified (if (and (sd/buffer-show-modified) (buffer-modified-p)) 
+                            (my-face-buffer-modified (if (and (sd/buffer-is-eshel-or-scratch) (buffer-modified-p) (not buffer-read-only)) 
                                                          'sd/buffer-modified-active1
                                                        (if buffer-read-only 'sd/buffer-view-active1
                                                          my-face1)))
