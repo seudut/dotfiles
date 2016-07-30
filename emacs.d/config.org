@@ -1011,7 +1011,7 @@ and Defined keys, using vi keybindings, Refer abo-abo's setting [[https://github
     ;; don't ask me to confirm the unsaved change 
     (setq magit-save-repository-buffers nil)
     ;; default is 50
-    (setq git-commit-summary-max-length 72)
+    (setq git-commit-summary-max-length 80)
     :commands magit-status magit-blame
     :config
     (dolist (map (list magit-status-mode-map
@@ -1327,7 +1327,10 @@ When see function by =C-h f=, and visit the source code, I would like the buffer
    '((nil . ((buffer-read-only . t)
              (show-trailing-whitespace . nil)
              (tab-width . 8)
-             (eval . (whitespace-mode -1))))))
+             (eval . (whitespace-mode -1))
+             (eval . (when buffer-file-name
+                       (setq-local view-no-disable-on-exit t)
+                       (view-mode-enter)))))))
 
   ;; (dir-locals-set-directory-class (expand-file-name "/usr/local/share/emacs") 'emacs)
   (dir-locals-set-directory-class "/usr/local/Cellar/emacs" 'emacs)
@@ -1478,7 +1481,7 @@ I would like change the default dired summary
     (interactive)
     (dired-why)
     (message
-     "Δ: d-delete, u-ndelete, x-punge, f-ind, o-ther window, R-ename, C-opy, +new dir, ?-summary"))
+     "Δ: d-delete, u-ndelete, x-punge, f-ind, o-ther window, R-ename, C-opy, c-create, +new dir, ?-summary"))
 #+END_SRC
 
 When create a new directory, I want to disalbe =ido= completion. see [[http://stackoverflow.com/questions/7479565/emacs-ido-mode-and-creating-new-files-in-directories-it-keeps-changing-the-dire][here]]. Thhis code snippets copied
