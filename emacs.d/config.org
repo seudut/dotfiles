@@ -1728,7 +1728,7 @@ Install clang, on mac, it has =libclang.dylib=, but no develop headers. Install 
 #+END_SRC
 
 then install irony searver, and =LIBCLANG_LIBRARY= and =LIBCLANG_INCLUDE_DIR= accordingly
-#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+#+BEGIN_SRC emacs-lisp :tangle no :results silent
   (irony-install-server)
 #+END_SRC
 
