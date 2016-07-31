@@ -1096,6 +1096,14 @@ Toggle an eshell in split window below, refer [[http://www.howardism.org/Technic
   (global-set-key (kbd "s-e") 'sd/toggle-eshell-here)
 #+END_SRC
 
+** exec-path-from-shell
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+  (use-package exec-path-from-shell
+    :ensure t
+    :config
+    (exec-path-from-shell-initialize))
+#+END_SRC
+
 ** TODO smart display
 * Misc Settings
 
@@ -1297,25 +1305,6 @@ Type =o= to go to the link
     :ensure t
     :config
     (which-key-mode))
-
-#+END_SRC
-
-** Tabbar
-
-#+BEGIN_SRC emacs-lisp :tangle yes :results silent
-
-  ;; (use-package tabbar-ruler
-  ;;   :ensure t
-  ;;   :init
-  ;;   (setq tabbar-ruler-global-tabbar t)
-  ;;   (setq tabbar-ruler-global-ruler t)
-  ;;   (setq tabbar-ruler-popu-menu t)
-  ;;   (setq tabbar-ruler-popu-toolbar t)
-  ;;   (setq tabbar-use-images t)
-  ;;   :config
-  ;;   (tabbar-ruler-group-by-projectile-project)
-  ;;   (global-set-key (kbd "s-1") 'tabbar-forward-group)
-  ;;   (global-set-key (kbd "s-2") 'tabbar-ruler-forward))
 
 #+END_SRC
 
