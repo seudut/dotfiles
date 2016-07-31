@@ -1739,6 +1739,34 @@ then install irony searver, and =LIBCLANG_LIBRARY= and =LIBCLANG_INCLUDE_DIR= ac
         /Users/peli3/.emacs.d/elpa/irony-20160713.1245/server && cmake --build . --use-stderr --config Release --target install 
 #+END_SRC
 
+irony-mode-hook, copied from [[https://github.com/Sarcasm/irony-mode][irony-mode]] github
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+  ;; replace the `completion-at-point' and `complete-symbol' bindings in
+  ;; irony-mode's buffers by irony-mode's function
+  (defun my-irony-mode-hook ()
+    (define-key irony-mode-map [remap completion-at-point]
+      'irony-completion-at-point-async)
+    (define-key irony-mode-map [remap complete-symbol]
+      'irony-completion-at-point-async))
+  (add-hook 'irony-mode-hook 'my-irony-mode-hook)
+  (add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options)
+#+END_SRC
+
+irony-company
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+  (use-package company-irony
+    :ensure t)
+
+  (eval-after-load 'company
+    '(add-to-list 'company-backends 'company-irony))
+
+  (use-package flycheck-irony
+    :ensure t)
+
+  (eval-after-load 'flycheck
+    '(add-hook 'flycheck-mode-hook #'flycheck-irony-setup))
+#+END_SRC
+
 *** yasnippet
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
   (use-package yasnippet
