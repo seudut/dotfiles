@@ -1419,8 +1419,7 @@ Color for Man-mode
 #+END_SRC
 
 * Dired
-** Dired config
-*** Dired bindings
+** Dired bindings
 =C-o= is defined as a global key for window operation, here unset it in dired mode
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
   (defun sd/dired-key-map ()
@@ -1479,7 +1478,7 @@ Color for Man-mode
     (interactive)
     (dired-why)
     (message
-     "Δ: d-delete, u-ndelete, x-punge, f-ind, o-ther window, R-ename, C-opy, c-create, +new dir, r-evert, h-summary, ?-help,"))
+     "Δ: d-delete, u-ndelete, x-punge, f-ind, o-ther window, R-ename, C-opy, c-create, +new dir, r-evert, /-filter, h-summary, ?-help"))
 
   (defun sd/dired-high-level-dir ()
     "Go to higher level directory"
@@ -1506,7 +1505,7 @@ Color for Man-mode
            (match-string 1))))))
 #+END_SRC
 
-*** disable ido when dired new file
+** disable ido when dired new file
 When create a new directory, I want to disalbe =ido= completion. see [[http://stackoverflow.com/questions/7479565/emacs-ido-mode-and-creating-new-files-in-directories-it-keeps-changing-the-dire][here]]. Thhis code snippets copied
 from [[https://emacs.stackexchange.com/questions/13713/how-to-disable-ido-in-dired-create-directory/13795#13795?newreg%3Ddb17c20f7af3490fb11cf15f1d888e9e][How to disable IDO in ‘dired-create-directory’]]
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
@@ -1530,7 +1529,7 @@ Disalble =ido= when new a directory or file in =dired= mode
   (mk-disable-ido 'sd/dired-new-file)
 #+END_SRC
 
-*** Dired open with
+** Dired open with
 =!= =dired-do-shell-command=
 =&= =dired-do-async-shell-command=
 here on Mac, just use "open" commands to pen =.pdf=,  =.html= and image files
@@ -1545,22 +1544,25 @@ here on Mac, just use "open" commands to pen =.pdf=,  =.html= and image files
           ("\\.\\(?:mp4\\|mkv\\|avi\\|flv\\|ogv\\)\\(?:\\.part\\)?\\'" "mplayer")
           ("\\.\\(?:mp3\\|flac\\)\\'" "rhythmbox")
           ("\\.html?\\'" "open")
+          ("\\.dmg\\'" "open")
           ("\\.cue?\\'" "audacious")))
 #+END_SRC
 
 ** dired-hacks
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
   (use-package dired-hacks-utils
-    :ensure t)
+    :ensure t
+    :defer t)
+#+END_SRC
 
-
-  (defconst my-dired-media-files-extensions '("mp3" "mp4" "MP3" "MP4" "avi" "mpg" "flv" "ogg" "wmv" "mkv" "mov" "wma")
-  "Media file extensions that should launch in VLC.")
-
-    (add-to-list 'dired-guess-shell-alist-user
-                 (list (concat "\\."
-                               (regexp-opt my-dired-media-files-extensions)
-                               "\\'") "mplayer"))
+** dired-narrow
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+  ;;narrow dired to match filter
+  (use-package dired-narrow
+    :ensure t
+    :commands (dired-narrow)
+    :bind (:map dired-mode-map
+                ("/" . dired-narrow)))
 #+END_SRC
 
 * Ibuffer
