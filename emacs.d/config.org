@@ -1574,7 +1574,14 @@ here on Mac, just use "open" commands to pen =.pdf=,  =.html= and image files
     (define-key ibuffer-mode-map (kbd "j") 'ibuffer-forward-line)
     (define-key ibuffer-mode-map (kbd "k") 'ibuffer-backward-line)
     (define-key ibuffer-mode-map (kbd "r") 'ibuffer-update)
-    (define-key ibuffer-mode-map (kbd "g") 'ibuffer-jump-to-buffer))
+    (define-key ibuffer-mode-map (kbd "g") 'ibuffer-jump-to-buffer)
+    (define-key ibuffer-mode-map (kbd "h") 'sd/ibuffer-summary))
+
+  (defun sd/ibuffer-summary ()
+    "Show summary of keybindings in ibuffer mode"
+    (interactive)
+    (message
+     "Β: m|u - (un)mark, /-filter, //-remove filter, t, RET, g, k, S, D, Q; q to quit; h for help"))
 #+END_SRC
 
 * Completion
@@ -2146,6 +2153,7 @@ Use =ESC= to exit minibuffer. Also I map =Super-h= the same as =C-g=
 
   (global-set-key (kbd "s-n") 'persp-next)
   (global-set-key (kbd "s-p") 'persp-prev)
+  (global-set-key (kbd "s-;") 'persp-switch-last)
 
   (global-set-key (kbd "s-=") 'text-scale-increase)
   (global-set-key (kbd "s--") 'text-scale-decrease)
