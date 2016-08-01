@@ -340,9 +340,7 @@ Enable rainbow mode in emacs lisp mode
 * Mode-line
 
 ** clean mode line
-
 clean mode line, Refer to [[https://www.masteringemacs.org/article/hiding-replacing-modeline-strings][Marstering Emacs]]
-
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
   (defvar mode-line-cleaner-alist
     `((auto-complete-mode . " α")
@@ -397,9 +395,7 @@ clean mode line, Refer to [[https://www.masteringemacs.org/article/hiding-replac
 #+END_SRC
 
 ** Powerline mode
-
 Install powerline mode [[https://github.com/milkypostman/powerline][powerline]]
-
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
   (use-package powerline
     :ensure t
@@ -525,7 +521,7 @@ set height in mode line
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
   (use-package ido
     :ensure t
-    :init (setq ido-enable-flex-matching t
+    :init (setq ido-enable-flex-matching nil
                 ido-ignore-extensions t
                 ido-use-virtual-buffers t
                 ido-everywhere t)
@@ -542,9 +538,9 @@ set height in mode line
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
   (use-package flx-ido
     :ensure t
-    :init (setq ido-enable-flex-matching t
+    :init (setq ido-enable-flex-matching nil
                 ido-use-faces nil)
-    :config (flx-ido-mode 1))
+    :config (flx-ido-mode nil))
 #+END_SRC
 
 ** IDO-vertically
@@ -1101,6 +1097,8 @@ Toggle an eshell in split window below, refer [[http://www.howardism.org/Technic
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
   (use-package exec-path-from-shell
     :ensure t
+    :init
+    (setq exec-path-from-shell-check-startup-files nil)
     :config
     (exec-path-from-shell-initialize))
 #+END_SRC
@@ -1712,6 +1710,7 @@ to call =compilation=  interactively.
   (use-package flycheck
     :ensure t)
 #+END_SRC
+
 *** irony
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
   (use-package irony
