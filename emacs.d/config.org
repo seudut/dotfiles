@@ -314,14 +314,13 @@ improve color for org-mode
 #+END_SRC
 
 ** page-break-lines
-
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
-
   (use-package page-break-lines
     :ensure t
     :config
-    (turn-on-page-break-lines-mode))
-
+    (global-page-break-lines-mode)
+    ;; (turn-on-page-break-lines-mode)
+    )
 #+END_SRC
 
 ** rainbow-mode
