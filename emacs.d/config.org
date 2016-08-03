@@ -1450,7 +1450,7 @@ Color for Man-mode
     (define-key dired-mode-map (kbd "h") 'dired-summary)
     (define-key dired-mode-map (kbd "r") 'revert-buffer)
     (define-key dired-mode-map (kbd "l") 'dired-display-file)
-    (define-key dired-mode-map [C-backspace] 'sd/dired-high-level-dir)
+    (define-key dired-mode-map [C-backspace] 'dired-up-directory)
     (define-key dired-mode-map (kbd "?") 'describe-mode)
     (define-key dired-mode-map (kbd "z") #'sd/dired-get-size)
     (define-key dired-mode-map (kbd "C-d") 'dired-kill-subdir)
@@ -2215,7 +2215,9 @@ Use =ESC= to exit minibuffer. Also I map =Super-h= the same as =C-g=
     :ensure t
     :init
     (setq projectile-enable-caching t)
-    (setq projectile-switch-project-action 'projectile-dired)
+    (setq projectile-switch-project-action (lambda ()
+                                             (projectile-dired)
+                                             (sd/project-switch-action)))
     (setq projectile-cache-file (concat sd-temp-directory "projectile.cache"))
     :config
     (add-to-list 'projectile-globally-ignored-files "GTAGS")
@@ -2229,9 +2231,19 @@ Use =ESC= to exit minibuffer. Also I map =Super-h= the same as =C-g=
     (:map projectile-mode-map
           ("s-t" . projectile-persp-switch-project)))
 
-  ;; projectile-find-file
-  ;; projectile-switch-buffer
-  ;; projectile-find-file-other-window
+  (defun sd/change-default-directory (buffer dir)
+    "change defafult directory of buffer to dir"
+    (with-current-buffer buffer
+      (cd dir)))
+
+  ;; change default-directory of scratch buffer to projectile-project-root 
+  (defun sd/project-switch-action ()
+    "Change default-directory of scratch buffer to current projectile-project-root directory"
+    (interactive)
+    (dolist (buffer (buffer-list))
+      (if (string-match (concat "scratch.*" (projectile-project-name))
+                        (buffer-name buffer))
+          (sd/change-default-directory buffer (projectile-project-root)))))
 #+END_SRC
 
 *** project config =super= keybindings
