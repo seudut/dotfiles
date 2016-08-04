@@ -1069,7 +1069,7 @@ Toggle an eshell in split window below, refer [[http://www.howardism.org/Technic
                     nil nil)
       ret))
 
-  (defun sd/toggle-eshell-here ()
+  (defun sd/toggle-project-eshell ()
     "Toggle a eshell buffer vertically"
     (interactive)
     (if (sd/window-has-eshell)
@@ -1080,20 +1080,26 @@ Toggle an eshell in split window below, refer [[http://www.howardism.org/Technic
                 (delete-window)))
           (select-window (sd/window-has-eshell)))
       (progn
-        (let ((dir default-directory))
+        (split-window-vertically (- (/ (window-total-height) 3)))
+        (other-window 1)
+        (if (projectile-project-p)
+            (projectile-run-eshell)
+          (eshell))
+        ;; (let ((dir default-directory))
         
-          (split-window-vertically (- (/ (window-total-height) 3)))
-          (other-window 1)
-          (unless (and (boundp 'eshell-buffer-name) (get-buffer eshell-buffer-name))
-            (eshell))
-          (switch-to-buffer eshell-buffer-name)
-          (goto-char (point-max))
-          (eshell-kill-input)
-          (insert (format "cd %s" dir))
-          (eshell-send-input)))))
+        ;;   (split-window-vertically (- (/ (window-total-height) 3)))
+        ;;   (other-window 1)
+        ;;   (unless (and (boundp 'eshell-buffer-name) (get-buffer eshell-buffer-name))
+        ;;     (eshell))
+        ;;   (switch-to-buffer eshell-buffer-name)
+        ;;   (goto-char (point-max))
+        ;;   (eshell-kill-input)
+        ;;   (insert (format "cd %s" dir))
+        ;;   (eshell-send-input))
+        )))
 
   ;; (global-unset-key (kbd "M-`"))
-  (global-set-key (kbd "s-e") 'sd/toggle-eshell-here)
+  (global-set-key (kbd "s-e") 'sd/toggle-project-eshell)
 #+END_SRC
 
 ** exec-path-from-shell
@@ -2393,7 +2399,7 @@ Most use =C-o C-o= to switch buffers; =C-o x, v= to split window; =C-o o= to del
     ("C-o" ido-switch-buffer nil :exit t)
     ("d" sd/project-or-dired-jump nil :exit t)
     ("b" ibuffer nil :exit t)
-    ("e" eshell nil :exit t)
+    ("e" sd/toggle-project-eshell nil :exit t)
     ("m" bookmark-jump-other-window nil :exit t)
     ("M" bookmark-set nil :exit t)
     ("g" magit-status nil :exit t)
