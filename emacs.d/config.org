@@ -362,7 +362,8 @@ clean mode line, Refer to [[https://www.masteringemacs.org/article/hiding-replac
       (org-indent-mode . "")
       ;; default is  Fly
       (flyspell-mode . "")
-      (irony-mode . "I")
+      (irony-mode . "")
+      (page-break-lines-mode . "")
       ;; Major modes
       (lisp-interaction-mode . "λ")
       (hi-lock-mode . "")
@@ -2230,10 +2231,10 @@ Use =ESC= to exit minibuffer. Also I map =Super-h= the same as =C-g=
     (:map projectile-mode-map
           ("s-t" . projectile-persp-switch-project)))
 
-  (defun sd/change-default-directory (buffer dir)
-    "change defafult directory of buffer to dir"
-    (with-current-buffer buffer
-      (cd dir)))
+  ;; (defun sd/change-default-directory (buffer dir)
+  ;;   "change defafult directory of buffer to dir"
+  ;;   (with-current-buffer buffer
+  ;;     (cd dir)))
 
   ;; change default-directory of scratch buffer to projectile-project-root 
   (defun sd/project-switch-action ()
@@ -2242,7 +2243,11 @@ Use =ESC= to exit minibuffer. Also I map =Super-h= the same as =C-g=
     (dolist (buffer (buffer-list))
       (if (string-match (concat "scratch.*" (projectile-project-name))
                         (buffer-name buffer))
-          (sd/change-default-directory buffer (projectile-project-root)))))
+          (let ((root (projectile-project-root)))
+            (with-current-buffer buffer
+              (cd root)))
+        ;; (sd/change-default-directory buffer (projectile-project-root))
+        )))
 #+END_SRC
 
 *** project config =super= keybindings
