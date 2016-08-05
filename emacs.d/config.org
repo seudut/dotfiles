@@ -1325,15 +1325,39 @@ When see function by =C-h f=, and visit the source code, I would like the buffer
              (show-trailing-whitespace . nil)
              (tab-width . 8)
              (eval . (whitespace-mode -1))
-             (eval . (when buffer-file-name
-                       (setq-local view-no-disable-on-exit t)
-                       (view-mode-enter)))))))
+             ;; (eval . (when buffer-file-name
+             ;;           (setq-local view-no-disable-on-exit t)
+             ;;           (view-mode-enter)))
+             ))))
 
   ;; (dir-locals-set-directory-class (expand-file-name "/usr/local/share/emacs") 'emacs)
   (dir-locals-set-directory-class "/usr/local/Cellar/emacs" 'emacs)
   ;; (dir-locals-set-directory-class "~/.emacs.d/elpa" 'emacs)
   (dir-locals-set-directory-class "~/dotfiles/emacs.d/elpa" 'emacs)
   (dir-locals-set-directory-class "~/dotfiles/emacs.d/el-get" 'emacs)
+
+  ;; temp-mode.el
+  ;; Temporary minor mode
+  ;; Main use is to enable it only in specific buffers to achieve the goal of
+  ;; buffer-specific keymaps
+
+  ;; (defvar sd/temp-mode-map (make-sparse-keymap)
+  ;;   "Keymap while temp-mode is active.")
+
+  ;; ;;;###autoload
+  ;; (define-minor-mode sd/temp-mode
+  ;;   "A temporary minor mode to be activated only specific to a buffer."
+  ;;   nil
+  ;;   :lighter " Temp"
+  ;;   sd/temp-mode-map)
+
+  ;; (defun sd/temp-hook ()
+  ;;   (if sd/temp-mode
+  ;;       (progn
+  ;;      (define-key sd/temp-mode-map (kbd "q") 'quit-window))))
+
+  ;; (add-hook 'lispy-mode-hook (lambda ()
+  ;;                           (sd/temp-hook)))
 #+END_SRC
 
 ** Info plus
