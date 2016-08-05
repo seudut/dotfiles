@@ -1450,6 +1450,23 @@ Color for Man-mode
     (define-key pdf-outline-buffer-mode-map (kbd "k") 'previous-line))
 #+END_SRC
 
+** help-mode
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+  (defun sd/help-mode-hook ()
+    "Mapping for help mode"
+    (define-key help-mode-map "j" 'next-line)
+    (define-key help-mode-map "k" 'previous-line)
+    (define-key help-mode-map "h" 'forward-char)
+    (define-key help-mode-map "l" 'forward-char)
+    (define-key help-mode-map "H" 'describe-mode)
+    (define-key help-mode-map "v" 'recenter-top-bottom)
+    (define-key help-mode-map "i" 'forward-button)
+    (define-key help-mode-map "I" 'backward-button)
+    (define-key help-mode-map "o" 'ace-link-help))
+
+  (add-hook 'help-mode-hook 'sd/help-mode-hook)
+#+END_SRC
+
 * Dired
 ** Dired bindings
 =C-o= is defined as a global key for window operation, here unset it in dired mode
