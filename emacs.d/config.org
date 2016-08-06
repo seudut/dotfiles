@@ -1879,14 +1879,14 @@ Set the environments vairables in compilation mode
 ** C++ Auto Insert
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
   (eval-after-load 'autoinsert
-    '(define-auto-insert '("\\.cpp\\'" . "C++ skeleton")
+    '(define-auto-insert '("\\.cpp\\|.cc\\'" . "C++ skeleton")
        '(
          "Short description:"
          "/*"
          "\n * " (file-name-nondirectory (buffer-file-name))
          "\n */" > \n \n
          "#include <iostream>" \n
-         "#include \""
+         "//#include \""
          (file-name-sans-extension
           (file-name-nondirectory (buffer-file-name)))
          ".hpp\"" \n \n
@@ -1894,7 +1894,7 @@ Set the environments vairables in compilation mode
          "int main ()"
          "\n{" \n 
          > _ \n
-         "return 1;"
+         "return 0;"
          "\n}" > \n
          )))
 
@@ -1906,16 +1906,21 @@ Set the environments vairables in compilation mode
          " * " (file-name-nondirectory (buffer-file-name)) "\n"
          " */" > \n \n
          "#include <stdio.h>" \n
-         "#include \""
+         "//#include \""
          (file-name-sans-extension
           (file-name-nondirectory (buffer-file-name)))
          ".h\"" \n \n
          "int main ()\n"
          "{" \n
          > _ \n
-         "return 1;\n"
+         "return 0;\n"
          "}" > \n
          )))
+
+  (eval-after-load 'autoinsert
+    '(define-auto-insert '("\\.h\\|.hpp\\'" . "c/c++ header")
+       '((s-upcase (s-snake-case (file-name-nondirectory buffer-file-name)))
+         "#ifndef " str n "#define " str "\n\n" _ "\n\n#endif  // " str)))
 #+END_SRC
 
 ** Python template
