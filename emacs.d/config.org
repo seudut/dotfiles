@@ -136,6 +136,17 @@ Check out [[http://tapoueh.org/emacs/el-get.html][el-get]].
     :ensure t)
 #+END_SRC
 
+* Mac Specific
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+  ;; (defconst *is-a-mac* (eq system-type 'darwin))
+  ;; (setq mouse-wheel-scroll-amount '(1
+  ;;                                   ((shift) . 5)
+  ;;                                   ((control))))
+
+
+  ;; (setq-default indicate-empty-lines t)
+#+END_SRC
+
 * Color and Fonts Settings
 
 ** highlight current line
@@ -1850,10 +1861,43 @@ irony-company
     '(add-hook 'flycheck-mode-hook #'flycheck-irony-setup))
 #+END_SRC
 
+*** gtags
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+  (use-package ggtags
+    :ensure t)
+
+  (add-hook 'c-mode-common-hook
+            (lambda ()
+              (when (derived-mode-p 'c-mode 'c++-mode 'java-mode)
+                (ggtags-mode 1))))
+
+  (require 'cc-mode)
+  (require 'semantic)
+
+  (global-semanticdb-minor-mode 1)
+  (global-semantic-idle-scheduler-mode 1)
+
+  (semantic-mode 1)
+
+#+END_SRC
+
 *** yasnippet
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
   (use-package yasnippet
     :ensure t)
+#+END_SRC
+
+*** semantic
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+
+#+END_SRC
+
+*** google C style
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+  (use-package google-c-style
+    :ensure t
+    :config
+    (add-hook 'c-mode-hook 'google-set-c-style))
 #+END_SRC
 
 * Compile
