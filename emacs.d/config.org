@@ -1677,6 +1677,12 @@ company mode and company-statistics
     (company-statistics-mode))
 #+END_SRC
 
+* Libs
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+  (use-package s
+    :ensure t)
+#+END_SRC
+
 * Programming Language
 ** Emacs Lisp
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
