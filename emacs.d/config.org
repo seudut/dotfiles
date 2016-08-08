@@ -1409,12 +1409,6 @@ When see function by =C-h f=, and visit the source code, I would like the buffer
 ** TODO Man mode
 Color for Man-mode
 
-** TODO UTF8
-#+BEGIN_SRC emacs-lisp :tangle yes :results silent
-  ;; (set-language-environment "UTF-8")
-  ;; (set-default-coding-systems 'utf-8)
-#+END_SRC
-
 ** Demo It
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
   ;; (el-get-bundle howardabrams/demo-it)
@@ -2940,69 +2934,14 @@ stolen from [[https://github.com/mariolong/emacs.d/blob/f6a061594ef1b5d1f4750e9d
 #+END_SRC
 
 *** TODO make expand-region hydra work with lispy selected
-
-* TODO Convert ASCII to key
-** map =function-key-map= [[http://academic.evergreen.edu/projects/biophysics/technotes/program/ascii_ctrl.htm][ascii_ctrl]]
-new file =C-x C-f C-f=
-
-** write color syntax for =Man-mode=
-
-#+BEGIN_SRC emacs-lisp :tangle yes :results silent
-  (font-lock-add-keywords 'perl-mode '(("\\(|\\w+?\\(,\\w+?\\)?|\\)" 1 'py-builtins-face)))
-#+END_SRC
-
-* TODO jump last change point
-* TODO emms mode-line
-
-* =C-u C-h a= search funtions 
-=apropos-command= 
-
 * key
 - passion
 - vision
 - mission
 
-* M prefix
-#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+* TODO jump last change point
 
-  ;; M-h - mark-paragraph
-  ;; M-j - new line indent
-  ;; M-k - kill-sentence
-  ;; M-l - downcase words     ====== goto-line
-  ;; M-; - comments
-  ;; M-'- abbrev-prefix-mark  =======
-  ;; M-RET none                ======
-
-  ;; M-y - yank
-  ;; M-u - upcase word
-  ;; M-i -                 ====== imenu
-  ;; M-o             ====== prefix
-  ;; M-p
-  ;; M-[                   =====
-  ;; M-]              ========
-  ;; M-\   deleter horizontal space =====
-
-  ;; M-n 
-  ;; M-m ---- indent
-  ;; M-, --- mark stack====== =
-  ;; M-. lisp-goto-symboo, find definitation
-
-  ;; M-a 
-  ;; M-s ===== 
-  ;; M-d
-  ;; M-f
-  ;; M-g - prefix
-
-  ;; M-q - lisp fill, fill paragraph
-  ;; M-w 
-  ;; M-e
-  ;; M-r  - rePositioning 
-  ;; M-t transpose word 
-
-  ;; M-z zap-to-char
-  ;; M-x
-  ;; M-c  capitalize-word
-  ;; M-v 
-  ;; M-b 
-#+END_SRC
-
+* TODO todolist
+** rucket
+** player video on iphone for 
+** SICP
