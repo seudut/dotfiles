@@ -917,6 +917,8 @@ Setting agenda files and the agenda view
 ** Export PDF
 Install MacTex-basic [[http://www.tug.org/mactex/morepackages.html][MacTex-basic]]  and some tex packages
 #+BEGIN_SRC sh 
+  wget http://tug.org/cgi-bin/mactex-download/BasicTeX.pkg
+
   sudo tlmgr update --self
 
   sudo tlmgr install titlesec framed threeparttable wrapfig multirow enumitem bbding titling tabu mdframed tcolorbox textpos import varwidth needspace tocloft ntheorem environ trimspaces collection-fontsrecommended capt-of
