@@ -650,11 +650,8 @@ let helm windows split inside current window
 #+END_SRC
 
 * Org-mode Settings
-
 ** Org-mode Basic setting
-
 Always indents header, and hide header leading starts so that no need type =#+STATUP: indent= 
-
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
   (use-package org
     :ensure t
@@ -699,9 +696,7 @@ Always indents header, and hide header leading starts so that no need type =#+ST
 #+END_SRC
 
 ** Org-bullets
-
 use [[https://github.com/sabof/org-bullets][org-bullets]] package to show utf-8 charactes
-
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
   (use-package org-bullets
     :ensure t
@@ -717,12 +712,10 @@ use [[https://github.com/sabof/org-bullets][org-bullets]] package to show utf-8 
 #+END_SRC
 
 ** Worf Mode
-
 [[https://github.com/abo-abo/worf][worf]] mode is an extension of vi-like binding for org-mode. 
 In =worf-mode=, it is mapping =[=, =]= as =worf-backward= and =worf-forward= in global, wich
 cause we cannot input =[= and =]=, so here I unset this mappings. And redifined this two to
 =M-[= and =M-]=. see this [[https://github.com/abo-abo/worf/issues/19#issuecomment-223756599][issue]]
-
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
 
   (use-package worf
@@ -739,12 +732,9 @@ cause we cannot input =[= and =]=, so here I unset this mappings. And redifined 
 #+END_SRC
 
 ** Get Things Done
-
 Refer to [[http://doc.norang.ca/org-mode.html][Organize Your Life in Plain Text]]
 *** basic setup
-
 standard key binding
-
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
   (global-set-key "\C-cl" 'org-store-link)
   (global-set-key "\C-ca" 'org-agenda)
@@ -752,9 +742,7 @@ standard key binding
 #+END_SRC
 
 *** Plain List 
-
 Replace the list bullet =-=, =+=,  with =•=, a litter change based [[https://github.com/howardabrams/dot-files/blob/master/emacs-org.org][here]]
-
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
   ;; (use-package org-mode
   ;;   :init
@@ -1000,9 +988,7 @@ Install MacTex-basic [[http://www.tug.org/mactex/morepackages.html][MacTex-basic
 #+END_SRC
 
 ** others
-
 extend org-mode's easy templates, refer to [[http://coldnew.github.io/coldnew-emacs/#orgheadline94][Extend org-modes' esay templates]]
-
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
 
   (add-to-list 'org-structure-template-alist
