@@ -673,6 +673,7 @@ Always indents header, and hide header leading starts so that no need type =#+ST
      (latex . t)
      (java . t)
      (ruby . t)
+     (lua . t)
      (lisp . t)
      (scheme . t)
      (sh . t)
@@ -693,6 +694,10 @@ Always indents header, and hide header leading starts so that no need type =#+ST
   (unless 
       (file-exists-p org-ditaa-jar-path)
     (error "seudut: ditaa.jar not found at %s " org-ditaa-jar-path))
+
+  ;; Lua support
+  (use-package ob-lua
+    :ensure t)
 #+END_SRC
 
 ** Org-bullets
@@ -1880,6 +1885,12 @@ irony-company
     :ensure t
     :config
     (add-hook 'c-mode-hook 'google-set-c-style))
+#+END_SRC
+
+** Lua
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+  (use-package lua-mode
+    :ensure t)
 #+END_SRC
 
 * Compile
