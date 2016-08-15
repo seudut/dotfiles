@@ -1106,7 +1106,6 @@ Toggle an eshell in split window below, refer [[http://www.howardism.org/Technic
     (exec-path-from-shell-initialize))
 #+END_SRC
 
-** TODO smart display
 * Misc Settings
 
 ** [[https://github.com/abo-abo/hydra][Hydra]]
@@ -1246,68 +1245,50 @@ I like [[https://github.com/coldnew/linum-relative][linum-relative]], just like 
 #+END_SRC
 
 ** Multi-term
-
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
-
   (use-package multi-term
     :ensure t)
-
 #+END_SRC
 
 ** ace-link
-
 [[https://github.com/abo-abo/ace-link][ace-link]] is a package written by [[https://github.com/abo-abo][Oleh Krehel]]. It is convenient to jump to link in help mode, info-mode, etc
 Type =o= to go to the link
-
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
-
   (use-package ace-link
     :ensure t
     :init
     (ace-link-setup-default))
-
 #+END_SRC
 
 ** Smart Parens
-
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
-
   (use-package smartparens
     :ensure t
     :config
     (progn
       (require 'smartparens-config)
       (add-hook 'prog-mode-hook 'smartparens-mode)))
-
 #+END_SRC
 
 ** Ace-Windows
-
 [[https://github.com/abo-abo/ace-window][ace-window]] 
-
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
-
   (use-package ace-window
     :ensure t
     :defer t
-  ;  :init
-  ;  (global-set-key (kbd "M-o") 'ace-window)
+                                          ;  :init
+                                          ;  (global-set-key (kbd "M-o") 'ace-window)
     :config
     (setq aw-keys '(?a ?s ?d ?f ?j ?k ?l)))
-
 #+END_SRC
 
 ** Which key
-
 [[https://github.com/justbur/emacs-which-key][which-key]] show the key bindings 
-
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
-
   (use-package which-key
     :ensure t
     :config
     (which-key-mode))
-
 #+END_SRC
 
 ** View only for some directory
