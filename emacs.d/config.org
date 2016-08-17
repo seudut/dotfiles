@@ -1430,6 +1430,12 @@ When see function by =C-h f=, and visit the source code, I would like the buffer
   (add-hook 'help-mode-hook 'sd/help-mode-hook)
 #+END_SRC
 
+** goto-last-change
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+  (use-package goto-last-change
+    :ensure t)
+#+END_SRC
+
 * Dired
 ** Dired bindings
 =C-o= is defined as a global key for window operation, here unset it in dired mode
@@ -2157,6 +2163,11 @@ See [[https://www.emacswiki.org/emacs/GnusWindowLayout][GnusWindowLayout]]
 #+END_SRC
 
 * Gnu Plot
+Install =gnuplot= on Mac
+#+BEGIN_SRC sh
+  brew install gnuplot --with-qt
+#+END_SRC
+
 To fix some issue that =toolbar-make-button-list= is void, see the [[https://github.com/bruceravel/gnuplot-mode/issues/31][issue]], here I set some variable as =nil=
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
   (use-package gnuplot
@@ -2902,8 +2913,6 @@ stolen from [[https://github.com/mariolong/emacs.d/blob/f6a061594ef1b5d1f4750e9d
 - passion
 - vision
 - mission
-
-* TODO jump last change point
 
 * TODO todolist
 ** rucket
