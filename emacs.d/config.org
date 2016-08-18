@@ -1436,6 +1436,17 @@ When see function by =C-h f=, and visit the source code, I would like the buffer
     :ensure t)
 #+END_SRC
 
+** Ag
+install =ag=, =the-silver-searcher= by homebrew on mac
+#+BEGIN_SRC sh
+brew install the-silver-searcher
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+  (use-package ag
+    :ensure t)
+#+END_SRC
+
 * Dired
 ** Dired bindings
 =C-o= is defined as a global key for window operation, here unset it in dired mode
@@ -2446,7 +2457,7 @@ Most use =C-o C-o= to switch buffers; =C-o x, v= to split window; =C-o o= to del
     ;; buffer / windows switch
     ("o" sd/toggle-max-windows "one" :exit t)
     ("C-k" sd/delete-current-window "del" :exit t)
-    ("D" (lambda ()
+    ("C-d" (lambda ()
              (interactive)
              (kill-buffer)
              (sd/delete-current-window))
