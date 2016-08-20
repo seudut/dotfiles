@@ -985,14 +985,16 @@ Install MacTex-basic [[http://www.tug.org/mactex/morepackages.html][MacTex-basic
 ** Org structure template
 extend org-mode's easy templates, refer to [[http://coldnew.github.io/coldnew-emacs/#orgheadline94][Extend org-modes' esay templates]]
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
-  (add-to-list 'org-structure-template-alist
-               '("E" "#+BEGIN_SRC emacs-lisp :tangle yes :results silent\n?\n#+END_SRC"))
-  (add-to-list 'org-structure-template-alist
-               '("S" "#+BEGIN_SRC sh :results output replace\n?\n#+END_SRC"))
-  (add-to-list 'org-structure-template-alist
-               '("p" "#+BEGIN_SRC plantuml :file uml.png \n?\n#+END_SRC"))
-  (add-to-list 'org-structure-template-alist
-               '("P" "#+BEGIN_SRC perl \n?\n#+END_SRC"))
+    (add-to-list 'org-structure-template-alist
+                 '("E" "#+BEGIN_SRC emacs-lisp :tangle yes :results silent\n?\n#+END_SRC"))
+    (add-to-list 'org-structure-template-alist
+                 '("S" "#+BEGIN_SRC sh :results output replace\n?\n#+END_SRC"))
+    (add-to-list 'org-structure-template-alist
+                 '("p" "#+BEGIN_SRC plantuml :file uml.png \n?\n#+END_SRC"))
+    (add-to-list 'org-structure-template-alist
+                 '("P" "#+BEGIN_SRC perl \n?\n#+END_SRC"))
+    (add-to-list 'org-structure-template-alist
+                 '("f" "#+BEGIN_SRC fundamental :tangle ?\n\n#+END_SRC"))
 #+END_SRC
 
 * Magit
@@ -2479,7 +2481,8 @@ Most use =C-o C-o= to switch buffers; =C-o x, v= to split window; =C-o o= to del
     ("m" bookmark-jump-other-window nil :exit t)
     ("M" bookmark-set nil :exit t)
     ("g" magit-status nil :exit t)
-    ("p" paradox-list-packages nil :exit t)
+    ("p" persp-switch :exit t)
+    ;; ("p" paradox-list-packages nil :exit t)
 
     ;; quit
     ("q" nil "cancel")
