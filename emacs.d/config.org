@@ -100,6 +100,11 @@ Make a temp directory for all cache/history files
   (setq auto-save-list-file-prefix (concat sd-temp-directory "auto-save-list/.saves-"))
 #+END_SRC
 
+*** Max file size
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+  (setq large-file-warning-threshold nil)
+#+END_SRC
+
 * Package Management Tools
 ** Use-package
 Using [[https://github.com/jwiegley/use-package][use-package]] to manage emacs packages
@@ -2436,15 +2441,18 @@ Most use =C-o C-o= to switch buffers; =C-o x, v= to split window; =C-o o= to del
 
   (defhydra sd/hydra-window (:color red :columns nil)
     "Window"
-    ;; windows split
+    ;; windows switch
     ("h" windmove-left nil :exit t)
     ("j" windmove-down nil :exit t)
     ("k" windmove-up nil :exit t)
     ("l" windmove-right nil :exit t)
+    ("C-o" other-window nil :exit t)
+    ;; window resize
     ("H" hydra-move-splitter-left nil)
     ("J" hydra-move-splitter-down nil)
     ("K" hydra-move-splitter-up nil)
     ("L" hydra-move-splitter-right nil)
+    ;; windows split
     ("v" (lambda ()
            (interactive)
            (split-window-right)
@@ -2455,7 +2463,6 @@ Most use =C-o C-o= to switch buffers; =C-o x, v= to split window; =C-o o= to del
            (split-window-below)
            (windmove-down))
      "horz" :exit t)
-
     ;; buffer / windows switch
     ("o" sd/toggle-max-windows "one" :exit t)
     ("C-k" sd/delete-current-window "del" :exit t)
@@ -2468,13 +2475,15 @@ Most use =C-o C-o= to switch buffers; =C-o x, v= to split window; =C-o o= to del
     ;; ("a" ace-window "ace")
     ("s" ace-swap-window "swap")
     ;; ("i" ace-maximize-window "ace-one" :exit t)
-
+    ;; Windows undo - redo
     ("u" (progn (winner-undo) (setq this-command 'winner-undo)) "undo")
     ("r" (progn (winner-redo) (setq this-command 'winner-redo)) "redo")
 
     ;; ibuffer, dired, eshell, bookmarks
-    ;; ("d" ace-delete-window "ace-one" :exit t)
-    ("C-o" ido-switch-buffer nil :exit t)
+    ("D" ace-delete-window "ace-one" :exit t)
+    ;; ("C-o" ido-switch-buffer nil :exit t)
+    ("C-b" ido-switch-buffer nil :exit t)
+    ("C-i" other-window nil :exit t)
     ("d" sd/project-or-dired-jump nil :exit t)
     ("b" ibuffer nil :exit t)
     ("e" sd/toggle-project-eshell nil :exit t)
