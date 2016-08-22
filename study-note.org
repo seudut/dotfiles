@@ -4,24 +4,9 @@
 #+DATE: 2016-08-18
 
 * Programming Languages
-** gnuplog
-
-1. normal
-#+BEGIN_SRC gnuplot :exports code :file ./temp/sin.png
-  reset
-  plot sin(x)/x
-#+END_SRC
-
-#+RESULTS:
-[[file:./temp/sin.png]]
-
-2. plot with data file
-#+BEGIN_SRC 
-
-#+END_SRC
-
-
-* Perl One Line Command
+** Perl 
+*** One line command
+**** perl help
 #+BEGIN_SRC sh :exports both :results output replace
   perl --help
 #+END_SRC
@@ -63,24 +48,61 @@ Run 'perldoc perl' for more help with Perl.
 
 #+end_example
 
-1. Used as =grep=
+**** Used as =grep=
 #+BEGIN_SRC sh
   perl -ne 'print if /expression/' xxx.log;
 #+END_SRC
+
+#+BEGIN_SRC perl :results output replace
+  my $tt = "hello";
+  ($tt =~ /h(.*)o/ ) and print $1;
+#+END_SRC
+
+#+RESULTS:
+: ell
 
 Or 
 #+BEGIN_SRC sh
   perl -wnl -e '/keyword/ and print;' xxx.log
 #+END_SRC
 
-
-2. Used as =awk=
+**** Used as =awk=
 #+BEGIN_SRC sh
   perl -ne 'print "$1\n" if /aaa=(\d+)\s.*/' xxx.log;
 #+END_SRC
 
-3.
-#+BEGIN_SRC sh
-  perl -pe 'some code' < input.txt > output.txt
+** gnuplog
+
+1. normal
+#+BEGIN_SRC gnuplot :exports code :file ./temp/sin.png
+  reset
+  plot sin(x)/x
 #+END_SRC
+
+#+RESULTS:
+[[file:./temp/sin.png]]
+
+2. plot with data file
+#+BEGIN_SRC fundamental :tangle ./temp/plot.dat 
+  # x y
+  1 11
+  2 12
+  3 13
+  4 14
+  5 15
+  6 16
+  7 17
+  8 18
+  9 19
+#+END_SRC
+
+#+BEGIN_SRC gnuplot :file ./temp/ll.png
+  reset
+  set xrange [0:10]
+  set yrange [0:20]
+  plot "./temp/plot.dat" using 1:2 with lines
+#+END_SRC
+
+#+RESULTS:
+[[file:./temp/ll.png]]
 

@@ -592,8 +592,8 @@ Use [[https://github.com/DarwinAwardWinner/ido-ubiquitous][ido-ubiquitous]] for 
   (use-package ido-exit-target
     :ensure t
     :init
-    (mapcar (lambda (map)
-              (define-key map (kbd "C-j") #'ido-exit-target-split-window-right)
+    (mapcar '(lambda (map)
+              (define-key map (kbd "C-j") #'ido-exit-target-other-window)
               (define-key map (kbd "C-k") #'ido-exit-target-split-window-below))
             (list ido-buffer-completion-map
                   ;; ido-common-completion-map
@@ -2471,26 +2471,31 @@ Most use =C-o C-o= to switch buffers; =C-o x, v= to split window; =C-o o= to del
              (kill-buffer)
              (sd/delete-current-window))
      "kill" :exit t)
-    ("'" other-window "other" :exit t)
+
+    ;; ace-window
+    ;; ("'" other-window "other" :exit t)
     ;; ("a" ace-window "ace")
     ("s" ace-swap-window "swap")
+    ("D" ace-delete-window "ace-one" :exit t)
     ;; ("i" ace-maximize-window "ace-one" :exit t)
     ;; Windows undo - redo
     ("u" (progn (winner-undo) (setq this-command 'winner-undo)) "undo")
     ("r" (progn (winner-redo) (setq this-command 'winner-redo)) "redo")
-
+    
     ;; ibuffer, dired, eshell, bookmarks
-    ("D" ace-delete-window "ace-one" :exit t)
     ;; ("C-o" ido-switch-buffer nil :exit t)
     ("C-b" ido-switch-buffer nil :exit t)
-    ("C-i" other-window nil :exit t)
+    ;; ("C-i" other-window nil :exit t)
+    ("C-f" projectile-find-file nil :exit t)
+    ("C-p" persp-switch :exit t)
+
+    ;; other special buffers
     ("d" sd/project-or-dired-jump nil :exit t)
     ("b" ibuffer nil :exit t)
     ("e" sd/toggle-project-eshell nil :exit t)
     ("m" bookmark-jump-other-window nil :exit t)
     ("M" bookmark-set nil :exit t)
     ("g" magit-status nil :exit t)
-    ("p" persp-switch :exit t)
     ;; ("p" paradox-list-packages nil :exit t)
 
     ;; quit
