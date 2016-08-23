@@ -657,7 +657,8 @@ Always indents header, and hide header leading starts so that no need type =#+ST
     (setq org-src-tab-acts-natively t)
     (setq org-confirm-babel-evaluate nil)
     (setq org-use-speed-commands t)
-    (setq org-completion-use-ido t))
+    (setq org-completion-use-ido t)
+    (setq org-startup-with-inline-images t))
 
   (org-babel-do-load-languages
    'org-babel-load-languages
@@ -2483,9 +2484,8 @@ Most use =C-o C-o= to switch buffers; =C-o x, v= to split window; =C-o o= to del
     ("r" (progn (winner-redo) (setq this-command 'winner-redo)) "redo")
     
     ;; ibuffer, dired, eshell, bookmarks
-    ;; ("C-o" ido-switch-buffer nil :exit t)
-    ("C-b" ido-switch-buffer nil :exit t)
     ;; ("C-i" other-window nil :exit t)
+    ("C-b" ido-switch-buffer nil :exit t)
     ("C-f" projectile-find-file nil :exit t)
     ("C-p" persp-switch :exit t)
 
