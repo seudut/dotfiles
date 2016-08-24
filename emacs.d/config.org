@@ -718,18 +718,10 @@ In =worf-mode=, it is mapping =[=, =]= as =worf-backward= and =worf-forward= in 
 cause we cannot input =[= and =]=, so here I unset this mappings. And redifined this two to
 =M-[= and =M-]=. see this [[https://github.com/abo-abo/worf/issues/19#issuecomment-223756599][issue]]
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
-
   (use-package worf
     :ensure t
     :commands worf-mode
-    :init (add-hook 'org-mode-hook 'worf-mode)
-    ;; :config
-    ;; (define-key worf-mode-map "[" nil)
-    ;; (define-key worf-mode-map "]" nil)
-    ;; (define-key worf-mode-map (kbd "M-[") 'worf-backward)
-    ;; (define-key worf-mode-map (kbd "M-]") 'worf-forward)
-    )
-
+    :init (add-hook 'org-mode-hook 'worf-mode))
 #+END_SRC
 
 ** Get Things Done
@@ -753,12 +745,9 @@ Replace the list bullet =-=, =+=,  with =•=, a litter change based [[https://g
 #+END_SRC
  
 *** Todo Keywords
-
 refer to [[http://coldnew.github.io/coldnew-emacs/#orgheadline94][fancy todo states]], 
-
 To track TODO state changes, the =!= is to insert a timetamp, =@= is to insert a note with
 timestamp for the state change.
-
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
     ;; (setq org-todo-keywords
     ;;        '((sequence "☛ TODO(t)" "|" "✔ DONE(d)")
@@ -1515,7 +1504,7 @@ brew install the-silver-searcher
     (interactive)
     (dired-why)
     (message
-     "Δ: d-delete, u-ndelete, x-punge, f-ind, o-ther window, R-ename, C-opy, c-create, +new dir, r-evert, /-filter, h-summary, ?-help"))
+     "Δ: d-delete, u-ndelete, x-punge, f-ind, o-ther window, R-ename, C-opy, c-create, +new dir, r-evert, /-filter, v-iew, l-ist, z-Size, h-summary, ?-help"))
 
   (defun sd/dired-high-level-dir ()
     "Go to higher level directory"
