@@ -1104,7 +1104,6 @@ Toggle an eshell in split window below, refer [[http://www.howardism.org/Technic
 #+END_SRC
 
 * Misc Settings
-
 ** [[https://github.com/abo-abo/hydra][Hydra]]
 *** hydra install
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
