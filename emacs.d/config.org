@@ -1849,7 +1849,12 @@ irony-company
 *** yasnippet
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
   (use-package yasnippet
-    :ensure t)
+    :ensure t
+    :defer t
+    :config
+    (add-hook 'prog-mode-hook #'yas-minor-mode)
+    ;; (yas-global-mode 1)
+    )
 #+END_SRC
 
 *** semantic

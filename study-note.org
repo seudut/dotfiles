@@ -89,6 +89,10 @@ Or
 : ==4: cc: 3
 : ==5: dd: 4
 
+*** Special Variable
+See special variable in perl [[http://perldoc.perl.org/perlvar.html][perlvar]], or =perldoc perlvar=
+- =$.= Current line number
+
 ** gnuplog
 
 1. normal
