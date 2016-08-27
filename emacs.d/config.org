@@ -1772,15 +1772,7 @@ to call =compilation=  interactively.
 #+END_SRC
 
 *** irony
-#+BEGIN_SRC emacs-lisp :tangle yes :results silent
-  (use-package irony
-    :ensure t
-    :config
-    (add-hook 'c++-mode-hook 'irony-mode)
-    (add-hook 'c-mode-hook 'irony-mode)
-    (add-hook 'objc-mode-hook 'irony-mode))
-#+END_SRC
-
+**** install irony server
 Install clang, on mac, it has =libclang.dylib=, but no develop headers. Install by =brew=
 #+BEGIN_SRC sh
   brew install llvm --with-clang
@@ -1798,10 +1790,19 @@ then install irony searver, and =LIBCLANG_LIBRARY= and =LIBCLANG_INCLUDE_DIR= ac
         /Users/peli3/.emacs.d/elpa/irony-20160713.1245/server && cmake --build . --use-stderr --config Release --target install 
 #+END_SRC
 
+**** irony config
 irony-mode-hook, copied from [[https://github.com/Sarcasm/irony-mode][irony-mode]] github
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
+  (use-package irony
+    :ensure t
+    :config
+    (add-hook 'c++-mode-hook 'irony-mode)
+    (add-hook 'c-mode-hook 'irony-mode)
+    (add-hook 'objc-mode-hook 'irony-mode))
+
   ;; replace the `completion-at-point' and `complete-symbol' bindings in
   ;; irony-mode's buffers by irony-mode's function
+
   (defun my-irony-mode-hook ()
     (define-key irony-mode-map [remap completion-at-point]
       'irony-completion-at-point-async)
@@ -1816,14 +1817,18 @@ irony-company
   (use-package company-irony
     :ensure t)
 
-  (eval-after-load 'company
-    '(add-to-list 'company-backends 'company-irony))
-
   (use-package flycheck-irony
     :ensure t)
 
-  (eval-after-load 'flycheck
-    '(add-hook 'flycheck-mode-hook #'flycheck-irony-setup))
+  (use-package company-c-headers
+    :ensure t)
+
+  (with-eval-after-load 'company
+    (add-to-list 'company-backends '(company-irony company-c-headers)))
+
+
+  (with-eval-after-load 'flycheck
+    (add-hook 'flycheck-mode-hook #'flycheck-irony-setup))
 #+END_SRC
 
 *** gtags
@@ -1851,10 +1856,12 @@ irony-company
   (use-package yasnippet
     :ensure t
     :defer t
-    :config
-    (add-hook 'prog-mode-hook #'yas-minor-mode)
-    ;; (yas-global-mode 1)
+    ;; :config
     )
+  ;; (yas-reload-all)
+  ;; (add-hook 'prog-mode-hook #'yas-minor-mode)
+  ;; (yas-global-mode 1)
+
 #+END_SRC
 
 *** semantic
@@ -1867,7 +1874,8 @@ irony-company
   (use-package google-c-style
     :ensure t
     :config
-    (add-hook 'c-mode-hook 'google-set-c-style))
+    (add-hook 'c-mode-hook 'google-set-c-style)
+    (add-hook 'c++-mode-hook 'google-set-c-style))
 #+END_SRC
 
 ** Lua
