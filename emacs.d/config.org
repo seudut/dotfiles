@@ -1888,12 +1888,10 @@ irony-company
   (use-package yasnippet
     :ensure t
     :defer t
-    ;; :config
-    )
-  ;; (yas-reload-all)
-  ;; (add-hook 'prog-mode-hook #'yas-minor-mode)
-  ;; (yas-global-mode 1)
-
+    :init
+    (add-hook 'prog-mode-hook #'yas-minor-mode)
+    :config
+    (yas-reload-all))
 #+END_SRC
 
 *** semantic
