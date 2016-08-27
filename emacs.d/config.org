@@ -1808,6 +1808,7 @@ irony-mode-hook, copied from [[https://github.com/Sarcasm/irony-mode][irony-mode
       'irony-completion-at-point-async)
     (define-key irony-mode-map [remap complete-symbol]
       'irony-completion-at-point-async))
+
   (add-hook 'irony-mode-hook 'my-irony-mode-hook)
   (add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options)
 #+END_SRC
@@ -1821,10 +1822,13 @@ irony-company
     :ensure t)
 
   (use-package company-c-headers
-    :ensure t)
+    :ensure t
+    :init
+    (add-to-list 'company-c-headers-path-system "/usr/include/c++/4.2.1/"))
 
   (with-eval-after-load 'company
-    (add-to-list 'company-backends '(company-irony company-c-headers)))
+    (add-to-list 'company-backends 'company-irony)
+    (add-to-list 'company-backends 'company-c-headers))
 
 
   (with-eval-after-load 'flycheck
