@@ -1443,6 +1443,19 @@ brew install the-silver-searcher
     :ensure t)
 #+END_SRC
 
+** Local Variable hooks
+[[https://www.emacswiki.org/emacs/LocalVariables][LocalVariables]], use =hack-local-variables-hook=, run a hook to set local variable in mode hook
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+  ;; make Emacs run a new "local variables hook" for each major mode
+  (add-hook 'hack-local-variables-hook 'run-local-vars-mode-hook)
+
+  (defun run-local-vars-mode-hook ()
+    "Run a hook for the major-mode after the local variables have been processed."
+    (run-hooks (intern (concat (symbol-name major-mode) "-local-vars-hook"))))
+
+  ;;   (add-hook 'c++-mode-local-vars-hook #'sd/c++-mode-local-vars)
+#+END_SRC
+
 * Dired
 ** Dired bindings
 =C-o= is defined as a global key for window operation, here unset it in dired mode
@@ -1759,6 +1772,10 @@ to call =compilation=  interactively.
 #+END_SRC
 
 ** C & C++
+C/C++ ide tools
+1. completion (file name, function name, variable name)
+2. template yasnippet (keywords, if, function)
+3. tags jump
 *** c/c++ style
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
   (setq c-default-style "stroustrup"
@@ -1811,6 +1828,17 @@ irony-mode-hook, copied from [[https://github.com/Sarcasm/irony-mode][irony-mode
 
   (add-hook 'irony-mode-hook 'my-irony-mode-hook)
   (add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options)
+
+  (add-hook 'c++-mode-local-vars-hook #'sd/c++-mode-local-vars)
+
+  ;; add C++ completions, because by default c++ file can not complete
+  ;; c++ std functions, another method is create .dir-local.el file, for p
+  ;; for project see irony
+  (defun sd/c++-mode-local-vars ()
+    (setq irony--compile-options
+        '("-std=c++11"
+          "-stdlib=libc++"
+          "-I/usr/include/c++/4.2.1")))
 #+END_SRC
 
 irony-company
@@ -1823,7 +1851,7 @@ irony-company
 
   (use-package company-c-headers
     :ensure t
-    :init
+    :config
     (add-to-list 'company-c-headers-path-system "/usr/include/c++/4.2.1/"))
 
   (with-eval-after-load 'company
