@@ -349,7 +349,6 @@ clean mode line, Refer to [[https://www.masteringemacs.org/article/hiding-replac
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
   (defvar mode-line-cleaner-alist
     `((auto-complete-mode . " α")
-      (yas/minor-mode . " υ")
       (paredit-mode . " π")
       (eldoc-mode . "")
       (abbrev-mode . "")
@@ -370,6 +369,7 @@ clean mode line, Refer to [[https://www.masteringemacs.org/article/hiding-replac
       (flyspell-mode . "")
       (irony-mode . "")
       (page-break-lines-mode . "")
+      (yas-minor-mode . "y")
       ;; Major modes
       (lisp-interaction-mode . "λ")
       (hi-lock-mode . "")
@@ -1782,12 +1782,6 @@ C/C++ ide tools
         c-basic-offset 4)
 #+END_SRC
 
-*** flycheck
-#+BEGIN_SRC emacs-lisp :tangle yes :results silent
-  (use-package flycheck
-    :ensure t)
-#+END_SRC
-
 *** irony
 **** install irony server
 Install clang, on mac, it has =libclang.dylib=, but no develop headers. Install by =brew=
@@ -1863,24 +1857,10 @@ irony-company
     (add-hook 'flycheck-mode-hook #'flycheck-irony-setup))
 #+END_SRC
 
-*** gtags
+*** flycheck
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
-  (use-package ggtags
+  (use-package flycheck
     :ensure t)
-
-  (add-hook 'c-mode-common-hook
-            (lambda ()
-              (when (derived-mode-p 'c-mode 'c++-mode 'java-mode)
-                (ggtags-mode 1))))
-
-  (require 'cc-mode)
-  (require 'semantic)
-
-  (global-semanticdb-minor-mode 1)
-  (global-semantic-idle-scheduler-mode 1)
-
-  (semantic-mode 1)
-
 #+END_SRC
 
 *** yasnippet
@@ -1894,8 +1874,33 @@ irony-company
     (yas-reload-all))
 #+END_SRC
 
-*** semantic
+*** gtags
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
+  (use-package ggtags
+    :ensure t
+    :config
+    (define-key ggtags-mode-map (kbd "M-g d") 'ggtags-find-definition)
+    (define-key ggtags-mode-map (kbd "M-g r") 'ggtags-find-reference)
+    (define-key ggtags-mode-map (kbd "M-g r") 'ggtags-find-reference)
+    (define-key ggtags-mode-map (kbd "C-c g s") 'ggtags-find-other-symbol)
+    (define-key ggtags-mode-map (kbd "C-c g h") 'ggtags-view-tag-history)
+    (define-key ggtags-mode-map (kbd "C-c g r") 'ggtags-find-reference)
+    (define-key ggtags-mode-map (kbd "C-c g f") 'ggtags-find-file)
+    (define-key ggtags-mode-map (kbd "C-c g c") 'ggtags-create-tags)
+    (define-key ggtags-mode-map (kbd "C-c g u") 'ggtags-update-tags))
+
+  (add-hook 'c-mode-common-hook
+            (lambda ()
+              (when (derived-mode-p 'c-mode 'c++-mode 'java-mode)
+                (ggtags-mode 1))))
+
+  (require 'cc-mode)
+  (require 'semantic)
+
+  (global-semanticdb-minor-mode 1)
+  (global-semantic-idle-scheduler-mode 1)
+
+  (semantic-mode 1)
 
 #+END_SRC
 
