@@ -1241,9 +1241,20 @@ I like [[https://github.com/coldnew/linum-relative][linum-relative]], just like 
 #+END_SRC
 
 ** Multi-term
+define =multi-term= mapping to disable some mapping which is used globally.
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
   (use-package multi-term
     :ensure t)
+
+  (defun sd/term-mode-mapping ()
+    (mapcar (lambda (map)
+              (define-key map (kbd "C-o") nil)
+              (define-key map (kbd "C-g") nil))
+            (list term-mode-map
+                  term-raw-map)))
+
+  (with-eval-after-load 'multi-term
+    (sd/term-mode-mapping))
 #+END_SRC
 
 ** ace-link
