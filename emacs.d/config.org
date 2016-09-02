@@ -1456,6 +1456,10 @@ brew install the-silver-searcher
   ;;   (add-hook 'c++-mode-local-vars-hook #'sd/c++-mode-local-vars)
 #+END_SRC
 
+** Table
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+  (add-hook 'text-mode-hook 'table-recognize)
+#+END_SRC
 * Dired
 ** Dired bindings
 =C-o= is defined as a global key for window operation, here unset it in dired mode
@@ -1780,6 +1784,14 @@ C/C++ ide tools
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
   (setq c-default-style "stroustrup"
         c-basic-offset 4)
+
+  ;; "C-M-j" is my global binding for avy goto line below
+  ;; disable it in c mode
+  (mapcar '(lambda (map)
+             (define-key map (kbd "C-M-j") nil))
+          (list c-mode-map
+                c++-mode-map
+                objc-mode-map))
 #+END_SRC
 
 *** irony
