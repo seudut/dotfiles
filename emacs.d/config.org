@@ -146,11 +146,11 @@ Check out [[http://tapoueh.org/emacs/el-get.html][el-get]].
 * Color and Fonts Settings
 
 ** highlight current line
-
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
-
-  (global-hl-line-mode)
-
+  ;; (global-hl-line-mode)
+  ;; don't want high light current line in eshell/term mode
+  (add-hook 'prog-mode-hook 'hl-line-mode)
+  (add-hook 'text-mode-hook 'hl-line-mode)
 #+END_SRC
 
 ** Smart Comments
@@ -2554,6 +2554,7 @@ Most use =C-o C-o= to switch buffers; =C-o x, v= to split window; =C-o o= to del
     ;; other special buffers
     ("d" sd/project-or-dired-jump nil :exit t)
     ("b" ibuffer nil :exit t)
+    ("t" multi-term nil :exit t)
     ("e" sd/toggle-project-eshell nil :exit t)
     ("m" bookmark-jump-other-window nil :exit t)
     ("M" bookmark-set nil :exit t)

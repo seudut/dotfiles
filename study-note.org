@@ -128,3 +128,36 @@ See special variable in perl [[http://perldoc.perl.org/perlvar.html][perlvar]], 
 #+RESULTS:
 [[file:./temp/ll.png]]
 
+* TCP/IP
+** netstat
+#+BEGIN_SRC sh :results output replace
+  netstat -atn    # For tcp port
+  netstat -aun    # For udp port
+  netstat -atun   # both
+#+END_SRC
+
+** nc (netcat)
+#+BEGIN_SRC sh :results output replace
+  # listening on port 1234 for a connection
+  nc -l 1234
+
+  # connect to the machine and port
+  nc 127.0.0.1 1234
+#+END_SRC
+
+* Emacs
+** =add-hook= vs =eval-after-load=
+Ref [[http://stackoverflow.com/questions/2736087/eval-after-load-vs-mode-hook][eval-after-load-vs-mode-hook]]
+#+BEGIN_QUOTE
+Code wrapped in =eval-after-load= will be executed only once, so it is typically used to perform
+one-time setup such as setting default global values and behaviour. An example might be setting
+up a default keymap for a particular mode. In =eval-after-load= code, there's no notion of the 
+"current buffer".
+
+Mode hooks exectue once for every buffer in which the mode is enabled, so they're used for per-buffer
+configuration. Mode hooks are therefore run later than =eval-after-load= code; this lets them take 
+actions baed upon such information as whether other modes are enabled in the current buffer.
+#+END_QUOTE
+
+
+
