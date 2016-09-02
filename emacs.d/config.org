@@ -1460,6 +1460,7 @@ brew install the-silver-searcher
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
   (add-hook 'text-mode-hook 'table-recognize)
 #+END_SRC
+
 * Dired
 ** Dired bindings
 =C-o= is defined as a global key for window operation, here unset it in dired mode
@@ -1948,6 +1949,8 @@ Set the environments vairables in compilation mode
     (define-key compilation-mode-map (kbd "n") 'compilation-next-error)
     (define-key compilation-mode-map (kbd "p") 'compilation-previous-error)
     (define-key compilation-mode-map (kbd "r") #'recompile))
+
+  (global-set-key (kbd "s-r") 'compile)
 #+END_SRC
 
 * Auto-Insert
