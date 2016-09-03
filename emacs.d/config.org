@@ -144,7 +144,6 @@ Check out [[http://tapoueh.org/emacs/el-get.html][el-get]].
 #+END_SRC
 
 * Color and Fonts Settings
-
 ** highlight current line
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
   ;; (global-hl-line-mode)
@@ -3000,6 +2999,18 @@ stolen from [[https://github.com/mariolong/emacs.d/blob/f6a061594ef1b5d1f4750e9d
 #+END_SRC
 
 *** TODO make expand-region hydra work with lispy selected
+** =C-w= delete backward word
+Refer [[https://github.com/fnwiya/dotfiles/blob/c9ca79f1b22c919d9f4c3a0f944ba8281255a594/setup/.emacs.d/loader-init/_90-kill-region-or-backward-kill-word.el][kill-region-or-backward-kill-word]]
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+  (defun sd/kill-region-or-backward-kill-word ()
+    (interactive)
+    (if (region-active-p)
+        (kill-region (point) (mark))
+      (backward-kill-word 1)))
+
+  (global-set-key (kbd "C-w") 'sd/kill-region-or-backward-kill-word)
+#+END_SRC
+
 * key
 - passion
 - vision
