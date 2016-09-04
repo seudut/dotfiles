@@ -1921,6 +1921,9 @@ C/C++ ide tools
           (list c-mode-map
                 c++-mode-map
                 objc-mode-map))
+
+  ;; objective c
+  (add-to-list 'auto-mode-alist '("\\.mm\\'" . objc-mode))
 #+END_SRC
 
 *** irony
@@ -2034,7 +2037,6 @@ irony-company
   (global-semantic-idle-scheduler-mode 1)
 
   (semantic-mode 1)
-
 #+END_SRC
 
 *** google C style
