@@ -1672,12 +1672,16 @@ here on Mac, just use "open" commands to pen =.pdf=,  =.html= and image files
     :ensure t
     :diminish company-mode
     :init (setq company-idle-delay 0.1)
+    (setq company-selection-wrap-around t)
     :config
-    (global-company-mode)
     (define-key company-active-map (kbd "M-n") nil)
     (define-key company-active-map (kbd "M-p") nil)
     (define-key company-active-map (kbd "C-n") #'company-select-next)
-    (define-key company-active-map (kbd "C-p") #'company-select-previous))
+    (define-key company-active-map (kbd "C-p") #'company-select-previous)
+     ;; should map both (kbd "TAB") and [tab],https://github.com/company-mode/company-mode/issues/75
+    (define-key company-active-map (kbd "TAB") #'company-complete-selection)
+    (define-key company-active-map [tab] #'company-complete-selection)
+    (global-company-mode))
 
   (use-package company-statistics
     :ensure t
