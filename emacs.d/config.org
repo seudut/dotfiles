@@ -178,7 +178,7 @@ syntax highlighting
   (if window-system
       (defvar sd/fixed-font-family
         (cond ((x-list-fonts "Hasklig")         "Hasklig")
-              ((x-list-fonts "Source Code Pro") "Source Code Pro:weight:light")
+              ((x-list-fonts "Source Code Pro") "Source Code Pro:weight")
               ((x-list-fonts "Anonymous Pro")   "Anonymous Pro")
               ((x-list-fonts "M+ 1mn")          "M+ 1mn"))
         "The fixed width font based on what is installed, `nil' if not defined."))
@@ -198,7 +198,6 @@ Setting the fonts
 Loading theme should be after all required loaded, refere [[https://github.com/jwiegley/use-package][:defer]] in =use-package=
 
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
-
   (setq vc-follow-symlinks t)
 
   (use-package color-theme
@@ -208,7 +207,9 @@ Loading theme should be after all required loaded, refere [[https://github.com/j
               :ensure t
               :no-require t
               :config
-              (load-theme 'sanityinc-tomorrow-bright t)))
+              ;; (load-theme 'sanityinc-tomorrow-bright t)
+              (load-theme 'molokai t)
+              ))
 
   ;(eval-after-load 'color-theme
   ;  (load-theme 'sanityinc-tomorrow-bright t))
