@@ -1510,7 +1510,8 @@ brew install the-silver-searcher
     (define-key dired-mode-map (kbd "TAB") 'diredp-next-subdir)
     (define-key dired-mode-map (kbd "K") 'diredp-prev-subdir)
     (define-key dired-mode-map (kbd "O") 'dired-display-file)
-    (define-key dired-mode-map (kbd "I") 'other-window)) 
+    (define-key dired-mode-map (kbd "I") 'other-window)
+    (define-key dired-mode-map (kbd "o") 'other-window)) 
 
   (use-package dired
     :config
@@ -1681,7 +1682,8 @@ here on Mac, just use "open" commands to pen =.pdf=,  =.html= and image files
      ;; should map both (kbd "TAB") and [tab],https://github.com/company-mode/company-mode/issues/75
     (define-key company-active-map (kbd "TAB") #'company-complete-selection)
     (define-key company-active-map [tab] #'company-complete-selection)
-    (global-company-mode))
+    (global-company-mode)
+    (setq company-global-modes '(not org-mode)))
 
   (use-package company-statistics
     :ensure t

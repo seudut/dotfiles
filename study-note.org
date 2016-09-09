@@ -159,5 +159,13 @@ configuration. Mode hooks are therefore run later than =eval-after-load= code; t
 actions baed upon such information as whether other modes are enabled in the current buffer.
 #+END_QUOTE
 
+* ObjectiveC
+** =#import= vs. =#include=
+[[http://stackoverflow.com/questions/439662/what-is-the-difference-between-import-and-include-in-objective-c][what-is-the-difference-between-import-and-include-in-objective-c]]
+- =#import= directive as added to Objective-C as an improvied version of =#include=
+- =#import= ensures that a file is only ever included onces so that you never have a problem with recursive includes
+- Bacically, use =#import= for Objective-C thins, =#include= for C stufff.
 
 
+* Books
+** Intruduction to Algorithms 
