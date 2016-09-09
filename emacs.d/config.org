@@ -47,6 +47,9 @@ Set the emacs load path
   (show-paren-mode 1)
   ;; don't backupf
   (setq make-backup-files nil)
+
+  ;;supress the redefined warning at startup
+  (setq ad-redefinition-action 'accept)
 #+END_SRC
 
 *** Custom file 
@@ -165,19 +168,13 @@ Check out [[http://tapoueh.org/emacs/el-get.html][el-get]].
 #+END_SRC
 
 ** Font Setting
-
 syntax highlighting
-
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
-
   (global-font-lock-mode 1)
-
 #+END_SRC
 
 [[https://github.com/i-tu/Hasklig][Hasklig]] and Source Code Pro, defined fonts family
-
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
-
   (if window-system
       (defvar sd/fixed-font-family
         (cond ((x-list-fonts "Hasklig")         "Hasklig")
@@ -185,19 +182,15 @@ syntax highlighting
               ((x-list-fonts "Anonymous Pro")   "Anonymous Pro")
               ((x-list-fonts "M+ 1mn")          "M+ 1mn"))
         "The fixed width font based on what is installed, `nil' if not defined."))
-
 #+END_SRC
 
 Setting the fonts 
-
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
-
   (if window-system
       (when sd/fixed-font-family
         (set-frame-font sd/fixed-font-family)
         (set-face-attribute 'default nil :font sd/fixed-font-family :height 130)
         (set-face-font 'default sd/fixed-font-family)))
-
 #+END_SRC
 
 ** Color Theme
@@ -591,7 +584,7 @@ Use [[https://github.com/DarwinAwardWinner/ido-ubiquitous][ido-ubiquitous]] for 
   (use-package ido-exit-target
     :ensure t
     :init
-    (mapcar '(lambda (map)
+    (mapcar #'(lambda (map)
               (define-key map (kbd "C-j") #'ido-exit-target-other-window)
               (define-key map (kbd "C-k") #'ido-exit-target-split-window-below))
             (list ido-buffer-completion-map
@@ -1246,7 +1239,7 @@ define =multi-term= mapping to disable some mapping which is used globally.
     :ensure t)
 
   (defun sd/term-mode-mapping ()
-    (mapcar (lambda (map)
+    (mapcar #'(lambda (map)
               (define-key map (kbd "C-o") nil)
               (define-key map (kbd "C-g") nil))
             (list term-mode-map
@@ -1916,7 +1909,7 @@ C/C++ ide tools
 
   ;; "C-M-j" is my global binding for avy goto line below
   ;; disable it in c mode
-  (mapcar '(lambda (map)
+  (mapcar #'(lambda (map)
              (define-key map (kbd "C-M-j") nil))
           (list c-mode-map
                 c++-mode-map
