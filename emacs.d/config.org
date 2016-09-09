@@ -1208,9 +1208,10 @@ Fix the font size of line number
 I like [[https://github.com/coldnew/linum-relative][linum-relative]], just like the =set relativenumber= on =vim=
 
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
-
   (use-package linum-relative
     :ensure t
+    :init
+    (setq linum-relative-current-symbol "")
     :config
     (defun linum-new-mode ()
       "If line numbers aren't displayed, then display them.
@@ -1225,7 +1226,6 @@ I like [[https://github.com/coldnew/linum-relative][linum-relative]], just like 
 
   ;; auto enable linum-new-mode in programming modes
   (add-hook 'prog-mode-hook 'linum-relative-mode)
-
 #+END_SRC
 
 ** Save File Position
