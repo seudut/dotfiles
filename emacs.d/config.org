@@ -153,6 +153,7 @@ Check out [[http://tapoueh.org/emacs/el-get.html][el-get]].
   ;; don't want high light current line in eshell/term mode
   (add-hook 'prog-mode-hook 'hl-line-mode)
   (add-hook 'text-mode-hook 'hl-line-mode)
+  (add-hook 'dired-mode-hook 'hl-line-mode)
 #+END_SRC
 
 ** Smart Comments
@@ -334,6 +335,11 @@ Enable rainbow mode in emacs lisp mode
   ;  (add-hook emacs-lisp-mode-hook 'rainbow-mode)
     )
 
+#+END_SRC
+
+** cusor color
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+  (set-cursor-color 'red)
 #+END_SRC
 
 * Mode-line
