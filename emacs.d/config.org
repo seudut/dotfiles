@@ -2056,6 +2056,24 @@ irony-company
     :ensure t)
 #+END_SRC
 
+** Racket
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+  (use-package racket-mode
+    :ensure t
+    :config
+    (define-key racket-mode-map (kbd "s-r") 'racket-run)
+    (add-to-list 'racket-mode-hook (lambda () (lispy-mode 1))))
+
+  ;; set racket path
+  (setenv "PATH" (concat (getenv "PATH")
+                         ":" "/Applications/Racket v6.6/bin"))
+  (setenv "MANPATH" (concat (getenv "MANPATH")
+                            ":" "/Applications/Racket v6.6/man"))
+  (setq exec-path (append exec-path '("/Applications/Racket v6.6/bin")))
+
+  (add-to-list 'auto-mode-alist '("\\.rkt\\'" . racket-mode))
+#+END_SRC
+
 * Compile
 Set the environments vairables in compilation mode
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
