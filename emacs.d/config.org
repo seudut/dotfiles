@@ -2056,6 +2056,24 @@ irony-company
     :ensure t)
 #+END_SRC
 
+** Scheme
+Install =guile=, =guile= is an implementation of =Scheme= programming language.
+#+BEGIN_SRC sh
+  brew install guile
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+  (setq geiser-scheme-implementation 'guile)
+#+END_SRC
+
+#+BEGIN_SRC scheme
+  (define a "3")
+  a
+#+END_SRC
+
+#+RESULTS:
+: 3
+
 ** Racket
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
   (use-package racket-mode
