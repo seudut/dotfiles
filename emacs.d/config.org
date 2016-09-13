@@ -1604,6 +1604,7 @@ Disalble =ido= when new a directory or file in =dired= mode
   ;; call the function which you want to disable ido
   (mk-disable-ido 'dired-create-directory)
   (mk-disable-ido 'sd/dired-new-file)
+  (mk-disable-ido 'dired-goto-file)
 #+END_SRC
 
 ** Dired open with
