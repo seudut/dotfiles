@@ -1479,7 +1479,7 @@ as a http download client tool
     (interactive)
     (let ((url (or url
                    (read-string "Enter download URL: ")))
-          (download-dir (or (read-string "Save to (~/Downloads): ") "~/Downloads")))
+          (download-dir (read-directory-name "Save to (~/Downloads): " "~/Downloads" "~/Downloads" 'confirm' nil)))
       (let ((download-buffer (url-retrieve-synchronously url)))
         (save-excursion
           (set-buffer download-buffer)
