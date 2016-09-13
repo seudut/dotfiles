@@ -1472,7 +1472,8 @@ brew install the-silver-searcher
 #+END_SRC
 
 ** url-download
-Refer [[http://stackoverflow.com/questions/4448055/download-a-file-with-emacs-lisp][download-a-file-with-emacs-lisp]]
+To download file in =elisp=, best is =url-copy-file=, here refer [[http://stackoverflow.com/questions/4448055/download-a-file-with-emacs-lisp][download-a-file-with-emacs-lisp]] using =url-retrieve-synchronously= wrapping
+as a http download client tool
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
   (defun sd/download-file (&optional url download-dir download-name)
     (interactive)
@@ -2879,6 +2880,11 @@ Search, replace and hightlight will in later paragraph
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
   (global-set-key (kbd "M-i") #'counsel-imenu)
   ;; (global-set-key (kbd "M-i") #'imenu)
+
+  ;; define M-[ as C-M-a
+  ;; http://ergoemacs.org/emacs/emacs_key-translation-map.html
+  (define-key key-translation-map (kbd "M-[") (kbd "C-M-a"))
+  (define-key key-translation-map (kbd "M-]") (kbd "C-M-e"))
 #+END_SRC
 
 *** Go-to line
