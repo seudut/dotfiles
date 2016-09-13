@@ -2135,7 +2135,7 @@ Set the environments vairables in compilation mode
           (file-name-nondirectory (buffer-file-name)))
          ".hpp\"" \n \n
          "using namespace std;" \n \n
-         "int main ()"
+         "int main (int argc, char *argv[])"
          "\n{" \n 
          > _ \n
          "return 0;"
@@ -2154,7 +2154,7 @@ Set the environments vairables in compilation mode
          (file-name-sans-extension
           (file-name-nondirectory (buffer-file-name)))
          ".h\"" \n \n
-         "int main ()\n"
+         "int main (int argc, char *argv[])\n"
          "{" \n
          > _ \n
          "return 0;\n"
