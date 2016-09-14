@@ -2430,6 +2430,36 @@ Refer [[http://www.kirang.in/2014/11/13/emacs-as-email-client-with-offlineimap-a
   sslcacertfile = /usr/local/etc/openssl/cert.pem 
 #+END_SRC
 
+#+BEGIN_SRC conf 
+  [general]
+  ui=TTYUI
+  accounts = Gmail
+  autorefresh = 5
+
+  [Account Gmail]
+  localrepository = Gmail-Local
+  remoterepository = Gmail-Remote
+
+  [Repository Gmail-Local]
+  type = Maildir
+  localfolders = ~/.Mail/seudut@gmail.com
+
+  [Repository Gmail-Remote]
+  type = Gmail
+  remotehost = imap.gmail.com
+  remoteuser = seudut@gmail.com
+  remotepass = xxxxxxxx
+  realdelete = no
+  ssl = yes
+  #cert_fingerprint = <insert gmail server fingerprint here>
+  sslcacertfile = /usr/local/etc/openssl/cert.pem
+  maxconnections = 1
+  folderfilter = lambda folder: folder not in ['[Gmail]/Trash',
+                                               '[Gmail]/Spam',
+                                               '[Gmail]/All Mail',
+                                               ]
+#+END_SRC
+
 Then, run =offlineimap= to sync the mail
 
 ** Mu - fast search, view mails and extract attachments.
@@ -2495,6 +2525,13 @@ config from [[http://www.kirang.in/2014/11/13/emacs-as-email-client-with-offline
 
   ;; fetch mail every 10 mins
   (setq mu4e-update-interval 600)
+
+  ;; mu4e view
+  (setq-default mu4e-headers-fields '((:flags . 6)
+                                      (:from . 22)
+                                      (:mailing-list . 10)
+                                      (:thread-subject . 50)
+                                      (:human-date . 16)))
 #+END_SRC
 
 ** Smtp - send mail
