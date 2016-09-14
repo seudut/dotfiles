@@ -2416,6 +2416,14 @@ See [[https://www.emacswiki.org/emacs/GnusWindowLayout][GnusWindowLayout]]
   ;;                               (gnus-group-select-group "INBOX")))
 #+END_SRC
 
+* Mu4e
+** install
+#+BEGIN_SRC sh :results output replace
+  brew install offline-imap
+
+  cp /usr/local/etc/offlineimap.conf ~/.offlineimapr
+#+END_SRC
+
 * Gnu Plot
 Install =gnuplot= on Mac
 #+BEGIN_SRC sh
@@ -2469,7 +2477,7 @@ Use =gnuplot= on =Org-mode= file, see [[http://orgmode.org/worg/org-contrib/babe
 #+END_SRC
 
 * Entertainment
-** GnoGo
+** GnuGo
 Play Go in Emacs, gnugo xpm refert [[https://github.com/okanotor/dotemacs/blob/f95b774cb292d1169748bc0a62ba647bbd8c0652/etc/my-inits/my-inits-gnugo.el][to here]]. start at image display mode and grid mode
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
   (use-package gnugo
