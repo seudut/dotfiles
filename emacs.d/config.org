@@ -2528,9 +2528,9 @@ config from [[http://www.kirang.in/2014/11/13/emacs-as-email-client-with-offline
 
   ;; mu4e view
   (setq-default mu4e-headers-fields '((:flags . 6)
-                                      (:from . 22)
-                                      (:mailing-list . 10)
-                                      (:thread-subject . 50)
+                                      (:from-or-to . 22)
+                                      (:mailing-list . 20)
+                                      (:thread-subject . 70)
                                       (:human-date . 16)))
 #+END_SRC
 
