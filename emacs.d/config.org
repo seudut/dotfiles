@@ -185,13 +185,76 @@ syntax highlighting
         "The fixed width font based on what is installed, `nil' if not defined."))
 #+END_SRC
 
-Setting the fonts 
+Setting the fonts alignment issue
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
   (if window-system
       (when sd/fixed-font-family
         (set-frame-font sd/fixed-font-family)
         (set-face-attribute 'default nil :font sd/fixed-font-family :height 130)
         (set-face-font 'default sd/fixed-font-family)))
+#+END_SRC
+
+Fix the font alignment issue when both Chinese and English hybird in org-mode table
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+  (defvar emacs-english-font "Source Code Pro" "The font name of English.")
+
+  ;; (defvar emacs-cjk-font "Hiragino Sans GB W3" "The font name for CJK.")
+  (defvar emacs-cjk-font "STHeiti" "The font name for CJK.")
+  ;; (defvar emacs-cjk-font "chinese-gbk" "The font name for CJK.")
+
+  (defvar emacs-font-size-pair '(15 . 18) "Default font size pair for (english . chinese)")
+
+  (defvar emacs-font-size-pair-list
+    '(( 5 .  6) (10 . 12)
+      (11 . 13) (12 . 14)
+      (13 . 16) (14 . 15) (15 . 18) (16 . 19) (17 . 20)
+      (18 . 21) (19 . 22) (20 . 24) (21 . 26)
+      (24 . 28) (26 . 32) (28 . 34)
+      (30 . 36) (34 . 40) (36 . 44))
+    "This list is used to store matching (englis . chinese) font-size.")
+
+  (defun font-exist-p (fontname)
+    "Test if this font is exist or not."
+    (if (or (not fontname) (string= fontname ""))
+        nil
+      (if (not (x-list-fonts fontname)) nil t)))
+
+  (defun set-font (english chinese size-pair)
+    "Setup emacs English and Chinese font on x window-system."
+
+    (if (font-exist-p english)
+        (set-frame-font (format "%s:pixelsize=%d" english (car size-pair)) t))
+
+    (if (font-exist-p chinese)
+        (dolist (charset '(kana han symbol cjk-misc bopomofo))
+          (set-fontset-font (frame-parameter nil 'font) charset
+                            (font-spec :family chinese :size (cdr size-pair))))))
+
+  ;; Setup font size based on emacs-font-size-pair
+  ;; (set-font emacs-english-font emacs-cjk-font emacs-font-size-pair)
+
+  (defun emacs-step-font-size (step)
+    "Increase/Decrease emacs's font size."
+    (let ((scale-steps emacs-font-size-pair-list))
+      (if (< step 0) (setq scale-steps (reverse scale-steps)))
+      (setq emacs-font-size-pair
+            (or (cadr (member emacs-font-size-pair scale-steps))
+                emacs-font-size-pair))
+      (when emacs-font-size-pair
+        (message "emacs font size set to %.1f" (car emacs-font-size-pair))
+        (set-font emacs-english-font emacs-cjk-font emacs-font-size-pair))))
+
+  (defun increase-emacs-font-size ()
+    "Decrease emacs's font-size acording emacs-font-size-pair-list."
+    (interactive) (emacs-step-font-size 1))
+
+  (defun decrease-emacs-font-size ()
+    "Increase emacs's font-size acording emacs-font-size-pair-list."
+    (interactive) (emacs-step-font-size -1))
+
+  ;; (global-set-key (kbd "C-=") 'increase-emacs-font-size)
+  ;; (global-set-key (kbd "C--") 'decrease-emacs-font-size)
+
 #+END_SRC
 
 ** Color Theme
@@ -657,7 +720,15 @@ Always indents header, and hide header leading starts so that no need type =#+ST
     (setq org-confirm-babel-evaluate nil)
     (setq org-use-speed-commands t)
     (setq org-completion-use-ido t)
-    (setq org-startup-with-inline-images t))
+    (setq org-startup-with-inline-images t)
+    ;; (setq org-emphasis-regexp-components
+    ;;       ;; markup 记号前后允许中文
+    ;;       (list (concat " \t('\"{" "[:nonascii:]")
+    ;;             (concat "- \t.,:!?;'\")}\\[" "[:nonascii:]")
+    ;;             " \t\r\n,\"'"
+    ;;             "."
+    ;;             1))
+    )
 
   (org-babel-do-load-languages
    'org-babel-load-languages
