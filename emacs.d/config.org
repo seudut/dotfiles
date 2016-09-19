@@ -169,12 +169,12 @@ Check out [[http://tapoueh.org/emacs/el-get.html][el-get]].
 #+END_SRC
 
 ** Font Setting
-syntax highlighting
+*** syntax highlighting
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
   (global-font-lock-mode 1)
 #+END_SRC
 
-[[https://github.com/i-tu/Hasklig][Hasklig]] and Source Code Pro, defined fonts family
+*** [[https://github.com/i-tu/Hasklig][Hasklig]] and Source Code Pro, defined fonts family
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
   (if window-system
       (defvar sd/fixed-font-family
@@ -194,21 +194,20 @@ Setting the fonts alignment issue
         (set-face-font 'default sd/fixed-font-family)))
 #+END_SRC
 
-Fix the font alignment issue when both Chinese and English hybird in org-mode table
+*** Chinese fonts
+Fix the font alignment issue when both Chinese and English hybird in org-mode table. Refer [[http://coldnew.github.io/blog/2013/11-16_d2f3a/][解決 org-mode 表格內中英文對齊的問題]]
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
   (defvar emacs-english-font "Source Code Pro" "The font name of English.")
 
-  ;; (defvar emacs-cjk-font "Hiragino Sans GB W3" "The font name for CJK.")
   (defvar emacs-cjk-font "STHeiti" "The font name for CJK.")
-  ;; (defvar emacs-cjk-font "chinese-gbk" "The font name for CJK.")
 
-  (defvar emacs-font-size-pair '(15 . 18) "Default font size pair for (english . chinese)")
+  (defvar emacs-font-size-pair '(13 . 16) "Default font size pair for (english . chinese)")
 
   (defvar emacs-font-size-pair-list
     '(( 5 .  6) (10 . 12)
-      (11 . 13) (12 . 14)
-      (13 . 16) (14 . 15) (15 . 18) (16 . 19) (17 . 20)
-      (18 . 21) (19 . 22) (20 . 24) (21 . 26)
+      (11 . 14) (12 . 14)
+      (13 . 16) (14 . 16) (15 . 18) (16 . 20) (17 . 20)
+      (18 . 22) (19 . 22) (20 . 24) (21 . 26)
       (24 . 28) (26 . 32) (28 . 34)
       (30 . 36) (34 . 40) (36 . 44))
     "This list is used to store matching (englis . chinese) font-size.")
@@ -221,17 +220,13 @@ Fix the font alignment issue when both Chinese and English hybird in org-mode ta
 
   (defun set-font (english chinese size-pair)
     "Setup emacs English and Chinese font on x window-system."
-
     (if (font-exist-p english)
         (set-frame-font (format "%s:pixelsize=%d" english (car size-pair)) t))
-
     (if (font-exist-p chinese)
-        (dolist (charset '(kana han symbol cjk-misc bopomofo))
+        (dolist (charset '(han) ;; '(kana han symbol cjk-misc bopomofo)
+                 )
           (set-fontset-font (frame-parameter nil 'font) charset
                             (font-spec :family chinese :size (cdr size-pair))))))
-
-  ;; Setup font size based on emacs-font-size-pair
-  ;; (set-font emacs-english-font emacs-cjk-font emacs-font-size-pair)
 
   (defun emacs-step-font-size (step)
     "Increase/Decrease emacs's font size."
@@ -251,9 +246,14 @@ Fix the font alignment issue when both Chinese and English hybird in org-mode ta
   (defun decrease-emacs-font-size ()
     "Increase emacs's font-size acording emacs-font-size-pair-list."
     (interactive) (emacs-step-font-size -1))
+#+END_SRC
 
-  ;; (global-set-key (kbd "C-=") 'increase-emacs-font-size)
-  ;; (global-set-key (kbd "C--") 'decrease-emacs-font-size)
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+  ;; Setup font size based on emacs-font-size-pair
+  (set-font emacs-english-font emacs-cjk-font '(13 . 16))
+
+  (global-set-key (kbd "s-=") 'increase-emacs-font-size)
+  (global-set-key (kbd "s--") 'decrease-emacs-font-size)
 
 #+END_SRC
 
@@ -2752,8 +2752,8 @@ Use =ESC= to exit minibuffer. Also I map =Super-h= the same as =C-g=
   (global-set-key (kbd "s-p") 'persp-prev)
   (global-set-key (kbd "s-;") 'persp-switch-last)
 
-  (global-set-key (kbd "s-=") 'text-scale-increase)
-  (global-set-key (kbd "s--") 'text-scale-decrease)
+  ;; (global-set-key (kbd "s-=") 'text-scale-increase)
+  ;; (global-set-key (kbd "s--") 'text-scale-decrease)
 
   ;; (global-set-key (kbd "s-u") 'undo-tree-visualize)
 
