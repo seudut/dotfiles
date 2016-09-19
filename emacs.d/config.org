@@ -223,7 +223,7 @@ Fix the font alignment issue when both Chinese and English hybird in org-mode ta
     (if (font-exist-p english)
         (set-frame-font (format "%s:pixelsize=%d" english (car size-pair)) t))
     (if (font-exist-p chinese)
-        (dolist (charset '(han) ;; '(kana han symbol cjk-misc bopomofo)
+        (dolist (charset '(han cjk-misc) ;; '(kana han symbol cjk-misc bopomofo)
                  )
           (set-fontset-font (frame-parameter nil 'font) charset
                             (font-spec :family chinese :size (cdr size-pair))))))
