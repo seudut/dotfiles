@@ -720,15 +720,7 @@ Always indents header, and hide header leading starts so that no need type =#+ST
     (setq org-confirm-babel-evaluate nil)
     (setq org-use-speed-commands t)
     (setq org-completion-use-ido t)
-    (setq org-startup-with-inline-images t)
-    ;; (setq org-emphasis-regexp-components
-    ;;       ;; markup 记号前后允许中文
-    ;;       (list (concat " \t('\"{" "[:nonascii:]")
-    ;;             (concat "- \t.,:!?;'\")}\\[" "[:nonascii:]")
-    ;;             " \t\r\n,\"'"
-    ;;             "."
-    ;;             1))
-    )
+    (setq org-startup-with-inline-images t))
 
   (org-babel-do-load-languages
    'org-babel-load-languages
