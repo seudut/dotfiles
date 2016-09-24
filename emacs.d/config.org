@@ -720,7 +720,9 @@ Always indents header, and hide header leading starts so that no need type =#+ST
     (setq org-confirm-babel-evaluate nil)
     (setq org-use-speed-commands t)
     (setq org-completion-use-ido t)
-    (setq org-startup-with-inline-images t))
+    (setq org-startup-with-inline-images t)
+    (setq org-startup-with-latex-preview t)
+    (setq org-format-latex-options (plist-put org-format-latex-options :scale 1.5)))
 
   (org-babel-do-load-languages
    'org-babel-load-languages
@@ -1682,7 +1684,7 @@ here on Mac, just use "open" commands to pen =.pdf=,  =.html= and image files
           ("\\.\\(?:xcf\\)\\'" "gimp")
           ("\\.csv\\'" "libreoffice")
           ("\\.tex\\'" "pdflatex" "latex")
-          ("\\.\\(?:mp4\\|mkv\\|avi\\|flv\\|ogv\\)\\(?:\\.part\\)?\\'" "mplayer")
+          ("\\.\\(?:mp4\\|mkv\\|avi\\|rmvb\\|flv\\|ogv\\)\\(?:\\.part\\)?\\'" "mplayer")
           ("\\.\\(?:mp3\\|flac\\)\\'" "rhythmbox")
           ("\\.html?\\'" "open")
           ("\\.dmg\\'" "open")
