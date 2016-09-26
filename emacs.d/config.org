@@ -1052,6 +1052,7 @@ Color higlight the source code block in exported html, [[http://stackoverflow.co
   (use-package htmlize
     :ensure t)
 #+END_SRC
+
 ** Org structure template
 extend org-mode's easy templates, refer to [[http://coldnew.github.io/coldnew-emacs/#orgheadline94][Extend org-modes' esay templates]]
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
@@ -1069,6 +1070,8 @@ extend org-mode's easy templates, refer to [[http://coldnew.github.io/coldnew-em
                '("f" "#+BEGIN_SRC fundamental :tangle ?\n\n#+END_SRC"))
   (add-to-list 'org-structure-template-alist
                '("C" "#+BEGIN_SRC c :tangle ?\n\n#+END_SRC"))
+  (add-to-list 'org-structure-template-alist
+               '("m" "\\begin{equation}\n?\n\\end{equation}"))
 #+END_SRC
 
 * Magit
