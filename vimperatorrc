@@ -59,4 +59,5 @@ nnoremap e b
 "
 noremap <C-SPACE> <C-^>
 noremap v <C-^>
+" fix the issue on firefox49 history not working, https://github.com/vimperator/vimperator-labs/issues/590
 js services.services.autoCompleteSearch.class_="@mozilla.org/autocomplete/search;1?name=unifiedcomplete"
