@@ -17,11 +17,6 @@ Set system PATH and emacs exec path
   (setq exec-path (append exec-path '("/Library/TeX/texbin/")))
 #+END_SRC
 
-Set the emacs load path
-#+BEGIN_SRC emacs-lisp :tangle yes :results silent
-  ;; (add-to-list 'load-path "~/.emacs.d/elisp")
-#+END_SRC
-
 ** Package Initialization
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
   (require 'package)
@@ -1157,21 +1152,8 @@ Toggle an eshell in split window below, refer [[http://www.howardism.org/Technic
         (other-window 1)
         (if (projectile-project-p)
             (projectile-run-eshell)
-          (eshell))
-        ;; (let ((dir default-directory))
-        
-        ;;   (split-window-vertically (- (/ (window-total-height) 3)))
-        ;;   (other-window 1)
-        ;;   (unless (and (boundp 'eshell-buffer-name) (get-buffer eshell-buffer-name))
-        ;;     (eshell))
-        ;;   (switch-to-buffer eshell-buffer-name)
-        ;;   (goto-char (point-max))
-        ;;   (eshell-kill-input)
-        ;;   (insert (format "cd %s" dir))
-        ;;   (eshell-send-input))
-        )))
+          (eshell)))))
 
-  ;; (global-unset-key (kbd "M-`"))
   (global-set-key (kbd "s-e") 'sd/toggle-project-eshell)
 #+END_SRC
 
