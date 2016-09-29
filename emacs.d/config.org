@@ -3342,10 +3342,6 @@ Refer [[https://github.com/fnwiya/dotfiles/blob/c9ca79f1b22c919d9f4c3a0f944ba828
   (global-set-key (kbd "C-w") 'sd/kill-region-or-backward-kill-word)
 #+END_SRC
 
-* key
-- passion
-- vision
-- mission
 
 * TODO todolist
 ** rucket
