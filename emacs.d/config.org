@@ -1428,8 +1428,6 @@ When see function by =C-h f=, and visit the source code, I would like the buffer
       ;; (info)
       ))
 
-  ;; (global-set-key (kbd "C-h i") 'sd/info-mode)
-
   ;; open Info buffer in other window instead of current window
   (defadvice info (before my-info (&optional file buf) activate)
     (sd/info-mode))
@@ -2708,11 +2706,6 @@ Use =ESC= to exit minibuffer. Also I map =Super-h= the same as =C-g=
     (:map projectile-mode-map
           ("s-t" . projectile-persp-switch-project)))
 
-  ;; (defun sd/change-default-directory (buffer dir)
-  ;;   "change defafult directory of buffer to dir"
-  ;;   (with-current-buffer buffer
-  ;;     (cd dir)))
-
   ;; change default-directory of scratch buffer to projectile-project-root 
   (defun sd/project-switch-action ()
     "Change default-directory of scratch buffer to current projectile-project-root directory"
@@ -2722,9 +2715,7 @@ Use =ESC= to exit minibuffer. Also I map =Super-h= the same as =C-g=
                         (buffer-name buffer))
           (let ((root (projectile-project-root)))
             (with-current-buffer buffer
-              (cd root)))
-        ;; (sd/change-default-directory buffer (projectile-project-root))
-        )))
+              (cd root))))))
 #+END_SRC
 
 *** project config =super= keybindings
@@ -3332,6 +3323,7 @@ stolen from [[https://github.com/mariolong/emacs.d/blob/f6a061594ef1b5d1f4750e9d
 *** TODO make expand-region hydra work with lispy selected
 ** =C-w= delete backward word
 Refer [[https://github.com/fnwiya/dotfiles/blob/c9ca79f1b22c919d9f4c3a0f944ba8281255a594/setup/.emacs.d/loader-init/_90-kill-region-or-backward-kill-word.el][kill-region-or-backward-kill-word]]
+
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
   (defun sd/kill-region-or-backward-kill-word ()
     (interactive)
@@ -3341,6 +3333,7 @@ Refer [[https://github.com/fnwiya/dotfiles/blob/c9ca79f1b22c919d9f4c3a0f944ba828
 
   (global-set-key (kbd "C-w") 'sd/kill-region-or-backward-kill-word)
 #+END_SRC
+
 
 
 * TODO todolist
