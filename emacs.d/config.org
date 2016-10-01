@@ -718,7 +718,10 @@ Always indents header, and hide header leading starts so that no need type =#+ST
     (setq org-startup-with-inline-images t)
     ;; latex preview
     (setq org-startup-with-latex-preview t)
-    (setq org-format-latex-options (plist-put org-format-latex-options :scale 1.2)))
+    (setq org-format-latex-options (plist-put org-format-latex-options :scale 1.2))
+    (require 'org-habit)
+    (add-to-list 'org-modules 'org-habit)
+    (setq org-habit-graph-column 50))
 
   (el-get-bundle hasu/emacs-ob-racket
     :features ob-racket)
@@ -944,9 +947,9 @@ Setting agenda files and the agenda view
                                  "~/org/work.org")))
 
   ;; only show today's tasks in agenda view
-  (setq org-agenda-span 'day)
+  ;; (setq org-agenda-span 'day)
   ;; Use current windows for agenda view
-  (setq org-agenda-window-setup 'current-window)
+  ;; (setq org-agenda-window-setup 'current-window)
 
   ;; show all feature entries for repeating tasks,
   ;; this is already setting by default
