@@ -1252,29 +1252,21 @@ Refer [[https://github.com/abo-abo/hydra/blob/master/hydra-examples.el][hydra-ex
 #+END_SRC
 
 ** Line Number
-
 Enable linum mode on programming modes
-
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
   (add-hook 'prog-mode-hook 'linum-mode)
-  ;; (add-hook 'prog-mode-hook (lambda ()
-  ;;                             (setq-default indicate-empty-lines t)))
 #+END_SRC
 
 Fix the font size of line number
-
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
-
   (defun fix-linum-size ()
-       (interactive)
-       (set-face-attribute 'linum nil :height 110))
+    (interactive)
+    (set-face-attribute 'linum nil :height 110))
 
   (add-hook 'linum-mode-hook 'fix-linum-size)
-
 #+END_SRC
 
 I like [[https://github.com/coldnew/linum-relative][linum-relative]], just like the =set relativenumber= on =vim=
-
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
   (use-package linum-relative
     :ensure t
@@ -1297,14 +1289,11 @@ I like [[https://github.com/coldnew/linum-relative][linum-relative]], just like 
 #+END_SRC
 
 ** Save File Position
-
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
-
   (require 'saveplace)
   (setq-default save-place t)
   (setq save-place-forget-unreadable-files t)
   (setq save-place-skip-check-regexp "\\`/\\(?:cdrom\\|floppy\\|mnt\\|/[0-9]\\|\\(?:[^@/:]*@\\)?[^@/:]*[^@/:.]:\\)")
-
 #+END_SRC
 
 ** Multi-term
@@ -1427,9 +1416,7 @@ When see function by =C-h f=, and visit the source code, I would like the buffer
     (unless (equal major-mode 'Info-mode)
       (unless (> (length (window-list)) 1)
         (split-window-right))
-      (other-window 1)
-      ;; (info)
-      ))
+      (other-window 1)))
 
   ;; open Info buffer in other window instead of current window
   (defadvice info (before my-info (&optional file buf) activate)
@@ -1441,13 +1428,8 @@ When see function by =C-h f=, and visit the source code, I would like the buffer
 
 ** Demo It
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
-  ;; (el-get-bundle howardabrams/demo-it)
-
   (use-package org-tree-slide
     :ensure t)
-
-  ;; (use-package yasnippet
-  ;;   :ensure t)
 #+END_SRC
 
 ** Presentation
