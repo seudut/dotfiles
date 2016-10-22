@@ -33,7 +33,10 @@ Set system PATH and emacs exec path
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
   (scroll-bar-mode 0)
   (tool-bar-mode 0)
-  (menu-bar-mode 1)
+
+  (if window-system
+      (menu-bar-mode 1)
+    (menu-bar-mode 0))
 
   ;; (setq debug-on-error t)
   (setq inhibit-startup-message t)
@@ -245,11 +248,21 @@ Fix the font alignment issue when both Chinese and English hybird in org-mode ta
 
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
   ;; Setup font size based on emacs-font-size-pair
-  (set-font emacs-english-font emacs-cjk-font '(13 . 16))
+  (if window-system
+      (set-font emacs-english-font emacs-cjk-font '(13 . 16)))
+  ;  
 
-  ;; (global-set-key (kbd "s-=") 'increase-emacs-font-size)
-  ;; (global-set-key (kbd "s--") 'decrease-emacs-font-size)
+    ;; (global-set-key (kbd "s-=") 'increase-emacs-font-size)
+    ;; (global-set-key (kbd "s--") 'decrease-emacs-font-size)
 
+    ;; set different fonts (chinese) size for org-mode.
+    (defun sd/org-buffer-font ()
+      "My font setting for org-mode"
+      (interactive)
+      (setq buffer-face-mode-face '(:family "cjk-misc" :font "STHeiti" :height 160))
+      (buffer-face-mode))
+
+    ;; (add-hook 'org-mode-hook 'sd/org-buffer-font)
 #+END_SRC
 
 ** Color Theme
