@@ -177,7 +177,7 @@ Check out [[http://tapoueh.org/emacs/el-get.html][el-get]].
   (if window-system
       (defvar sd/fixed-font-family
         (cond ((x-list-fonts "Hasklig")         "Hasklig")
-              ((x-list-fonts "Source Code Pro") "Source Code Pro:weight")
+              ((x-list-fonts "Source Code Pro") "Source Code Pro:weight") ;; weigth=light
               ((x-list-fonts "Anonymous Pro")   "Anonymous Pro")
               ((x-list-fonts "M+ 1mn")          "M+ 1mn"))
         "The fixed width font based on what is installed, `nil' if not defined."))
@@ -185,11 +185,11 @@ Check out [[http://tapoueh.org/emacs/el-get.html][el-get]].
 
 Setting the fonts alignment issue
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
-  (if window-system
-      (when sd/fixed-font-family
-        (set-frame-font sd/fixed-font-family)
-        (set-face-attribute 'default nil :font sd/fixed-font-family :height 130)
-        (set-face-font 'default sd/fixed-font-family)))
+   (if window-system
+       (when sd/fixed-font-family
+         (set-frame-font sd/fixed-font-family)
+         (set-face-attribute 'default nil :font sd/fixed-font-family :height 120)
+         (set-face-font 'default sd/fixed-font-family)))
 #+END_SRC
 
 *** Chinese fonts
@@ -248,21 +248,21 @@ Fix the font alignment issue when both Chinese and English hybird in org-mode ta
 
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
   ;; Setup font size based on emacs-font-size-pair
-  (if window-system
-      (set-font emacs-english-font emacs-cjk-font '(13 . 16)))
-  ;  
+  ;; (if window-system
+  ;;     (set-font emacs-english-font emacs-cjk-font '(13 . 16)))
+    
 
-    ;; (global-set-key (kbd "s-=") 'increase-emacs-font-size)
-    ;; (global-set-key (kbd "s--") 'decrease-emacs-font-size)
+  ;; (global-set-key (kbd "s-=") 'increase-emacs-font-size)
+  ;; (global-set-key (kbd "s--") 'decrease-emacs-font-size)
 
-    ;; set different fonts (chinese) size for org-mode.
-    (defun sd/org-buffer-font ()
-      "My font setting for org-mode"
-      (interactive)
-      (setq buffer-face-mode-face '(:family "cjk-misc" :font "STHeiti" :height 160))
-      (buffer-face-mode))
+  ;; set different fonts (chinese) size for org-mode.
+  (defun sd/org-buffer-font ()
+    "My font setting for org-mode"
+    (interactive)
+    (setq buffer-face-mode-face '(:family "Source Sans Code" :height 160))
+    (buffer-face-mode))
 
-    ;; (add-hook 'org-mode-hook 'sd/org-buffer-font)
+  ;; (add-hook 'org-mode-hook 'sd/org-buffer-font)
 #+END_SRC
 
 ** Color Theme
@@ -734,29 +734,29 @@ Always indents header, and hide header leading starts so that no need type =#+ST
     (setq org-format-latex-options (plist-put org-format-latex-options :scale 1.2))
     (require 'org-habit)
     (add-to-list 'org-modules 'org-habit)
-    (setq org-habit-graph-column 50))
+    (setq org-habit-graph-column 50)
+    (setq org-hide-emphasis-markers t))
 
   (el-get-bundle hasu/emacs-ob-racket
     :features ob-racket)
 
-  (org-babel-do-load-languages
-   'org-babel-load-languages
-   '((python . t)
-     (C . t)
-     (perl . t)
-     (calc . t)
-     (latex . t)
-     (java . t)
-     (ruby . t)
-     (lua . t)
-     (lisp . t)
-     (scheme . t)
-     (racket . t)
-     (sh . t)
-     (sqlite . t)
-     (js . t)
-     (gnuplot . t)
-     (ditaa . t)))
+  (org-babel-do-load-languages 'org-babel-load-languages
+                               '((python . t)
+                                 (C . t)
+                                 (perl . t)
+                                 (calc . t)
+                                 (latex . t)
+                                 (java . t)
+                                 (ruby . t)
+                                 (lua . t)
+                                 (lisp . t)
+                                 (scheme . t)
+                                 (racket . t)
+                                 (sh . t)
+                                 (sqlite . t)
+                                 (js . t)
+                                 (gnuplot . t)
+                                 (ditaa . t)))
 
   ;; use current window for org source buffer editting
   (setq org-src-window-setup 'current-window )
@@ -3340,3 +3340,81 @@ Refer [[https://github.com/fnwiya/dotfiles/blob/c9ca79f1b22c919d9f4c3a0f944ba828
 ** SICP
 ** music searcher
 search music on some music web site
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+  ;; (create-fontset-from-fontset-spec
+  ;;  "-*-Source Code Pro-*-*-*-*-12-*-*-*-*-*-fontset-Source Code Pro,
+  ;;    ascii:-*-Source Code Pro-normal-normal-normal-*-23-*-*-*-m-0-iso10646-1,
+  ;;    latin-iso8859-1:-*-Source Code Pro-normal-normal-normal-*-17-*-*-*-m-0-iso10646-1,
+  ;;    latin-iso8859-15:-*-Source Code Pro-normal-normal-normal-*-17-*-*-*-m-0-iso10646-1,
+  ;;    chinese-gb2312:-*-STHeiti-*-*-*-*-14-*-*-*-c-*-*-*,
+  ;;    han:-*-STHeiti-*-*-*-*-14-*-*-*-c-*-*-*")
+
+
+  ;; (create-fontset-from-fontset-spec
+  ;;  "-*-Courier New-normal-r-*-*-14-*-*-*-c-*-fontset-myfixwidth,
+  ;; ascii:-*-Courier New-normal-normal-normal-*-17-*-*-*-m-0-iso10646-1,
+  ;; kana:-*-STFangsong-normal-r-*-*-16-*-*-*-c-*-*-*,
+  ;; han:-*-STFangsong-normal-r-*-*-16-*-*-*-c-*-*-*,
+  ;; symbol:-*-STFangsong-normal-r-*-*-16-*-*-*-c-*-*-*,
+  ;; cjk-misc:-*-STFangsong-normal-r-*-*-16-*-*-*-c-*-*-*,
+  ;; bopomofo:-*-STFangsong-normal-r-*-*-16-*-*-*-c-*-*-*" t)
+  ;; (create-fontset-from-fontset-spec
+  ;;  "-*-Courier New-normal-r-*-*-14-*-*-*-c-*-fontset-myfixwidth,
+  ;; ascii:-*-Courier New-normal-normal-normal-*-17-*-*-*-m-0-iso10646-1")
+
+  ;; (create-fontset-from-fontset-spec
+  ;;  "-*-Source Code Pro-normal-normal-normal-*-12-*-*-*-*-*-fontset-osaka12")
+  ;; (create-fontset-from-fontset-spec
+  ;;  "-*-Source Code Pro-normal-normal-normal-*-12-*-*-*-*-*-fontset-osaka13")
+
+  ;; (create-fontset-from-fontset-spec
+  ;;     "-*-consolas-*-*-*-*-12-*-*-*-*-*-fontset-consolas,
+  ;;     ascii:-*-consolas-*-*-*-*-12-*-*-*-*-*-iso8859-1,
+  ;;     latin-iso8859-1:-*-consolas-*-*-*-*-12-*-*-*-*-*-iso8859-1,
+  ;;     latin-iso8859-15:-*-consolas-*-*-*-*-12-*-*-*-*-*-iso8859-15")
+
+  ;; (setq default-frame-alist '(;; (width . 100)
+                             
+  ;;   ;; (height . 44)
+    
+  ;;   ;; (top . 50)
+  ;;                                        ;pixels
+  ;;   ;; (left . 50)
+  ;;                                        ;pixels
+  ;;   (font . "fontset-my-private")
+  ;;   ))
+  ;; (with-eval-after-load "org"
+  ;;   (set-face-attribute 'org-code nil :family "fontset-myfixwidth")
+  ;;   (set-face-attribute 'org-block nil :family "fontset-myfixwidth")
+  ;;   (set-face-attribute 'org-table nil :family "fontset-myfixwidth")
+  ;;   (set-face-attribute 'org-block-background nil :family "fontset-myfixwidth"))
+  ;; (setq default-frame-alist
+  ;;       (append
+  ;;        '((font . "fontset-osaka13")) default-frame-alist))
+
+
+  ;; (set-fontset-font
+  ;;  "fontset-default" nil
+  ;;  "-*-stheiti-*-*-*-*-14-*-*-*-*-*-gb2312.1980-*" nil 'prepend)
+  ;; (set-fontset-font
+  ;;  "fontset-osaka12" 'kana
+  ;;  "-*-stheiti-*-*-*-*-14-*-*-*-*-*-gbk-0" nil 'prepend)
+  ;; (set-fontset-font
+  ;;  "fontset-osaka12" 'han
+  ;;  "-*-stheiti-*-*-*-*-14-*-*-*-*-*-gbk-0" nil 'prepend)
+  ;; (set-fontset-font
+  ;;  "fontset-osaka12" 'cjk-misc
+  ;;  "-*-stheiti-*-*-*-*-14-*-*-*-*-*-gbk-0" nil 'prepend)
+
+  (set-face-attribute 'variable-pitch nil :font "Calibri" :height 160)
+  (set-face-attribute 'fixed-pitch nil :font "Source Code Pro" :height 120)
+
+  (add-hook 'text-mode-hook 'variable-pitch-mode)
+
+  (with-eval-after-load "org"
+    (set-face-attribute 'org-code nil :inherit 'fixed-pitch)
+    (set-face-attribute 'org-block nil :inherit 'fixed-pitch)
+    (set-face-attribute 'org-table nil :family "Ubuntu Mono" :height 120)
+    (set-face-attribute 'org-block-background nil :inherit 'fixed-pitch))
+#+END_SRC
+
