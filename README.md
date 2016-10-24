@@ -1,7 +1,7 @@
 dotfiles
 ========
 
-This repos are some configuration file of my environmnt, such as Emacs, Vim, Zsh, and Tmux, etc.
+This repos are some configuration files of my environment, such as Emacs, Vim, Zsh, and Tmux, etc.
 
 Vim
 =======
