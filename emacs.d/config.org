@@ -582,13 +582,12 @@ Fix the issue in mode line when showing triangle
 
 set height in mode line
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
-  (set-variable 'powerline-height 14)
-  (set-variable 'powerline-text-scale-factor (/ (float 100) 140))
-  ;; (custom-set-variables
-  ;;  '(powerline-height 14)
-  ;;  '(powerline-text-scale-factor (/ (float 100) 140)))
   ;; 100/140;0.8
+  (set-variable 'powerline-height 14)
+  (set-variable 'powerline-text-scale-factor (/ (float 100) 120))
+
   (set-face-attribute 'mode-line nil :height 100)
+  (set-face-attribute 'mode-line-inactive nil :height 100)
 #+END_SRC
 
 * IDO & SMEX
