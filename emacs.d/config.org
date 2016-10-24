@@ -1085,6 +1085,41 @@ extend org-mode's easy templates, refer to [[http://coldnew.github.io/coldnew-em
                '("m" "\\begin{equation}\n?\n\\end{equation}"))
 #+END_SRC
 
+** Org theme
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+  (set-face-attribute 'variable-pitch nil :font "Calibri" :height 160)
+  (set-face-attribute 'fixed-pitch nil :font "Source Code Pro" :height 120)
+
+  (add-hook 'text-mode-hook 'variable-pitch-mode)
+
+  ;; Install Ubuntu Mono fonts and apply it in org-table to align Chinese fonts
+  (with-eval-after-load "org"
+    (set-face-attribute 'org-code nil :inherit 'fixed-pitch)
+    (set-face-attribute 'org-block nil :inherit 'fixed-pitch)
+    (set-face-attribute 'org-table nil :family "Ubuntu Mono" :height 120)
+    (set-face-attribute 'org-block-background nil :inherit 'fixed-pitch)
+    ;; fix indent broken by variable-pitch-mode
+    ;; http://emacs.stackexchange.com/questions/26864/variable-pitch-face-breaking-indentation-in-org-mode
+    (require 'org-indent)
+    (set-face-attribute 'org-indent nil :inherit '(org-hide fixed-pitch)))
+#+END_SRC
+
+*** variable-pich mode
+[[https://yoo2080.wordpress.com/2013/05/30/monospace-font-in-tables-and-source-code-blocks-in-org-mode-proportional-font-in-other-parts/][monospace font in tables and source code blocks in org-mode, proportional font in other parts]]
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+;  (set-face-attribute 'variable-pitch nil :font "Calibri" :height 160)
+;  (set-face-attribute 'fixed-pitch nil :font "Source Code Pro" :height 130)
+
+
+  ;; (add-hook 'text-mode-hook 'variable-pitch-mode)
+
+  ;; monospace mode for block in org-mode
+  ;; (with-eval-after-load "org"
+  ;;   (mapc (lambda (face)
+  ;;           (set-face-attribute face nil :inherit 'fixed-pitch))
+  ;;         (list 'org-code 'org-block 'org-table 'org-block-background)))
+#+END_SRC
+
 * Magit
 [[https://github.com/magit/magit][Magit]] is a very cool git interface on Emacs.
 and Defined keys, using vi keybindings, Refer abo-abo's setting [[https://github.com/abo-abo/oremacs/blob/c5cafdcebc88afe9e73cc8bd40c49b70675509c7/modes/ora-nextmagit.el][here]]
@@ -1768,7 +1803,7 @@ here on Mac, just use "open" commands to pen =.pdf=,  =.html= and image files
     (define-key company-active-map (kbd "TAB") #'company-complete-selection)
     (define-key company-active-map [tab] #'company-complete-selection)
     (global-company-mode)
-    (setq company-global-modes '(not org-mode)))
+    (setq company-global-modes '(not org-mode magit-status-mode)))
 
   (use-package company-statistics
     :ensure t
@@ -3338,45 +3373,5 @@ Refer [[https://github.com/fnwiya/dotfiles/blob/c9ca79f1b22c919d9f4c3a0f944ba828
 ** SICP
 ** music searcher
 search music on some music web site
-#+BEGIN_SRC emacs-lisp :tangle yes :results silent
-  ;; (create-fontset-from-fontset-spec
-  ;;  "-*-Source Code Pro-normal-normal-normal-*-12-*-*-*-*-*-fontset-osaka12")
-  ;; (create-fontset-from-fontset-spec
-  ;;  "-*-Source Code Pro-normal-normal-normal-*-12-*-*-*-*-*-fontset-osaka13")
-
-  ;; (create-fontset-from-fontset-spec
-  ;;     "-*-consolas-*-*-*-*-12-*-*-*-*-*-fontset-consolas,
-  ;;     ascii:-*-consolas-*-*-*-*-12-*-*-*-*-*-iso8859-1,
-  ;;     latin-iso8859-1:-*-consolas-*-*-*-*-12-*-*-*-*-*-iso8859-1,
-  ;;     latin-iso8859-15:-*-consolas-*-*-*-*-12-*-*-*-*-*-iso8859-15")
-
-  ;; (set-fontset-font
-  ;;  "fontset-default" nil
-  ;;  "-*-stheiti-*-*-*-*-14-*-*-*-*-*-gb2312.1980-*" nil 'prepend)
-  ;; (set-fontset-font
-  ;;  "fontset-osaka12" 'kana
-  ;;  "-*-stheiti-*-*-*-*-14-*-*-*-*-*-gbk-0" nil 'prepend)
-  ;; (set-fontset-font
-  ;;  "fontset-osaka12" 'han
-  ;;  "-*-stheiti-*-*-*-*-14-*-*-*-*-*-gbk-0" nil 'prepend)
-  ;; (set-fontset-font
-  ;;  "fontset-osaka12" 'cjk-misc
-  ;;  "-*-stheiti-*-*-*-*-14-*-*-*-*-*-gbk-0" nil 'prepend)
-
-  (set-face-attribute 'variable-pitch nil :font "Calibri" :height 160)
-  (set-face-attribute 'fixed-pitch nil :font "Source Code Pro" :height 120)
-
-  (add-hook 'text-mode-hook 'variable-pitch-mode)
-
-  (with-eval-after-load "org"
-    (set-face-attribute 'org-code nil :inherit 'fixed-pitch)
-    (set-face-attribute 'org-block nil :inherit 'fixed-pitch)
-    (set-face-attribute 'org-table nil :family "Ubuntu Mono" :height 120)
-    (set-face-attribute 'org-block-background nil :inherit 'fixed-pitch)
-    ;; fix indent broken by variable-pitch-mode
-    ;; http://emacs.stackexchange.com/questions/26864/variable-pitch-face-breaking-indentation-in-org-mode
-    (require 'org-indent)
-    (set-face-attribute 'org-indent nil :inherit '(org-hide fixed-pitch)))
-#+END_SRC
 
 
