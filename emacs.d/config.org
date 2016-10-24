@@ -3332,8 +3332,6 @@ Refer [[https://github.com/fnwiya/dotfiles/blob/c9ca79f1b22c919d9f4c3a0f944ba828
   (global-set-key (kbd "C-w") 'sd/kill-region-or-backward-kill-word)
 #+END_SRC
 
-
-
 * TODO todolist
 ** rucket
 ** player video on iphone for 
@@ -3341,27 +3339,6 @@ Refer [[https://github.com/fnwiya/dotfiles/blob/c9ca79f1b22c919d9f4c3a0f944ba828
 ** music searcher
 search music on some music web site
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
-  ;; (create-fontset-from-fontset-spec
-  ;;  "-*-Source Code Pro-*-*-*-*-12-*-*-*-*-*-fontset-Source Code Pro,
-  ;;    ascii:-*-Source Code Pro-normal-normal-normal-*-23-*-*-*-m-0-iso10646-1,
-  ;;    latin-iso8859-1:-*-Source Code Pro-normal-normal-normal-*-17-*-*-*-m-0-iso10646-1,
-  ;;    latin-iso8859-15:-*-Source Code Pro-normal-normal-normal-*-17-*-*-*-m-0-iso10646-1,
-  ;;    chinese-gb2312:-*-STHeiti-*-*-*-*-14-*-*-*-c-*-*-*,
-  ;;    han:-*-STHeiti-*-*-*-*-14-*-*-*-c-*-*-*")
-
-
-  ;; (create-fontset-from-fontset-spec
-  ;;  "-*-Courier New-normal-r-*-*-14-*-*-*-c-*-fontset-myfixwidth,
-  ;; ascii:-*-Courier New-normal-normal-normal-*-17-*-*-*-m-0-iso10646-1,
-  ;; kana:-*-STFangsong-normal-r-*-*-16-*-*-*-c-*-*-*,
-  ;; han:-*-STFangsong-normal-r-*-*-16-*-*-*-c-*-*-*,
-  ;; symbol:-*-STFangsong-normal-r-*-*-16-*-*-*-c-*-*-*,
-  ;; cjk-misc:-*-STFangsong-normal-r-*-*-16-*-*-*-c-*-*-*,
-  ;; bopomofo:-*-STFangsong-normal-r-*-*-16-*-*-*-c-*-*-*" t)
-  ;; (create-fontset-from-fontset-spec
-  ;;  "-*-Courier New-normal-r-*-*-14-*-*-*-c-*-fontset-myfixwidth,
-  ;; ascii:-*-Courier New-normal-normal-normal-*-17-*-*-*-m-0-iso10646-1")
-
   ;; (create-fontset-from-fontset-spec
   ;;  "-*-Source Code Pro-normal-normal-normal-*-12-*-*-*-*-*-fontset-osaka12")
   ;; (create-fontset-from-fontset-spec
@@ -3372,26 +3349,6 @@ search music on some music web site
   ;;     ascii:-*-consolas-*-*-*-*-12-*-*-*-*-*-iso8859-1,
   ;;     latin-iso8859-1:-*-consolas-*-*-*-*-12-*-*-*-*-*-iso8859-1,
   ;;     latin-iso8859-15:-*-consolas-*-*-*-*-12-*-*-*-*-*-iso8859-15")
-
-  ;; (setq default-frame-alist '(;; (width . 100)
-                             
-  ;;   ;; (height . 44)
-    
-  ;;   ;; (top . 50)
-  ;;                                        ;pixels
-  ;;   ;; (left . 50)
-  ;;                                        ;pixels
-  ;;   (font . "fontset-my-private")
-  ;;   ))
-  ;; (with-eval-after-load "org"
-  ;;   (set-face-attribute 'org-code nil :family "fontset-myfixwidth")
-  ;;   (set-face-attribute 'org-block nil :family "fontset-myfixwidth")
-  ;;   (set-face-attribute 'org-table nil :family "fontset-myfixwidth")
-  ;;   (set-face-attribute 'org-block-background nil :family "fontset-myfixwidth"))
-  ;; (setq default-frame-alist
-  ;;       (append
-  ;;        '((font . "fontset-osaka13")) default-frame-alist))
-
 
   ;; (set-fontset-font
   ;;  "fontset-default" nil
@@ -3415,6 +3372,11 @@ search music on some music web site
     (set-face-attribute 'org-code nil :inherit 'fixed-pitch)
     (set-face-attribute 'org-block nil :inherit 'fixed-pitch)
     (set-face-attribute 'org-table nil :family "Ubuntu Mono" :height 120)
-    (set-face-attribute 'org-block-background nil :inherit 'fixed-pitch))
+    (set-face-attribute 'org-block-background nil :inherit 'fixed-pitch)
+    ;; fix indent broken by variable-pitch-mode
+    ;; http://emacs.stackexchange.com/questions/26864/variable-pitch-face-breaking-indentation-in-org-mode
+    (require 'org-indent)
+    (set-face-attribute 'org-indent nil :inherit '(org-hide fixed-pitch)))
 #+END_SRC
+
 
