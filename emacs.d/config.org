@@ -155,15 +155,11 @@ Check out [[http://tapoueh.org/emacs/el-get.html][el-get]].
 #+END_SRC
 
 ** Smart Comments
-
 [[https://github.com/paldepind/smart-comment][smart-comments]]
-
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
-
   (use-package smart-comment
     :ensure t
     :bind ("M-;" . smart-conmment))
-
 #+END_SRC
 
 ** Font Setting
@@ -1114,6 +1110,20 @@ Also correct the face of  =org-meta-line= in =org-table=
 #+END_SRC
 
 *** Org-head face
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+  (with-eval-after-load "org"
+    (let* ((base-height (face-attribute 'variable-pitch :height))
+           (base-font-color (face-foreground 'default nil  'default)))
+      (set-face-attribute 'org-document-title nil :weight 'bold :height (+ 100 base-height))
+      (set-face-attribute 'org-level-1 nil :weight 'bold :height (+ 80 base-height))
+      (set-face-attribute 'org-level-2 nil :weight 'bold :height (+ 60 base-height))
+      (set-face-attribute 'org-level-3 nil :weight 'bold :height (+ 40 base-height))
+      (set-face-attribute 'org-level-4 nil :weight 'bold :height (+ 20 base-height))
+      (set-face-attribute 'org-level-5 nil :weight 'bold)
+      (set-face-attribute 'org-level-6 nil :weight 'bold)
+      (set-face-attribute 'org-level-7 nil :weight 'bold)
+      (set-face-attribute 'org-level-8 nil :weight 'bold)))
+#+END_SRC
 
 * Magit
 [[https://github.com/magit/magit][Magit]] is a very cool git interface on Emacs.
@@ -3364,9 +3374,11 @@ Refer [[https://github.com/fnwiya/dotfiles/blob/c9ca79f1b22c919d9f4c3a0f944ba828
 #+END_SRC
 
 * TODO todolist
-** rucket
+** Rucket
 ** player video on iphone for 
 ** SICP
 ** music searcher
 search music on some music web site
+
+
 
