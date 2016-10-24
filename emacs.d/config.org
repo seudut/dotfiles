@@ -730,8 +730,8 @@ Always indents header, and hide header leading starts so that no need type =#+ST
     (setq org-completion-use-ido t)
     (setq org-startup-with-inline-images t)
     ;; latex preview
-    (setq org-startup-with-latex-preview t)
-    (setq org-format-latex-options (plist-put org-format-latex-options :scale 1.2))
+    ;; (setq org-startup-with-latex-preview t)
+    ;; (setq org-format-latex-options (plist-put org-format-latex-options :scale 1.2))
     (require 'org-habit)
     (add-to-list 'org-modules 'org-habit)
     (setq org-habit-graph-column 50)
@@ -1089,7 +1089,7 @@ extend org-mode's easy templates, refer to [[http://coldnew.github.io/coldnew-em
 *** variable-pitch-mode and fixed-pitch-mode
 [[https://yoo2080.wordpress.com/2013/05/30/monospace-font-in-tables-and-source-code-blocks-in-org-mode-proportional-font-in-other-parts/][monospace font in tables and source code blocks in org-mode, proportional font in other parts]]
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
-  (set-face-attribute 'variable-pitch nil :font "Calibri" :height 160)
+  (set-face-attribute 'variable-pitch nil :font "Calibri" :height 140)
   (set-face-attribute 'fixed-pitch nil :font "Source Code Pro" :height 120)
 
   (add-hook 'text-mode-hook 'variable-pitch-mode)
@@ -1099,15 +1099,21 @@ extend org-mode's easy templates, refer to [[http://coldnew.github.io/coldnew-em
     (mapc (lambda (face)
             (set-face-attribute face nil :inherit 'fixed-pitch))
           (list 'org-code 'org-block 'org-block-background))
-    (set-face-attribute 'org-table nil :family "Ubuntu Mono" :height 120)
+    (set-face-attribute 'org-table nil :family "Ubuntu Mono" :height 140)
+    
     ;; fix indent broken by variable-pitch-mode
     ;; http://emacs.stackexchange.com/questions/26864/variable-pitch-face-breaking-indentation-in-org-mode
     (require 'org-indent)
     (set-face-attribute 'org-indent nil :inherit '(org-hide fixed-pitch)))
 #+END_SRC
 
-*** Org-head face
+Also correct the face of  =org-meta-line= in =org-table= 
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+  (with-eval-after-load "org"
+    (set-face-attribute 'org-meta-line nil :font "Source Code Pro" :height 120 :slant 'italic :inherit 'font-lock-comment-face))
+#+END_SRC
 
+*** Org-head face
 
 * Magit
 [[https://github.com/magit/magit][Magit]] is a very cool git interface on Emacs.
@@ -3363,5 +3369,4 @@ Refer [[https://github.com/fnwiya/dotfiles/blob/c9ca79f1b22c919d9f4c3a0f944ba828
 ** SICP
 ** music searcher
 search music on some music web site
-
 
