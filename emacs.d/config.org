@@ -181,11 +181,11 @@ Check out [[http://tapoueh.org/emacs/el-get.html][el-get]].
 
 Setting the fonts alignment issue
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
-   (if window-system
-       (when sd/fixed-font-family
-         (set-frame-font sd/fixed-font-family)
-         (set-face-attribute 'default nil :font sd/fixed-font-family :height 120)
-         (set-face-font 'default sd/fixed-font-family)))
+  (if window-system
+      (when sd/fixed-font-family
+        (set-frame-font sd/fixed-font-family)
+        (set-face-attribute 'default nil :font sd/fixed-font-family :height 140)
+        (set-face-font 'default sd/fixed-font-family)))
 #+END_SRC
 
 *** Chinese fonts
@@ -582,12 +582,13 @@ Fix the issue in mode line when showing triangle
 
 set height in mode line
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
-  ;; 100/140;0.8
-  (set-variable 'powerline-height 14)
-  (set-variable 'powerline-text-scale-factor (/ (float 100) 120))
-
-  (set-face-attribute 'mode-line nil :height 100)
-  (set-face-attribute 'mode-line-inactive nil :height 100)
+  (with-eval-after-load "powerline"
+    (let* ((base-font-size (face-attribute 'default :height)))
+      ;; 100/140;0.8
+      (set-variable 'powerline-height (/ base-font-size 10))
+      (set-variable 'powerline-text-scale-factor (/ (float 100) base-font-size)))
+    (set-face-attribute 'mode-line nil :height 100)
+    (set-face-attribute 'mode-line-inactive nil :height 100))
 #+END_SRC
 
 * IDO & SMEX
@@ -1085,7 +1086,7 @@ extend org-mode's easy templates, refer to [[http://coldnew.github.io/coldnew-em
 [[https://yoo2080.wordpress.com/2013/05/30/monospace-font-in-tables-and-source-code-blocks-in-org-mode-proportional-font-in-other-parts/][monospace font in tables and source code blocks in org-mode, proportional font in other parts]]
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
   (set-face-attribute 'variable-pitch nil :font "Calibri" :height 160)
-  (set-face-attribute 'fixed-pitch nil :font "Source Code Pro" :height 120)
+  (set-face-attribute 'fixed-pitch nil :font "Source Code Pro" :height (face-attribute 'default :height))
 
   (add-hook 'text-mode-hook 'variable-pitch-mode)
 
