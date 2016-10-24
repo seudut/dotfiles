@@ -1086,6 +1086,8 @@ extend org-mode's easy templates, refer to [[http://coldnew.github.io/coldnew-em
 #+END_SRC
 
 ** Org theme
+*** variable-pitch-mode and fixed-pitch-mode
+[[https://yoo2080.wordpress.com/2013/05/30/monospace-font-in-tables-and-source-code-blocks-in-org-mode-proportional-font-in-other-parts/][monospace font in tables and source code blocks in org-mode, proportional font in other parts]]
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
   (set-face-attribute 'variable-pitch nil :font "Calibri" :height 160)
   (set-face-attribute 'fixed-pitch nil :font "Source Code Pro" :height 120)
@@ -1094,31 +1096,18 @@ extend org-mode's easy templates, refer to [[http://coldnew.github.io/coldnew-em
 
   ;; Install Ubuntu Mono fonts and apply it in org-table to align Chinese fonts
   (with-eval-after-load "org"
-    (set-face-attribute 'org-code nil :inherit 'fixed-pitch)
-    (set-face-attribute 'org-block nil :inherit 'fixed-pitch)
+    (mapc (lambda (face)
+            (set-face-attribute face nil :inherit 'fixed-pitch))
+          (list 'org-code 'org-block 'org-block-background))
     (set-face-attribute 'org-table nil :family "Ubuntu Mono" :height 120)
-    (set-face-attribute 'org-block-background nil :inherit 'fixed-pitch)
     ;; fix indent broken by variable-pitch-mode
     ;; http://emacs.stackexchange.com/questions/26864/variable-pitch-face-breaking-indentation-in-org-mode
     (require 'org-indent)
     (set-face-attribute 'org-indent nil :inherit '(org-hide fixed-pitch)))
 #+END_SRC
 
-*** variable-pich mode
-[[https://yoo2080.wordpress.com/2013/05/30/monospace-font-in-tables-and-source-code-blocks-in-org-mode-proportional-font-in-other-parts/][monospace font in tables and source code blocks in org-mode, proportional font in other parts]]
-#+BEGIN_SRC emacs-lisp :tangle yes :results silent
-;  (set-face-attribute 'variable-pitch nil :font "Calibri" :height 160)
-;  (set-face-attribute 'fixed-pitch nil :font "Source Code Pro" :height 130)
+*** Org-head face
 
-
-  ;; (add-hook 'text-mode-hook 'variable-pitch-mode)
-
-  ;; monospace mode for block in org-mode
-  ;; (with-eval-after-load "org"
-  ;;   (mapc (lambda (face)
-  ;;           (set-face-attribute face nil :inherit 'fixed-pitch))
-  ;;         (list 'org-code 'org-block 'org-table 'org-block-background)))
-#+END_SRC
 
 * Magit
 [[https://github.com/magit/magit][Magit]] is a very cool git interface on Emacs.
@@ -1799,11 +1788,12 @@ here on Mac, just use "open" commands to pen =.pdf=,  =.html= and image files
     (define-key company-active-map (kbd "M-p") nil)
     (define-key company-active-map (kbd "C-n") #'company-select-next)
     (define-key company-active-map (kbd "C-p") #'company-select-previous)
-     ;; should map both (kbd "TAB") and [tab],https://github.com/company-mode/company-mode/issues/75
+    ;; should map both (kbd "TAB") and [tab],https://github.com/company-mode/company-mode/issues/75
     (define-key company-active-map (kbd "TAB") #'company-complete-selection)
     (define-key company-active-map [tab] #'company-complete-selection)
     (global-company-mode)
-    (setq company-global-modes '(not org-mode magit-status-mode)))
+    ;; magig-commit is text-modeh
+    (setq company-global-modes '(not org-mode magit-status-mode text-mode)))
 
   (use-package company-statistics
     :ensure t
