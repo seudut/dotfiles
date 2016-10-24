@@ -1085,7 +1085,7 @@ extend org-mode's easy templates, refer to [[http://coldnew.github.io/coldnew-em
 *** variable-pitch-mode and fixed-pitch-mode
 [[https://yoo2080.wordpress.com/2013/05/30/monospace-font-in-tables-and-source-code-blocks-in-org-mode-proportional-font-in-other-parts/][monospace font in tables and source code blocks in org-mode, proportional font in other parts]]
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
-  (set-face-attribute 'variable-pitch nil :font "Calibri" :height 140)
+  (set-face-attribute 'variable-pitch nil :font "Calibri" :height 160)
   (set-face-attribute 'fixed-pitch nil :font "Source Code Pro" :height 120)
 
   (add-hook 'text-mode-hook 'variable-pitch-mode)
@@ -1114,11 +1114,11 @@ Also correct the face of  =org-meta-line= in =org-table=
   (with-eval-after-load "org"
     (let* ((base-height (face-attribute 'variable-pitch :height))
            (base-font-color (face-foreground 'default nil  'default)))
-      (set-face-attribute 'org-document-title nil :weight 'bold :height (+ 100 base-height))
-      (set-face-attribute 'org-level-1 nil :weight 'bold :height (+ 80 base-height))
-      (set-face-attribute 'org-level-2 nil :weight 'bold :height (+ 60 base-height))
-      (set-face-attribute 'org-level-3 nil :weight 'bold :height (+ 40 base-height))
-      (set-face-attribute 'org-level-4 nil :weight 'bold :height (+ 20 base-height))
+      (set-face-attribute 'org-document-title nil :weight 'bold :height (+ 60 base-height))
+      (set-face-attribute 'org-level-1 nil :weight 'bold :height (+ 40 base-height))
+      (set-face-attribute 'org-level-2 nil :weight 'bold :height (+ 30 base-height))
+      (set-face-attribute 'org-level-3 nil :weight 'bold :height (+ 20 base-height))
+      (set-face-attribute 'org-level-4 nil :weight 'bold :height (+ 10 base-height))
       (set-face-attribute 'org-level-5 nil :weight 'bold)
       (set-face-attribute 'org-level-6 nil :weight 'bold)
       (set-face-attribute 'org-level-7 nil :weight 'bold)
