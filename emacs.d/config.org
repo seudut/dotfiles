@@ -731,7 +731,8 @@ Always indents header, and hide header leading starts so that no need type =#+ST
     (require 'org-habit)
     (add-to-list 'org-modules 'org-habit)
     (setq org-habit-graph-column 50)
-    (setq org-hide-emphasis-markers t))
+    (setq org-hide-emphasis-markers t)
+    (setq org-html-validation-link nil))
 
   (el-get-bundle hasu/emacs-ob-racket
     :features ob-racket)
@@ -1129,8 +1130,13 @@ Also correct the face of  =org-meta-line= in =org-table=
 Refer to [[http://orgmode.org/worg/org-tutorials/org-publish-html-tutorial.html][org-publish-html-tutorial]]
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
   (require 'ox-publish)
+  ;; Refer https://ogbe.net/emacsconfig.html
+  (setq my-blog-extra-head
+        (concat 
+         "<link rel='stylesheet' href='./css/worg.css' />"))
+
   (setq org-publish-project-alist
-        '(
+        `(
           ("org-notes"
            :base-directory "~/Private/blog/"
            :base-extension "org"
@@ -1138,7 +1144,17 @@ Refer to [[http://orgmode.org/worg/org-tutorials/org-publish-html-tutorial.html]
            :recursive t
            :publishing-function org-html-publish-to-html
            :headline-levels 4
-           :auto-preamble t)
+           :section-numbers nil
+           :auto-preamble t
+           :auto-sitemap t          ;Generate sitmap.org automagicaly...
+           :sitemap-filename "sitemap.org" ;... call it sitemap.org (it's the default )...
+           :sitemap-title "Sitemap"
+
+           :html-link-home "/"
+           :html-head nil                 ;
+           :html-head-extra ,my-blog-extra-head
+           :html-head-include-default-style nil
+           :html-head-include-scripts nil)
           ("org-static"
            :base-directory "~/Private/blog/"
            :base-extension "css\\|js\\|png\\|gif\\|pdf\\|mp3\\|ogg\\|swf"
@@ -1147,6 +1163,7 @@ Refer to [[http://orgmode.org/worg/org-tutorials/org-publish-html-tutorial.html]
            :publishing-function org-publish-attachment)
           ("org" :components ("org-notes" "org-static"))))
 #+END_SRC
+
 * Magit
 [[https://github.com/magit/magit][Magit]] is a very cool git interface on Emacs.
 and Defined keys, using vi keybindings, Refer abo-abo's setting [[https://github.com/abo-abo/oremacs/blob/c5cafdcebc88afe9e73cc8bd40c49b70675509c7/modes/ora-nextmagit.el][here]]
