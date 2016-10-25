@@ -1125,6 +1125,28 @@ Also correct the face of  =org-meta-line= in =org-table=
       (set-face-attribute 'org-level-8 nil :weight 'bold)))
 #+END_SRC
 
+** Org Blog
+Refer to [[http://orgmode.org/worg/org-tutorials/org-publish-html-tutorial.html][org-publish-html-tutorial]]
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+  (require 'ox-publish)
+  (setq org-publish-project-alist
+        '(
+          ("org-notes"
+           :base-directory "~/Private/blog/"
+           :base-extension "org"
+           :publishing-directory "~/Private/publish_html"
+           :recursive t
+           :publishing-function org-html-publish-to-html
+           :headline-levels 4
+           :auto-preamble t)
+          ("org-static"
+           :base-directory "~/Private/blog/"
+           :base-extension "css\\|js\\|png\\|gif\\|pdf\\|mp3\\|ogg\\|swf"
+           :publishing-directory "~/Private/publish_html"
+           :recursive t
+           :publishing-function org-publish-attachment)
+          ("org" :components ("org-notes" "org-static"))))
+#+END_SRC
 * Magit
 [[https://github.com/magit/magit][Magit]] is a very cool git interface on Emacs.
 and Defined keys, using vi keybindings, Refer abo-abo's setting [[https://github.com/abo-abo/oremacs/blob/c5cafdcebc88afe9e73cc8bd40c49b70675509c7/modes/ora-nextmagit.el][here]]
