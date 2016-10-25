@@ -1809,7 +1809,7 @@ here on Mac, just use "open" commands to pen =.pdf=,  =.html= and image files
     (define-key company-active-map [tab] #'company-complete-selection)
     (global-company-mode)
     ;; magig-commit is text-modeh
-    (setq company-global-modes '(not org-mode magit-status-mode text-mode)))
+    (setq company-global-modes '(not org-mode magit-status-mode text-mode eshell-mode)))
 
   (use-package company-statistics
     :ensure t
