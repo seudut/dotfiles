@@ -1632,6 +1632,18 @@ as a http download client tool
                                   (car (last (split-string url "/" t))))))))))
 #+END_SRC
 
+** Elscreen
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+  (use-package elscreen
+    :ensure t
+    :init
+    (setq elscreen-tab-display-control nil)
+    :config
+    (elscreen-start)
+    (set-face-attribute 'elscreen-tab-current-screen-face nil :foreground "black" :background "yellow")
+    (set-face-attribute 'elscreen-tab-other-screen-face nil :foreground "black" :background "disabledControlTextColor" :underline nil))
+#+END_SRC
+
 * Dired
 ** Dired bindings
 =C-o= is defined as a global key for window operation, here unset it in dired mode
