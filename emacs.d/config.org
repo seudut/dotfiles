@@ -1128,12 +1128,8 @@ Also correct the face of  =org-meta-line= in =org-table=
 
 ** Org Blog
 Refer to [[http://orgmode.org/worg/org-tutorials/org-publish-html-tutorial.html][org-publish-html-tutorial]], and [[https://ogbe.net/blog/blogging_with_org.html][blogging_with_org]]
-
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
   (require 'ox-publish)
-  (setq my-blog-extra-head
-        (concat 
-         "<link rel='stylesheet' href='./css/worg.css' />"))
 
   (setq org-publish-project-alist
         `(
@@ -1150,9 +1146,11 @@ Refer to [[http://orgmode.org/worg/org-tutorials/org-publish-html-tutorial.html]
            :sitemap-filename "sitemap.org" ;... call it sitemap.org (it's the default )...
            :sitemap-title "Sitemap"
 
+           :table-of-contents nil
+           :html-postamble nil            ;dont export creator auto validation info in html postamble div
            :html-link-home "/"
-           :html-head nil                 ;
-           :html-head-extra ,my-blog-extra-head
+           :html-head "<link rel='stylesheet' href='./css/worg_old.css' />"
+           ;; :html-head-extra ,my-blog-extra-head
            :html-head-include-default-style nil
            :html-head-include-scripts nil)
           ("org-static"
