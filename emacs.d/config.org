@@ -1127,10 +1127,10 @@ Also correct the face of  =org-meta-line= in =org-table=
 #+END_SRC
 
 ** Org Blog
-Refer to [[http://orgmode.org/worg/org-tutorials/org-publish-html-tutorial.html][org-publish-html-tutorial]]
+Refer to [[http://orgmode.org/worg/org-tutorials/org-publish-html-tutorial.html][org-publish-html-tutorial]], and [[https://ogbe.net/blog/blogging_with_org.html][blogging_with_org]]
+
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
   (require 'ox-publish)
-  ;; Refer https://ogbe.net/emacsconfig.html
   (setq my-blog-extra-head
         (concat 
          "<link rel='stylesheet' href='./css/worg.css' />"))
