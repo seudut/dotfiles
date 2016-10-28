@@ -1641,7 +1641,12 @@ as a http download client tool
     :config
     (elscreen-start)
     (set-face-attribute 'elscreen-tab-current-screen-face nil :foreground "black" :background "yellow")
-    (set-face-attribute 'elscreen-tab-other-screen-face nil :foreground "black" :background "disabledControlTextColor" :underline nil))
+    (set-face-attribute 'elscreen-tab-other-screen-face nil :foreground "black" :background "disabledControlTextColor" :underline nil)
+    ;; (global-unset-key (kbd)); M-TAB switch screen
+    (global-set-key (kbd "s-`") (lambda () (interactive) (elscreen-goto 0)))
+    (dotimes (i 8)
+      (global-set-key (kbd (concat "s-" (number-to-string (+ i 1))))
+                      `(lambda () (interactive) (elscreen-goto ,(+ i 1))))))
 #+END_SRC
 
 * Dired
@@ -3431,3 +3436,4 @@ search music on some music web site
 
 
 
+** Need separate the Key-bindings and package-initialization
