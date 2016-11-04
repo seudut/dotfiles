@@ -786,7 +786,7 @@ use [[https://github.com/sabof/org-bullets][org-bullets]] package to show utf-8 
   (setq org-bullets-bullet-list '("⦿" "✪" "◉" "○" "►" "◆"))
 
   ;; increase font size when enter org-src-mode
-  (add-hook 'org-src-mode-hook (lambda () (text-scale-increase 2)))
+  ;; (add-hook 'org-src-mode-hook (lambda () (text-scale-increase 2)))
 #+END_SRC
 
 ** Worf Mode
@@ -1080,6 +1080,11 @@ extend org-mode's easy templates, refer to [[http://coldnew.github.io/coldnew-em
                '("C" "#+BEGIN_SRC c :tangle ?\n\n#+END_SRC"))
   (add-to-list 'org-structure-template-alist
                '("m" "\\begin{equation}\n?\n\\end{equation}"))
+
+  (add-to-list 'org-structure-template-alist
+               '("b" "#+STARTUP: showall
+  ,#+STARTUP: inlineimages
+  ,#+OPTIONS: toc:nil\n"))
 #+END_SRC
 
 ** Org theme
@@ -1146,11 +1151,10 @@ Refer to [[http://orgmode.org/worg/org-tutorials/org-publish-html-tutorial.html]
            :sitemap-filename "sitemap.org" ;... call it sitemap.org (it's the default )...
            :sitemap-title "Sitemap"
 
-           :table-of-contents nil
-           :html-postamble nil            ;dont export creator auto validation info in html postamble div
+           :html-table-of-contents nil
+           :html-postamble nil ;dont export creator auto validation info in html postamble div
            :html-link-home "/"
-           :html-head "<link rel='stylesheet' href='./css/worg_old.css' />"
-           ;; :html-head-extra ,my-blog-extra-head
+           :html-head "<link rel='stylesheet' href='./css/worg.css' />"
            :html-head-include-default-style nil
            :html-head-include-scripts nil)
           ("org-static"
@@ -1158,7 +1162,8 @@ Refer to [[http://orgmode.org/worg/org-tutorials/org-publish-html-tutorial.html]
            :base-extension "css\\|js\\|png\\|gif\\|pdf\\|mp3\\|ogg\\|swf"
            :publishing-directory "~/Private/publish_html"
            :recursive t
-           :publishing-function org-publish-attachment)
+           :publishing-function org-publish-attachment
+           :table-of-contents nil)
           ("org" :components ("org-notes" "org-static"))))
 #+END_SRC
 
@@ -1643,7 +1648,7 @@ as a http download client tool
     (set-face-attribute 'elscreen-tab-current-screen-face nil :foreground "black" :background "yellow")
     (set-face-attribute 'elscreen-tab-other-screen-face nil :foreground "black" :background "disabledControlTextColor" :underline nil)
     ;; (global-unset-key (kbd)); M-TAB switch screen
-    (global-set-key (kbd "s-`") (lambda () (interactive) (elscreen-goto 0)))
+    (global-set-key (kbd "s-`") '(lambda () (interactive) (elscreen-goto 0)))
     (dotimes (i 8)
       (global-set-key (kbd (concat "s-" (number-to-string (+ i 1))))
                       `(lambda () (interactive) (elscreen-goto ,(+ i 1))))))
