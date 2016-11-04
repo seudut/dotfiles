@@ -753,7 +753,8 @@ Always indents header, and hide header leading starts so that no need type =#+ST
                                  (sqlite . t)
                                  (js . t)
                                  (gnuplot . t)
-                                 (ditaa . t)))
+                                 (ditaa . t)
+                                 (plantuml . t)))
 
   ;; use current window for org source buffer editting
   (setq org-src-window-setup 'current-window )
@@ -771,6 +772,24 @@ Always indents header, and hide header leading starts so that no need type =#+ST
   ;; Lua support
   (use-package ob-lua
     :ensure t)
+#+END_SRC
+
+*** plantUML
+[[http://eschulte.github.io/babel-dev/DONE-integrate-plantuml-support.html][DONE-integrate-plantuml-support]]
+#+BEGIN_SRC sh
+  ## support plantuml
+  brew install plantuml
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+  (use-package plantuml
+    :ensure t)
+
+  (setq org-plantuml-jar-path
+        (expand-file-name "/usr/local/Cellar/plantuml/8041/plantuml.8041.jar"))
+
+  (set-variable 'plantuml-jar-path
+                (expand-file-name "/usr/local/Cellar/plantuml/8041/plantuml.8041.jar"))
 #+END_SRC
 
 ** Org-bullets
