@@ -1774,7 +1774,8 @@ from [[https://emacs.stackexchange.com/questions/13713/how-to-disable-ido-in-dir
   (defun mk-anti-ido-advice (func &rest args)
     "Temporarily disable IDO and call function FUNC with arguments ARGS."
     (interactive)
-    (let ((read-file-name-function #'read-file-name-default))
+    (let ((read-file-name-function #'read-file-name-default)
+          (completing-read-function #'completing-read-default))
       (if (called-interactively-p 'any)
           (call-interactively func)
         (apply func args))))
@@ -1782,6 +1783,20 @@ from [[https://emacs.stackexchange.com/questions/13713/how-to-disable-ido-in-dir
   (defun mk-disable-ido (command)
     "Disable IDO when command COMMAND is called."
     (advice-add command :around #'mk-anti-ido-advice))
+
+  (defun mk-anti-ido-no-completing-advice (func &rest args)
+    "Temporarily disable IDO and call function FUNC with arguments ARGS."
+    (interactive)
+    (let ((read-file-name-function #'read-file-name-default)
+          ;; (completing-read-function #'completing-read-default)
+          )
+      (if (called-interactively-p 'any)
+          (call-interactively func)
+        (apply func args))))
+
+  (defun mk-disable-ido-no-completing (command)
+    "Disable IDO when command COMMAND is called."
+    (advice-add command :around #'mk-anti-ido-no-completing-advice))
 #+END_SRC
 
 Disalble =ido= when new a directory or file in =dired= mode
@@ -1789,7 +1804,7 @@ Disalble =ido= when new a directory or file in =dired= mode
   ;; call the function which you want to disable ido
   (mk-disable-ido 'dired-create-directory)
   (mk-disable-ido 'sd/dired-new-file)
-  (mk-disable-ido 'dired-goto-file)
+  (mk-disable-ido-no-completing 'dired-goto-file)
 #+END_SRC
 
 ** Dired open with
