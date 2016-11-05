@@ -756,7 +756,7 @@ Always indents header, and hide header leading starts so that no need type =#+ST
                                  (js . t)
                                  (gnuplot . t)
                                  (ditaa . t)
-                                 (plantuml . t)))
+                                 ))
 
   ;; use current window for org source buffer editting
   (setq org-src-window-setup 'current-window )
