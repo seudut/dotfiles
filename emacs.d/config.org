@@ -38,7 +38,7 @@ Set system PATH and emacs exec path
       (menu-bar-mode 1)
     (menu-bar-mode 0))
 
-  ;; (setq debug-on-error t)
+  (setq debug-on-error t)
   (setq inhibit-startup-message t)
 
   (defalias 'yes-or-no-p 'y-or-n-p)
