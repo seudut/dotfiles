@@ -583,12 +583,14 @@ Fix the issue in mode line when showing triangle
 set height in mode line
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
   (with-eval-after-load "powerline"
-    (let* ((base-font-size (face-attribute 'default :height)))
-      ;; 100/140;0.8
-      (set-variable 'powerline-height (/ base-font-size 10))
-      (set-variable 'powerline-text-scale-factor (/ (float 100) base-font-size)))
-    (set-face-attribute 'mode-line nil :height 100)
-    (set-face-attribute 'mode-line-inactive nil :height 100))
+    (if window-system
+        (progn 
+          (let* ((base-font-size (face-attribute 'default :height)))
+            ;; 100/140;0.8
+            (set-variable 'powerline-height (/ base-font-size 10))
+            (set-variable 'powerline-text-scale-factor (/ (float 100) base-font-size)))
+          (set-face-attribute 'mode-line nil :height 100)
+          (set-face-attribute 'mode-line-inactive nil :height 100))))
 #+END_SRC
 
 * IDO & SMEX
@@ -782,7 +784,7 @@ Always indents header, and hide header leading starts so that no need type =#+ST
 #+END_SRC
 
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
-  (use-package plantuml
+  (use-package plantuml-mode
     :ensure t)
 
   (setq org-plantuml-jar-path
