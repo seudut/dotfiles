@@ -1749,10 +1749,23 @@ as a http download client tool
 #+END_SRC
 
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
-  (defun sd/dired-new-file ()
+  (defun sd/dired-new-file-and-open ()
     "Create a new file in dired mode"
     (interactive)
     (call-interactively 'find-file))
+
+  (defun sd/dired-new-file (file)
+    "Create a new file called FILE.
+  If FILE already exists, signal an error."
+    (interactive
+     (list (read-file-name "Create file: " (dired-current-directory))))
+    (let* ((expanded (expand-file-name file)))
+      (if (file-exists-p expanded)
+          (error "Cannot create file %s: file exists" expanded))
+      (write-region "" nil expanded t)
+      (when expanded
+        (dired-add-file expanded)
+        (dired-move-to-filename))))
 
   ;; copied from abo-abo's config
   (defun sd/dired-get-size ()
@@ -1803,6 +1816,7 @@ Disalble =ido= when new a directory or file in =dired= mode
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
   ;; call the function which you want to disable ido
   (mk-disable-ido 'dired-create-directory)
+  (mk-disable-ido 'sd/dired-new-file-and-open)
   (mk-disable-ido 'sd/dired-new-file)
   (mk-disable-ido-no-completing 'dired-goto-file)
 #+END_SRC
