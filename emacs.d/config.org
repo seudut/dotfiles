@@ -823,6 +823,13 @@ use [[https://github.com/sabof/org-bullets][org-bullets]] package to show utf-8 
 
   ;; increase font size when enter org-src-mode
   ;; (add-hook 'org-src-mode-hook (lambda () (text-scale-increase 2)))
+
+  ;; define a face for org-bullets
+  (defface org-bullet-face
+      '((t (:foreground "green yellow")))
+  "Face used for the org-bullets.")
+  (setq org-bullets-face-name (quote  org-bullet-face))
+  (set-face-attribute 'org-bullet-face t :foreground "burlywood" :weight 'normal :height 1.6)
 #+END_SRC
 
 ** Worf Mode
