@@ -736,9 +736,30 @@ Always indents header, and hide header leading starts so that no need type =#+ST
     (setq org-habit-graph-column 50)
     (setq org-hide-emphasis-markers t)
     (setq org-html-validation-link nil))
+#+END_SRC
 
+
+** Org babel
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
   (el-get-bundle hasu/emacs-ob-racket
     :features ob-racket)
+
+  ;; Lua support
+  (use-package ob-lua
+    :ensure t)
+
+  ;; use current window for org source buffer editting
+
+  (setq org-src-window-setup 'current-window )
+  (define-key org-mode-map (kbd "C-'") nil)
+  ;; C-M-i is mapped to imenu globally
+  (define-key org-mode-map (kbd "C-M-i") nil)
+  ;; set the ditta.jar path
+
+  (setq org-ditaa-jar-path "/usr/local/Cellar/ditaa/0.9/libexec/ditaa0_9.jar")
+  (unless 
+      (file-exists-p org-ditaa-jar-path)
+    (error "seudut: ditaa.jar not found at %s " org-ditaa-jar-path))
 
   (org-babel-do-load-languages 'org-babel-load-languages
                                '((python . t)
@@ -759,24 +780,17 @@ Always indents header, and hide header leading starts so that no need type =#+ST
                                  (ditaa . t)
                                  (plantuml . t)))
 
-  ;; use current window for org source buffer editting
-  (setq org-src-window-setup 'current-window )
 
-  (define-key org-mode-map (kbd "C-'") nil)
-  ;; C-M-i is mapped to imenu globally
-  (define-key org-mode-map (kbd "C-M-i") nil)
+  ;; toggle image preview 
+  (add-hook 'org-babel-after-execute-hook 'sd/display-inline-images 'append)
 
-  ;; set the ditta.jar path
-  (setq org-ditaa-jar-path "/usr/local/Cellar/ditaa/0.9/libexec/ditaa0_9.jar")
-  (unless 
-      (file-exists-p org-ditaa-jar-path)
-    (error "seudut: ditaa.jar not found at %s " org-ditaa-jar-path))
+  (defun sd/display-inline-images ()
+    (condition-case nil
+        (org-display-inline-images)
+      (error nil)))
 
-  ;; Lua support
-  (use-package ob-lua
-    :ensure t)
+
 #+END_SRC
-
 *** plantUML
 [[http://eschulte.github.io/babel-dev/DONE-integrate-plantuml-support.html][DONE-integrate-plantuml-support]]
 #+BEGIN_SRC sh
@@ -3443,7 +3457,8 @@ search music on some music web site
 
 
 ** Need separate the Key-bindings and package-initialization
-
+* Note
 ** Check if emacs is in terminal of graphic mode
 Use =display-graphic-p= instead of =window-system=
 [[info:elisp#Window%20Systems][Window Systems]]
+** =Interactive= 
