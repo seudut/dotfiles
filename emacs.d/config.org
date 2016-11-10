@@ -1681,6 +1681,7 @@ as a http download client tool
 #+END_SRC
 
 ** Elscreen
+Fix one elscreen issue when startup emacs https://github.com/knu/elscreen/issues/6
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
   (use-package elscreen
     :ensure t
