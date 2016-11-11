@@ -1145,7 +1145,11 @@ extend org-mode's easy templates, refer to [[http://coldnew.github.io/coldnew-em
             (set-face-attribute face nil :inherit 'fixed-pitch))
           (list 'org-code 'org-block 'org-block-background))
     (set-face-attribute 'org-table nil :family "Ubuntu Mono" :height 140)
+    ;; org-special-keyword inherited from font-lock-keywork originally; as org is changed to variable-pitch, it cause
+    ;; the font in special-keywords are not monospace
     (set-face-attribute 'org-special-keyword nil :inherit '(font-lock-keyword-face fixed-pitch))
+    ;; same as above 
+    (set-face-attribute 'org-verbatim nil :inherit '(shadow fixed-pitch))
     
     ;; fix indent broken by variable-pitch-mode
     ;; http://emacs.stackexchange.com/questions/26864/variable-pitch-face-breaking-indentation-in-org-mode
