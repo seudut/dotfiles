@@ -1111,6 +1111,21 @@ Color higlight the source code block in exported html, [[http://stackoverflow.co
 ** Org structure template
 extend org-mode's easy templates, refer to [[http://coldnew.github.io/coldnew-emacs/#orgheadline94][Extend org-modes' esay templates]]
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
+  ;; ‘s’     ‘#+BEGIN_SRC ... #+END_SRC’
+  ;; ‘e’     ‘#+BEGIN_EXAMPLE ... #+END_EXAMPLE’
+  ;; ‘q’     ‘#+BEGIN_QUOTE ... #+END_QUOTE’
+  ;; ‘v’     ‘#+BEGIN_VERSE ... #+END_VERSE’
+  ;; ‘c’     ‘#+BEGIN_CENTER ... #+END_CENTER’
+  ;; ‘l’     ‘#+BEGIN_LaTeX ... #+END_LaTeX’
+  ;; ‘L’     ‘#+LaTeX:’
+  ;; ‘h’     ‘#+BEGIN_HTML ... #+END_HTML’
+  ;; ‘H’     ‘#+HTML:’
+  ;; ‘a’     ‘#+BEGIN_ASCII ... #+END_ASCII’
+  ;; ‘A’     ‘#+ASCII:’
+  ;; ‘i’     ‘#+INDEX:’ line
+  ;; ‘I’     ‘#+INCLUDE:’ line
+
+
   (add-to-list 'org-structure-template-alist
                '("E" "#+BEGIN_SRC emacs-lisp :tangle yes :results silent\n?\n#+END_SRC"))
   (add-to-list 'org-structure-template-alist
@@ -1127,11 +1142,13 @@ extend org-mode's easy templates, refer to [[http://coldnew.github.io/coldnew-em
                '("C" "#+BEGIN_SRC c :tangle ?\n\n#+END_SRC"))
   (add-to-list 'org-structure-template-alist
                '("m" "\\begin{equation}\n?\n\\end{equation}"))
-
   (add-to-list 'org-structure-template-alist
                '("b" "#+STARTUP: showall
   ,#+STARTUP: inlineimages
   ,#+OPTIONS: toc:nil\n"))
+  (add-to-list 'org-structure-template-alist
+               '("d" "#+BEGIN_SRC ditaa :file ?  :cmdline -r -s 0.8 :cache yes \n\n#+END_SRC"))
+
 #+END_SRC
 
 ** Org theme
