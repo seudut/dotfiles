@@ -792,10 +792,8 @@ Always indents header, and hide header leading starts so that no need type =#+ST
       (error nil)))
 
   ;; ditaa artist mode
-  (add-hook 'artist-mode-hook (lambda ()
-                                (interactive)
-                                (define-key artist-mode-map [down-mouse-3] 'artist-mouse-choose-operation)))
-
+  (with-eval-after-load "artist"
+    (define-key artist-mode-map [down-mouse-3] 'artist-mouse-choose-operation))
 #+END_SRC
 *** plantUML
 [[http://eschulte.github.io/babel-dev/DONE-integrate-plantuml-support.html][DONE-integrate-plantuml-support]]
