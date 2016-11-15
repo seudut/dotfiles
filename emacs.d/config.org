@@ -726,7 +726,9 @@ Always indents header, and hide header leading starts so that no need type =#+ST
     (setq org-hide-emphasis-markers t)
     (setq org-html-validation-link nil)
     ;; open link when return clicked
-    (setq org-return-follows-link t))
+    (setq org-return-follows-link t)
+    ;; open the ppt file by external open instead of emacs
+    (add-to-list 'org-file-apps '("\\.pptx" . "open %s")))
 #+END_SRC
 
 
