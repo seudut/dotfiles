@@ -729,6 +729,7 @@ Always indents header, and hide header leading starts so that no need type =#+ST
     (setq org-return-follows-link t)
     ;; open the ppt file by external open instead of emacs
     (add-to-list 'org-file-apps '("\\.pptx" . "open %s"))
+    (add-to-list 'org-file-apps '("\\.doc" . "open %s"))
     (setq org-image-actual-width nil))
 #+END_SRC
 
