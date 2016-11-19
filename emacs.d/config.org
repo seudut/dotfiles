@@ -256,6 +256,8 @@ Loading theme should be after all required loaded, refere [[https://github.com/j
 
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
   (setq vc-follow-symlinks t)
+  (use-package molokai-theme
+    :ensure t)
 
   (use-package color-theme
     :ensure t
@@ -740,8 +742,8 @@ Always indents header, and hide header leading starts so that no need type =#+ST
     :features ob-racket)
 
   ;; Lua support
-  (use-package ob-lua
-    :ensure t)
+  ;(use-package ob-lua
+  ;  :ensure t)
 
   ;; use current window for org source buffer editting
 
@@ -764,7 +766,7 @@ Always indents header, and hide header leading starts so that no need type =#+ST
                                  (latex . t)
                                  (java . t)
                                  (ruby . t)
-                                 (lua . t)
+  ;                               (lua . t)
                                  (lisp . t)
                                  (scheme . t)
                                  (racket . t)
