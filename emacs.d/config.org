@@ -1645,6 +1645,23 @@ When see function by =C-h f=, and visit the source code, I would like the buffer
   (add-hook 'help-mode-hook 'sd/help-mode-hook)
 #+END_SRC
 
+Wiki [[http://stackoverflow.com/questions/3480173/show-keys-in-emacs-keymap-value][show-keys-in-emacs-keymap-value]], Helpplus mode can show keymap as human-readable, use ~describe-keymap~ or =C-h M-k=
+
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+  (el-get-bundle help-macro+
+    :url "https://raw.githubusercontent.com/emacsmirror/emacswiki.org/master/help-macro+.el"
+    :features help-macro+)
+  (el-get-bundle help+
+    :url "https://raw.githubusercontent.com/emacsmirror/emacswiki.org/master/help+.el"
+    :features help+)
+  (el-get-bundle help-fns+
+    :url "https://raw.githubusercontent.com/emacsmirror/emacswiki.org/master/help-fns+.el"
+    :features help-fns+)
+  (el-get-bundle help-mode+
+    :url "https://raw.githubusercontent.com/emacsmirror/emacswiki.org/master/help-mode+.el"
+    :features help-mode+)
+#+END_SRC
+
 ** goto-last-change
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
   (use-package goto-last-change
