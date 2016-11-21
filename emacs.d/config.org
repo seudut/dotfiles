@@ -840,7 +840,9 @@ cause we cannot input =[= and =]=, so here I unset this mappings. And redifined 
   (use-package worf
     :ensure t
     :commands worf-mode
-    :init (add-hook 'org-mode-hook 'worf-mode))
+    :init
+    (require 'ivy)
+    (add-hook 'org-mode-hook 'worf-mode))
 #+END_SRC
 
 ** Get Things Done
@@ -2134,11 +2136,14 @@ bindings in =lispy-mode-map= after loaded. see [[http://stackoverflow.com/questi
   (use-package lispy
     :ensure t
     :init
-    (eval-after-load "lispy"
-      `(progn
-         (define-key lispy-mode-map (kbd "M-o") nil)))
+    (with-eval-after-load "lispy"
+      (define-key lispy-mode-map (kbd "M-o") nil)
+      (define-key lispy-mode-map (kbd "g") 'special-lispy-goto-local)
+      (define-key lispy-mode-map (kbd "G") 'special-lispy-goto))
     :config
     (add-hook 'emacs-lisp-mode-hook (lambda () (lispy-mode 1))))
+
+
 #+END_SRC
 
 ** Perl
