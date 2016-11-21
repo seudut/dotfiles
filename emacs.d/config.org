@@ -1977,6 +1977,7 @@ here on Mac, just use "open" commands to pen =.pdf=,  =.html= and image files
     :config
     (define-key company-active-map (kbd "M-n") nil)
     (define-key company-active-map (kbd "M-p") nil)
+    (define-key company-active-map (kbd "SPC") #'sd/company-stop-input-space)
     (define-key company-active-map (kbd "C-n") #'company-select-next)
     (define-key company-active-map (kbd "C-p") #'company-select-previous)
     ;; should map both (kbd "TAB") and [tab],https://github.com/company-mode/company-mode/issues/75
@@ -1990,6 +1991,12 @@ here on Mac, just use "open" commands to pen =.pdf=,  =.html= and image files
     :ensure t
     :config
     (company-statistics-mode))
+
+  (defun sd/company-stop-input-space ()
+    "Stop completing and input a space,a workaround of a semantic issue `https://github.com/company-mode/company-mode/issues/614'"
+    (interactive)
+    (company-abort)
+    (insert " "))
 #+END_SRC
 
 ** YASnippet
