@@ -667,7 +667,7 @@ Use [[https://github.com/DarwinAwardWinner/ido-ubiquitous][ido-ubiquitous]] for 
     :ensure t
     :defer t
     :init
-    ;; (global-set-key (kbd "M-x") 'counsel-M-x)
+    (global-set-key (kbd "M-x") 'counsel-M-x)
     (global-set-key (kbd "C-h f") 'counsel-describe-function)
     (global-set-key (kbd "C-h v") 'counsel-describe-variable)
     ;; (set-face-attribute 'ivy-current-match nil :background "Orange" :foreground "black")
@@ -3016,6 +3016,7 @@ Most use =C-o C-o= to switch buffers; =C-o x, v= to split window; =C-o o= to del
     ;; ("C-i" other-window nil :exit t)
     ("C-b" ido-switch-buffer nil :exit t)
     ("C-f" projectile-find-file nil :exit t)
+    ("C-r" ivy-recentf nil :exit t)
     ("C-p" persp-switch :exit t)
     ("C-t" projectile-persp-switch-project nil :exit t)
 
