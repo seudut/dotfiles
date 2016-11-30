@@ -3490,7 +3490,20 @@ Refer [[https://github.com/fnwiya/dotfiles/blob/c9ca79f1b22c919d9f4c3a0f944ba828
 ** perspeen
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
   (el-get-bundle seudut/perspeen
-    :features perspeen)
+    :features perspeen
+    ;; (perspeen-mode)
+    )
+  ;; super-i to switch to ith workspace
+
+  (defmacro sd/define-keys (map key func &rest args)
+    "A macro to define multi keys "
+    `(define-key ,map ,key (lambda () (interactive) (,func ,@args))))
+
+
+  (with-eval-after-load "perspeen"
+    (dotimes (ii 9)
+      (sd/define-keys perspeen-mode-map (kbd (concat "s-" (number-to-string (+ ii 1))))
+                           perspeen-goto-ws (+ ii 1))))
 #+END_SRC
 * TODO todolist
 ** Rucket
