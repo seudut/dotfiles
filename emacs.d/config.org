@@ -1708,17 +1708,18 @@ Fix one elscreen issue when startup emacs https://github.com/knu/elscreen/issues
     :init
     (setq elscreen-tab-display-control nil)
     :config
-    (elscreen-start)
+    ;; (elscreen-start)
     (set-face-attribute 'elscreen-tab-current-screen-face nil :foreground "black" :background "yellow")
     (set-face-attribute 'elscreen-tab-other-screen-face nil :foreground "black" :background "disabledControlTextColor" :underline nil)
     ;; (global-unset-key (kbd)); M-TAB switch screen
-    (global-set-key (kbd "s-`") '(lambda () (interactive) (elscreen-goto 0)))
-    (dotimes (i 8)
-      (global-set-key (kbd (concat "s-" (number-to-string (+ i 1))))
-                      `(lambda () (interactive) (elscreen-goto ,(+ i 1)))))
-    (global-set-key (kbd "s-t") 'elscreen-create)
-    (global-set-key (kbd "s-n") 'elscreen-next)
-    (global-set-key (kbd "s-p") 'elscreen-previous))
+    ;; (global-set-key (kbd "s-`") '(lambda () (interactive) (elscreen-goto 0)))
+    ;; (dotimes (i 8)
+    ;;   (global-set-key (kbd (concat "s-" (number-to-string (+ i 1))))
+    ;;                   `(lambda () (interactive) (elscreen-goto ,(+ i 1)))))
+    ;; (global-set-key (kbd "s-t") 'elscreen-create)
+    ;; (global-set-key (kbd "s-n") 'elscreen-next)
+    ;; (global-set-key (kbd "s-p") 'elscreen-previous)
+    )
 #+END_SRC
 
 * Dired
@@ -1965,7 +1966,7 @@ here on Mac, just use "open" commands to pen =.pdf=,  =.html= and image files
     (define-key company-active-map [tab] #'company-complete-selection)
     (global-company-mode)
     ;; magig-commit is text-modeh
-    (setq company-global-modes '(not org-mode magit-status-mode text-mode eshell-mode)))
+    (setq company-global-modes '(not org-mode magit-status-mode text-mode eshell-mode gfm-mode markdown-mode)))
 
   (use-package company-statistics
     :ensure t
