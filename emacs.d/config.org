@@ -515,7 +515,8 @@ Revised powerline-center-theme
                   '("%e"
                     (:eval
                      (let* ((active (powerline-selected-window-active))
-                            (mode-line-buffer-id (if active 'sd/mode-line-buffer-id 'mode-line-buffer-id-inactive))
+                            ;; (mode-line-buffer-id (if active 'sd/mode-line-buffer-id 'mode-line-buffer-id-inactive))
+                            (mode-line-buffer-id (if active 'sd/mode-line-buffer-id 'powerline-inactive1))
                             (mode-line (if active 'mode-line 'mode-line-inactive))
                             (my-face1 (if active 'sd/powerline-active1 'powerline-inactive1))
                             (my-face-buffer-modified (if (and (sd/buffer-is-eshel-or-scratch) (buffer-modified-p) (not buffer-read-only)) 
@@ -2973,7 +2974,7 @@ Most use =C-o C-o= to switch buffers; =C-o x, v= to split window; =C-o o= to del
       (delete-other-windows)))
 
   (defhydra sd/hydra-window (:color red :columns nil)
-    "Window"
+    "C-o"
     ;; windows switch
     ("h" windmove-left nil :exit t)
     ("j" windmove-down nil :exit t)
@@ -2990,37 +2991,37 @@ Most use =C-o C-o= to switch buffers; =C-o x, v= to split window; =C-o o= to del
            (interactive)
            (split-window-right)
            (windmove-right))
-     "vert" :exit t)
+     nil :exit t)
     ("x" (lambda ()
            (interactive)
            (split-window-below)
            (windmove-down))
-     "horz" :exit t)
+     nil :exit t)
     ;; buffer / windows switch
-    ("o" sd/toggle-max-windows "one" :exit t)
-    ("C-k" sd/delete-current-window "del" :exit t)
+    ("o" sd/toggle-max-windows nil :exit t)
+    ("C-k" sd/delete-current-window nil :exit t)
     ("C-d" (lambda ()
              (interactive)
              (kill-buffer)
              (sd/delete-current-window))
-     "kill" :exit t)
+     nil :exit t)
 
     ;; ace-window
     ;; ("'" other-window "other" :exit t)
     ;; ("a" ace-window "ace")
-    ("s" ace-swap-window "swap")
-    ("D" ace-delete-window "ace-one" :exit t)
+    ("s" ace-swap-window nil)
+    ("D" ace-delete-window nil :exit t)
     ;; ("i" ace-maximize-window "ace-one" :exit t)
     ;; Windows undo - redo
-    ("u" (progn (winner-undo) (setq this-command 'winner-undo)) "undo")
-    ("r" (progn (winner-redo) (setq this-command 'winner-redo)) "redo")
+    ("u" (progn (winner-undo) (setq this-command 'winner-undo)) nil)
+    ("r" (progn (winner-redo) (setq this-command 'winner-redo)) nil)
 
     ;; ibuffer, dired, eshell, bookmarks
     ;; ("C-i" other-window nil :exit t)
     ("C-b" ido-switch-buffer nil :exit t)
     ("C-f" projectile-find-file nil :exit t)
     ("C-r" ivy-recentf nil :exit t)
-    ("C-p" persp-switch :exit t)
+    ("C-p" persp-switch nil :exit t)
     ("C-t" projectile-persp-switch-project nil :exit t)
 
     ;; other special buffers
@@ -3034,17 +3035,17 @@ Most use =C-o C-o= to switch buffers; =C-o x, v= to split window; =C-o o= to del
     ;; ("p" paradox-list-packages nil :exit t)
 
     ;; quit
-    ("q" nil "cancel")
-    ("<ESC>" nil)
+    ("q" nil nil)
+    ("<ESC>" nil nil)
     ("C-h" windmove-left nil :exit t)
     ("C-j" windmove-down nil :exit t)
-    ("C-k" windmove-up :exit t)
+    ("C-k" windmove-up nil :exit t)
     ("C-l" windmove-right nil :exit t)
     ("C-;" nil nil :exit t)
     ("n" nil nil :exit t)
     ("[" nil nil :exit t)
     ("]" nil nil :exit t)
-    ("f" nil))
+    ("f" nil nil))
 
   (global-unset-key (kbd "C-o"))
   (global-set-key (kbd "C-o") 'sd/hydra-window/body)
@@ -3523,3 +3524,11 @@ search music on some music web site
 Use =display-graphic-p= instead of =window-system=
 [[info:elisp#Window%20Systems][Window Systems]]
 ** =Interactive= 
+** List operation
+*** add a element to list
+- ~add-to-list~ functions, append
+- ~push~ macro
+- ~(setcdr (last aa) (list element))~
+blog with modify list
+
+draw one line top of the windows
