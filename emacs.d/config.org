@@ -3495,8 +3495,8 @@ Refer [[https://github.com/fnwiya/dotfiles/blob/c9ca79f1b22c919d9f4c3a0f944ba828
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
   (el-get-bundle seudut/perspeen
     :features perspeen
-    ;; (perspeen-mode)
-    )
+    (setq perspeen-use-tab t)
+    (perspeen-mode))
   ;; super-i to switch to ith workspace
 
   (defmacro sd/define-keys (map key func &rest args)
