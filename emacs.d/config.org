@@ -3497,6 +3497,7 @@ Refer [[https://github.com/fnwiya/dotfiles/blob/c9ca79f1b22c919d9f4c3a0f944ba828
     :features perspeen
     (setq perspeen-use-tab t)
     (perspeen-mode))
+
   ;; super-i to switch to ith workspace
 
   (defmacro sd/define-keys (map key func &rest args)
@@ -3507,7 +3508,12 @@ Refer [[https://github.com/fnwiya/dotfiles/blob/c9ca79f1b22c919d9f4c3a0f944ba828
   (with-eval-after-load "perspeen"
     (dotimes (ii 9)
       (sd/define-keys perspeen-mode-map (kbd (concat "s-" (number-to-string (+ ii 1))))
-                           perspeen-goto-ws (+ ii 1))))
+                      perspeen-goto-ws (+ ii 1)))
+    (define-key perspeen-mode-map (kbd "s-c") 'perspeen-create-ws)
+    (define-key perspeen-mode-map (kbd "s-n") 'perspeen-next-ws)
+    (define-key perspeen-mode-map (kbd "s-p") 'perspeen-previous-ws)
+    (define-key perspeen-mode-map (kbd "s-'") 'perspeen-last-ws)
+    (define-key perspeen-mode-map (kbd "s-t") 'perspeen-tab-create-tab))
 #+END_SRC
 * TODO todolist
 ** Rucket
