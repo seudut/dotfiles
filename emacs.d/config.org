@@ -1706,23 +1706,23 @@ as a http download client tool
 ** Elscreen
 Fix one elscreen issue when startup emacs https://github.com/knu/elscreen/issues/6
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
-  (use-package elscreen
-    :ensure t
-    :init
-    (setq elscreen-tab-display-control nil)
-    :config
-    ;; (elscreen-start)
-    (set-face-attribute 'elscreen-tab-current-screen-face nil :foreground "black" :background "yellow")
-    (set-face-attribute 'elscreen-tab-other-screen-face nil :foreground "black" :background "disabledControlTextColor" :underline nil)
-    ;; (global-unset-key (kbd)); M-TAB switch screen
-    ;; (global-set-key (kbd "s-`") '(lambda () (interactive) (elscreen-goto 0)))
-    ;; (dotimes (i 8)
-    ;;   (global-set-key (kbd (concat "s-" (number-to-string (+ i 1))))
-    ;;                   `(lambda () (interactive) (elscreen-goto ,(+ i 1)))))
-    ;; (global-set-key (kbd "s-t") 'elscreen-create)
-    ;; (global-set-key (kbd "s-n") 'elscreen-next)
-    ;; (global-set-key (kbd "s-p") 'elscreen-previous)
-    )
+  ;; (use-package elscreen
+  ;;   :ensure t
+  ;;   :init
+  ;;   (setq elscreen-tab-display-control nil)
+  ;;   :config
+  ;;   ;; (elscreen-start)
+  ;;   (set-face-attribute 'elscreen-tab-current-screen-face nil :foreground "black" :background "yellow")
+  ;;   (set-face-attribute 'elscreen-tab-other-screen-face nil :foreground "black" :background "disabledControlTextColor" :underline nil)
+  ;;   ;; (global-unset-key (kbd)); M-TAB switch screen
+  ;;   ;; (global-set-key (kbd "s-`") '(lambda () (interactive) (elscreen-goto 0)))
+  ;;   ;; (dotimes (i 8)
+  ;;   ;;   (global-set-key (kbd (concat "s-" (number-to-string (+ i 1))))
+  ;;   ;;                   `(lambda () (interactive) (elscreen-goto ,(+ i 1)))))
+  ;;   ;; (global-set-key (kbd "s-t") 'elscreen-create)
+  ;;   ;; (global-set-key (kbd "s-n") 'elscreen-next)
+  ;;   ;; (global-set-key (kbd "s-p") 'elscreen-previous)
+  ;;   )
 #+END_SRC
 
 * Dired
@@ -2907,14 +2907,14 @@ Use =ESC= to exit minibuffer. Also I map =Super-h= the same as =C-g=
     (add-to-list 'projectile-globally-ignored-files "GTAGS")
     (projectile-global-mode t))
 
-  (use-package persp-projectile
-    :ensure t
-    :config
-    (persp-mode)
-    :bind
-    ;; (:map projectile-mode-map
-    ;;       ("s-t" . projectile-persp-switch-project))
-    )
+  ;; (use-package persp-projectile
+  ;;   :ensure t
+  ;;   :config
+  ;;   (persp-mode)
+  ;;   :bind
+  ;;   ;; (:map projectile-mode-map
+  ;;   ;;       ("s-t" . projectile-persp-switch-project))
+  ;;   )
 
   ;; change default-directory of scratch buffer to projectile-project-root 
   (defun sd/project-switch-action ()
