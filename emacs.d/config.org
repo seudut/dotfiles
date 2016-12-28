@@ -2554,6 +2554,10 @@ Emacs lisp auto-insert, based on the default module in =autoinsert.el=, but repl
            ("\\.md\\'" . markdown-mode)
            ("\\.markdown\\'" . markdown-mode))
     :init (setq markdown-command "multimarkdown"))
+
+  (with-eval-after-load "gfm-mode"
+    (set-face-attribute 'markdown-inline-code-face nil :inherit 'fixed-pitch)
+    (set-face-attribute 'markdown-pre-face nil :inherit 'fixed-pitch))
 #+END_SRC
 
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
