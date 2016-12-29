@@ -2555,6 +2555,9 @@ Emacs lisp auto-insert, based on the default module in =autoinsert.el=, but repl
            ("\\.markdown\\'" . markdown-mode))
     :init (setq markdown-command "multimarkdown"))
 
+  (add-hook 'gfm-mode-hook (lambda ()
+                             (set-face-attribute 'markdown-inline-code-face nil :inherit 'fixed-pitch)
+                             (set-face-attribute 'markdown-pre-face nil :inherit 'fixed-pitch)))
   (with-eval-after-load "gfm-mode"
     (set-face-attribute 'markdown-inline-code-face nil :inherit 'fixed-pitch)
     (set-face-attribute 'markdown-pre-face nil :inherit 'fixed-pitch))
@@ -3517,6 +3520,7 @@ Refer [[https://github.com/fnwiya/dotfiles/blob/c9ca79f1b22c919d9f4c3a0f944ba828
     (define-key perspeen-mode-map (kbd "s-n") 'perspeen-next-ws)
     (define-key perspeen-mode-map (kbd "s-p") 'perspeen-previous-ws)
     (define-key perspeen-mode-map (kbd "s-'") 'perspeen-last-ws)
+    (define-key perspeen-mode-map (kbd "s-t") 'perspeen-tab-create-tab)
     (define-key perspeen-mode-map (kbd "s-t") 'perspeen-tab-create-tab))
 #+END_SRC
 * TODO todolist
