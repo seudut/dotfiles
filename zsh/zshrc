@@ -196,7 +196,7 @@ git_prompt_string() {
 RPS1='$(git_prompt_string)'
 
 #source ~/Private/zsh-syntax-highlighting/zsh-syntax-highlighting.plugin.zsh
-source ~/.zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+[[ -f  "~/.zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" ]] && source ~/.zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 # http://stackoverflow.com/questions/3483604/which-shortcut-in-zsh-does-the-same-as-ctrl-u-in-bash
 bindkey \^U backward-kill-line
 
