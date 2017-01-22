@@ -208,7 +208,10 @@ export ZSHHOME="$HOME/.zsh"
 
 
 #` git log --oneline --abbrev-commit --all --graph --decorate --color `
-[[ -s `brew --prefix`/etc/autojump.sh ]] && . `brew --prefix`/etc/autojump.sh
+`which brew`  &> /dev/null
+if [ $? -eq 0 ]; then
+	[[ -s `brew --prefix`/etc/autojump.sh ]] && . `brew --prefix`/etc/autojump.sh
+fi
 
 alias emacs='TERM=xterm-256color emacs -nw'
 
