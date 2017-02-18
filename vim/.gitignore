@@ -1,6 +1,7 @@
 .VimBallRecord
 *.swp
 bundle/*
+!bundle/Vundle.vim
 plugin/*
 .vim-bookmarks
 temp/*
