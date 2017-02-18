@@ -1,3 +1,0 @@
-plugins/*
-!plugins/git_lists
-!plugins/git_install.pl
