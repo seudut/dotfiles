@@ -19,7 +19,7 @@ print `ln -s $vimDir $home/.vim`;
 print `ln -s $vimrc $home/.vimrc`;
 
 if ($? == 0) {
-    print "Link files Done." unless $?;
+    print "Link files Done.\n";
 } else {
     die;
 }
@@ -31,12 +31,12 @@ my $vundleDir = $vimDir . "/bundle/Vundle.vim";
 if (not -e "$vundleDir"){
     die "Vundle directory not exists, abort.\n";
 } elsif (-s "$vundleDir") {
-    print "Vundle exists and not empty.\n";
-} else {
     print " clone submodules \n";
     chdir $vundleDir;
     ! system "git submodule init" or die $!;
     ! system "git submodule update" or die $!;
+} else {
+    print "Vundle exists and not empty.\n";
 }
 
 print <<'END'
