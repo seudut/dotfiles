@@ -1,26 +1,18 @@
 #!/usr/bin/perl -w
 #
-use 5.010;
+#
 use strict;
+use File::Basename;
+use Cwd;
+use Cwd "abs_path";
 
-##my ($sec,$min,$hour,$mday,$mon,$year,$wday,$yday,$isdst) = localtime;
-chomp (my $date = `date +%m%d`);
 
-if (-e "$ENV{HOME}/.emacs.d" ) {
-    print "~/.emacs.d folder already exists.\nRename as ~/.emacs.d_bak_$date and continue yes (y) or no (n)? ";
-    chomp (my $yorn = <STDIN>);
+my $home = $ENV{'HOME'};
+my $emacsDir = dirname abs_path (__FILE__);
 
-    while ($yorn ne "y" and $yorn ne "n") {
-        print "Input y or n: ";
-        chomp ($yorn = <STDIN>);
-    }
+die "~/.emacs.d or ~/init.el exist. Backup them first.\n" 
+    if -e "$home/.init.el" or -e "$home/.emacs.d";
 
-    exit if $yorn eq "n";
+print `ln -s $emacsDir $home/.emacs.d`;
 
-    ! system "mv", "$ENV{HOME}/.emacs.d", "$ENV{HOME}/.emacs.d_bak_$date" or die
-        if $yorn eq "y";
-}
-
-## link emacs.d folder
-! system "ln", "-s", "$ENV{HOME}/dotfiles/emacs.d", "$ENV{HOME}/.emacs.d" or die;
-say "DONE";
+print "Done.\n" unless $?;
