@@ -296,6 +296,11 @@ nnoremap <silent> sr     :FufRenewCache<CR>
 " YouCompleteMe ----------------------------------------------------------- {{{
 "syntax on, must before the YCM,
 
+" Load YouCompleteMe only on OSX
+if !has("osx")
+    let g:loaded_youcompleteme = 1
+endif
+
 "let g:ycm_collect_identifiers_from_tags_files = 1
 let g:ycm_global_ycm_extra_conf = '~/.vim/bundle/YouCompleteMe/third_party/ycmd/cpp/ycm/.ycm_extra_conf.py'
 " this is fix youcompleteme python error
