@@ -2605,37 +2605,37 @@ Then Run =M-x gnus=
 
 ** Group buffer
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
-  (use-package gnus
-    :init
-    (setq gnus-permanently-visible-groups "\.*")
-    :config
-    (cond (window-system
-           (setq custom-background-mode 'light)
-           (defface my-group-face-1
-             '((t (:foreground "Red" :bold t))) "First group face")
-           (defface my-group-face-2
-             '((t (:foreground "DarkSeaGreen4" :bold t)))
-             "Second group face")
-           (defface my-group-face-3
-             '((t (:foreground "Green4" :bold t))) "Third group face")
-           (defface my-group-face-4
-             '((t (:foreground "SteelBlue" :bold t))) "Fourth group face")
-           (defface my-group-face-5
-             '((t (:foreground "Blue" :bold t))) "Fifth group face")))
-    (setq gnus-group-highlight
-          '(((> unread 200) . my-group-face-1)
-            ((and (< level 3) (zerop unread)) . my-group-face-2)
-            ((< level 3) . my-group-face-3)
-            ((zerop unread) . my-group-face-4)
-            (t . my-group-face-5))))
+  ;; (use-package gnus
+  ;;   :init
+  ;;   (setq gnus-permanently-visible-groups "\.*")
+  ;;   :config
+  ;;   (cond (window-system
+  ;;          (setq custom-background-mode 'light)
+  ;;          (defface my-group-face-1
+  ;;            '((t (:foreground "Red" :bold t))) "First group face")
+  ;;          (defface my-group-face-2
+  ;;            '((t (:foreground "DarkSeaGreen4" :bold t)))
+  ;;            "Second group face")
+  ;;          (defface my-group-face-3
+  ;;            '((t (:foreground "Green4" :bold t))) "Third group face")
+  ;;          (defface my-group-face-4
+  ;;            '((t (:foreground "SteelBlue" :bold t))) "Fourth group face")
+  ;;          (defface my-group-face-5
+  ;;            '((t (:foreground "Blue" :bold t))) "Fifth group face")))
+  ;;   (setq gnus-group-highlight
+  ;;         '(((> unread 200) . my-group-face-1)
+  ;;           ((and (< level 3) (zerop unread)) . my-group-face-2)
+  ;;           ((< level 3) . my-group-face-3)
+  ;;           ((zerop unread) . my-group-face-4)
+  ;;           (t . my-group-face-5))))
 
 
-  ;; key-
-  (add-hook 'gnus-group-mode-hook (lambda ()
-                                    (define-key gnus-group-mode-map "k" 'gnus-group-prev-group)
-                                    (define-key gnus-group-mode-map "j" 'gnus-group-next-group)
-                                    (define-key gnus-group-mode-map "g" 'gnus-group-jump-to-group)
-                                    (define-key gnus-group-mode-map "v" (lambda () (interactive) (gnus-group-select-group t)))))
+  ;; ;; key-
+  ;; (add-hook 'gnus-group-mode-hook (lambda ()
+  ;;                                   (define-key gnus-group-mode-map "k" 'gnus-group-prev-group)
+  ;;                                   (define-key gnus-group-mode-map "j" 'gnus-group-next-group)
+  ;;                                   (define-key gnus-group-mode-map "g" 'gnus-group-jump-to-group)
+  ;;                                   (define-key gnus-group-mode-map "v" (lambda () (interactive) (gnus-group-select-group t)))))
 #+END_SRC
 
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
