@@ -3502,9 +3502,11 @@ Refer [[https://github.com/fnwiya/dotfiles/blob/c9ca79f1b22c919d9f4c3a0f944ba828
 * Developing
 ** perspeen
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
-  (el-get-bundle seudut/perspeen
-    :features perspeen
-    (setq perspeen-use-tab t)
+  (use-package perspeen
+    :ensure t
+    :init
+    (setq perspeen-use-tab nil)
+    :config
     (perspeen-mode))
 
   ;; super-i to switch to ith workspace
