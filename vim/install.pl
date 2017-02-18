@@ -1,27 +1,48 @@
 #!/usr/bin/perl -w
+#
+#
+use strict;
+use File::Basename;
+use Cwd;
+use Cwd "abs_path";
 
-my $vim_git = $ENV{'PWD'};
-my $vim_dir = "$ENV{'HOME'}/.vim";
-my $vim_rc = "$ENV{'HOME'}/.vimrc";
+
+my $home = $ENV{'HOME'};
+my $vimDir = dirname abs_path(__FILE__);
+my $vimrc = $vimDir . "/vimrc";
 
 ## test if vim and vimrc exist
-die "~/.vim or ~/.vimrc exists!!, backup them first\n" if -e $vim_dir or -e $vim_rc ;
+die "~/.vim or ~/.vimrc exists!!.Backup them first.\n" if -e "$home/.vimrc" or -e "$home/.vim";
+
+### link the files
+print `ln -s $vimDir $home/.vim`;
+print `ln -s $vimrc $home/.vimrc`;
+
+if ($? == 0) {
+    print "Link files Done." unless $?;
+} else {
+    die;
+}
 
 
-## add new files	
-print `ln -s $vim_git $vim_dir`;
-print `ln -s $vim_dir/vimrc $vim_rc`;
+## check Vundle installation
+my $vundleDir = $vimDir . "/bundle/Vundle.vim";
 
-## 1. git clone package manager Vundle
-my $vundle_url = "https://github.com/gmarik/Vundle.vim.git";
+if (not -e "$vundleDir"){
+    die "Vundle directory not exists, abort.\n";
+} elsif (-s "$vundleDir") {
+    print "Vundle exists and not empty.\n";
+} else {
+    print " clone submodules \n";
+    chdir $vundleDir;
+    ! system "git submodule init" or die $!;
+    ! system "git submodule update" or die $!;
+}
 
-chdir "bundle";
-system "git clone " . $vundle_url;
-
-##
-## then start vim, and run :BundleInstall to install other packagesj
-#
-#
-# 3. install YouCompleteMe
-# ./install.py --clang-completer
+print <<'END'
+Done. 
+Please start vim and run :BundleInstall to install the dependencies plugins.
+To install YouCompleteMe, go to the folder and run
+./install.py --clang-completer.
+END
 
