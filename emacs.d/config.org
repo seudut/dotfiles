@@ -31,12 +31,15 @@ Set system PATH and emacs exec path
 ** General Setting
 *** scroll bar, tool-bar and menu-bar
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
-  (scroll-bar-mode 0)
-  (tool-bar-mode 0)
+  (if (display-graphic-p)
+      (progn
+        (scroll-bar-mode 0)
+        (tool-bar-mode 0)
+        (menu-bar-mode 1)))
 
-  (if window-system
-      (menu-bar-mode 1)
-    (menu-bar-mode 0))
+  ;; (if window-system
+  ;;     (menu-bar-mode 1)
+  ;;   (menu-bar-mode 0))
 
   (setq debug-on-error t)
   (setq inhibit-startup-message t)
