@@ -35,11 +35,8 @@ Set system PATH and emacs exec path
       (progn
         (scroll-bar-mode 0)
         (tool-bar-mode 0)
-        (menu-bar-mode 1)))
-
-  ;; (if window-system
-  ;;     (menu-bar-mode 1)
-  ;;   (menu-bar-mode 0))
+        (menu-bar-mode 1))
+    (menu-bar-mode 0))
 
   (setq debug-on-error t)
   (setq inhibit-startup-message t)
@@ -3502,6 +3499,7 @@ Refer [[https://github.com/fnwiya/dotfiles/blob/c9ca79f1b22c919d9f4c3a0f944ba828
 
   (global-set-key (kbd "C-w") 'sd/kill-region-or-backward-kill-word)
 #+END_SRC
+
 * Developing
 ** perspeen
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
@@ -3530,6 +3528,7 @@ Refer [[https://github.com/fnwiya/dotfiles/blob/c9ca79f1b22c919d9f4c3a0f944ba828
     (define-key perspeen-mode-map (kbd "s-t") 'perspeen-tab-create-tab)
     (define-key perspeen-mode-map (kbd "s-t") 'perspeen-tab-create-tab))
 #+END_SRC
+
 * TODO todolist
 ** Rucket
 ** player video on iphone for 
