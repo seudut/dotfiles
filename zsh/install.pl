@@ -14,5 +14,5 @@ die "~/.zsh or ~/.zshrc exist. Backup them first.\n" if -e "$home/.zsh" or -e "$
 print `ln -s $zshDir $home/.zsh`;
 print `ln -s $zshrc $home/.zshrc`;
 
-print "Done" unless $?;
+print "Done\n" unless $?;
 
