@@ -3,6 +3,9 @@
 # Darwin or Linux
 OSNAME=`uname` 
 
+# For Emacs Tramp mode
+[[ $TERM == "dumb" ]] && unsetopt zle && PS1='$ ' && return
+
 autoload colors
 colors
 
