@@ -1185,6 +1185,9 @@ Refer to [[http://orgmode.org/worg/org-tutorials/org-publish-html-tutorial.html]
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
   (require 'ox-publish)
 
+  ;; To prevent inline-css when exporting html. will use external css
+  (setq org-html-htmlize-output-type 'css)
+
   (setq org-publish-project-alist
         `(
           ("org-notes"
