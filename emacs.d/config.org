@@ -1183,40 +1183,47 @@ Also correct the face of  =org-meta-line= in =org-table=
 ** Org Blog
 Refer to [[http://orgmode.org/worg/org-tutorials/org-publish-html-tutorial.html][org-publish-html-tutorial]], and [[https://ogbe.net/blog/blogging_with_org.html][blogging_with_org]]
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
-  (require 'ox-publish)
+  ;; (require 'ox-publish)
 
-  ;; To prevent inline-css when exporting html. will use external css
-  (setq org-html-htmlize-output-type 'css)
+  ;; ;; constants
+  ;; (defconst blog-dir "~/Private/blog/")
+  ;; ;; (defconst blog-dir (file-name-directory (or load-file-name buffer-file-name)))
+  ;; (defconst publish-dir (concat blog-dir "_site/"))
+  ;; (defconst css-file "../css/worg.css")
+  ;; ;; (defconst css-file (concat root-dir "css/worg.css"))
 
-  (setq org-publish-project-alist
-        `(
-          ("org-notes"
-           :base-directory "~/Private/blog/"
-           :base-extension "org"
-           :publishing-directory "~/Private/publish_html"
-           :recursive t
-           :publishing-function org-html-publish-to-html
-           :headline-levels 4
-           :section-numbers nil
-           :auto-preamble t
-           :auto-sitemap t          ;Generate sitmap.org automagicaly...
-           :sitemap-filename "sitemap.org" ;... call it sitemap.org (it's the default )...
-           :sitemap-title "Sitemap"
+  ;; ;; To prevent inline-css when exporting html. will use external css
+  ;; (setq org-html-htmlize-output-type 'css)
 
-           :html-table-of-contents nil
-           :html-postamble nil ;dont export creator auto validation info in html postamble div
-           :html-link-home "/"
-           :html-head "<link rel='stylesheet' href='./css/worg.css' />"
-           :html-head-include-default-style nil
-           :html-head-include-scripts nil)
-          ("org-static"
-           :base-directory "~/Private/blog/"
-           :base-extension "css\\|js\\|png\\|gif\\|pdf\\|mp3\\|ogg\\|swf"
-           :publishing-directory "~/Private/publish_html"
-           :recursive t
-           :publishing-function org-publish-attachment
-           :table-of-contents nil)
-          ("org" :components ("org-notes" "org-static"))))
+  ;; (setq org-publish-project-alist
+  ;;       `(
+  ;;         ("org-notes"
+  ;;          :base-directory ,blog-dir
+  ;;          :base-extension "org"
+  ;;          :publishing-directory ,publish-dir
+  ;;          :recursive t
+  ;;          :publishing-function org-html-publish-to-html
+  ;;          :headline-levels 4
+  ;;          :section-numbers nil
+  ;;          :auto-preamble t
+  ;;          :auto-sitemap t          ;Generate sitmap.org automagicaly...
+  ;;          :sitemap-filename "sitemap.org" ;... call it sitemap.org (it's the default )...
+  ;;          :sitemap-title "Sitemap"
+
+  ;;          :html-table-of-contents nil
+  ;;          :html-postamble nil ;dont export creator auto validation info in html postamble div
+  ;;          :html-link-home "/"
+  ;;          :html-head ,(concat  "<link rel='stylesheet' href='" css-file "' />")
+  ;;          :html-head-include-default-style nil
+  ;;          :html-head-include-scripts nil)
+  ;;         ("org-static"
+  ;;          :base-directory "~/Private/blog/"
+  ;;          :base-extension "css\\|js\\|png\\|gif\\|pdf\\|mp3\\|ogg\\|swf"
+  ;;          :publishing-directory ,publish-dir
+  ;;          :recursive t
+  ;;          :publishing-function org-publish-attachment
+  ;;          :table-of-contents nil)
+  ;;         ("org" :components ("org-notes" "org-static"))))
 #+END_SRC
 
 * Magit
@@ -2839,6 +2846,14 @@ config from [[http://www.kirang.in/2014/11/13/emacs-as-email-client-with-offline
     (add-hook 'ediff-suspend-hook 'ediff-toggle-wide-display))
 #+END_SRC
 
+* Modes
+** Yaml-mode
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+  (use-package yaml-mode
+    :ensure t
+    :init
+    (add-to-list 'auto-mode-alist '("\\.yml\\'" . yaml-mode)))
+#+END_SRC
 * Entertainment
 ** GnuGo
 Play Go in Emacs, gnugo xpm refert [[https://github.com/okanotor/dotemacs/blob/f95b774cb292d1169748bc0a62ba647bbd8c0652/etc/my-inits/my-inits-gnugo.el][to here]]. start at image display mode and grid mode
