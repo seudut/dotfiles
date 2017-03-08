@@ -69,6 +69,8 @@ if [ -f "/Users/peli3/.git-completion.bash" ]; then
 	. "/Users/peli3/.git-completion.bash"
 fi
 
+# export ~/.bin into PATH
+export PATH="$HOME/.bin":$PATH;
 ## https://linuxtoy.org/archives/bash_tricks.html
 #shopt -s histappend 
 #PROMPT_COMMAND='history -a'
