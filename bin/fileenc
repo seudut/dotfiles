@@ -1,0 +1,15 @@
+#!/usr/bin/perl -w
+#
+use strict;
+
+#https://www.madboa.com/geek/openssl/#how-do-i-create-an-md5-or-sha1-digest-of-a-file
+#
+# encrypt the file using 256-bit AES in CBC mode
+# 
+# Usage: fileenc inFile <outFile>
+
+my $inFile  = shift or die "Usage: $0 in_file <out_file>\n";
+my $outFile = shift || "";
+
+my $command = "openssl enc -aes-256-cbc -salt -in $inFile " . ($outFile && "-out $outFile");
+print $command;
