@@ -12,4 +12,4 @@ my $inFile  = shift or die "Usage: $0 in_file <out_file>\n";
 my $outFile = shift || "";
 
 my $command = "openssl enc -aes-256-cbc -salt -in $inFile " . ($outFile && "-out $outFile");
-print $command;
+print `$command`;
