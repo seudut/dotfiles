@@ -1181,6 +1181,13 @@ Also correct the face of  =org-meta-line= in =org-table=
 #+END_SRC
 
 ** Org Blog
+#+BEGIN_SRC perl 
+  print `curl https://raw.githubusercontent.com/seudut/blog/master/blog.el -o ./elisp/blog.el`;
+#+END_SRC
+
+#+RESULTS:
+: 1
+
 Refer to [[http://orgmode.org/worg/org-tutorials/org-publish-html-tutorial.html][org-publish-html-tutorial]], and [[https://ogbe.net/blog/blogging_with_org.html][blogging_with_org]]
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
   ;; (require 'ox-publish)
