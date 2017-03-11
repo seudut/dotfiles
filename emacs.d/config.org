@@ -1181,57 +1181,20 @@ Also correct the face of  =org-meta-line= in =org-table=
 #+END_SRC
 
 ** Org Blog
-#+BEGIN_SRC perl 
-  print `curl https://raw.githubusercontent.com/seudut/blog/master/blog.el -o ./elisp/blog.el`;
+Fetch dependencies file, which is not in this repository.
+#+BEGIN_SRC perl :results silent
+  print `curl https://raw.githubusercontent.com/seudut/blog/master/publish.el -o ./elisp/publish.el`;
 #+END_SRC
 
-#+RESULTS:
-: 1
+Load 
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+  (add-to-list 'load-path "~/.emacs.d/elisp")
+
+  (require 'publish)
+#+END_SRC
+
 
 Refer to [[http://orgmode.org/worg/org-tutorials/org-publish-html-tutorial.html][org-publish-html-tutorial]], and [[https://ogbe.net/blog/blogging_with_org.html][blogging_with_org]]
-#+BEGIN_SRC emacs-lisp :tangle yes :results silent
-  ;; (require 'ox-publish)
-
-  ;; ;; constants
-  ;; (defconst blog-dir "~/Private/blog/")
-  ;; ;; (defconst blog-dir (file-name-directory (or load-file-name buffer-file-name)))
-  ;; (defconst publish-dir (concat blog-dir "_site/"))
-  ;; (defconst css-file "../css/worg.css")
-  ;; ;; (defconst css-file (concat root-dir "css/worg.css"))
-
-  ;; ;; To prevent inline-css when exporting html. will use external css
-  ;; (setq org-html-htmlize-output-type 'css)
-
-  ;; (setq org-publish-project-alist
-  ;;       `(
-  ;;         ("org-notes"
-  ;;          :base-directory ,blog-dir
-  ;;          :base-extension "org"
-  ;;          :publishing-directory ,publish-dir
-  ;;          :recursive t
-  ;;          :publishing-function org-html-publish-to-html
-  ;;          :headline-levels 4
-  ;;          :section-numbers nil
-  ;;          :auto-preamble t
-  ;;          :auto-sitemap t          ;Generate sitmap.org automagicaly...
-  ;;          :sitemap-filename "sitemap.org" ;... call it sitemap.org (it's the default )...
-  ;;          :sitemap-title "Sitemap"
-
-  ;;          :html-table-of-contents nil
-  ;;          :html-postamble nil ;dont export creator auto validation info in html postamble div
-  ;;          :html-link-home "/"
-  ;;          :html-head ,(concat  "<link rel='stylesheet' href='" css-file "' />")
-  ;;          :html-head-include-default-style nil
-  ;;          :html-head-include-scripts nil)
-  ;;         ("org-static"
-  ;;          :base-directory "~/Private/blog/"
-  ;;          :base-extension "css\\|js\\|png\\|gif\\|pdf\\|mp3\\|ogg\\|swf"
-  ;;          :publishing-directory ,publish-dir
-  ;;          :recursive t
-  ;;          :publishing-function org-publish-attachment
-  ;;          :table-of-contents nil)
-  ;;         ("org" :components ("org-notes" "org-static"))))
-#+END_SRC
 
 * Magit
 [[https://github.com/magit/magit][Magit]] is a very cool git interface on Emacs.
