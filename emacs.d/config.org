@@ -1182,15 +1182,17 @@ Also correct the face of  =org-meta-line= in =org-table=
 
 ** Org Blog
 Fetch dependencies file, which is not in this repository.
-#+BEGIN_SRC perl :results silent
-  print `curl https://raw.githubusercontent.com/seudut/blog/master/publish.el -o ./elisp/publish.el`;
+#+BEGIN_SRC perl :results silent :tangle yes
+  print `curl https://raw.githubusercontent.com/seudut/blog/master/my-publish.el -o ./elisp/my-publish.el`;
 #+END_SRC
 
 Load 
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
   (add-to-list 'load-path "~/.emacs.d/elisp")
 
-  (require 'publish)
+  (when (file-exists-p "~/.emacs.d/elisp/my-publish.el")
+    (require 'my-publish)
+    (blog-setup-project-alist "~/Private/blog/"))
 #+END_SRC
 
 

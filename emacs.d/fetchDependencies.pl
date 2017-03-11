@@ -2,4 +2,4 @@
 #
 use strict;
 
-print `curl https://raw.githubusercontent.com/seudut/blog/master/publish.el -o ./elisp/publish.el`;
+print `curl https://raw.githubusercontent.com/seudut/blog/master/my-publish.el -o ./elisp/my-publish.el`;
