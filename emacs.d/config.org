@@ -1208,7 +1208,7 @@ and Defined keys, using vi keybindings, Refer abo-abo's setting [[https://github
     ;; don't ask me to confirm the unsaved change 
     (setq magit-save-repository-buffers nil)
     ;; default is 50
-    (setq git-commit-summary-max-length 80)
+    (setq git-commit-summary-max-length 100)
     :commands magit-status magit-blame
     :config
     (dolist (map (list magit-status-mode-map
