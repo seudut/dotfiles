@@ -2826,6 +2826,7 @@ config from [[http://www.kirang.in/2014/11/13/emacs-as-email-client-with-offline
     :init
     (add-to-list 'auto-mode-alist '("\\.yml\\'" . yaml-mode)))
 #+END_SRC
+
 * Entertainment
 ** GnuGo
 Play Go in Emacs, gnugo xpm refert [[https://github.com/okanotor/dotemacs/blob/f95b774cb292d1169748bc0a62ba647bbd8c0652/etc/my-inits/my-inits-gnugo.el][to here]]. start at image display mode and grid mode

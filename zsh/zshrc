@@ -313,5 +313,9 @@ if [[ $OSNAME == 'Darwin' ]]; then
     PERL_MM_OPT="INSTALL_BASE=$HOME/perl5"; export PERL_MM_OPT;
 fi
 
+# add Racket into PATH
+export PATH="/Applications/Racket v6.6/bin":$PATH;
+export MANPATH="/Applications/Racket v6.6/man":$MANPATH;
+
 # export ~/.bin into PATH
 export PATH="$HOME/.bin":$PATH;
