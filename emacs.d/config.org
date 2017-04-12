@@ -28,6 +28,12 @@ Set system PATH and emacs exec path
   (package-initialize)
 #+END_SRC       
 
+** My constant
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+  (defconst my-name "Peng Li")
+  (defconst my-email "seudut@gmail.com")
+#+END_SRC
+
 ** General Setting
 *** scroll bar, tool-bar and menu-bar
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
@@ -2515,16 +2521,16 @@ Emacs lisp auto-insert, based on the default module in =autoinsert.el=, but repl
 
 ** Org file template
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
-  (eval-after-load 'autoinsert
-    '(define-auto-insert '("\\.\\(org\\)\\'" . "Org-mode skeleton")
-       '(
-         "title: "
-         "#+TITLE: " str (make-string 30 ?\s) > \n
-         "#+AUTHOR: Peng Li\n"
-         "#+EMAIL: seudut@gmail.com\n"
-         "#+DATE: " (shell-command-to-string "echo -n $(date +%Y-%m-%d)") > \n
-         > \n
-         > _)))
+  ;; (eval-after-load 'autoinsert
+  ;;   '(define-auto-insert '("\\.\\(org\\)\\'" . "Org-mode skeleton")
+  ;;      '(
+  ;;        "title: "
+  ;;        "#+TITLE: " str (make-string 30 ?\s) > \n
+  ;;        "#+AUTHOR: Peng Li\n"
+  ;;        "#+EMAIL: seudut@gmail.com\n"
+  ;;        "#+DATE: " (shell-command-to-string "echo -n $(date +%Y-%m-%d)") > \n
+  ;;        > \n
+  ;;        > _)))
 #+END_SRC
 
 * Markdown mode
