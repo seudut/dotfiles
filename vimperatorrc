@@ -48,7 +48,7 @@ nnoremap B b
 nnoremap b :bmarks! -tags<SPACE>
 nnoremap e b
 
-"set gui=nonavigation
+set gui=nonavigation
 
 ":tab addons
 ":tab downloads
@@ -60,4 +60,9 @@ nnoremap e b
 noremap <C-SPACE> <C-^>
 noremap v <C-^>
 " fix the issue on firefox49 history not working, https://github.com/vimperator/vimperator-labs/issues/590
-js services.services.autoCompleteSearch.class_="@mozilla.org/autocomplete/search;1?name=unifiedcomplete"
+"js services.services.autoCompleteSearch.class_="@mozilla.org/autocomplete/search;1?name=unifiedcomplete"
+
+"https://github.com/vimperator/vimperator-labs/issues/740
+"set activate=
+"nmap t <C-t>:open<Space>
+nmap t <M-t><esc>:open<Space>
