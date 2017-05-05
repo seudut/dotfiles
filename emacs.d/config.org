@@ -1141,7 +1141,7 @@ extend org-mode's easy templates, refer to [[http://coldnew.github.io/coldnew-em
 *** variable-pitch-mode and fixed-pitch-mode
 [[https://yoo2080.wordpress.com/2013/05/30/monospace-font-in-tables-and-source-code-blocks-in-org-mode-proportional-font-in-other-parts/][monospace font in tables and source code blocks in org-mode, proportional font in other parts]]
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
-  (set-face-attribute 'variable-pitch nil :font "Calibri" :height 160)
+  (set-face-attribute 'variable-pitch nil :font "Source Sans Pro" :height 160)
   (set-face-attribute 'fixed-pitch nil :font "Source Code Pro" :height (face-attribute 'default :height))
 
   (add-hook 'text-mode-hook 'variable-pitch-mode)
@@ -1577,26 +1577,26 @@ When see function by =C-h f=, and visit the source code, I would like the buffer
 
 ** pdf-tools
 #+BEGIN_SRC sh
-  brew install poppler
+  #brew install poppler
 #+END_SRC
 
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
-  (use-package pdf-tools
-    :ensure t
-    :init
-    ;; run to complete the installation
-    (pdf-tools-install)
-    :config
-    (add-to-list 'auto-mode-alist '("\.pdf$" . pdf-view-mode))
-    (add-hook 'pdf-outline-buffer-mode-hook #'sd/pdf-outline-map))
+  ;(use-package pdf-tools
+  ;  :ensure t
+  ;  :init
+  ;  ;; run to complete the installation
+  ;  (pdf-tools-install)
+  ;  :config
+  ;  (add-to-list 'auto-mode-alist '("\.pdf$" . pdf-view-mode))
+  ;  (add-hook 'pdf-outline-buffer-mode-hook #'sd/pdf-outline-map))
 
-  (defun sd/pdf-outline-map ()
-    "My keybindings in pdf-outline-map"
-    (interactive)
-    (define-key pdf-outline-buffer-mode-map (kbd "C-o") nil)
-    (define-key pdf-outline-buffer-mode-map (kbd "i") 'outline-toggle-children)
-    (define-key pdf-outline-buffer-mode-map (kbd "j") 'next-line)
-    (define-key pdf-outline-buffer-mode-map (kbd "k") 'previous-line))
+  ;(defun sd/pdf-outline-map ()
+  ;  "My keybindings in pdf-outline-map"
+  ;  (interactive)
+  ;  (define-key pdf-outline-buffer-mode-map (kbd "C-o") nil)
+  ;  (define-key pdf-outline-buffer-mode-map (kbd "i") 'outline-toggle-children)
+  ;  (define-key pdf-outline-buffer-mode-map (kbd "j") 'next-line)
+   ; (define-key pdf-outline-buffer-mode-map (kbd "k") 'previous-line))
 #+END_SRC
 
 ** help-mode
