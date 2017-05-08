@@ -1141,6 +1141,14 @@ extend org-mode's easy templates, refer to [[http://coldnew.github.io/coldnew-em
 *** variable-pitch-mode and fixed-pitch-mode
 [[https://yoo2080.wordpress.com/2013/05/30/monospace-font-in-tables-and-source-code-blocks-in-org-mode-proportional-font-in-other-parts/][monospace font in tables and source code blocks in org-mode, proportional font in other parts]]
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
+  ;; check if the fonts are available
+  (unless (find-font (font-spec :name "Ubuntu Mono"))
+    (warn "Font not found Ubuntu Mono"))
+  (unless (find-font (font-spec :name "Source Code Pro"))
+    (warn "Font not found Source Code Pro"))
+  (unless (find-font (font-spec :name "Source Sans Pro"))
+    (warn "Font not found Source Sans Pro"))
+
   (set-face-attribute 'variable-pitch nil :font "Source Sans Pro" :height 160)
   (set-face-attribute 'fixed-pitch nil :font "Source Code Pro" :height (face-attribute 'default :height))
 
