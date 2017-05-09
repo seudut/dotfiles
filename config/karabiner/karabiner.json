@@ -22,13 +22,16 @@
                 "f9": "fastforward"
             },
             "name": "Default profile",
+            "one_to_many_mappings": {},
             "selected": true,
             "simple_modifications": {
                 "caps_lock": "left_control",
+                "right_option": "right_control",
                 "right_command": "right_option"
             },
             "standalone_keys": {
-                "caps_lock": "escape"
+                "caps_lock": "escape",
+                "right_command": "escape"
             },
             "virtual_hid_keyboard": {
                 "caps_lock_delay_milliseconds": 0,
