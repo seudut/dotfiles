@@ -237,24 +237,6 @@ Fix the font alignment issue when both Chinese and English hybird in org-mode ta
     (interactive) (emacs-step-font-size -1))
 #+END_SRC
 
-#+BEGIN_SRC emacs-lisp :tangle yes :results silent
-  ;; Setup font size based on emacs-font-size-pair
-  ;; (if window-system
-  ;;     (set-font emacs-english-font emacs-cjk-font '(13 . 16)))
-    
-
-  ;; (global-set-key (kbd "s-=") 'increase-emacs-font-size)
-  ;; (global-set-key (kbd "s--") 'decrease-emacs-font-size)
-
-  ;; set different fonts (chinese) size for org-mode.
-  (defun sd/org-buffer-font ()
-    "My font setting for org-mode"
-    (interactive)
-    (setq buffer-face-mode-face '(:family "Source Sans Code" :height 160))
-    (buffer-face-mode))
-
-  ;; (add-hook 'org-mode-hook 'sd/org-buffer-font)
-#+END_SRC
 
 ** Color Theme
 
@@ -1262,9 +1244,7 @@ set default eshell history folder
           (current-point (- (point-max) (point))))
       (beginning-of-line)
       (delete-region (point-min) (point))
-      (goto-char (- (point-max) current-point))
-      ;; (eshell-send-input)
-      ))
+      (goto-char (- (point-max) current-point))))
 
 
    (add-hook 'eshell-mode-hook (lambda ()
