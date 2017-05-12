@@ -1258,9 +1258,14 @@ set default eshell history folder
   (defun sd/eshell-clear-buffer ()
     "Clear eshell buffer"
     (interactive)
-    (let ((inhibit-read-only t))
-      (erase-buffer)
-      (eshell-send-input)))
+    (let ((inhibit-read-only t)
+          (current-point (- (point-max) (point))))
+      (beginning-of-line)
+      (delete-region (point-min) (point))
+      (goto-char (- (point-max) current-point))
+      ;; (eshell-send-input)
+      ))
+
 
    (add-hook 'eshell-mode-hook (lambda ()
                                 (local-set-key (kbd "C-l") 'sd/eshell-clear-buffer)))
