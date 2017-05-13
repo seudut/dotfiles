@@ -33,7 +33,28 @@
     (delete-region (point-min) (point))
     (goto-char (- (point-max) current-point))))
 
+(defun sd/delete-current-window ()
+  (interactive)
+  (if (> (length (window-list)) 1)
+      (delete-window)
+    (message "Only one Windows now!")))
 
+
+(defun sd/toggle-max-windows ()
+  "Set maximize current if there are multiple windows, if only
+one window, window undo"
+  (interactive)
+  (if (equal  (length (window-list)) 1)
+      (winner-undo)
+    (delete-other-windows)))
+
+
+(defun sd/kill-region-or-backward-kill-word ()
+  "Delete the region if it exists, otherwise kill a word backward."
+  (interactive)
+  (if (region-active-p)
+      (kill-region (point) (mark))
+    (backward-kill-word 1)))
 
 
 

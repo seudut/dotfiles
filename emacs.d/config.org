@@ -2950,20 +2950,7 @@ Most use =C-o C-o= to switch buffers; =C-o x, v= to split window; =C-o o= to del
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
   (winner-mode 1)
 
-  (defun sd/delete-current-window ()
-    (interactive)
-    (if (> (length (window-list)) 1)
-        (delete-window)
-      (message "Only one Windows now!")))
-
-  (defun sd/toggle-max-windows ()
-    "Set maximize current if there are multiple windows, if only
-  one window, window undo"
-    (interactive)
-    (if (equal  (length (window-list)) 1)
-        (winner-undo)
-      (delete-other-windows)))
-
+  (require 'utilities)
   (defhydra sd/hydra-window (:color red :columns nil)
     "C-o"
     ;; windows switch
@@ -3473,12 +3460,7 @@ stolen from [[https://github.com/mariolong/emacs.d/blob/f6a061594ef1b5d1f4750e9d
 Refer [[https://github.com/fnwiya/dotfiles/blob/c9ca79f1b22c919d9f4c3a0f944ba8281255a594/setup/.emacs.d/loader-init/_90-kill-region-or-backward-kill-word.el][kill-region-or-backward-kill-word]]
 
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
-  (defun sd/kill-region-or-backward-kill-word ()
-    (interactive)
-    (if (region-active-p)
-        (kill-region (point) (mark))
-      (backward-kill-word 1)))
-
+  (require 'utilities)
   (global-set-key (kbd "C-w") 'sd/kill-region-or-backward-kill-word)
 #+END_SRC
 
