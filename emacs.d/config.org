@@ -966,8 +966,7 @@ All captured file which need next actions are stored in =refile.org=,
 *** Agenda Setup
 Setting agenda files and the agenda view
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
-  (setq org-agenda-files (quote ("~/org/gtd.org"
-                                 "~/org/work.org")))
+  (setq org-agenda-files (quote ("~/org/gtd.org")))
 
   ;; only show today's tasks in agenda view
   ;; (setq org-agenda-span 'day)
@@ -980,6 +979,18 @@ Setting agenda files and the agenda view
 
   ;; Show all agenda dates - even if they are empty
   (setq org-agenda-show-all-dates t)
+#+END_SRC
+
+** Org mobile
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+  (with-eval-after-load "org"
+    (require 'org-mobile)
+    ;; Set to the location of your Org files on your local system
+    ;; (setq org-directory "~/org")
+    ;; Set to the name of the file where new notes will be stored
+    (setq org-mobile-inbox-for-pull "~/org/flagged.org")
+    ;; Set to <your Dropbox root directory>/MobileOrg.
+    (setq org-mobile-directory "~/Dropbox/Apps/MobileOrg"))
 #+END_SRC
 
 ** Export PDF
@@ -1123,7 +1134,6 @@ extend org-mode's easy templates, refer to [[http://coldnew.github.io/coldnew-em
 *** variable-pitch-mode and fixed-pitch-mode
 [[https://yoo2080.wordpress.com/2013/05/30/monospace-font-in-tables-and-source-code-blocks-in-org-mode-proportional-font-in-other-parts/][monospace font in tables and source code blocks in org-mode, proportional font in other parts]]
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
-  ;; check if the fonts are available
   (unless (find-font (font-spec :name "Ubuntu Mono"))
     (warn "Font not found Ubuntu Mono"))
   (unless (find-font (font-spec :name "Source Code Pro"))
@@ -3493,16 +3503,6 @@ Refer [[https://github.com/fnwiya/dotfiles/blob/c9ca79f1b22c919d9f4c3a0f944ba828
     (define-key perspeen-mode-map (kbd "s-t") 'perspeen-tab-create-tab))
 #+END_SRC
 
-* TODO todolist
-** Rucket
-** player video on iphone for 
-** SICP
-** music searcher
-search music on some music web site
-
-
-
-** Need separate the Key-bindings and package-initialization
 * Note
 ** Check if emacs is in terminal of graphic mode
 Use =display-graphic-p= instead of =window-system=
