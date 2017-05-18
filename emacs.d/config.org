@@ -147,6 +147,9 @@ Check out [[http://tapoueh.org/emacs/el-get.html][el-get]].
   (add-hook 'prog-mode-hook 'hl-line-mode)
   (add-hook 'text-mode-hook 'hl-line-mode)
   (add-hook 'dired-mode-hook 'hl-line-mode)
+
+  ;; only highlight selected window
+  (setq hl-line-sticky-flag nil)
 #+END_SRC
 
 ** Smart Comments
