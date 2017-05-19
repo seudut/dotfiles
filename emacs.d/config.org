@@ -150,6 +150,9 @@ Check out [[http://tapoueh.org/emacs/el-get.html][el-get]].
 
   ;; only highlight selected window
   (setq hl-line-sticky-flag nil)
+
+  (setq-default fill-column 120)
+  (add-hook 'text-mode-hook 'turn-on-auto-fill)
 #+END_SRC
 
 ** Smart Comments
