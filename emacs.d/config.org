@@ -1158,6 +1158,7 @@ extend org-mode's easy templates, refer to [[http://coldnew.github.io/coldnew-em
             (set-face-attribute face nil :inherit 'fixed-pitch))
           (list 'org-code 'org-block 'org-block-background 'org-block-begin-line 'org-block-end-line))
     (set-face-attribute 'org-table nil :family "Ubuntu Mono" :height 140)
+    (set-face-attribute 'org-formula nil :family "Ubuntu Mono" :height 140)
     ;; org-special-keyword inherited from font-lock-keywork originally; as org is changed to variable-pitch, it cause
     ;; the font in special-keywords are not monospace
     (set-face-attribute 'org-special-keyword nil :inherit '(font-lock-keyword-face fixed-pitch))
