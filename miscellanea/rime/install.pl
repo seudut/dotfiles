@@ -6,7 +6,8 @@ use Cwd;
 
 my @file = qw( default.custom.yaml
                 squirrel.custom.yaml
-                wubi_pinyin.custom.schema.yaml );
+                wubi_pinyin.custom.yaml 
+                wubi86.custom.yaml );
 
 my $cdr = cwd();
 foreach (@file) {
