@@ -2336,6 +2336,26 @@ irony-company
     (add-hook 'c++-mode-hook 'google-set-c-style))
 #+END_SRC
 
+*** Compile and Run the C file
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+  (defun my-cpp-hook ()
+    (let* ((current-file-name)
+           (a-dot-out-file))
+      (when buffer-file-name
+        (setq current-file-name (shell-quote-argument buffer-file-name))
+        (setq a-dot-out-file (concat (file-name-directory buffer-file-name) "a.out")))
+      (setq-local compilation-read-command t)
+      (set (make-local-variable 'compile-command)
+           (concat "g++ -Wall "
+                   current-file-name
+                   " && "
+                   a-dot-out-file))
+      (local-set-key (kbd "s-r") 'compile)))
+
+  (add-hook 'c-mode-hook 'my-cpp-hook)
+  (add-hook 'c++-mode-hook 'my-cpp-hook)
+#+END_SRC
+
 ** Lua
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
   (use-package lua-mode
