@@ -2227,10 +2227,10 @@ then install irony searver, and =LIBCLANG_LIBRARY= and =LIBCLANG_INCLUDE_DIR= ac
 #+END_SRC
 
 #+BEGIN_SRC sh
-  cmake -DLIBCLANG_LIBRARY\=/usr/local/Cellar/llvm/3.6.2/lib/libclang.dylib \
-        -DLIBCLANG_INCLUDE_DIR=/usr/local/Cellar/llvm/3.6.2/include \
-        -DCMAKE_INSTALL_PREFIX\=/Users/peli3/.emacs.d/irony/ \
-        /Users/peli3/.emacs.d/elpa/irony-20160713.1245/server && cmake --build . --use-stderr --config Release --target install 
+  cmake -DLIBCLANG_LIBRARY\=/usr/local/Cellar/llvm/4.0.1/lib/libclang.dylib \
+        -DLIBCLANG_INCLUDE_DIR=/usr/local/Cellar/llvm/4.0.1/include \
+        -DCMAKE_INSTALL_PREFIX\=/Users/peng/.emacs.d/irony/ \
+        /Users/peng/.emacs.d/elpa/irony-20160713.1245/server && cmake --build . --use-stderr --config Release --target install 
 #+END_SRC
 
 **** irony config
