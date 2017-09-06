@@ -2278,7 +2278,8 @@ irony-company
   (use-package company-c-headers
     :ensure t
     :config
-    (add-to-list 'company-c-headers-path-system "/usr/include/c++/4.2.1/"))
+    (add-to-list 'company-c-headers-path-system "/usr/include/c++/4.2.1/")
+    (add-to-list 'company-c-headers-path-system "/usr/local/include/"))
 
   ;; (with-eval-after-load 'company
   ;;   (add-to-list 'company-backends 'company-irony)
@@ -2329,11 +2330,11 @@ irony-company
 
 *** google C style
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
-  (use-package google-c-style
-    :ensure t
-    :config
-    (add-hook 'c-mode-hook 'google-set-c-style)
-    (add-hook 'c++-mode-hook 'google-set-c-style))
+  ;; (use-package google-c-style
+  ;;   :ensure t
+  ;;   :config
+  ;;   (add-hook 'c-mode-hook 'google-set-c-style)
+  ;;   (add-hook 'c++-mode-hook 'google-set-c-style))
 #+END_SRC
 
 *** Compile and Run the C file
