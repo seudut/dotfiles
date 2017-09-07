@@ -1150,7 +1150,7 @@ extend org-mode's easy templates, refer to [[http://coldnew.github.io/coldnew-em
   (set-face-attribute 'variable-pitch nil :font "Source Sans Pro" :height 160)
   (set-face-attribute 'fixed-pitch nil :font "Source Code Pro" :height (face-attribute 'default :height))
 
-  (add-hook 'text-mode-hook 'variable-pitch-mode)
+  ;; (add-hook 'text-mode-hook 'variable-pitch-mode)
 
   ;; Install Ubuntu Mono fonts and apply it in org-table to align Chinese fonts
   (with-eval-after-load "org"
@@ -1179,18 +1179,18 @@ Also correct the face of  =org-meta-line= in =org-table=
 
 *** Org-head face
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
-  (with-eval-after-load "org"
-    (let* ((base-height (face-attribute 'variable-pitch :height))
-           (base-font-color (face-foreground 'default nil  'default)))
-      (set-face-attribute 'org-document-title nil :weight 'bold :height (+ 60 base-height))
-      (set-face-attribute 'org-level-1 nil :weight 'bold :height (+ 40 base-height))
-      (set-face-attribute 'org-level-2 nil :weight 'bold :height (+ 30 base-height))
-      (set-face-attribute 'org-level-3 nil :weight 'bold :height (+ 20 base-height))
-      (set-face-attribute 'org-level-4 nil :weight 'bold :height (+ 10 base-height))
-      (set-face-attribute 'org-level-5 nil :weight 'bold)
-      (set-face-attribute 'org-level-6 nil :weight 'bold)
-      (set-face-attribute 'org-level-7 nil :weight 'bold)
-      (set-face-attribute 'org-level-8 nil :weight 'bold)))
+  ;; (with-eval-after-load "org"
+  ;;   (let* ((base-height (face-attribute 'variable-pitch :height))
+  ;;          (base-font-color (face-foreground 'default nil  'default)))
+  ;;     (set-face-attribute 'org-document-title nil :weight 'bold :height (+ 60 base-height))
+  ;;     (set-face-attribute 'org-level-1 nil :weight 'bold :height (+ 40 base-height))
+  ;;     (set-face-attribute 'org-level-2 nil :weight 'bold :height (+ 30 base-height))
+  ;;     (set-face-attribute 'org-level-3 nil :weight 'bold :height (+ 20 base-height))
+  ;;     (set-face-attribute 'org-level-4 nil :weight 'bold :height (+ 10 base-height))
+  ;;     (set-face-attribute 'org-level-5 nil :weight 'bold)
+  ;;     (set-face-attribute 'org-level-6 nil :weight 'bold)
+  ;;     (set-face-attribute 'org-level-7 nil :weight 'bold)
+  ;;     (set-face-attribute 'org-level-8 nil :weight 'bold)))
 #+END_SRC
 
 ** Org Blog
