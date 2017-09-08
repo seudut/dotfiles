@@ -1,0 +1,72 @@
+#+TITLE:Emacs Evil Config
+#+AUTHOR: Peng Li
+#+EMAIL: seudut@gmail.com
+
+As the =Evil= mode is significant, and has lots of configurations, it's better put them 
+in a separate file.
+
+* Key-chord
+[[https://www.emacswiki.org/emacs/KeyChord][KeyChord]] lets you bind commands to combination key-strokes. This will be used in Evil mode.
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+  (use-package key-chord
+    :ensure t
+    :init
+    (setq key-chord-two-keys-delay 0.1)
+    (setq key-chord-one-keys-delay 0.2)
+    :config
+    (key-chord-mode 1))
+#+END_SRC
+
+* Evil mode 
+https://www.emacswiki.org/emacs/Evil
+
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+  (defun my-evil-config ()
+    "This should be called after evil-mode is loaded."
+    ;;   Buffer operations
+    (define-key evil-normal-state-map ";w" 'evil-save)
+    (define-key evil-normal-state-map ";e" 'evil-edit)
+    ;;
+    ;;  Window operations
+    (define-key evil-normal-state-map "\C-W s" 'evil-window-split)
+    (define-key evil-normal-state-map "\C-W v" 'evil-window-vsplit)
+    (define-key evil-normal-state-map ";s" 'evil-window-split)
+    (define-key evil-normal-state-map ";v" 'evil-window-vsplit)
+    (define-key evil-normal-state-map ";q" 'evil-window-delete)
+    (define-key evil-normal-state-map "\C-W o" 'delete-other-windows)
+    (define-key evil-normal-state-map "\C-W h" 'evil-window-left)
+    (define-key evil-normal-state-map "\C-W j" 'evil-window-down)
+    (define-key evil-normal-state-map "\C-W k" 'evil-window-up)
+    (define-key evil-normal-state-map "\C-W l" 'evil-window-right)
+    (define-key evil-normal-state-map "\C-h" 'evil-window-left)
+    (define-key evil-normal-state-map "\C-j" 'evil-window-down)
+    (define-key evil-normal-state-map "\C-k" 'evil-window-up)
+    (define-key evil-normal-state-map "\C-l" 'evil-window-right))
+
+  (use-package evil
+    :ensure t
+    :init
+    (setq evil-default-state 'emacs)
+    (setq evil-emacs-state-cursor '("red" box))
+    (setq evil-normal-state-cursor '("green" box))
+    (setq evil-visual-state-cursor '("orange" box))
+    (setq evil-insert-state-cursor '("red" bar))
+    (setq evil-replace-state-cursor '("red" bar))
+    (setq evil-operator-state-cursor '("red" hollow))
+    :config
+    (evil-mode t)
+    ;; (defalias 'evil-insert-state 'evil-emacs-state)
+    ;; switch to normal mode
+    ;; (key-chord-define evil-insert-state-map "jj" 'evil-normal-state)
+    ;; (key-chord-define evil-emacs-state-map "jj" 'evil-normal-state)
+    ;;
+    ;; Normal state map
+    (my-evil-config))
+
+
+#+END_SRC
+
+
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+  (provide 'init-evil-mode)
+#+END_SRC

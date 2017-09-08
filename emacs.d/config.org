@@ -1482,10 +1482,10 @@ Type =o= to go to the link
 ** Which key
 [[https://github.com/justbur/emacs-which-key][which-key]] show the key bindings 
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
-  (use-package which-key
-    :ensure t
-    :config
-    (which-key-mode))
+  ;; (use-package which-key
+  ;;   :ensure t
+  ;;   :config
+  ;;   (which-key-mode))
 #+END_SRC
 
 ** View only for some directory
@@ -3523,20 +3523,11 @@ Refer [[https://github.com/fnwiya/dotfiles/blob/c9ca79f1b22c919d9f4c3a0f944ba828
 #+END_SRC
 * Evil Mode
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
-  (use-package evil
-    :ensure t
-    :init
-    (setq evil-default-state 'emacs)
-    :config
-    (evil-mode t)
-    (defalias 'evil-insert-state 'evil-emacs-state)
-    (setq evil-emacs-state-cursor '("red" box))
-    (setq evil-normal-state-cursor '("green" box))
-    (setq evil-visual-state-cursor '("orange" box))
-    (setq evil-insert-state-cursor '("red" bar))
-    (setq evil-replace-state-cursor '("red" bar))
-    (setq evil-operator-state-cursor '("red" hollow)))
+  (org-babel-load-file "~/.emacs.d/emacs-evil.org")
+  ;; (require 'init-evil-mode)
 #+END_SRC
+
+
 * Note
 ** Check if emacs is in terminal of graphic mode
 Use =display-graphic-p= instead of =window-system=
