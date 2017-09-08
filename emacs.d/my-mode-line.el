@@ -56,11 +56,10 @@ window type."
 	      (and
 	       (not (window-in-direction 'right nil t -1))
 	       (window-in-direction 'left nil t -1)
-	       (window-in-direction 'below ni t 1))
+	       (window-in-direction 'below nil t 1))
 	      6
 	    4))))))
 
-;(my-get-window-type)
 
 
 (defun sd/powerline-center-theme_revised-2 ()
@@ -88,7 +87,7 @@ window type."
                           (separator-right (intern (format "powerline-%s-%s"
                                                            (powerline-current-separator)
                                                            (cdr powerline-default-separator-dir))))
-                          (lhs (if (or (= window-type 1) (= window-type 2) (= window-type 3) (= window-type 5))
+                          (lhs (if (or (= window-type 1) (= window-type 2) (= window-type 3) (= window-type 6))
 				   (list (powerline-raw "%* " my-face-buffer-modified 'l)
 					 (powerline-raw " " my-face1)
 					 (funcall separator-left my-face1 face1)
@@ -101,8 +100,9 @@ window type."
 					    (powerline-raw (concat " ==" (number-to-string (my-get-window-type)) "== ") face2)
 					    (funcall separator-left face2 face1))
 				    nil))
-                          (rhs (if (or (= window-type 1) (= window-type 3) (= window-type 2) (= window-type 6))
-				   (list (powerline-raw (format-time-string " %I:%M %p  ") my-face1 'r))
+                          (rhs (if (or (= window-type 1) (= window-type 3) (= window-type 2) (= window-type 5))
+				   (list (funcall separator-right face1 my-face1)
+				    (powerline-raw (format-time-string " %I:%M %p  ") my-face1 'r))
 				 nil)))
                      (concat (powerline-render lhs)
                              (powerline-fill-center face1 (/ (powerline-width center) 2.0))
