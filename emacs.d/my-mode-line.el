@@ -28,38 +28,28 @@
   "According to the window layout, separate the windows as six types.
 Each type will have different mode line. This function return the defined
 window type."
-  (if
-      (and
-       (not (window-in-direction 'right nil t -1))
-       (not (window-in-direction 'left nil t -1))
-       (not (window-in-direction 'below nil t 1)))
-      1
-    (if
-	(and
-	 (window-in-direction 'right nil t -1)
-	 (not (window-in-direction 'left nil t -1))
-	 (not (window-in-direction 'below nil t 1)))
-	2
-      (if
-	  (and
-	   (not (window-in-direction 'right nil t -1))
-	   (window-in-direction 'left nil t -1)
-	   (not (window-in-direction 'below nil t 1)))
-	  3
-	(if
-	    (and
-	     (window-in-direction 'right nil t -1)
-	     (not (window-in-direction 'left nil t -1))
-	     (window-in-direction 'below nil t 1))
-	    5
-	  (if
-	      (and
-	       (not (window-in-direction 'right nil t -1))
-	       (window-in-direction 'left nil t -1)
-	       (window-in-direction 'below nil t 1))
-	      6
-	    4))))))
-
+  (cond ((and (not (window-in-direction 'right nil t -1))
+	      (not (window-in-direction 'left nil t -1))
+	      (not (window-in-direction 'below nil t 1)))
+	 1)
+	((and (window-in-direction 'right nil t -1)
+	      (not (window-in-direction 'left nil t -1))
+	      (not (window-in-direction 'below nil t 1)))
+	 2)
+	((and (not (window-in-direction 'right nil t -1))
+	      (window-in-direction 'left nil t -1)
+	      (not (window-in-direction 'below nil t 1)))
+	 3)
+	((and (window-in-direction 'right nil t -1)
+	      (not (window-in-direction 'left nil t -1))
+	      (window-in-direction 'below nil t 1))
+	 5)
+	((and (not (window-in-direction 'right nil t -1))
+	      (window-in-direction 'left nil t -1)
+	      (window-in-direction 'below nil t 1))
+	 6)
+	(t
+	 4)))
 
 
 (defun sd/powerline-center-theme_revised-2 ()
