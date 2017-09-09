@@ -85,33 +85,41 @@ window type."
 
 (defun my-build-left-below-mode-line (separator lface face1)
   (let ((l)
-	(ff1)
-	(ff2)
 	(selected-name (my-get-selected-ws-name))
 	(name-list (my-get-ws-name-list)))
+    (setq l (list (powerline-raw " workspace " lface)))
     (if (string= selected-name (car name-list))
 	(progn
-	  (setq l (list (powerline-raw " workspace " lface)
-			(funcall separator lface 'my-powerline-hl-ws)
-			(powerline-raw (car name-list) 'my-powerline-hl-ws)
-			(funcall separator 'my-powerline-hl-ws face1)))
+	  (nconc l (list (funcall separator lface 'my-powerline-hl-ws)
+			 (powerline-raw (car name-list) 'my-powerline-hl-ws)
+			 (funcall separator 'my-powerline-hl-ws face1)))
 	  (dolist (i (cdr name-list))
-	    (setq l (append l (list (powerline-raw i face1)
-				    (funcall separator face1 face1))))))
-      (setq l (list (powerline-raw " workspace " lface)
-		    (funcall separator lface face1)))
+	    (nconc l (list (powerline-raw i face1)
+			   (funcall separator face1 face1)))))
+      (nconc l (list (funcall separator lface face1)))
       (while name-list
 	(let ((current-selected (string= selected-name (car name-list)))
 	      (next-selected (string= selected-name (cadr name-list))))
-	  (setq l (append l (list (powerline-raw (car name-list) (if current-selected
-								     'my-powerline-hl-ws
-								   face1))
-				  (funcall separator (if current-selected 'my-powerline-hl-ws face1)
-					   (if next-selected
-					       'my-powerline-hl-ws
-					     face1))))))
+	  (nconc l (list (powerline-raw (car name-list) (if current-selected 'my-powerline-hl-ws face1))
+			 (funcall separator (if current-selected 'my-powerline-hl-ws face1) (if next-selected 'my-powerline-hl-ws face1)))))
 	(pop name-list)))
     l))
+
+(defun my-is-special-buffer ()
+  ;; suppose all buffer name started with a star is a special buffer.
+  (string-match "\*" (buffer-name))
+  ;; (or (string-match "*scratch*" (buffer-name))
+  ;;     (string-match "*Message*" (buffer-name))
+
+  ;;     (equal major-mode 'eshell-mode))
+  )
+
+(defun my-get-buffer-name-face (active-face, changed-face, readonly-face)
+  (cond ((and buffer-read-only (not (my-is-special-buffer)))
+	 readonly-face)
+	((and (buffer-modified-p) (not (my-is-special-buffer)))
+	 changed-face)
+	(t active-face)))
 
 (defun sd/powerline-center-theme_revised-2 ()
   "Setup a mode-line with major and minor modes centered."
@@ -122,65 +130,39 @@ window type."
                    (let* ((window-type (my-get-window-type))
 			  (active (powerline-selected-window-active))
 			  (my-face1 'sd/powerline-active1 )
-                          ;; (my-face-buffer-modified (if (and (sd/buffer-is-eshel-or-scratch) (buffer-modified-p) (not buffer-read-only)) 
-                          ;;                              'sd/buffer-modified-active1
-                          ;;                            (if buffer-read-only 'sd/buffer-view-active1
-                          ;;                              my-face1)))
                           (face1 'powerline-active1)
                           (face2 'powerline-active2)
-                          (separator-left (intern (format "powerline-%s-%s"
-                                                          (powerline-current-separator)
-                                                          (car powerline-default-separator-dir))))
-                          (separator-right (intern (format "powerline-%s-%s"
-                                                           (powerline-current-separator)
-                                                           (cdr powerline-default-separator-dir))))
-			  (lface (if (and (not active) (or (= window-type 3) (= window-type 6)))
-				     face2
-				   my-face1))
+                          (separator-left (intern (format "powerline-%s-%s" (powerline-current-separator) (car powerline-default-separator-dir))))
+                          (separator-right (intern (format "powerline-%s-%s" (powerline-current-separator) (cdr powerline-default-separator-dir))))
+			  (lface (if (and (not active) (or (= window-type 3) (= window-type 6))) face2 my-face1))
 			  (cface (if active my-face1 face2))
-			  (rface (if (and (not active) (or (= window-type 2) (= window-type 5)))
-				     face2
-				   my-face1))
+			  (rface (if (and (not active) (or (= window-type 2) (= window-type 5))) face2 my-face1))
                           (lhs (cond ((or (= window-type 1) (= window-type 2))
-				      (my-build-left-below-mode-line separator-left lface face1)
-				      ;; (list (powerline-raw "==wwww===" 'powerline-active1))
-				      ;; (list (powerline-raw " workspace " lface)
-
-				      ;; 	    ;; workspaces
-				
-					    
-				      ;; 	    (funcall separator-left lface 'my-powerline-hl-ws)
-				      ;; 	    (powerline-raw " ws1 " 'my-powerline-hl-ws)
-				      ;; 	    (funcall separator-left 'my-powerline-hl-ws lface)
-				      ;; 	    (powerline-raw " ws2 " lface)
-				      ;; 	    (funcall separator-left lface face1)
-				      ;; 	    )
-				      )
+				      (my-build-left-below-mode-line separator-left lface face1))
 				     ((or (= window-type 3) (= window-type 6))
 				      (list (powerline-buffer-id lface 'l)
 					    (powerline-raw "%* " lface)
 					    (funcall separator-left lface face1 )))
 				     (t
 				      nil)))
-                          (center (if (or (= window-type 1) (= window-type 4))
-				      (list (powerline-raw " " face1)
-				  	    (funcall separator-right face1 cface)
-				  	    (powerline-raw "%*" cface)
-				  	    (powerline-buffer-id cface 'r)
-				  	    (funcall separator-left cface face1))
-				    nil)
-			   )
+                          (center (cond ((or (= window-type 1) (= window-type 4))
+					 (list (powerline-raw " " face1)
+					       (funcall separator-right face1 cface)
+					       (powerline-raw "%*" cface)
+					       (powerline-buffer-id cface 'r)
+					       (funcall separator-left cface face1)))
+					(t
+					 nil)))
 			  (rhs (cond ((or (= window-type 1) (= window-type 3))
-			       	      (list (funcall separator-right face1 rface)
-			       		    (powerline-raw (format-time-string " %I:%M %p ") rface 'r)))
+				      (list (funcall separator-right face1 rface)
+					    (powerline-raw (format-time-string " %I:%M %p ") rface 'r)))
 			       	     ((or (= window-type 2) (= window-type 5))
 			       	      (list (funcall separator-right face1 rface)
 			       		    (powerline-raw "%*" rface)
 			       		    (powerline-buffer-id rface 'r)
 			       		    (powerline-raw " " rface)))
 			       	     (t
-			       	      nil))
-			       ))
+			       	      nil))))
                      (concat (powerline-render lhs)
                              (powerline-fill-center face1 (/ (powerline-width center) 2.0))
                              (powerline-render center)
