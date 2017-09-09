@@ -30,34 +30,41 @@
 ;;   |>>>         O           <<<| 
 ;;   -----------------------------
 
+(defun my-below-winow-has-effect-window ()
+  "Return true when its below has no active window or
+its below window is minibuffer window. "
+  (let ((window (window-in-direction 'below nil nil 1)))
+    (and window
+	 (not (window-minibuffer-p window)))))
+
 (defun my-get-window-type ()
   "According to the window layout, separate the windows as six types.
 Each type will have different mode line. This function return the defined
 window type."
-  (cond ((and (not (window-in-direction 'right nil t -1))
-	      (not (window-in-direction 'left nil t -1))
-	      (not (window-in-direction 'below nil t 1)))
+  (cond ((and (not (window-in-direction 'right nil nil -1))
+	      (not (window-in-direction 'left nil nil -1))
+	      (not (my-below-winow-has-effect-window)))
 	 1)
 	((and (window-in-direction 'right nil t -1)
-	      (not (window-in-direction 'left nil t -1))
-	      (not (window-in-direction 'below nil t 1)))
+	      (not (window-in-direction 'left nil nil -1))
+	      (not (my-below-winow-has-effect-window)))
 	 2)
-	((and (not (window-in-direction 'right nil t -1))
-	      (window-in-direction 'left nil t -1)
-	      (not (window-in-direction 'below nil t 1)))
+	((and (not (window-in-direction 'right nil nil -1))
+	      (window-in-direction 'left nil nil -1)
+	      (not (my-below-winow-has-effect-window)))
 	 3)
-	((and (window-in-direction 'right nil t -1)
-	      (not (window-in-direction 'left nil t -1))
-	      (window-in-direction 'below nil t 1))
+	((and (window-in-direction 'right nil nil -1)
+	      (not (window-in-direction 'left nil nil -1))
+	      (my-below-winow-has-effect-window))
 	 5)
-	((and (not (window-in-direction 'right nil t -1))
-	      (window-in-direction 'left nil t -1)
-	      (window-in-direction 'below nil t 1))
+	((and (not (window-in-direction 'right nil nil -1))
+	      (window-in-direction 'left nil nil -1)
+	      (my-below-winow-has-effect-window))
 	 6)
 	(t
 	 4)))
 
-(my-get-window-type)
+
 (defun sd/powerline-center-theme_revised-2 ()
   "Setup a mode-line with major and minor modes centered."
   (interactive)
@@ -89,24 +96,27 @@ window type."
 				     face2
 				   my-face1))
                           (lhs (cond ((or (= window-type 1) (= window-type 2))
-				      (list (powerline-raw "%* " lface 'l)
+				      (list (powerline-raw " = ws1 = " lface)
 					    (funcall separator-left lface face1 )))
 				     ((or (= window-type 3) (= window-type 6))
 				      (list (powerline-buffer-id lface 'l)
-					    (powerline-raw " " lface)
+					    (powerline-raw "%* " lface)
 					    (funcall separator-left lface face1 )))
 				     (t
 				      nil)))
                           (center (if (or (= window-type 1) (= window-type 4))
-				    (list (powerline-raw " " face1)
-					  (funcall separator-right face1 cface)
-					  (powerline-buffer-id cface 'r)
-					  (funcall separator-left cface face1))
-				    nil))                          (rhs (cond ((or (= window-type 1) (= window-type 3))
+				      (list (powerline-raw " " face1)
+					    (funcall separator-right face1 cface)
+					    (powerline-raw "%*" cface)
+					    (powerline-buffer-id cface 'r)
+					    (funcall separator-left cface face1))
+				    nil))
+			  (rhs (cond ((or (= window-type 1) (= window-type 3))
 				      (list (funcall separator-right face1 rface)
 					    (powerline-raw (format-time-string " %I:%M %p ") rface 'r)))
 				     ((or (= window-type 2) (= window-type 5))
 				      (list (funcall separator-right face1 rface)
+					    (powerline-raw "%*" rface)
 					    (powerline-buffer-id rface 'r)
 					    (powerline-raw " " rface)))
 				     (t
@@ -121,3 +131,5 @@ window type."
 
 (provide 'my-mode-line)
 ;;; my-mode-line.el ends here
+  
+   
