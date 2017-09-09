@@ -533,17 +533,6 @@ Revised powerline-center-theme
                                        (powerline-narrow face1 'l)
                                        ;; (powerline-vc face1)
                                        (sd/powerline-simpler-vc (powerline-vc face1))))
-                            (center (list (powerline-raw " " face1)
-                                          (funcall separator-right face1 face2)
-                                          ;; (when (and (boundp 'erc-track-minor-mode) erc-track-minor-mode)
-                                          ;;   (powerline-raw erc-modified-channels-object face2 'l))
-                                          ;; (powerline-major-mode face2 'l)
-                                          ;; (powerline-process face2)
-                                          ;; (powerline-raw " :" face2)
-                                          ;; (powerline-minor-modes face2 'l)
-                                          ;; (powerline-buffer-id mode-line-buffer-id face2 'l)
-                                          ;; (powerline-raw " " face2)
-                                          (funcall separator-left face2 face1)))
                             (rhs (list (powerline-raw global-mode-string face1 'r)
                                        (powerline-raw "%4l" face1 'r)
                                        (powerline-raw ":" face1)     
@@ -553,7 +542,17 @@ Revised powerline-center-theme
                                        (powerline-raw (format-time-string " %I:%M %p  ") my-face1 'r)
                                        ;; (powerline-raw "%6p" my-face1 'r)
                                        ;; (powerline-hud my-face1 face1 )
-                                       )))
+                                       ))
+                            (center (list (powerline-raw " " face1)
+                                          (funcall separator-left face1 face2)
+                                          (when (and (boundp 'erc-track-minor-mode) erc-track-minor-mode)
+                                            (powerline-raw erc-modified-channels-object face2 'l))
+                                          (powerline-major-mode face2 'l)
+                                          (powerline-process face2)
+                                          (powerline-raw " :" face2)
+                                          (powerline-minor-modes face2 'l)
+                                          (powerline-raw " " face2)
+                                          (funcall separator-right face2 face1))))
                        (concat (powerline-render lhs)
                                (powerline-fill-center face1 (/ (powerline-width center) 2.0))
                                (powerline-render center)
@@ -561,11 +560,6 @@ Revised powerline-center-theme
                                (powerline-render rhs)))))))
 
   (sd/powerline-center-theme_revised)
-
-
-  ;; local test
-  ;; (add-to-list 'load-path "~/.emacs.d/")
-  ;; (require 'my-mode-line)
 #+END_SRC
 
 Fix the issue in mode line when showing triangle 
@@ -3530,7 +3524,7 @@ Refer [[https://github.com/fnwiya/dotfiles/blob/c9ca79f1b22c919d9f4c3a0f944ba828
 * Evil Mode
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
   ;; (org-babel-load-file "~/.emacs.d/emacs-evil.org")
-  ;; (require 'init-evil-mode)
+
 #+END_SRC
 
 
