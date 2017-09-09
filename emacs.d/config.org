@@ -789,9 +789,7 @@ use [[https://github.com/sabof/org-bullets][org-bullets]] package to show utf-8 
   (use-package org-bullets
     :ensure t
     :init
-    (add-hook 'org-mode-hook
-              (lambda ()
-                (org-bullets-mode t))))
+    (add-hook 'org-mode-hook (apply-partially #'org-bullets-mode t)))
 
   (setq org-bullets-bullet-list '("⦿" "✪" "◉" "○" "►" "◆"))
 
@@ -1256,8 +1254,9 @@ set default eshell history folder
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
   (require 'utilities)
 
-  (add-hook 'eshell-mode-hook (lambda ()
-                                (local-set-key (kbd "C-l") 'sd/eshell-clear-buffer)))
+  ;; (add-hook 'eshell-mode-hook (lambda ()
+  ;;                               (local-set-key (kbd "C-l") 'sd/eshell-clear-buffer)))
+  (add-hook 'eshell-mode-hook (apply-partially #'local-set-key (kbd "C-l") 'sd/eshell-clear-buffer))
 #+END_SRC
 
 ** Toggle Eshell
@@ -2114,9 +2113,7 @@ bindings in =lispy-mode-map= after loaded. see [[http://stackoverflow.com/questi
       (define-key lispy-mode-map (kbd "G") 'special-lispy-goto)
       (define-key lispy-mode-map (kbd "M-m") 'back-to-indentation))
     :config
-    (add-hook 'emacs-lisp-mode-hook (lambda () (lispy-mode 1))))
-
-
+    (add-hook 'emacs-lisp-mode-hook (apply-partially #'lispy-mode 1)))
 #+END_SRC
 
 ** Perl
@@ -2136,9 +2133,7 @@ bindings in =lispy-mode-map= after loaded. see [[http://stackoverflow.com/questi
   (setq cperl-tab-always-indent t)
   ;(setq cperl-brace-offset  0)
 
-  (add-hook 'cperl-mode-hook
-            '(lambda ()
-               (cperl-set-style "C++")))
+  (add-hook 'cperl-mode-hook (apply-partially #'cperl-set-style "C++"))
 
   (defalias 'perldoc 'cperl-perldoc)
 #+END_SRC
@@ -2674,8 +2669,9 @@ Then Run =M-x gnus=
   ;; (with-eval-after-load 'gnus-summary-mode
   ;;   (define-key gnus-summary-mode-map (kbd "C-o") 'sd/hydra-window/body))
 
-  (add-hook 'gnus-summary-mode-hook (lambda ()
-                                      (define-key gnus-summary-mode-map (kbd "C-o") nil)))
+  ;; (add-hook 'gnus-summary-mode-hook (lambda ()
+  ;;                                     (define-key gnus-summary-mode-map (kbd "C-o") nil)))
+  ;(add-hook 'gnus-summary-mode-hook (apply-partially #'define-key gnus-summary-mode-map (kbd "C-o") nil))
 
 
 #+END_SRC
