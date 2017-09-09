@@ -68,19 +68,50 @@ window type."
   "My Powerline face 1 based on powerline-active1."
   :group 'powerline)
 
+(defface my-powerline-ws-bg '((t (:background "blue" :foreground "black" :inherit mode-line)))
+  "My Powerline face 1 based on powerline-active1."
+  :group 'powerline)
+
 (defun my-get-ws-name-list ()
   "Return the name list of workspaces gotten from `perspeen-modestring' without the properties."
   (split-string (substring-no-properties (cadr perspeen-modestring)) "|"))
 
-(defun my-build-left-below-mode-line (separator lface face1)
-  (let ((l))
-    (setq l (list (powerline-raw " workspace " lface)))
-    (mapc (lambda (i)
-	    (setq l (append l (list (powerline-raw i lface))))
-	    (setq l (append l (list (funcall separator lface face1)))))
-	  (my-get-ws-name-list))
-    l))
+(defun my-get-selected-ws-name ()
+  (let ((ret))
+    (dolist (i (split-string (cadr perspeen-modestring) "|") ret)
+      (if (equal (car (text-properties-at 1 i))
+		 'face)
+	  (setq ret (substring-no-properties i))))))
 
+(defun my-build-left-below-mode-line (separator lface face1)
+  (let ((l)
+	(ff1)
+	(ff2)
+	(selected-name (my-get-selected-ws-name))
+	(name-list (my-get-ws-name-list)))
+    (if (string= selected-name (car name-list))
+	(progn
+	  (setq l (list (powerline-raw " workspace " lface)
+			(funcall separator lface 'my-powerline-hl-ws)
+			(powerline-raw (car name-list) 'my-powerline-hl-ws)
+			(funcall separator 'my-powerline-hl-ws face1)))
+	  (dolist (i (cdr name-list))
+	    (setq l (append l (list (powerline-raw i face1)
+				    (funcall separator face1 face1))))))
+      (setq l (list (powerline-raw " workspace " lface)
+		    (funcall separator lface face1)))
+      (while name-list
+	(let ((current-selected (string= selected-name (car name-list)))
+	      (next-selected (string= selected-name (cadr name-list))))
+	  (setq l (append l (list (powerline-raw (car name-list) (if current-selected
+								     'my-powerline-hl-ws
+								   face1))
+				  (funcall separator (if current-selected 'my-powerline-hl-ws face1)
+					   (if next-selected
+					       'my-powerline-hl-ws
+					     face1))))))
+	(pop name-list)))
+    l))
 
 (defun sd/powerline-center-theme_revised-2 ()
   "Setup a mode-line with major and minor modes centered."
