@@ -64,6 +64,23 @@ window type."
 	(t
 	 4)))
 
+(defface my-powerline-hl-ws '((t (:background "red" :foreground "black" :inherit mode-line)))
+  "My Powerline face 1 based on powerline-active1."
+  :group 'powerline)
+
+(defun my-get-ws-name-list ()
+  "Return the name list of workspaces gotten from `perspeen-modestring' without the properties."
+  (split-string (substring-no-properties (cadr perspeen-modestring)) "|"))
+
+(defun my-build-left-below-mode-line (separator lface face1)
+  (let ((l))
+    (setq l (list (powerline-raw " workspace " lface)))
+    (mapc (lambda (i)
+	    (setq l (append l (list (powerline-raw i lface))))
+	    (setq l (append l (list (funcall separator lface face1)))))
+	  (my-get-ws-name-list))
+    l))
+
 
 (defun sd/powerline-center-theme_revised-2 ()
   "Setup a mode-line with major and minor modes centered."
@@ -86,18 +103,28 @@ window type."
                           (separator-right (intern (format "powerline-%s-%s"
                                                            (powerline-current-separator)
                                                            (cdr powerline-default-separator-dir))))
-			  (lface (if (and (not active)
-					  (or (= window-type 3) (= window-type 6)))
+			  (lface (if (and (not active) (or (= window-type 3) (= window-type 6)))
 				     face2
 				   my-face1))
 			  (cface (if active my-face1 face2))
-			  (rface (if (and (not active)
-					  (or (= window-type 2) (= window-type 5)))
+			  (rface (if (and (not active) (or (= window-type 2) (= window-type 5)))
 				     face2
 				   my-face1))
                           (lhs (cond ((or (= window-type 1) (= window-type 2))
-				      (list (powerline-raw " = ws1 = " lface)
-					    (funcall separator-left lface face1 )))
+				      (my-build-left-below-mode-line separator-left lface face1)
+				      ;; (list (powerline-raw "==wwww===" 'powerline-active1))
+				      ;; (list (powerline-raw " workspace " lface)
+
+				      ;; 	    ;; workspaces
+				
+					    
+				      ;; 	    (funcall separator-left lface 'my-powerline-hl-ws)
+				      ;; 	    (powerline-raw " ws1 " 'my-powerline-hl-ws)
+				      ;; 	    (funcall separator-left 'my-powerline-hl-ws lface)
+				      ;; 	    (powerline-raw " ws2 " lface)
+				      ;; 	    (funcall separator-left lface face1)
+				      ;; 	    )
+				      )
 				     ((or (= window-type 3) (= window-type 6))
 				      (list (powerline-buffer-id lface 'l)
 					    (powerline-raw "%* " lface)
@@ -106,21 +133,23 @@ window type."
 				      nil)))
                           (center (if (or (= window-type 1) (= window-type 4))
 				      (list (powerline-raw " " face1)
-					    (funcall separator-right face1 cface)
-					    (powerline-raw "%*" cface)
-					    (powerline-buffer-id cface 'r)
-					    (funcall separator-left cface face1))
-				    nil))
+				  	    (funcall separator-right face1 cface)
+				  	    (powerline-raw "%*" cface)
+				  	    (powerline-buffer-id cface 'r)
+				  	    (funcall separator-left cface face1))
+				    nil)
+			   )
 			  (rhs (cond ((or (= window-type 1) (= window-type 3))
-				      (list (funcall separator-right face1 rface)
-					    (powerline-raw (format-time-string " %I:%M %p ") rface 'r)))
-				     ((or (= window-type 2) (= window-type 5))
-				      (list (funcall separator-right face1 rface)
-					    (powerline-raw "%*" rface)
-					    (powerline-buffer-id rface 'r)
-					    (powerline-raw " " rface)))
-				     (t
-				      nil))))
+			       	      (list (funcall separator-right face1 rface)
+			       		    (powerline-raw (format-time-string " %I:%M %p ") rface 'r)))
+			       	     ((or (= window-type 2) (= window-type 5))
+			       	      (list (funcall separator-right face1 rface)
+			       		    (powerline-raw "%*" rface)
+			       		    (powerline-buffer-id rface 'r)
+			       		    (powerline-raw " " rface)))
+			       	     (t
+			       	      nil))
+			       ))
                      (concat (powerline-render lhs)
                              (powerline-fill-center face1 (/ (powerline-width center) 2.0))
                              (powerline-render center)
