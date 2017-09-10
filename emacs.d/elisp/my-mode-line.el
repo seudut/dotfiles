@@ -64,7 +64,7 @@ window type."
 	(t
 	 4)))
 
-(defface my-powerline-hl-ws '((t (:background "red" :foreground "black" :inherit mode-line)))
+(defface my-powerline-hl-ws '((t (:background "blue" :foreground "black" :inherit mode-line)))
   "My Powerline face 1 based on powerline-active1."
   :group 'powerline)
 
@@ -107,11 +107,7 @@ window type."
 
 (defun my-is-special-buffer ()
   ;; suppose all buffer name started with a star is a special buffer.
-  (string-match "\*" (buffer-name))
-  ;; (or (string-match "*scratch*" (buffer-name))
-  ;;     (string-match "*Message*" (buffer-name))
-  ;;     (equal major-mode 'eshell-mode))
-  )
+  (string-match "\*" (buffer-name)))
 
 (defun my-get-buffer-name-face (orignal-face &optional active)
   (cond
@@ -142,24 +138,28 @@ window type."
 				      (my-build-left-below-mode-line separator-left lface face1))
 				     ((or (= window-type 3) (= window-type 6))
 				      (list (powerline-buffer-id (my-get-buffer-name-face lface active) 'l)
-					    (powerline-raw "%* " (my-get-buffer-name-face lface active))
+					    (unless (my-is-special-buffer)
+					      (powerline-raw "%* " (my-get-buffer-name-face lface active)))
 					    (funcall separator-left (my-get-buffer-name-face lface active) face1 )))
 				     (t
 				      nil)))
                           (center (cond ((or (= window-type 1) (= window-type 4))
 					 (list (powerline-raw " " face1)
 					       (funcall separator-right face1 (my-get-buffer-name-face cface active))
-					       (powerline-raw "%*" (my-get-buffer-name-face cface active))
+					       (unless (my-is-special-buffer)
+						 (powerline-raw "%*" (my-get-buffer-name-face cface active)))
 					       (powerline-buffer-id (my-get-buffer-name-face cface active) 'r)
 					       (funcall separator-left (my-get-buffer-name-face cface active) face1)))
 					(t
 					 nil)))
 			  (rhs (cond ((or (= window-type 1) (= window-type 3))
-				      (list (funcall separator-right face1 rface)
+				      (list (powerline-raw (format-time-string "%Y-%m-%d %a") face1 'r)
+					    (funcall separator-right face1 rface)
 					    (powerline-raw (format-time-string " %I:%M %p ") rface 'r)))
 			       	     ((or (= window-type 2) (= window-type 5))
 			       	      (list (funcall separator-right face1 (my-get-buffer-name-face rface active))
-			       		    (powerline-raw "%*" (my-get-buffer-name-face rface active))
+					    (unless (my-is-special-buffer)
+					      (powerline-raw "%*" (my-get-buffer-name-face rface active)))
 			       		    (powerline-buffer-id (my-get-buffer-name-face rface active) 'r)
 			       		    (powerline-raw " " (my-get-buffer-name-face rface active))))
 			       	     (t
