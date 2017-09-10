@@ -110,15 +110,14 @@ window type."
   (string-match "\*" (buffer-name))
   ;; (or (string-match "*scratch*" (buffer-name))
   ;;     (string-match "*Message*" (buffer-name))
-
   ;;     (equal major-mode 'eshell-mode))
   )
 
-(defun my-get-buffer-name-face (active-face, changed-face, readonly-face)
-  (cond ((and buffer-read-only (not (my-is-special-buffer)))
-	 readonly-face)
+(defun my-get-buffer-name-face (active-face)
+  (cond (buffer-read-only 
+	 'sd/buffer-view-active1)
 	((and (buffer-modified-p) (not (my-is-special-buffer)))
-	 changed-face)
+	 'sd/buffer-modified-active1)
 	(t active-face)))
 
 (defun sd/powerline-center-theme_revised-2 ()
@@ -140,27 +139,27 @@ window type."
                           (lhs (cond ((or (= window-type 1) (= window-type 2))
 				      (my-build-left-below-mode-line separator-left lface face1))
 				     ((or (= window-type 3) (= window-type 6))
-				      (list (powerline-buffer-id lface 'l)
-					    (powerline-raw "%* " lface)
-					    (funcall separator-left lface face1 )))
+				      (list (powerline-buffer-id (my-get-buffer-name-face lface) 'l)
+					    (powerline-raw "%* " (my-get-buffer-name-face lface))
+					    (funcall separator-left (my-get-buffer-name-face lface) face1 )))
 				     (t
 				      nil)))
                           (center (cond ((or (= window-type 1) (= window-type 4))
 					 (list (powerline-raw " " face1)
-					       (funcall separator-right face1 cface)
-					       (powerline-raw "%*" cface)
-					       (powerline-buffer-id cface 'r)
-					       (funcall separator-left cface face1)))
+					       (funcall separator-right face1 (my-get-buffer-name-face cface))
+					       (powerline-raw "%*" (my-get-buffer-name-face cface))
+					       (powerline-buffer-id (my-get-buffer-name-face cface) 'r)
+					       (funcall separator-left (my-get-buffer-name-face cface) face1)))
 					(t
 					 nil)))
 			  (rhs (cond ((or (= window-type 1) (= window-type 3))
 				      (list (funcall separator-right face1 rface)
 					    (powerline-raw (format-time-string " %I:%M %p ") rface 'r)))
 			       	     ((or (= window-type 2) (= window-type 5))
-			       	      (list (funcall separator-right face1 rface)
-			       		    (powerline-raw "%*" rface)
-			       		    (powerline-buffer-id rface 'r)
-			       		    (powerline-raw " " rface)))
+			       	      (list (funcall separator-right face1 (my-get-buffer-name-face rface))
+			       		    (powerline-raw "%*" (my-get-buffer-name-face rface))
+			       		    (powerline-buffer-id (my-get-buffer-name-face rface) 'r)
+			       		    (powerline-raw " " (my-get-buffer-name-face rface))))
 			       	     (t
 			       	      nil))))
                      (concat (powerline-render lhs)
@@ -170,6 +169,9 @@ window type."
                              (powerline-render rhs)))))))
 
 (sd/powerline-center-theme_revised-2)
+
+
+
 
 (provide 'my-mode-line)
 ;;; my-mode-line.el ends here
