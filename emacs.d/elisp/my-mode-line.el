@@ -26,8 +26,31 @@
 
 ;; A windows may have six kinds different mode-line
 ;; type = 1.
+;;   Left - workspace list
+;;   Right - Showing Time
+;;   Center - buffer , as no windows in its left or right.
 ;;   -----------------------------
 ;;   |>>>         O           <<<| 
+;;   -----------------------------
+;; type = 2.
+;;   -----------------------------
+;;   |>>>                       O| 
+;;   -----------------------------
+;; type = 3.
+;;   -----------------------------
+;;   |O                       <<<| 
+;;   -----------------------------
+;; type = 4.
+;;   -----------------------------
+;;   |            O              | 
+;;   -----------------------------
+;; type = 5.
+;;   -----------------------------
+;;   |                          O| 
+;;   -----------------------------
+;; type = 6.
+;;   -----------------------------
+;;   |O                          | 
 ;;   -----------------------------
 
 (defun my-below-winow-has-effect-window ()
@@ -87,7 +110,7 @@ window type."
   (let ((l)
 	(selected-name (my-get-selected-ws-name))
 	(name-list (my-get-ws-name-list)))
-    (setq l (list (powerline-raw " workspace " lface)))
+    (setq l (list (powerline-raw " WS " lface)))
     (if (string= selected-name (car name-list))
 	(progn
 	  (nconc l (list (funcall separator lface 'my-powerline-hl-ws)
@@ -109,9 +132,9 @@ window type."
   ;; suppose all buffer name started with a star is a special buffer.
   (string-match "\*" (buffer-name)))
 
-(defun my-get-buffer-name-face (orignal-face &optional active)
+(defun my-get-buffer-name-face (orignal-face)
   (cond
-   ((not active) orignal-face)
+   ((not (powerline-selected-window-active)) orignal-face)
    (buffer-read-only 
     'sd/buffer-view-active1)
    ((and (buffer-modified-p) (not (my-is-special-buffer)))
@@ -128,6 +151,7 @@ window type."
 			  (active (powerline-selected-window-active))
 			  (my-face1 'sd/powerline-active1 )
                           (face1 'powerline-active1)
+			  ;; (face1 'mode-line-inactive)
                           (face2 'powerline-active2)
                           (separator-left (intern (format "powerline-%s-%s" (powerline-current-separator) (car powerline-default-separator-dir))))
                           (separator-right (intern (format "powerline-%s-%s" (powerline-current-separator) (cdr powerline-default-separator-dir))))
@@ -137,19 +161,19 @@ window type."
                           (lhs (cond ((or (= window-type 1) (= window-type 2))
 				      (my-build-left-below-mode-line separator-left lface face1))
 				     ((or (= window-type 3) (= window-type 6))
-				      (list (powerline-buffer-id (my-get-buffer-name-face lface active) 'l)
+				      (list (powerline-buffer-id (my-get-buffer-name-face lface) 'l)
 					    (unless (my-is-special-buffer)
-					      (powerline-raw "%* " (my-get-buffer-name-face lface active)))
-					    (funcall separator-left (my-get-buffer-name-face lface active) face1 )))
+					      (powerline-raw "%* " (my-get-buffer-name-face lface)))
+					    (funcall separator-left (my-get-buffer-name-face lface) face1 )))
 				     (t
 				      nil)))
                           (center (cond ((or (= window-type 1) (= window-type 4))
 					 (list (powerline-raw " " face1)
-					       (funcall separator-right face1 (my-get-buffer-name-face cface active))
+					       (funcall separator-right face1 (my-get-buffer-name-face cface))
 					       (unless (my-is-special-buffer)
-						 (powerline-raw "%*" (my-get-buffer-name-face cface active)))
-					       (powerline-buffer-id (my-get-buffer-name-face cface active) 'r)
-					       (funcall separator-left (my-get-buffer-name-face cface active) face1)))
+						 (powerline-raw "%*" (my-get-buffer-name-face cface)))
+					       (powerline-buffer-id (my-get-buffer-name-face cface) 'r)
+					       (funcall separator-left (my-get-buffer-name-face cface) face1)))
 					(t
 					 nil)))
 			  (rhs (cond ((or (= window-type 1) (= window-type 3))
@@ -157,11 +181,11 @@ window type."
 					    (funcall separator-right face1 rface)
 					    (powerline-raw (format-time-string " %I:%M %p ") rface 'r)))
 			       	     ((or (= window-type 2) (= window-type 5))
-			       	      (list (funcall separator-right face1 (my-get-buffer-name-face rface active))
+			       	      (list (funcall separator-right face1 (my-get-buffer-name-face rface))
 					    (unless (my-is-special-buffer)
-					      (powerline-raw "%*" (my-get-buffer-name-face rface active)))
-			       		    (powerline-buffer-id (my-get-buffer-name-face rface active) 'r)
-			       		    (powerline-raw " " (my-get-buffer-name-face rface active))))
+					      (powerline-raw "%*" (my-get-buffer-name-face rface)))
+			       		    (powerline-buffer-id (my-get-buffer-name-face rface) 'r)
+			       		    (powerline-raw " " (my-get-buffer-name-face rface))))
 			       	     (t
 			       	      nil))))
                      (concat (powerline-render lhs)
