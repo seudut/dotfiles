@@ -95,6 +95,27 @@ window type."
   "My Powerline face 1 based on powerline-active1."
   :group 'powerline)
 
+
+(defface my-evil-mode-tag '((t (:foreground "black" :inherit mode-line)))
+  "My evil mode line"
+  :group 'powerline)
+
+(defface my-powerline-evil-normal '((t (:background "green" :foreground "black" :inherit mode-line)))
+  "My Powerline face 1 based on powerline-active1."
+  :group 'powerline)
+
+(defface my-powerline-evil-emacs '((t (:background "red" :foreground "black" :inherit mode-line)))
+  "My Powerline face 1 based on powerline-active1."
+  :group 'powerline)
+
+(defface my-powerline-evil-insert '((t (:background "orange" :foreground "black" :inherit mode-line)))
+  "My Powerline face 1 based on powerline-active1."
+  :group 'powerline)
+
+(defface my-powerline-evil-visual '((t (:background "orange" :foreground "black" :inherit mode-line)))
+  "My Powerline face 1 based on powerline-active1."
+  :group 'powerline)
+
 (defun my-get-ws-name-list ()
   "Return the name list of workspaces gotten from `perspeen-modestring' without the properties."
   (split-string (substring-no-properties (cadr perspeen-modestring)) "|"))
@@ -106,20 +127,20 @@ window type."
 		 'face)
 	  (setq ret (substring-no-properties i))))))
 
+
 (defun my-build-left-below-mode-line (separator lface face1)
   (let ((l)
 	(selected-name (my-get-selected-ws-name))
 	(name-list (my-get-ws-name-list)))
-    (setq l (list (powerline-raw " WS " lface)))
     (if (string= selected-name (car name-list))
 	(progn
-	  (nconc l (list (funcall separator lface 'my-powerline-hl-ws)
-			 (powerline-raw (car name-list) 'my-powerline-hl-ws)
-			 (funcall separator 'my-powerline-hl-ws face1)))
+	  (setq l (list (funcall separator lface 'my-powerline-hl-ws)
+	  		(powerline-raw (car name-list) 'my-powerline-hl-ws)
+	  		(funcall separator 'my-powerline-hl-ws face1)))
 	  (dolist (i (cdr name-list))
 	    (nconc l (list (powerline-raw i face1)
 			   (funcall separator face1 face1)))))
-      (nconc l (list (funcall separator lface face1)))
+      (setq l (list (funcall separator lface face1)))
       (while name-list
 	(let ((current-selected (string= selected-name (car name-list)))
 	      (next-selected (string= selected-name (cadr name-list))))
@@ -141,6 +162,13 @@ window type."
     'sd/buffer-modified-active1)
    (t orignal-face)))
 
+(defun get-active-window-evil-tag ()
+  (dolist (i (window-list) ret)
+    (with-selected-window i
+      (when (powerline-selected-window-active)
+	(setq ret (with-current-buffer (window-buffer)
+		    evil-mode-line-tag))))))
+
 (defun sd/powerline-center-theme_revised-2 ()
   "Setup a mode-line with major and minor modes centered."
   (interactive)
@@ -159,7 +187,10 @@ window type."
 			  (cface (if active my-face1 face2))
 			  (rface (if (and (not active) (or (= window-type 2) (= window-type 5))) face2 my-face1))
                           (lhs (cond ((or (= window-type 1) (= window-type 2))
-				      (my-build-left-below-mode-line separator-left lface face1))
+				      (append (list (powerline-raw (when evil-mode (get-active-window-evil-tag)) 'my-powerline-evil-normal)
+						    (powerline-raw " WS " lface))
+					      (append
+					       (my-build-left-below-mode-line separator-left lface face1))))
 				     ((or (= window-type 3) (= window-type 6))
 				      (list (powerline-buffer-id (my-get-buffer-name-face lface) 'l)
 					    (unless (my-is-special-buffer)
