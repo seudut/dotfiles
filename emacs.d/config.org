@@ -422,6 +422,8 @@ clean mode line, Refer to [[https://www.masteringemacs.org/article/hiding-replac
       (irony-mode . "")
       (page-break-lines-mode . "")
       (yas-minor-mode . "y")
+      ;; default jj
+      (evil-escape-mode . "")
       ;; Major modes
       (lisp-interaction-mode . "λ")
       (hi-lock-mode . "")
@@ -545,6 +547,7 @@ Revised powerline-center-theme
                                        ))
                             (center (list (powerline-raw " " face1)
                                           (funcall separator-left face1 face2)
+                                          (powerline-raw (when  (and (boundp 'evil-mode)  evil-mode) evil-mode-line-tag) face2)
                                           (when (and (boundp 'erc-track-minor-mode) erc-track-minor-mode)
                                             (powerline-raw erc-modified-channels-object face2 'l))
                                           (powerline-major-mode face2 'l)
