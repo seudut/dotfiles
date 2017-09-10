@@ -5,18 +5,6 @@
 As the =Evil= mode is significant, and has lots of configurations, it's better put them 
 in a separate file.
 
-* Key-chord
-[[https://www.emacswiki.org/emacs/KeyChord][KeyChord]] lets you bind commands to combination key-strokes. This will be used in Evil mode.
-#+BEGIN_SRC emacs-lisp :tangle yes :results silent
-  (use-package key-chord
-    :ensure t
-    :init
-    (setq key-chord-two-keys-delay 0.1)
-    (setq key-chord-one-keys-delay 0.2)
-    :config
-    (key-chord-mode 1))
-#+END_SRC
-
 * Evil mode 
 https://www.emacswiki.org/emacs/Evil
 
@@ -66,7 +54,20 @@ https://www.emacswiki.org/emacs/Evil
 
 #+END_SRC
 
+* Evil-escape
+[[https://github.com/syl20bnr/evil-escape][evil-escape]], escape from anything with customizable key sequence.
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+  (use-package evil-escape
+    :ensure t
+    :init
+    (setq-default evil-escape-delay 0.2)
+    (setq-default evil-escape-key-sequence "jj")
+    (setq-default evil-escape-excluded-states '(emacs))
+    :config
+    (evil-escape-mode))
+#+END_SRC
 
+* Provide 
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
   (provide 'init-evil-mode)
 #+END_SRC
