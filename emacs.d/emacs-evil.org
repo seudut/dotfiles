@@ -8,22 +8,18 @@ in a separate file.
 * Evil mode 
 https://www.emacswiki.org/emacs/Evil
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
-  (defun my-evil-insert-state-to-emacs-state (&optional arg)
-    "This advising function is called after `evil-insert-state', to switch to
-  emacs state for some modes."
-    (when (memq major-mode '(emacs-lisp-mode org-mode))
-      (evil-emacs-state)))
+  (defvar my-mode-list-to-use-emacs-as-insert '(emacs-lisp-mode org-mode eshell-mode lisp-interaction-mode))
+  (defvar my-modes-use-emacs-init '(emacs-lisp-mode org-mode lisp-interaction-mode eshell-mode))
 
   (defun my-evil-config ()
     "This should be called after evil-mode is loaded."
     
-    ;; default state
     (setq evil-default-state 'normal)
-    (dolist (mode
-             '(org-mode emacs-lisp-mode eshell-mode))
-      (evil-set-initial-state mode 'emacs))
+    (dolist (mode my-modes-use-emacs-init) (evil-set-initial-state mode 'emacs))
 
-    (advice-add 'evil-insert-state :after #'my-evil-insert-state-to-emacs-state)
+    (advice-add 'evil-insert-state :after (lambda (&optional arg)
+                                            (when (memq major-mode my-mode-list-to-use-emacs-as-insert)
+                                              (evil-emacs-state))))
     
     (define-key evil-normal-state-map "\C-W s" 'evil-window-split)
     (define-key evil-normal-state-map "\C-W v" 'evil-window-vsplit)
@@ -70,7 +66,7 @@ https://www.emacswiki.org/emacs/Evil
     :init
     (setq-default evil-escape-delay 0.2)
     (setq-default evil-escape-key-sequence "jj")
-    (setq-default evil-escape-excluded-states '(normal visual motion))
+    (setq-default evil-escape-excluded-states '(normal visual motion emacs))
     (setq-default evil-escape-excluded-major-modes '(emacs-lisp-mode org-mode))
     :config
     (evil-escape-mode))
