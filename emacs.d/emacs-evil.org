@@ -60,6 +60,8 @@ https://www.emacswiki.org/emacs/Evil.
     (advice-add 'evil-insert-state :after (lambda (&optional arg)
                                             (when (memq major-mode my-mode-list-to-use-emacs-as-insert)
                                               (evil-emacs-state)))))
+
+
 #+END_SRC
 
 * Evil-escape
@@ -88,7 +90,6 @@ https://www.emacswiki.org/emacs/Evil.
     (evil-leader/set-key "w" 'evil-save)
     (evil-leader/set-key "r" 'ivy-recentf)
     (evil-leader/set-key "w" 'save-buffer)
-    (evil-leader/set-key "e" 'evil-edit)
     (evil-leader/set-key "o" 'ido-find-file)
     (evil-leader/set-key "p" 'projectile-find-file)
     ;; Window
@@ -97,7 +98,11 @@ https://www.emacswiki.org/emacs/Evil.
     (evil-leader/set-key "q" 'evil-quit)
     ;; others
     (evil-leader/set-key "h" 'help)
-    (evil-leader/set-key "h" 'help))
+    (evil-leader/set-key "g" 'magit-status)
+    (evil-leader/set-key "e" 'sd/toggle-project-eshell))
+
+  (with-eval-after-load "evil"
+    (evil-define-key 'emacs eshell-mode-map (kbd ";e") 'sd/toggle-project-eshell))
 
 #+END_SRC
 

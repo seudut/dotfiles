@@ -3539,3 +3539,9 @@ Use =display-graphic-p= instead of =window-system=
 blog with modify list
 
 draw one line top of the windows
+* test
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+  ;; test local mode line
+  ;; (add-to-list 'load-path "~/.emacs.d/elisp")
+  ;; (require 'my-mode-line)
+#+END_SRC
