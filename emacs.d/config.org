@@ -54,6 +54,9 @@ Set system PATH and emacs exec path
 
   ;;supress the redefined warning at startup
   (setq ad-redefinition-action 'accept)
+
+  (setq scroll-step 1)
+  (setq scroll-margin 5)
 #+END_SRC
 
 *** Custom file 
@@ -2112,6 +2115,7 @@ bindings in =lispy-mode-map= after loaded. see [[http://stackoverflow.com/questi
   (use-package lispy
     :ensure t
     :init
+    (setq lispy-delete-backward-recenter 0)
     (with-eval-after-load "lispy"
       (define-key lispy-mode-map (kbd "M-o") nil)
       (define-key lispy-mode-map (kbd "g") 'special-lispy-goto-local)
