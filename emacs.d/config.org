@@ -1260,6 +1260,8 @@ set default eshell history folder
   ;; (add-hook 'eshell-mode-hook (lambda ()
   ;;                               (local-set-key (kbd "C-l") 'sd/eshell-clear-buffer)))
   (add-hook 'eshell-mode-hook (apply-partially #'local-set-key (kbd "C-l") 'sd/eshell-clear-buffer))
+  ;; (add-hook 'eshell-mode-map (lambda () (interactive)
+  ;;                              (define-key eshell-mode-map (kbd "<tab>") 'completion-at-point)))
 #+END_SRC
 
 ** Toggle Eshell

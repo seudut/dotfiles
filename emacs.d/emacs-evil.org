@@ -67,7 +67,10 @@ https://www.emacswiki.org/emacs/Evil.
 
 ** state key mapping
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
-  (define-key evil-normal-state-map (kbd "C-<SPACE>") 'previous-buffer)
+  (with-eval-after-load "evil"
+    (define-key evil-normal-state-map (kbd "C-SPC") 'mode-line-other-buffer)
+    (define-key evil-normal-state-map (kbd "C-;") 'previous-multiframe-window)
+    (evil-define-key 'emacs eshell-mode-map (kbd "C-;") 'previous-multiframe-window))
 #+END_SRC
 * Evil-escape
 [[https://github.com/syl20bnr/evil-escape][evil-escape]], escape from anything with customizable key sequence.
@@ -104,10 +107,12 @@ https://www.emacswiki.org/emacs/Evil.
     ;; others
     (evil-leader/set-key "h" 'help)
     (evil-leader/set-key "g" 'magit-status)
+    (evil-leader/set-key "d" 'dired)
     (evil-leader/set-key "e" 'sd/toggle-project-eshell))
 
   (with-eval-after-load "evil"
-    (evil-define-key 'emacs eshell-mode-map (kbd ";e") 'sd/toggle-project-eshell))
+    (evil-define-key 'emacs eshell-mode-map (kbd ";e") 'sd/toggle-project-eshell)
+    (evil-define-key 'emacs eshell-mode-map (kbd ";d") 'dired))
 
 #+END_SRC
 
