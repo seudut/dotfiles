@@ -72,6 +72,16 @@ https://www.emacswiki.org/emacs/Evil.
     (define-key evil-normal-state-map (kbd "C-;") 'previous-multiframe-window)
     (evil-define-key 'emacs eshell-mode-map (kbd "C-;") 'previous-multiframe-window))
 #+END_SRC
+
+** face attribute
+Let the search highlight persistent, https://stackoverflow.com/questions/25768036/emacs-evil-non-incremental-search-and-persistent-highlighting/34252236
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+  (evil-select-search-module 'evil-search-module 'evil-search)
+
+  (with-eval-after-load "evil"
+    (define-key evil-normal-state-map "\\" nil)
+    (define-key evil-normal-state-map "\\\\" #'evil-ex-nohighlight))
+#+END_SRC
 * Evil-escape
 [[https://github.com/syl20bnr/evil-escape][evil-escape]], escape from anything with customizable key sequence.
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent

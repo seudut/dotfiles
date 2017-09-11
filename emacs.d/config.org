@@ -358,6 +358,11 @@ improve color for org-mode
 
 #+END_SRC
 
+search text theme
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+  (set-face-attribute 'lazy-highlight nil :background "yellow" :foreground "black" :weight 'bold)
+#+END_SRC
+
 ** Rainbow-delimiter
 
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
