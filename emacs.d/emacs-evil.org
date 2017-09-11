@@ -34,7 +34,8 @@ https://www.emacswiki.org/emacs/Evil.
     (define-key evil-normal-state-map (kbd "C->") (lambda () (interactive) (evil-window-increase-width 3)))
     (define-key evil-normal-state-map (kbd "C-<") (lambda () (interactive) (evil-window-decrease-width 3)))
     (define-key evil-normal-state-map (kbd "C-+") (lambda () (interactive) (evil-window-increase-height 3)))
-    (define-key evil-normal-state-map (kbd "C--") (lambda () (interactive) (evil-window-decrease-height 3))))
+    (define-key evil-normal-state-map (kbd "C--") (lambda () (interactive) (evil-window-decrease-height 3)))
+    (define-key evil-normal-state-map (kbd "C-=") (lambda () (interactive) (balance-windows))))
 #+END_SRC
 
 ** Initial mode and state config
@@ -64,6 +65,10 @@ https://www.emacswiki.org/emacs/Evil.
 
 #+END_SRC
 
+** state key mapping
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+  (define-key evil-normal-state-map (kbd "C-<SPACE>") 'previous-buffer)
+#+END_SRC
 * Evil-escape
 [[https://github.com/syl20bnr/evil-escape][evil-escape]], escape from anything with customizable key sequence.
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
@@ -106,13 +111,13 @@ https://www.emacswiki.org/emacs/Evil.
 
 #+END_SRC
 
-* Evil-match
+* Evil-matchit
 [[https://github.com/redguardtoo/evil-matchit]]
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
   (use-package evil-matchit
     :ensure t
     :config
-    (global-evil-leader-mode 1))
+    (global-evil-matchit-mode 1))
 #+END_SRC
 
 * Evil-visualstar
