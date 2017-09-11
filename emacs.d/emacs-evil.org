@@ -6,32 +6,10 @@ As the =Evil= mode is significant, and has lots of configurations, it's better p
 in a separate file.
 
 * Evil mode 
-https://www.emacswiki.org/emacs/Evil
+** Install and basic config
+https://www.emacswiki.org/emacs/Evil.
+=global-evil-leader-mode= should be set before =evil-mode=.
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
-  (defvar my-mode-list-to-use-emacs-as-insert '(emacs-lisp-mode org-mode eshell-mode lisp-interaction-mode))
-  (defvar my-modes-use-emacs-init '(emacs-lisp-mode org-mode lisp-interaction-mode eshell-mode))
-
-  (defun my-evil-config ()
-    "This should be called after evil-mode is loaded."
-    
-    (setq evil-default-state 'normal)
-    (dolist (mode my-modes-use-emacs-init) (evil-set-initial-state mode 'emacs))
-
-    (advice-add 'evil-insert-state :after (lambda (&optional arg)
-                                            (when (memq major-mode my-mode-list-to-use-emacs-as-insert)
-                                              (evil-emacs-state))))
-    
-    (define-key evil-normal-state-map "\C-W s" 'evil-window-split)
-    (define-key evil-normal-state-map "\C-W v" 'evil-window-vsplit)
-    (define-key evil-normal-state-map "\C-h" 'evil-window-left)
-    (define-key evil-normal-state-map "\C-j" 'evil-window-down)
-    (define-key evil-normal-state-map "\C-k" 'evil-window-up)
-    (define-key evil-normal-state-map "\C-l" 'evil-window-right)
-    (define-key evil-normal-state-map (kbd "C->") (lambda () (interactive) (evil-window-increase-width 3)))
-    (define-key evil-normal-state-map (kbd "C-<") (lambda () (interactive) (evil-window-decrease-width 3)))
-    (define-key evil-normal-state-map (kbd "C-+") (lambda () (interactive) (evil-window-increase-height 3)))
-    (define-key evil-normal-state-map (kbd "C--") (lambda () (interactive) (evil-window-decrease-height 3))))
-
   (use-package evil
     :ensure t
     :init
@@ -46,16 +24,42 @@ https://www.emacswiki.org/emacs/Evil
     (require 'evil-leader)
     (global-evil-leader-mode)
     (evil-mode t)
-    ;; If alias insert state to emacs, there are some feature such as (column insert) not working.
-    ;; so disable this alias. Instead, only swith to emacs state for some special mode by advicing `evil-insert-state'. see above
-    ;; (defalias 'evil-inset-mode 'evil-emacs-state)
 
-    ;; escape has two define, one is interpreted as M-, the other is interpreted as ESC. This may be different between emacs GUI
-    ;; and terminal.
-    ;; Here this setting make pressing ESC alone as exit to normal state, but keep when pressing ESC with combined key, as (M-*)
+    (define-key evil-normal-state-map "\C-W s" 'evil-window-split)
+    (define-key evil-normal-state-map "\C-W v" 'evil-window-vsplit)
+    (define-key evil-normal-state-map "\C-h" 'evil-window-left)
+    (define-key evil-normal-state-map "\C-j" 'evil-window-down)
+    (define-key evil-normal-state-map "\C-k" 'evil-window-up)
+    (define-key evil-normal-state-map "\C-l" 'evil-window-right)
+    (define-key evil-normal-state-map (kbd "C->") (lambda () (interactive) (evil-window-increase-width 3)))
+    (define-key evil-normal-state-map (kbd "C-<") (lambda () (interactive) (evil-window-decrease-width 3)))
+    (define-key evil-normal-state-map (kbd "C-+") (lambda () (interactive) (evil-window-increase-height 3)))
+    (define-key evil-normal-state-map (kbd "C--") (lambda () (interactive) (evil-window-decrease-height 3))))
+#+END_SRC
+
+** Initial mode and state config
+- Use =normal= as the default state but exclude some special modes.
+- Bind =[escape]=  to =normal= mode. This only works on GUI Emacs. If need to work on Terminal, shoudl also bind =(kbd
+  "<ESC>)=, but this will make the combined key =M-= not wor.
+- Not alias =insert= state to =emacs= state, as it break some vi's feature in insert mode, such as column edit. Instead,
+  here add a advice function to change the sate as emacs when enter insert mode, but this is only limited in some
+  certain modes.
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+  (defvar my-mode-list-to-use-emacs-as-insert '(emacs-lisp-mode org-mode eshell-mode lisp-interaction-mode)
+    "The mode in this list will consider insert state as emacs state by adding `advice-add' below.")
+
+  (defvar my-modes-use-emacs-init '(emacs-lisp-mode org-mode lisp-interaction-mode eshell-mode text-mode)
+    "The mode in this list will use emacs sate as a initial evil state.")
+
+  (with-eval-after-load "evil"
+    (setq evil-default-state 'normal)
+      ;; (defalias 'evil-inset-mode 'evil-emacs-state)
     (define-key evil-emacs-state-map [escape] 'evil-normal-state)
     ;; (define-key evil-emacs-state-map (kbd "<ESC>") 'evil-normal-state)
-    (my-evil-config))
+    (dolist (mode my-modes-use-emacs-init) (evil-set-initial-state mode 'emacs))
+    (advice-add 'evil-insert-state :after (lambda (&optional arg)
+                                            (when (memq major-mode my-mode-list-to-use-emacs-as-insert)
+                                              (evil-emacs-state)))))
 #+END_SRC
 
 * Evil-escape
