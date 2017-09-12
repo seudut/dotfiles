@@ -147,6 +147,11 @@ Let the search highlight persistent, https://stackoverflow.com/questions/2576803
     :config
     (global-evil-visualstar-mode))
 #+END_SRC
+* Others
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+  (dolist (mode '(c-mode-hook lua-mode-hook))
+    (add-hook mode (lambda () (setq indent-tabs-mode nil))))
+#+END_SRC
 * Provide 
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
   (provide 'init-evil-mode)
