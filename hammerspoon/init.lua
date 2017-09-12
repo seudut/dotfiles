@@ -47,53 +47,6 @@ hs.hotkey.bind({"cmd", "alt", "ctrl"}, "H", function()
   win:setFrame(f)
 end)
 
------- multi-window layout
---local laptopScreen = "Color LCD"
---local windowLayout = {
---    {"Safari",  nil,          laptopScreen, hs.layout.left50,    nil, nil},
---    {"Mail",    nil,          laptopScreen, hs.layout.right50,   nil, nil},
---    {"iTunes",  "iTunes",     laptopScreen, hs.layout.maximized, nil, nil},
---    {"iTunes",  "MiniPlayer", laptopScreen, nil, nil, hs.geometry.rect(0, -48, 400, 48)},
---}
---hs.layout.apply(windowLayout)
-
----- Creating a simple menubar item
---caffeine = hs.menubar.new()
---function setCaffeineDisplay(state)
---    if state then
---        caffeine:setTitle("AWAKE")
---    else
---        caffeine:setTitle("SLEEPY")
---    end
---end
---
---function caffeineClicked()
---    setCaffeineDisplay(hs.caffeinate.toggle("displayIdle"))
---end
---
---if caffeine then
---    caffeine:setClickCallback(caffeineClicked)
---    setCaffeineDisplay(hs.caffeinate.get("displayIdle"))
---end
-
--- Reacting to application events 
--- wheny active the Finder applications, all of its windows
--- will be brought to the front of the display.
-function applicationWatcher(appName, eventType, appObject)
-    if (eventType == hs.application.watcher.activated) then
-        if (appName == "Finder") then
-            -- Bring all Finder windows forward when one gets activated
-            appObject:selectMenuItem({"Window", "Bring All to Front"})
-        end
-    end
-end
-appWatcher = hs.application.watcher.new(applicationWatcher)
-appWatcher:start()
-
-
-
-
---
 -- Window Movement
 -- https://andrich.blog/2016/11/20/hammerspoon-an-awesome-tool-to-automate-your-mac/
 -- CTRL + ALT + Left - Move current window to the left half of the screen.
@@ -156,3 +109,7 @@ hs.hotkey.bind(hyper, "k", move_window("up"))
 hs.hotkey.bind(hyper, "j", move_window("down"))
 hs.hotkey.bind(hyper, "m", move_window("max"))
 hs.hotkey.bind(hyper, "c", move_window("center"))
+
+-- Search and dictionary
+-- Past and copy
+-- App quick startup
