@@ -47,15 +47,15 @@ hs.hotkey.bind({"cmd", "alt", "ctrl"}, "H", function()
   win:setFrame(f)
 end)
 
----- multi-window layout
-local laptopScreen = "Color LCD"
-local windowLayout = {
-    {"Safari",  nil,          laptopScreen, hs.layout.left50,    nil, nil},
-    {"Mail",    nil,          laptopScreen, hs.layout.right50,   nil, nil},
-    {"iTunes",  "iTunes",     laptopScreen, hs.layout.maximized, nil, nil},
-    {"iTunes",  "MiniPlayer", laptopScreen, nil, nil, hs.geometry.rect(0, -48, 400, 48)},
-}
-hs.layout.apply(windowLayout)
+------ multi-window layout
+--local laptopScreen = "Color LCD"
+--local windowLayout = {
+--    {"Safari",  nil,          laptopScreen, hs.layout.left50,    nil, nil},
+--    {"Mail",    nil,          laptopScreen, hs.layout.right50,   nil, nil},
+--    {"iTunes",  "iTunes",     laptopScreen, hs.layout.maximized, nil, nil},
+--    {"iTunes",  "MiniPlayer", laptopScreen, nil, nil, hs.geometry.rect(0, -48, 400, 48)},
+--}
+--hs.layout.apply(windowLayout)
 
 ---- Creating a simple menubar item
 --caffeine = hs.menubar.new()
@@ -89,3 +89,70 @@ function applicationWatcher(appName, eventType, appObject)
 end
 appWatcher = hs.application.watcher.new(applicationWatcher)
 appWatcher:start()
+
+
+
+
+--
+-- Window Movement
+-- https://andrich.blog/2016/11/20/hammerspoon-an-awesome-tool-to-automate-your-mac/
+-- CTRL + ALT + Left - Move current window to the left half of the screen.
+-- CTRL + ALT + Right - Move current window to the right half of the screen.
+-- CTRL + ALT + Up - Go "fullscreen".
+-- CTRL + ALT + Down - Center window, covering 2/3 of screen size.
+--
+ 
+function move_window(direction)
+    return function()
+        local win      = hs.window.focusedWindow()
+        local app      = win:application()
+        local app_name = app:name()
+        local f        = win:frame()
+        local screen   = win:screen()
+        local max      = screen:frame()
+ 
+        if direction == "left" then
+	    f.x = max.x
+            f.y = max.y
+	    f.w = max.w / 2
+            f.h = max.h
+        elseif direction == "right" then
+            f.x = max.x + (max.w / 2)
+            f.y = max.y
+            f.w = max.w / 2
+            f.h = max.h
+        elseif direction == "up" then
+            f.x = max.x
+            f.y = max.y 
+            f.w = max.w
+            f.h = max.h / 2
+        elseif direction == "down" then
+            f.x = max.x 
+            f.y = max.y + (max.h / 2)
+            f.w = max.w 
+            f.h = max.h / 2
+        elseif direction == "max" then
+            f.x = max.x 
+            f.y = max.y
+            f.w = max.w 
+            f.h = max.h
+        elseif direction == "center" then
+            f.x = max.x + (max.w / 6)
+            f.y = max.y + (max.h / 6)
+            f.w = max.w * 2 / 3
+            f.h = max.h * 2 / 3
+        else
+            hs.alert.show("move_window(): Freaky parameter received " .. direction)
+        end
+ 
+        win:setFrame(f, 0)
+    end
+end
+ 
+local hyper = {"ctrl", "alt"}
+hs.hotkey.bind(hyper, "h", move_window("left"))
+hs.hotkey.bind(hyper, "l", move_window("right"))
+hs.hotkey.bind(hyper, "k", move_window("up"))
+hs.hotkey.bind(hyper, "j", move_window("down"))
+hs.hotkey.bind(hyper, "m", move_window("max"))
+hs.hotkey.bind(hyper, "c", move_window("center"))
