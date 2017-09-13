@@ -113,3 +113,87 @@ hs.hotkey.bind(hyper, "c", move_window("center"))
 -- Search and dictionary
 -- Past and copy
 -- App quick startup
+
+-- Use SpoonInstall,
+-- http://zzamboni.org/post/using-spoons-in-hammerspoon/
+-- https://github.com/Hammerspoon/Spoons/raw/master/Spoons/SpoonInstall.spoon.zip
+if hs.spoons == nil then
+   hs.spoons=require('hs.spoons')
+end
+
+
+hs.loadSpoon ("SpoonInstall")
+spoon.SpoonInstall.use_syncinstall = true
+INSTALL = spoon.SpoonInstall
+
+--------------------------------------------------------------------------------
+-- MouseCircle  http://www.hammerspoon.org/Spoons/MouseCircle.html
+INSTALL:andUse("MouseCircle",
+                {
+                   disable = false,
+                   config = {
+                      color = hs.drawing.color.x11.rebeccapurple
+                   },
+                   hotkeys = {
+                      show = { {"cmd", "alt", "ctrl"}, "m"}
+                   }
+                }
+)
+
+--------------------------------------------------------------------------------
+-- TextClipboardHistory
+INSTALL:andUse("TextClipboardHistory",
+               {
+                  config = {
+                     show_in_menubar = false,
+                  },
+                  hotkeys = {
+                     toggle_clipboard = { { "cmd", "shift" }, "v"}
+                  },
+                  start = true;
+               }
+)
+
+
+--------------------------------------------------------------------------------
+-- Seal -- http://www.hammerspoon.org/Spoons/Seal.html
+INSTALL:andUse("Seal",
+               {
+                  hotkeys = { show = { {"cmd", "ctrl", "alt"}, "space" } },
+                  fn = function(s)
+                     s:loadPlugins({"apps", "calc", "safari_bookmarks", "screencapture", "useractions"})
+                     s.plugins.safari_bookmarks.always_open_with_safari = false
+                     s.plugins.useractions.actions =
+                        {
+                           ["Hammerspoon docs webpage"] = {
+                              url = "http://hammerspoon.org/docs/",
+                              icon = hs.image.imageFromName(hs.image.systemImageNames.ApplicationIcon),
+                              hotkey = { hyper, "h" }
+                           },
+                           ["Leave corpnet"] = {
+                              fn = function()
+                                 spoon.WiFiTransitions:processTransition('foo', 'corpnet01')
+                              end,
+                              icon = swisscom_logo,
+                           },
+                           ["Arrive in corpnet"] = {
+                              fn = function()
+                                 spoon.WiFiTransitions:processTransition('corpnet01', 'foo')
+                              end,
+                              icon = swisscom_logo,
+                           },
+                           ["Translate using Leo"] = {
+                              url = "http://dict.leo.org/ende/index_de.html#/search=${query}",
+                              icon = 'favicon',
+                              keyword = "leo",
+                           },
+                           ["Tell me something"] = {
+                              keyword = "tellme",
+                              fn = function(str) hs.alert.show(str) end,
+                           }
+                        }
+                     s:refreshAllCommands()
+                  end,
+                  start = true,
+               }
+)
