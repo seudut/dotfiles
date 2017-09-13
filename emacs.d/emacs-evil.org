@@ -24,21 +24,7 @@ https://www.emacswiki.org/emacs/Evil.
     :config
     (require 'evil-leader)
     (global-evil-leader-mode)
-    (evil-mode t)
-
-    (mapc (lambda (map)
-            (define-key map "\C-W s" 'evil-window-split)
-            (define-key map "\C-W v" 'evil-window-vsplit)
-            (define-key map "\C-h" 'evil-window-left)
-            (define-key map "\C-j" 'evil-window-down)
-            (define-key map "\C-k" 'evil-window-up)
-            (define-key map "\C-l" 'evil-window-right)
-            (define-key map (kbd "C->") (lambda () (interactive) (evil-window-increase-width 3)))
-            (define-key map (kbd "C-<") (lambda () (interactive) (evil-window-decrease-width 3)))
-            (define-key map (kbd "C-+") (lambda () (interactive) (evil-window-increase-height 3)))
-            (define-key map (kbd "C--") (lambda () (interactive) (evil-window-decrease-height 3)))
-            (define-key map (kbd "C-=") (lambda () (interactive) (balance-windows))))
-          (list evil-normal-state-map evil-motion-state-map)))
+    (evil-mode t))
 #+END_SRC
 
 ** Initial mode and state config
@@ -64,27 +50,9 @@ https://www.emacswiki.org/emacs/Evil.
     (advice-add 'evil-insert-state :after (lambda (&optional arg)
                                             (when (memq major-mode my-mode-list-to-use-emacs-as-insert)
                                               (evil-emacs-state)))))
-
-
 #+END_SRC
 
-** state key mapping
-#+BEGIN_SRC emacs-lisp :tangle yes :results silent
-  (with-eval-after-load "evil"
-    (define-key evil-normal-state-map (kbd "C-SPC") 'mode-line-other-buffer)
-    (define-key evil-normal-state-map (kbd "C-;") 'previous-multiframe-window)
-    (evil-define-key 'emacs eshell-mode-map (kbd "C-;") 'previous-multiframe-window))
-#+END_SRC
 
-** face attribute
-Let the search highlight persistent, https://stackoverflow.com/questions/25768036/emacs-evil-non-incremental-search-and-persistent-highlighting/34252236
-#+BEGIN_SRC emacs-lisp :tangle yes :results silent
-  (evil-select-search-module 'evil-search-module 'evil-search)
-
-  (with-eval-after-load "evil"
-    (define-key evil-normal-state-map "\\" nil)
-    (define-key evil-normal-state-map "\\\\" #'evil-ex-nohighlight))
-#+END_SRC
 * Evil-escape
 [[https://github.com/syl20bnr/evil-escape][evil-escape]], escape from anything with customizable key sequence.
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
@@ -125,11 +93,13 @@ Let the search highlight persistent, https://stackoverflow.com/questions/2576803
 
   (with-eval-after-load "evil"
     (evil-define-key 'emacs eshell-mode-map (kbd ";e") 'sd/toggle-project-eshell)
-    (evil-define-key 'emacs eshell-mode-map (kbd ";d") 'dired))
+    (evil-define-key 'emacs eshell-mode-map (kbd ";d") 'dired)
+    (evil-define-key 'emacs eshell-mode-map (kbd "C-;") 'mode-line-other-buffer))
 
 #+END_SRC
 
-* Evil-matchit
+* other extention
+** Evil-matchit
 [[https://github.com/redguardtoo/evil-matchit]]
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
   (use-package evil-matchit
@@ -138,7 +108,7 @@ Let the search highlight persistent, https://stackoverflow.com/questions/2576803
     (global-evil-matchit-mode 1))
 #+END_SRC
 
-* Evil-visualstar
+** Evil-visualstar
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
   (use-package evil-visualstar
     :ensure t
@@ -146,6 +116,45 @@ Let the search highlight persistent, https://stackoverflow.com/questions/2576803
     (setq evil-visualstar/persistent t)
     :config
     (global-evil-visualstar-mode))
+#+END_SRC
+* Key bindings
+There are three kinds key bindings
+- prefix key is the leader key, defined by evil-leader. *;*
+- prefix key is the =Ctrl=,
+- prefix key is =\=, 
+
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+  (with-eval-after-load "evil"
+    (mapc (lambda (map)
+            (define-key map "\C-W s" 'evil-window-split)
+            (define-key map "\C-W v" 'evil-window-vsplit)
+            (define-key map "\C-h" 'evil-window-left)
+            (define-key map "\C-j" 'evil-window-down)
+            (define-key map "\C-k" 'evil-window-up)
+            (define-key map "\C-l" 'evil-window-right)
+            (define-key map (kbd "C->") (lambda () (interactive) (evil-window-increase-width 3)))
+            (define-key map (kbd "C-<") (lambda () (interactive) (evil-window-decrease-width 3)))
+            (define-key map (kbd "C-+") (lambda () (interactive) (evil-window-increase-height 3)))
+            (define-key map (kbd "C--") (lambda () (interactive) (evil-window-decrease-height 3)))
+            (define-key map (kbd "C-=") (lambda () (interactive) (balance-windows))))
+          (list evil-normal-state-map evil-motion-state-map))
+
+    (define-key evil-normal-state-map (kbd "C-SPC") 'mode-line-other-buffer)
+    (define-key evil-normal-state-map (kbd "C-;") 'previous-multiframe-window)
+
+    (define-key evil-insert-state-map (kbd "C-p") 'previous-line)
+    (define-key evil-insert-state-map (kbd "C-n") 'next-line))
+
+#+END_SRC
+
+
+Let the search highlight persistent, https://stackoverflow.com/questions/25768036/emacs-evil-non-incremental-search-and-persistent-highlighting/34252236
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+  (evil-select-search-module 'evil-search-module 'evil-search)
+
+  (with-eval-after-load "evil"
+    (define-key evil-normal-state-map "\\" nil)
+    (define-key evil-normal-state-map "\\\\" #'evil-ex-nohighlight))
 #+END_SRC
 * Others
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
