@@ -85,15 +85,17 @@ function move_window(direction)
             f.w = max.w 
             f.h = max.h / 2
         elseif direction == "max" then
-            f.x = max.x 
-            f.y = max.y
-            f.w = max.w 
-            f.h = max.h
-        elseif direction == "center" then
-            f.x = max.x + (max.w / 6)
-            f.y = max.y + (max.h / 6)
-            f.w = max.w * 2 / 3
-            f.h = max.h * 2 / 3
+           if f.w > (max.w * 3/4) and f.h > (max.h * 3/4) then
+                f.x = max.x + (max.w / 6)
+                f.y = max.y + (max.h / 6)
+                f.w = max.w * 2 / 3
+                f.h = max.h * 2 / 3
+           else
+                f.x = max.x 
+                f.y = max.y
+                f.w = max.w 
+                f.h = max.h
+           end
         else
             hs.alert.show("move_window(): Freaky parameter received " .. direction)
         end
@@ -108,7 +110,6 @@ hs.hotkey.bind(hyper, "l", move_window("right"))
 hs.hotkey.bind(hyper, "k", move_window("up"))
 hs.hotkey.bind(hyper, "j", move_window("down"))
 hs.hotkey.bind(hyper, "m", move_window("max"))
-hs.hotkey.bind(hyper, "c", move_window("center"))
 
 -- Search and dictionary
 -- Past and copy
