@@ -35,10 +35,19 @@ https://www.emacswiki.org/emacs/Evil.
   here add a advice function to change the sate as emacs when enter insert mode, but this is only limited in some
   certain modes.
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
-  (defvar my-mode-list-to-use-emacs-as-insert '(emacs-lisp-mode org-mode eshell-mode lisp-interaction-mode)
+  (defvar my-mode-list-to-use-emacs-as-insert '(emacs-lisp-mode
+                                                org-mode
+                                                eshell-mode
+                                                lisp-interaction-mode)
     "The mode in this list will consider insert state as emacs state by adding `advice-add' below.")
 
-  (defvar my-modes-use-emacs-init '(emacs-lisp-mode org-mode lisp-interaction-mode eshell-mode text-mode)
+  (defvar my-modes-use-emacs-init '(emacs-lisp-mode
+                                    org-mode
+                                    lisp-interaction-mode
+                                    eshell-mode
+                                    text-mode
+                                    package-menu-mode
+                                    paradox-menu-mode)
     "The mode in this list will use emacs sate as a initial evil state.")
 
   (with-eval-after-load "evil"
@@ -117,6 +126,14 @@ https://www.emacswiki.org/emacs/Evil.
     :config
     (global-evil-visualstar-mode))
 #+END_SRC
+
+** Evil-surround
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+  (use-package evil-surround
+    :ensure t
+    :config
+    (global-evil-surround-mode 1))
+#+END_SRC
 * Key bindings
 There are three kinds key bindings
 - prefix key is the leader key, defined by evil-leader. *;*
@@ -156,6 +173,39 @@ Let the search highlight persistent, https://stackoverflow.com/questions/2576803
     (define-key evil-normal-state-map "\\" nil)
     (define-key evil-normal-state-map "\\\\" #'evil-ex-nohighlight))
 #+END_SRC
+
+- Dired mode
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+  (with-eval-after-load "evil"
+    ;; file and directory explore
+    (evil-define-key 'normal dired-mode-map (kbd "H") 'dired-omit-mode)
+    (evil-define-key 'normal dired-mode-map (kbd "g") 'dired-goto-file)
+    (evil-define-key 'normal dired-mode-map (kbd "r") 'revert-buffer)
+    (evil-define-key 'normal dired-mode-map (kbd "i") 'dired-maybe-insert-subdir)
+    (evil-define-key 'normal dired-mode-map (kbd "TAB") 'diredp-next-subdir)
+    (evil-define-key 'normal dired-mode-map (kbd "J") 'diredp-next-subdir)
+    (evil-define-key 'normal dired-mode-map (kbd "K") 'diredp-prev-subdir)
+    (evil-define-key 'normal dired-mode-map (kbd "l") 'dired-display-file)
+    (evil-define-key 'normal dired-mode-map (kbd "f") 'dired-narrow)
+    (evil-define-key 'normal dired-mode-map (kbd "j") 'dired-next-line)
+    (evil-define-key 'normal dired-mode-map (kbd "k") 'dired-previous-line)
+    (evil-define-key 'normal dired-mode-map [C-backspace] 'dired-up-directory)
+    ;; file and folder deletion
+    (evil-define-key 'normal dired-mode-map (kbd "m") 'dired-mark)
+    (evil-define-key 'normal dired-mode-map (kbd "u") 'dired-unmark)
+    (evil-define-key 'normal dired-mode-map (kbd "U") 'dired-unmark-all-marks)
+    (evil-define-key 'normal dired-mode-map (kbd "z") #'sd/dired-get-size)
+    (evil-define-key 'normal dired-mode-map (kbd "d") 'dired-flag-file-deletion)
+    (evil-define-key 'normal dired-mode-map (kbd "d") 'dired-flag-file-deletion)
+    (evil-define-key 'normal dired-mode-map (kbd "x") 'dired-do-flagged-delete)
+    (evil-define-key 'normal dired-mode-map (kbd "D") 'dired-do-delete)
+    ;; File and folder creation
+    (evil-define-key 'normal dired-mode-map (kbd "D") 'dired-do-delete)
+    (evil-define-key 'normal dired-mode-map (kbd "D") 'dired-do-delete)
+    )
+
+#+END_SRC
+
 * Others
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
   (dolist (mode '(c-mode-hook lua-mode-hook))

@@ -608,7 +608,23 @@ set height in mode line
     :config
     (ido-mode 1)
     (ido-everywhere 1)
-    (add-to-list 'completion-ignored-extensions ".pyc"))
+    (add-to-list 'completion-ignored-extensions ".pyc")
+
+
+    (define-key ido-buffer-completion-map (kbd "C-w") #'ido-delete-backward-word-updir)
+    (define-key ido-file-completion-map (kbd "C-w") #'ido-delete-backward-word-updir)
+    (define-key ido-file-dir-completion-map (kbd "C-w") #'ido-delete-backward-updir)
+    ;; (define-key ido-file-dir-completion-map (kbd "C-i") #'ido-copy-current-word)
+    
+    ;; (dolist (map (list
+    ;;               ido-buffer-completion-map
+    ;;               ido-file-completion-map
+    ;;               ido-file-dir-completion-map
+    ;;               ido-common-completion-map))
+    ;;   (define-key map (kbd "C-w") #'ido-delete-backward-word-updir)
+    ;;   ;; (define-key map (kbd "C-i") #'ido-copy-current-file-name)
+    ;;   )
+    )
 
   (icomplete-mode t)
 #+END_SRC
@@ -2180,28 +2196,6 @@ Refer [[https://www.emacswiki.org/emacs/AutoInsertMode][AutoInsertMode]] Wiki
     ;; (font-lock-add-keywords 'Man-mode
     ;;                         '(("\\(NAME\\)" . font-lock-function-name-face)))
 
-#+END_SRC
-
-*** Run Perl
-Change the compile-command to set the default command run when call =compile=
-Mapping =s-r= (on Mac, it's =Command + R= to run the script. Here =current-prefix-arg= is set
-to call =compilation=  interactively.
-#+BEGIN_SRC emacs-lisp :tangle yes :results silent
-  ;; this has be implemented in below compile part
-  ;; (defun my-perl-hook ()
-  ;;   (progn
-  ;;     (setq-local compilation-read-command nil)
-  ;;     (set (make-local-variable 'compile-command)
-  ;;          (concat "/usr/bin/perl "
-  ;;                  (if buffer-file-name
-  ;;                      (shell-quote-argument buffer-file-name))))
-  ;;     (local-set-key (kbd "s-r")
-  ;;                    (lambda ()
-  ;;                      (interactive)
-  ;;                                         ;                       (setq current-prefix-arg '(4)) ; C-u
-  ;;                      (call-interactively 'compile)))))
-
-  ;; (add-hook 'cperl-mode-hook 'my-perl-hook)
 #+END_SRC
 
 ** C & C++
