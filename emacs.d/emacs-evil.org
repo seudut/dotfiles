@@ -160,7 +160,8 @@ There are three kinds key bindings
     (define-key evil-normal-state-map (kbd "C-;") 'previous-multiframe-window)
 
     (define-key evil-insert-state-map (kbd "C-p") 'previous-line)
-    (define-key evil-insert-state-map (kbd "C-n") 'next-line))
+    (define-key evil-insert-state-map (kbd "C-n") 'next-line)
+    (define-key evil-insert-state-map (kbd "C-h") 'delete-backward-char))
 
 #+END_SRC
 
@@ -196,14 +197,28 @@ Let the search highlight persistent, https://stackoverflow.com/questions/2576803
     (evil-define-key 'normal dired-mode-map (kbd "U") 'dired-unmark-all-marks)
     (evil-define-key 'normal dired-mode-map (kbd "z") #'sd/dired-get-size)
     (evil-define-key 'normal dired-mode-map (kbd "d") 'dired-flag-file-deletion)
-    (evil-define-key 'normal dired-mode-map (kbd "d") 'dired-flag-file-deletion)
     (evil-define-key 'normal dired-mode-map (kbd "x") 'dired-do-flagged-delete)
     (evil-define-key 'normal dired-mode-map (kbd "D") 'dired-do-delete)
     ;; File and folder creation
-    (evil-define-key 'normal dired-mode-map (kbd "D") 'dired-do-delete)
-    (evil-define-key 'normal dired-mode-map (kbd "D") 'dired-do-delete)
-    )
+    (evil-define-key 'normal dired-mode-map (kbd "c") 'sd/dired-new-file)
+    (evil-define-key 'normal dired-mode-map (kbd "C") 'dired-create-directory)
 
+    ;; keep some normap mapping
+    (evil-define-key 'normal dired-mode-map (kbd "/") 'evil-ex-search-forward)
+    (evil-define-key 'normal dired-mode-map (kbd "n") 'evil-search-next)
+    (evil-define-key 'normal dired-mode-map (kbd "N") 'evil-search-previous)
+    (evil-define-key 'normal dired-mode-map (kbd "v") 'evil-visual-char))
+
+#+END_SRC
+
+- expand region
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+  (with-eval-after-load "evil"
+    (with-eval-after-load "expand-region"
+      (define-key evil-normal-state-map (kbd "SPC") 'er/expand-region)
+      (define-key evil-visual-state-map (kbd "SPC") 'er/expand-region)
+      (define-key evil-visual-state-map (kbd "S-SPC") 'er/contract-region)
+      (define-key evil-normal-state-map (kbd "S-SPC") 'er/contract-region)))
 #+END_SRC
 
 * Others
