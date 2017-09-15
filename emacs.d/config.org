@@ -1262,7 +1262,9 @@ and Defined keys, using vi keybindings, Refer abo-abo's setting [[https://github
       (define-key map "n" nil)
       (define-key map "p" nil)
       (define-key map "v" 'recenter-top-bottom)
-      (define-key map "i" 'magit-section-toggle)))
+      (define-key map "i" 'magit-section-toggle))
+    (define-key magit-mode-map "q" (lambda () (interactive)
+                                     (magit-mode-bury-buffer t))))
 #+END_SRC
 
 * Eshell
