@@ -56,6 +56,21 @@ one window, window undo"
       (kill-region (point) (mark))
     (backward-kill-word 1)))
 
+;; https://www.emacswiki.org/emacs/TransparentEmacs
+(defun sd/transparency (value)
+  "Sets the transparency of the frame window with a value from 0 to 100."
+  (interactive "nTransparency Value 0 - 100 opague:(default 80) ")
+  (set-frame-parameter (select-frame) 'alpha value))
+
+(defun sd/toggle-transparency ()
+  "Enable or disable transparency"
+  (interactive)
+  (let ((alpha (frame-parameter nil 'alpha)))
+    (set-frame-parameter nil 'alpha
+			 (if (eql alpha 80)
+			     100
+			   80))))
+
 
 
 (provide 'utilities)

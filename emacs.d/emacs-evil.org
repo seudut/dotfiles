@@ -155,14 +155,16 @@ There are three kinds key bindings
             (define-key map (kbd "C--") (lambda () (interactive) (evil-window-decrease-height 3)))
             (define-key map (kbd "C-=") (lambda () (interactive) (balance-windows))))
           (list evil-normal-state-map evil-motion-state-map))
-
+    ;; normal state
     (define-key evil-normal-state-map (kbd "C-SPC") 'mode-line-other-buffer)
     (define-key evil-normal-state-map (kbd "C-;") 'previous-multiframe-window)
-
+    ;; insert state
     (define-key evil-insert-state-map (kbd "C-p") 'previous-line)
     (define-key evil-insert-state-map (kbd "C-n") 'next-line)
-    (define-key evil-insert-state-map (kbd "C-h") 'delete-backward-char))
-
+    (define-key evil-insert-state-map (kbd "C-h") 'delete-backward-char)
+    ;; motion mode
+    (define-key evil-motion-state-map (kbd "SPC") 'scroll-up-command)
+    (define-key evil-motion-state-map (kbd "S-SPC") 'scroll-down-command))
 #+END_SRC
 
 

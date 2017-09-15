@@ -1987,6 +1987,8 @@ here on Mac, just use "open" commands to pen =.pdf=,  =.html= and image files
     ;; should map both (kbd "TAB") and [tab],https://github.com/company-mode/company-mode/issues/75
     (define-key company-active-map (kbd "TAB") #'company-complete-selection)
     (define-key company-active-map [tab] #'company-complete-selection)
+    (define-key company-active-map (kbd "C-w") nil)
+    (define-key company-active-map (kbd "C-h") nil)
     (global-company-mode)
     ;; magig-commit is text-modeh
     (setq company-global-modes '(not org-mode magit-status-mode text-mode eshell-mode gfm-mode markdown-mode)))
@@ -2947,6 +2949,10 @@ We can use [[https://www.gnu.org/software/emms/quickstart.html][Emms]] for multi
 
 * Key Bindings
 Here are some global key bindings for basic editting
+** Global key bingding
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+  (global-set-key (kbd "C-h") 'delete-backward-char)
+#+END_SRC
 ** Esc in minibuffer
 Use =ESC= to exit minibuffer. Also I map =Super-h= the same as =C-g=
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
