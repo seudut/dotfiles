@@ -3142,6 +3142,19 @@ Kill the help window and buffer when quit.
 
   ;; (advice-add 'man :after (lambda (man-args) (other-window 1)))
   (advice-add 'man :after (apply-partially 'other-window 1))
+
+
+  (require 'shell-command-output-mode)
+
+  (defun my/shell-command-after (command &optional output-buffer error-buffer)
+    (let* ((buffer (get-buffer "*Shell Command Output*"))
+           (window (get-buffer-window buffer)))
+      (if buffer (with-current-buffer buffer
+                   (shell-command-output-mode)))
+      (if window
+          (select-window window))))
+
+  (advice-add 'shell-command :after 'my/shell-command-after)
 #+END_SRC
 
 ** Motion
