@@ -2952,7 +2952,17 @@ Here are some global key bindings for basic editting
 ** Global key bingding
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
   (global-set-key (kbd "C-h") 'delete-backward-char)
+  (global-set-key (kbd "s-m") 'man)
 #+END_SRC
+
+Refer [[https://github.com/fnwiya/dotfiles/blob/c9ca79f1b22c919d9f4c3a0f944ba8281255a594/setup/.emacs.d/loader-init/_90-kill-region-or-backward-kill-word.el][kill-region-or-backward-kill-word]]
+
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+  (require 'utilities)
+  (global-set-key (kbd "C-w") 'sd/kill-region-or-backward-kill-word)
+#+END_SRC
+
+
 ** Esc in minibuffer
 Use =ESC= to exit minibuffer. Also I map =Super-h= the same as =C-g=
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
@@ -3113,6 +3123,25 @@ Most use =C-o C-o= to switch buffers; =C-o x, v= to split window; =C-o o= to del
     (if (projectile-project-p)
         (projectile-dired)
       (dired-jump)))
+#+END_SRC
+
+Kill the help window and buffer when quit.
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+  (with-eval-after-load "help-mode"
+    (define-key help-mode-map (kbd "q") (lambda ()
+                                          (interactive)
+                                          (quit-window t))))
+
+  (with-eval-after-load 'man
+    (set-face-attribute 'Man-overstrike nil :inherit 'bold :foreground "orange red")
+    (set-face-attribute 'Man-underline nil :inherit 'underline :foreground "forest green")
+    (define-key Man-mode-map (kbd "q") (lambda ()
+                                         (interactive)
+                                         (Man-kill))))
+
+
+  ;; (advice-add 'man :after (lambda (man-args) (other-window 1)))
+  (advice-add 'man :after (apply-partially 'other-window 1))
 #+END_SRC
 
 ** Motion
@@ -3534,13 +3563,6 @@ stolen from [[https://github.com/mariolong/emacs.d/blob/f6a061594ef1b5d1f4750e9d
 #+END_SRC
 
 *** TODO make expand-region hydra work with lispy selected
-** =C-w= delete backward word
-Refer [[https://github.com/fnwiya/dotfiles/blob/c9ca79f1b22c919d9f4c3a0f944ba8281255a594/setup/.emacs.d/loader-init/_90-kill-region-or-backward-kill-word.el][kill-region-or-backward-kill-word]]
-
-#+BEGIN_SRC emacs-lisp :tangle yes :results silent
-  (require 'utilities)
-  (global-set-key (kbd "C-w") 'sd/kill-region-or-backward-kill-word)
-#+END_SRC
 
 * Developing
 ** perspeen
