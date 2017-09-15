@@ -22,8 +22,13 @@ https://www.emacswiki.org/emacs/Evil.
     (setq evil-replace-state-cursor '("red" bar))
     (setq evil-operator-state-cursor '("red" hollow))
     :config
-    (require 'evil-leader)
-    (global-evil-leader-mode)
+    (use-package evil-leader
+      :ensure t
+      :init
+      :config
+      (evil-leader/set-leader ";")
+      (global-evil-leader-mode))
+    ;; (require 'evil-leader)
     (evil-mode t))
 #+END_SRC
 
@@ -78,11 +83,7 @@ https://www.emacswiki.org/emacs/Evil.
 
 * Evil-Leader
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
-  (use-package evil-leader
-    :ensure t
-    :config
-    (global-evil-leader-mode)
-    (evil-leader/set-leader ";")
+  (with-eval-after-load "evil-leader"
     ;; Buffer & File
     (evil-leader/set-key "f" 'ido-switch-buffer)
     (evil-leader/set-key "w" 'evil-save)
