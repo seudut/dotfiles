@@ -1,4 +1,6 @@
 "3.8.2 (created: 2014/02/13 23:52:43)
+" To compatible with some pluins, and bugs
+" Keep Firefox at the version of 50.0
 
 cd ~
 
@@ -66,3 +68,4 @@ noremap v <C-^>
 "set activate=
 "nmap t <C-t>:open<Space>
 nmap t <M-t><esc>:open<Space>
+set focuscontent
