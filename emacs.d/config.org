@@ -2430,6 +2430,7 @@ Set the environments vairables in compilation mode
     (define-key compilation-mode-map (kbd "C-o") nil)
     (define-key compilation-mode-map (kbd "n") 'compilation-next-error)
     (define-key compilation-mode-map (kbd "p") 'compilation-previous-error)
+    (define-key compilation-mode-map (kbd "q") (lambda () (interactive) (quit-window t)))
     (define-key compilation-mode-map (kbd "r") #'recompile))
 
 
