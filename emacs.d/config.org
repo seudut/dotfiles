@@ -2223,6 +2223,8 @@ C/C++ ide tools
 
   ;; objective c
   (add-to-list 'auto-mode-alist '("\\.mm\\'" . objc-mode))
+
+  (setq c-hungry-delete-key t)
 #+END_SRC
 
 *** irony
@@ -2424,7 +2426,8 @@ Set the environments vairables in compilation mode
     (setq compilation-auto-jump-to-next t)
     (setq compilation-scroll-output 'first-error)
     ;; this will save all the modified buffers before compile
-    (setq compilation-ask-about-save nil))
+    (setq compilation-ask-about-save nil)
+    (setq compilation-window-height (/ (window-total-height) 3)))
 
   ;; super-r to compile
   (with-eval-after-load "compile"
@@ -2466,6 +2469,22 @@ Set the environments vairables in compilation mode
                                              (shell-quote-argument buffer-file-name))))))))
 
   (global-set-key (kbd "s-r") 'compile)
+
+  ;; Make compilaition window always below 
+  (defun my-compilation-hook ()
+    (when (not (get-buffer-window "*compilation*"))
+      (split-window-vertically)
+      ;; (save-selected-window
+      ;;   (save-excursion
+      ;;     (let* ((w (split-window-vertically))
+      ;;            (h (window-height w)))
+      ;;       (select-window w)
+      ;;       (switch-to-buffer "*compilation*")
+      ;;       (shrink-window (- h compilation-window-height)))))
+      ))
+  ;; (add-hook 'compilation-mode-hook 'my-compilation-hook)
+
+
 #+END_SRC
 
 * Auto-Insert
@@ -3584,11 +3603,16 @@ stolen from [[https://github.com/mariolong/emacs.d/blob/f6a061594ef1b5d1f4750e9d
 * Developing
 ** perspeen
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
-  (use-package perspeen
-    :ensure t
-    :init
+  ;; (use-package perspeen
+  ;;   :ensure t
+  ;;   :init
+  ;;   (setq perspeen-use-tab nil)
+  ;;   :config
+  ;;   (perspeen-mode))
+
+  (el-get-bundle seudut/perspeen
+    :features perspeen
     (setq perspeen-use-tab nil)
-    :config
     (perspeen-mode))
 
   ;; super-i to switch to ith workspace

@@ -30,6 +30,10 @@ https://www.emacswiki.org/emacs/Evil.
       (global-evil-leader-mode))
     ;; (require 'evil-leader)
     (evil-mode t))
+
+  (add-hook 'prog-mode-hook #'(lambda ()
+                                (modify-syntax-entry ?_ "w")
+                                (modify-syntax-entry ?- "w")))
 #+END_SRC
 
 ** Initial mode and state config
@@ -65,7 +69,6 @@ https://www.emacswiki.org/emacs/Evil.
                                             (when (memq major-mode my-mode-list-to-use-emacs-as-insert)
                                               (evil-emacs-state)))))
 #+END_SRC
-
 
 * Evil-escape
 [[https://github.com/syl20bnr/evil-escape][evil-escape]], escape from anything with customizable key sequence.
@@ -163,6 +166,9 @@ There are three kinds key bindings
     (define-key evil-insert-state-map (kbd "C-p") 'previous-line)
     (define-key evil-insert-state-map (kbd "C-n") 'next-line)
     (define-key evil-insert-state-map (kbd "C-h") 'delete-backward-char)
+    (define-key evil-insert-state-map (kbd "C-a") 'move-beginning-of-line)
+    (define-key evil-insert-state-map (kbd "C-e") 'move-end-of-line)
+    (define-key evil-insert-state-map (kbd "C-k") 'kill-line)
     ;; motion mode
     (define-key evil-motion-state-map (kbd "SPC") 'scroll-up-command)
     (define-key evil-motion-state-map (kbd "S-SPC") 'scroll-down-command))
