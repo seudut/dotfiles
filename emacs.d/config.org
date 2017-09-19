@@ -2405,10 +2405,10 @@ Install =guile=, =guile= is an implementation of =Scheme= programming language.
 
   ;; set racket path
   (setenv "PATH" (concat (getenv "PATH")
-                         ":" "/Applications/Racket v6.6/bin"))
+                         ":" "/Applications/Racket v6.10.1/bin"))
   (setenv "MANPATH" (concat (getenv "MANPATH")
-                            ":" "/Applications/Racket v6.6/man"))
-  (setq exec-path (append exec-path '("/Applications/Racket v6.6/bin")))
+                            ":" "/Applications/Racket v6.10.1/man"))
+  (setq exec-path (append exec-path '("/Applications/Racket v6.10.1/bin")))
 
   (add-to-list 'auto-mode-alist '("\\.rkt\\'" . racket-mode))
 #+END_SRC
