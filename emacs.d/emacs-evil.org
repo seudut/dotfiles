@@ -212,7 +212,9 @@ Let the search highlight persistent, https://stackoverflow.com/questions/2576803
     (evil-define-key 'normal dired-mode-map (kbd "D") 'dired-do-delete)
     ;; File and folder creation
     (evil-define-key 'normal dired-mode-map (kbd "c") 'sd/dired-new-file)
-    (evil-define-key 'normal dired-mode-map (kbd "C") 'dired-create-directory)
+    (evil-define-key 'normal dired-mode-map (kbd "+") 'dired-create-directory)
+    (evil-define-key 'normal dired-mode-map (kbd "C") 'dired-do-copy)
+    (evil-define-key 'normal dired-mode-map (kbd "R") 'dired-do-rename)
 
     ;; keep some normap mapping
     (evil-define-key 'normal dired-mode-map (kbd "/") 'evil-ex-search-forward)

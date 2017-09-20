@@ -1749,6 +1749,16 @@ Fix one elscreen issue when startup emacs https://github.com/knu/elscreen/issues
 #+END_SRC
 
 * Dired
+** Dired basic
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+  (setq dired-dwim-target t)
+
+  (use-package dired-details
+    :ensure t
+    :config
+    (setq-default dired-details-hidden-string "--- ")
+    (dired-details-install))
+#+END_SRC
 ** Dired bindings
 =C-o= is defined as a global key for window operation, here unset it in dired mode
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
