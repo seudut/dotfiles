@@ -761,7 +761,7 @@ Always indents header, and hide header leading starts so that no need type =#+ST
   (setq org-ditaa-jar-path "/usr/local/Cellar/ditaa/0.9/libexec/ditaa0_9.jar")
   (unless 
       (file-exists-p org-ditaa-jar-path)
-    (warn "seudut: ditaa.jar not found at %s " org-ditaa-jar-path))
+    (message "seudut: ditaa.jar not found at %s " org-ditaa-jar-path))
 
   (org-babel-do-load-languages 'org-babel-load-languages
                                '((python . t)
@@ -2901,7 +2901,7 @@ config from [[http://www.kirang.in/2014/11/13/emacs-as-email-client-with-offline
                                             (:mailing-list . 20)
                                             (:thread-subject . 70)
                                             (:human-date . 16))))
-    (warn "seudut:mu4e not installed, it won't work."))
+    (message "seudut:mu4e not installed, it won't work."))
 #+END_SRC
 
 ** Smtp - send mail
