@@ -1458,6 +1458,7 @@ I like [[https://github.com/coldnew/linum-relative][linum-relative]], just like 
 ** Save File Position
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
   (require 'saveplace)
+  (setq save-place-file "~/.emacs.d/temp/saveplace")
   (setq-default save-place t)
   (setq save-place-forget-unreadable-files t)
   (setq save-place-skip-check-regexp "\\`/\\(?:cdrom\\|floppy\\|mnt\\|/[0-9]\\|\\(?:[^@/:]*@\\)?[^@/:]*[^@/:.]:\\)")
@@ -2135,6 +2136,16 @@ Refer, [[http://emacs.stackexchange.com/questions/7908/how-to-make-yasnippet-and
 #+END_SRC
 
 * Programming Language
+** Color identiifiers mode
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+  (use-package color-identifiers-mode
+    :ensure t)
+#+END_SRC
+** Font lock face
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+  (set-face-attribute 'font-lock-keyword-face nil :weight 'bold)
+  (set-face-attribute 'font-lock-builtin-face nil :weight 'bold)
+#+END_SRC
 ** Emacs Lisp
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
   (use-package color-identifiers-mode
@@ -2207,10 +2218,6 @@ Refer [[https://www.emacswiki.org/emacs/AutoInsertMode][AutoInsertMode]] Wiki
                             ("\".*\\(\\\n\\).*\"" . font-lock-constant-face)
                             ("\n" . font-lock-constant-face)
                             ("\\(^#!.*\\)$" .  cperl-nonoverridable-face)))
-
-    ;; (font-lock-add-keywords 'Man-mode
-    ;;                         '(("\\(NAME\\)" . font-lock-function-name-face)))
-
 #+END_SRC
 
 ** C & C++
@@ -2479,22 +2486,6 @@ Set the environments vairables in compilation mode
                                              (shell-quote-argument buffer-file-name))))))))
 
   (global-set-key (kbd "s-r") 'compile)
-
-  ;; Make compilaition window always below 
-  (defun my-compilation-hook ()
-    (when (not (get-buffer-window "*compilation*"))
-      (split-window-vertically)
-      ;; (save-selected-window
-      ;;   (save-excursion
-      ;;     (let* ((w (split-window-vertically))
-      ;;            (h (window-height w)))
-      ;;       (select-window w)
-      ;;       (switch-to-buffer "*compilation*")
-      ;;       (shrink-window (- h compilation-window-height)))))
-      ))
-  ;; (add-hook 'compilation-mode-hook 'my-compilation-hook)
-
-
 #+END_SRC
 
 * Auto-Insert
@@ -3647,8 +3638,6 @@ stolen from [[https://github.com/mariolong/emacs.d/blob/f6a061594ef1b5d1f4750e9d
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
   (org-babel-load-file "~/.emacs.d/emacs-evil.org")
 #+END_SRC
-
-
 * Note
 ** Check if emacs is in terminal of graphic mode
 Use =display-graphic-p= instead of =window-system=
