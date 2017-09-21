@@ -1727,28 +1727,6 @@ as a http download client tool
                                   (car (last (split-string url "/" t))))))))))
 #+END_SRC
 
-** Elscreen
-Fix one elscreen issue when startup emacs https://github.com/knu/elscreen/issues/6
-#+BEGIN_SRC emacs-lisp :tangle yes :results silent
-  ;; (use-package elscreen
-  ;;   :ensure t
-  ;;   :init
-  ;;   (setq elscreen-tab-display-control nil)
-  ;;   :config
-  ;;   ;; (elscreen-start)
-  ;;   (set-face-attribute 'elscreen-tab-current-screen-face nil :foreground "black" :background "yellow")
-  ;;   (set-face-attribute 'elscreen-tab-other-screen-face nil :foreground "black" :background "disabledControlTextColor" :underline nil)
-  ;;   ;; (global-unset-key (kbd)); M-TAB switch screen
-  ;;   ;; (global-set-key (kbd "s-`") '(lambda () (interactive) (elscreen-goto 0)))
-  ;;   ;; (dotimes (i 8)
-  ;;   ;;   (global-set-key (kbd (concat "s-" (number-to-string (+ i 1))))
-  ;;   ;;                   `(lambda () (interactive) (elscreen-goto ,(+ i 1)))))
-  ;;   ;; (global-set-key (kbd "s-t") 'elscreen-create)
-  ;;   ;; (global-set-key (kbd "s-n") 'elscreen-next)
-  ;;   ;; (global-set-key (kbd "s-p") 'elscreen-previous)
-  ;;   )
-#+END_SRC
-
 * Dired
 ** Dired basic
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
@@ -1759,6 +1737,28 @@ Fix one elscreen issue when startup emacs https://github.com/knu/elscreen/issues
     :config
     (setq-default dired-details-hidden-string "--- ")
     (dired-details-install))
+#+END_SRC
+
+** Dired functions
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+  (defun sd/dired-next-line (count)
+    "Move to next line, and always focus on the file name."
+    (interactive "p")
+    (dired-next-line count)
+    (dired-move-to-filename))
+
+  (defun sd/dired-previous-line (count)
+    "Move to previous line, and always focus on the file name."
+    (interactive "p")
+    (dired-previous-line count)
+    (dired-move-to-filename))
+
+  (defun sd/dired-up-directory ()
+    "Go to up directory"
+    (interactive)
+    (let ((old (current-buffer)))
+      (dired-up-directory)
+      (kill-buffer old)))
 #+END_SRC
 ** Dired bindings
 =C-o= is defined as a global key for window operation, here unset it in dired mode
@@ -2453,21 +2453,6 @@ Set the environments vairables in compilation mode
     (define-key compilation-mode-map (kbd "p") 'compilation-previous-error)
     (define-key compilation-mode-map (kbd "q") (lambda () (interactive) (quit-window t)))
     (define-key compilation-mode-map (kbd "r") #'recompile))
-
-
-  ;; (loop for (mode . program) in '(
-  ;;                                 (lua-mode-hook . "lua")
-  ;;                                 (perl-mode-hook . "perl")
-  ;;                                 (python-mode-hook . "python")
-  ;;                                 (shell-mode-hook . "sh"))
-  ;;       do (add-hook mode `(lambda ()
-  ;;                           (unless (or (file-exists-p "makefile")
-  ;;                                       (file-exists-p "Makefile"))
-  ;;                             (set (make-local-variable 'compile-command)
-  ;;                                  (concat ,program
-  ;;                                          " "
-  ;;                                          (if buffer-file-name
-  ;;                                              (shell-quote-argument buffer-file-name))))))))
 
   ;; here note dynamic binding the value of vv, otherwise it will resport error when run the hook.
   ;; https://emacs.stackexchange.com/questions/10394/scope-in-lambda

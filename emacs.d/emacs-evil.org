@@ -35,7 +35,8 @@ https://www.emacswiki.org/emacs/Evil.
 
   (add-hook 'prog-mode-hook #'(lambda ()
                                 (modify-syntax-entry ?_ "w")
-                                (modify-syntax-entry ?- "w")))
+                                ;; (modify-syntax-entry ?- "w")
+                                ))
 #+END_SRC
 
 ** Initial mode and state config
@@ -201,8 +202,9 @@ Let the search highlight persistent, https://stackoverflow.com/questions/2576803
     (evil-define-key 'normal dired-mode-map (kbd "K") 'diredp-prev-subdir)
     (evil-define-key 'normal dired-mode-map (kbd "l") 'dired-display-file)
     (evil-define-key 'normal dired-mode-map (kbd "f") 'dired-narrow)
-    (evil-define-key 'normal dired-mode-map (kbd "j") 'dired-next-line)
-    (evil-define-key 'normal dired-mode-map (kbd "k") 'dired-previous-line)
+    (evil-define-key 'normal dired-mode-map (kbd "j") 'sd/dired-next-line)
+    (evil-define-key 'normal dired-mode-map (kbd "k") 'sd/dired-previous-line)
+    (evil-define-key 'normal dired-mode-map (kbd "h") 'sd/dired-up-directory)
     (evil-define-key 'normal dired-mode-map [C-backspace] 'dired-up-directory)
     ;; file and folder deletion
     (evil-define-key 'normal dired-mode-map (kbd "m") 'dired-mark)
