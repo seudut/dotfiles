@@ -2139,42 +2139,35 @@ Refer, [[http://emacs.stackexchange.com/questions/7908/how-to-make-yasnippet-and
 ** Color identiifiers mode
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
   (use-package color-identifiers-mode
-    :ensure t)
-#+END_SRC
-** Font lock face
-#+BEGIN_SRC emacs-lisp :tangle yes :results silent
-  (set-face-attribute 'font-lock-keyword-face nil :weight 'bold)
-  (set-face-attribute 'font-lock-builtin-face nil :weight 'bold)
-#+END_SRC
-
-#+BEGIN_SRC emacs-lisp :tangle yes :results silent
-  (font-lock-add-keywords 'c-mode
-                          ;; highlight %s \n
-                          '(("\\([%\\][a-zA-Z]\\)" (1  font-lock-keyword-face prepend))
-                            ("[^[:alpha:]]\\([[:digit:]]*\\)[^[:alpha:]]" (1 font-lock-constant-face append))))
-
-
-  ;; Also make function calls highlighted
-  (font-lock-add-keywords 'c-mode
-    '(("\\s\"?\\(\\(\\sw\\|\\s_\\)+\\(<-\\)?\\)\\s\"?*\\s-*("
-  (1 font-lock-function-name-face))) t)
-
-
-
-#+END_SRC
-
-** Emacs Lisp
-#+BEGIN_SRC emacs-lisp :tangle yes :results silent
-  (use-package color-identifiers-mode
     :ensure t
     :init
-    (add-hook 'emacs-lisp-mode-hook 'color-identifiers-mode)
-
+    (dolist (mode '(emacs-lisp-mode-hook
+                    c-mode-hook
+                    c++-mode-hook))
+      (add-hook mode #'color-identifiers-mode))
     :diminish color-identifiers-mode)
 
   (global-prettify-symbols-mode t)
 #+END_SRC
+** Font lock face
 
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+  (set-face-attribute 'font-lock-keyword-face nil :foreground "#F92672"  :weight 'bold)
+  (set-face-attribute 'font-lock-builtin-face nil :weight 'bold)
+  (set-face-attribute 'font-lock-function-name-face nil :foreground "#A6E22E" :weight 'normal :slant 'normal)
+  (set-face-attribute 'font-lock-variable-name-face nil :foreground "#00FF00")
+
+  (font-lock-add-keywords 'c-mode
+                          ;; highlight %s \n
+                          '(("\\([%\\][a-zA-Z]\\)" (1  font-lock-keyword-face prepend))
+                            ("[^[:alpha:]]\\([[:digit:]]*\\)[^[:alpha:]]" (1 font-lock-constant-face append))
+                            ;; hex number
+                            ("[^[:alpha:]]\\(0[x\\|X][0-9a-fA-F]*\\)[^[:alpha:]]" (1 font-lock-constant-face append))
+                            ;; hightlight the function call
+                            ("\\s\"?\\(\\(\\sw\\|\\s_\\)+\\(<-\\)?\\)\\s\"?*\\s-*(" (1 font-lock-function-name-face))) t)
+#+END_SRC
+
+** Emacs Lisp
 In Lisp Mode, =M-o= is defined, but I use this for global hydra window. So here disable this key
 bindings in =lispy-mode-map= after loaded. see [[http://stackoverflow.com/questions/298048/how-to-handle-conflicting-keybindings][here]]
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
