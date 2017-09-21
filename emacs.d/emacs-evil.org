@@ -22,7 +22,7 @@ https://www.emacswiki.org/emacs/Evil.
     (setq evil-replace-state-cursor '("red" bar))
     (setq evil-operator-state-cursor '("red" hollow))
     ;; others, don't move back cursor when exit insert mode
-    (setq evil-move-cursor-back nil)
+    ;; (setq evil-move-cursor-back nil)
     :config
     (use-package evil-leader
       :ensure t

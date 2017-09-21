@@ -2146,6 +2146,23 @@ Refer, [[http://emacs.stackexchange.com/questions/7908/how-to-make-yasnippet-and
   (set-face-attribute 'font-lock-keyword-face nil :weight 'bold)
   (set-face-attribute 'font-lock-builtin-face nil :weight 'bold)
 #+END_SRC
+
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+  (font-lock-add-keywords 'c-mode
+                          ;; highlight %s \n
+                          '(("\\([%\\][a-zA-Z]\\)" (1  font-lock-keyword-face prepend))
+                            ("[^[:alpha:]]\\([[:digit:]]*\\)[^[:alpha:]]" (1 font-lock-constant-face append))))
+
+
+  ;; Also make function calls highlighted
+  (font-lock-add-keywords 'c-mode
+    '(("\\s\"?\\(\\(\\sw\\|\\s_\\)+\\(<-\\)?\\)\\s\"?*\\s-*("
+  (1 font-lock-function-name-face))) t)
+
+
+
+#+END_SRC
+
 ** Emacs Lisp
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
   (use-package color-identifiers-mode
@@ -2215,8 +2232,9 @@ Refer [[https://www.emacswiki.org/emacs/AutoInsertMode][AutoInsertMode]] Wiki
   (font-lock-add-keywords 'cperl-mode
                           '(("\\(say\\)" . cperl-nonoverridable-face)
                             ("\\([0-9.]\\)*" . font-lock-constant-face)
-                            ("\".*\\(\\\n\\).*\"" . font-lock-constant-face)
-                            ("\n" . font-lock-constant-face)
+                            ("\".*\\(\\\n\\).*\"" 1 font-lock-constant-face prepend)
+                            ("\n" 0 font-lock-constant-face prepend)
+                            ;; ("[%\\][[:alpha:]]" . font-lock-constant-face)
                             ("\\(^#!.*\\)$" .  cperl-nonoverridable-face)))
 #+END_SRC
 
