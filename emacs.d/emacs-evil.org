@@ -102,22 +102,21 @@ https://www.emacswiki.org/emacs/Evil.
   (with-eval-after-load "evil-leader"
     ;; Buffer & File
     (evil-leader/set-key "f" 'ido-switch-buffer)
+    (evil-leader/set-key "b" 'ido-switch-buffer)
     (evil-leader/set-key "w" 'evil-save)
     (evil-leader/set-key "r" 'ivy-recentf)
     (evil-leader/set-key "w" 'save-buffer)
     (evil-leader/set-key "o" 'ido-find-file)
-    (evil-leader/set-key "p" 'projectile-find-file)
+    (evil-leader/set-key "t" 'projectile-find-file)
     ;; Window
     (evil-leader/set-key "s" 'evil-window-split)
     (evil-leader/set-key "v" 'evil-window-vsplit)
     (evil-leader/set-key "q" 'evil-quit)
     ;; others
-    (evil-leader/set-key "h" 'help)
     (evil-leader/set-key "g" 'magit-status)
-    (evil-leader/set-key "d" 'dired)
-    (evil-leader/set-key "e" 'sd/toggle-project-eshell))
-
-
+    (evil-leader/set-key "d" (lambda () (interactive) (dired default-directory)))
+    (evil-leader/set-key "e" 'sd/toggle-project-eshell)
+    (evil-leader/set-key "h" 'help))
 #+END_SRC
 
 * other extention
@@ -150,7 +149,7 @@ https://www.emacswiki.org/emacs/Evil.
 * Key bindings
 ** Basic state bindings
 There are three kinds key bindings
-- prefix key is the leader key, defined by evil-leader. *;*
+- prefix key is the leader key, defined by evil-leader.
 - prefix key is the =Ctrl=,
 - prefix key is =\=, 
 
