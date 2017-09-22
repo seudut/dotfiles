@@ -202,10 +202,7 @@ Let the search highlight persistent, https://stackoverflow.com/questions/2576803
         (evil-define-key 'emacs eshell-mode-map (kbd (concat evil-leader/leader "d")) #'dired)
         (evil-define-key 'emacs eshell-mode-map (kbd (concat evil-leader/leader "f")) #'ido-switch-buffer)
         (evil-define-key 'emacs eshell-mode-map (kbd (concat evil-leader/leader "q")) #'evil-quit)
-        (evil-define-key 'emacs eshell-mode-map (kbd "C-;") 'mode-line-other-buffer)
-        ;; (evil-define-key 'emacs eshell-mode-map (kbd ";q") 'evil-quit)
-        )))
-
+        (evil-define-key 'emacs eshell-mode-map (kbd "C-;") 'mode-line-other-buffer))))
 #+END_SRC
 ** Dired mode
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent

@@ -1170,12 +1170,13 @@ extend org-mode's easy templates, refer to [[http://coldnew.github.io/coldnew-em
 *** variable-pitch-mode and fixed-pitch-mode
 [[https://yoo2080.wordpress.com/2013/05/30/monospace-font-in-tables-and-source-code-blocks-in-org-mode-proportional-font-in-other-parts/][monospace font in tables and source code blocks in org-mode, proportional font in other parts]]
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
-  (unless (find-font (font-spec :name "Ubuntu Mono"))
-    (warn "Font not found Ubuntu Mono"))
-  (unless (find-font (font-spec :name "Source Code Pro"))
-    (warn "Font not found Source Code Pro"))
-  (unless (find-font (font-spec :name "Source Sans Pro"))
-    (warn "Font not found Source Sans Pro"))
+  (when (display-graphic-p)
+    (unless (find-font (font-spec :name "Ubuntu Mono"))
+      (warn "Font not found Ubuntu Mono"))
+    (unless (find-font (font-spec :name "Source Code Pro"))
+      (warn "Font not found Source Code Pro"))
+    (unless (find-font (font-spec :name "Source Sans Pro"))
+      (warn "Font not found Source Sans Pro")))
 
   (set-face-attribute 'variable-pitch nil :font "Source Sans Pro" :height 160)
   (set-face-attribute 'fixed-pitch nil :font "Source Code Pro" :height (face-attribute 'default :height))
@@ -1207,7 +1208,9 @@ extend org-mode's easy templates, refer to [[http://coldnew.github.io/coldnew-em
   ;;   (set-face-attribute 'org-indent nil :inherit '(org-hide fixed-pitch)))
 
   (with-eval-after-load "org"
-    (let ((default-font-size (- (face-attribute 'default :height) 20)))
+    (let ((default-font-size (if (display-graphic-p)
+                                 (- (face-attribute 'default :height) 20)
+                               (face-attribute 'default :height))))
       (set-face-attribute 'org-code nil :height default-font-size)
       (set-face-attribute 'org-block nil :height default-font-size)
       (set-face-attribute 'org-table nil :family "Ubutu Mono" :height default-font-size)
@@ -2648,12 +2651,12 @@ Emacs lisp auto-insert, based on the default module in =autoinsert.el=, but repl
            ("\\.markdown\\'" . markdown-mode))
     :init (setq markdown-command "multimarkdown"))
 
-  (add-hook 'gfm-mode-hook (lambda ()
-                             (set-face-attribute 'markdown-inline-code-face nil :inherit 'fixed-pitch)
-                             (set-face-attribute 'markdown-pre-face nil :inherit 'fixed-pitch)))
-  (with-eval-after-load "gfm-mode"
-    (set-face-attribute 'markdown-inline-code-face nil :inherit 'fixed-pitch)
-    (set-face-attribute 'markdown-pre-face nil :inherit 'fixed-pitch))
+  ;; (add-hook 'gfm-mode-hook (lambda ()
+  ;;                            (set-face-attribute 'markdown-inline-code-face nil :inherit 'fixed-pitch)
+  ;;                            (set-face-attribute 'markdown-pre-face nil :inherit 'fixed-pitch)))
+  ;; (with-eval-after-load "gfm-mode"
+  ;;   (set-face-attribute 'markdown-inline-code-face nil :inherit 'fixed-pitch)
+  ;;   (set-face-attribute 'markdown-pre-face nil :inherit 'fixed-pitch))
 #+END_SRC
 
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
@@ -3666,6 +3669,7 @@ blog with modify list
 
 draw one line top of the windows
 * test
+This is a test.
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
   ;; test local mode line
   ;; (add-to-list 'load-path "~/.emacs.d/elisp")
