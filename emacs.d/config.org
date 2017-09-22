@@ -1760,6 +1760,7 @@ as a http download client tool
       (dired-up-directory)
       (kill-buffer old)))
 #+END_SRC
+
 ** Dired bindings
 =C-o= is defined as a global key for window operation, here unset it in dired mode
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent

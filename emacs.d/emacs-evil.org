@@ -22,7 +22,7 @@ https://www.emacswiki.org/emacs/Evil.
     (setq evil-replace-state-cursor '("red" bar))
     (setq evil-operator-state-cursor '("red" hollow))
     ;; others, don't move back cursor when exit insert mode
-    ;; (setq evil-move-cursor-back nil)
+    (setq evil-move-cursor-back nil)
     :config
     (use-package evil-leader
       :ensure t
@@ -37,6 +37,16 @@ https://www.emacswiki.org/emacs/Evil.
                                 (modify-syntax-entry ?_ "w")
                                 ;; (modify-syntax-entry ?- "w")
                                 ))
+
+  (with-eval-after-load "evil"
+    ;; remap x to X as `evil-move-cursor-back' is set nil
+    ;; (define-key evil-normal-state-map [remap evil-delete-char] 'evil-delete-backward-char)
+    (define-key evil-normal-state-map (kbd "x") (lambda () (interactive)
+                                                  (let ((org evil-move-cursor-back))
+                                                    (setq evil-move-cursor-back t)
+                                                    (call-interactively 'evil-delete-char)
+                                                    ;; (evil-delete-char)
+                                                    (setq evil-move-cursor-back org)))))
 #+END_SRC
 
 ** Initial mode and state config
@@ -142,6 +152,7 @@ https://www.emacswiki.org/emacs/Evil.
     (global-evil-surround-mode 1))
 #+END_SRC
 * Key bindings
+** Basic state bindings
 There are three kinds key bindings
 - prefix key is the leader key, defined by evil-leader. *;*
 - prefix key is the =Ctrl=,
@@ -187,7 +198,7 @@ Let the search highlight persistent, https://stackoverflow.com/questions/2576803
     (define-key evil-normal-state-map "\\\\" #'evil-ex-nohighlight))
 #+END_SRC
 
-- Dired mode
+** Dired mode
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
   (with-eval-after-load "evil"
     ;; file and directory explore
@@ -228,7 +239,7 @@ Let the search highlight persistent, https://stackoverflow.com/questions/2576803
 
 #+END_SRC
 
-- expand region
+** expand region
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
   (with-eval-after-load "evil"
     (with-eval-after-load "expand-region"
@@ -236,6 +247,29 @@ Let the search highlight persistent, https://stackoverflow.com/questions/2576803
       (define-key evil-visual-state-map (kbd "SPC") 'er/expand-region)
       (define-key evil-visual-state-map (kbd "S-SPC") 'er/contract-region)
       (define-key evil-normal-state-map (kbd "S-SPC") 'er/contract-region)))
+#+END_SRC
+
+** Org Mode (worf mode) and Lispy mode
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+  (with-eval-after-load "evil"
+    (with-eval-after-load "lispy-mode"
+      (evil-define-key 'normal lispy-mode-map (kbd "[") (lambda ()
+                                                          (interactive)
+                                                          (call-interactively #'lispy-backward)
+                                                          (evil-emacs-state)))
+      (evil-define-key 'normal lispy-mode-map (kbd "]") (lambda ()
+                                                          (interactive)
+                                                          (call-interactively #'lispy-forward)
+                                                          (evil-emacs-state))))
+    (with-eval-after-load "worf-mode"
+      (evil-define-key 'normal worf-mode-map (kbd "[") (lambda ()
+                                                         (interactive)
+                                                         (call-interactively #'worf-backward)
+                                                         (evil-emacs-state)))
+      (evil-define-key 'normal worf-mode-map (kbd "]") (lambda ()
+                                                         (interactive)
+                                                         (call-interactively #'worf-forward)
+                                                         (evil-emacs-state)))))
 #+END_SRC
 
 * Others

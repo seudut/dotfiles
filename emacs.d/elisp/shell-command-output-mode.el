@@ -24,10 +24,6 @@
 
 ;;; Code:
 
-;; (defun haha/delet-window ()
-;;   (interactive)
-;;   (quit-window t))
-
 (defvar shell-command-output-mode-map
   (let ((map (make-sparse-keymap)))
     (define-key map (kbd "q") (lambda () (interactive) (quit-window t)))
@@ -46,8 +42,7 @@
   ;; enable evil motion state for this mode
   (if (and (boundp evil-mode) (fboundp 'evil-motion-state))
       (progn (add-to-list 'evil-motion-state-modes 'shell-command-output-mode)
-	     (evil-motion-state)))
-  )
+	     (evil-motion-state))))
 
 (provide 'shell-command-output-mode)
 ;;; shell-command-output-mode.el ends here
