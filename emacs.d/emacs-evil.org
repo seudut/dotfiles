@@ -117,10 +117,6 @@ https://www.emacswiki.org/emacs/Evil.
     (evil-leader/set-key "d" 'dired)
     (evil-leader/set-key "e" 'sd/toggle-project-eshell))
 
-  (with-eval-after-load "evil"
-    (evil-define-key 'emacs eshell-mode-map (kbd ";e") 'sd/toggle-project-eshell)
-    (evil-define-key 'emacs eshell-mode-map (kbd ";d") 'dired)
-    (evil-define-key 'emacs eshell-mode-map (kbd "C-;") 'mode-line-other-buffer))
 
 #+END_SRC
 
@@ -198,6 +194,20 @@ Let the search highlight persistent, https://stackoverflow.com/questions/2576803
     (define-key evil-normal-state-map "\\\\" #'evil-ex-nohighlight))
 #+END_SRC
 
+** Eshell
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+  (with-eval-after-load "evil"
+    (with-eval-after-load "evil-leader"
+      (with-eval-after-load "eshell"
+        (evil-define-key 'emacs eshell-mode-map (kbd (concat evil-leader/leader "e")) #'sd/toggle-project-eshell)
+        (evil-define-key 'emacs eshell-mode-map (kbd (concat evil-leader/leader "d")) #'dired)
+        (evil-define-key 'emacs eshell-mode-map (kbd (concat evil-leader/leader "f")) #'ido-switch-buffer)
+        (evil-define-key 'emacs eshell-mode-map (kbd (concat evil-leader/leader "q")) #'evil-quit)
+        (evil-define-key 'emacs eshell-mode-map (kbd "C-;") 'mode-line-other-buffer)
+        ;; (evil-define-key 'emacs eshell-mode-map (kbd ";q") 'evil-quit)
+        )))
+
+#+END_SRC
 ** Dired mode
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
   (with-eval-after-load "evil"
@@ -252,7 +262,7 @@ Let the search highlight persistent, https://stackoverflow.com/questions/2576803
 ** Org Mode (worf mode) and Lispy mode
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
   (with-eval-after-load "evil"
-    (with-eval-after-load "lispy-mode"
+    (with-eval-after-load "lispy"
       (evil-define-key 'normal lispy-mode-map (kbd "[") (lambda ()
                                                           (interactive)
                                                           (call-interactively #'lispy-backward)
@@ -261,7 +271,7 @@ Let the search highlight persistent, https://stackoverflow.com/questions/2576803
                                                           (interactive)
                                                           (call-interactively #'lispy-forward)
                                                           (evil-emacs-state))))
-    (with-eval-after-load "worf-mode"
+    (with-eval-after-load "worf"
       (evil-define-key 'normal worf-mode-map (kbd "[") (lambda ()
                                                          (interactive)
                                                          (call-interactively #'worf-backward)
