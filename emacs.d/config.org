@@ -120,6 +120,11 @@ Make a temp directory for all cache/history files
   (setq large-file-warning-threshold nil)
 #+END_SRC
 
+*** Xterm mode
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+  (unless (display-graphic-p)
+    (xterm-mouse-mode))
+#+END_SRC
 * Package Management Tools
 ** Use-package
 Using [[https://github.com/jwiegley/use-package][use-package]] to manage emacs packages
@@ -1207,16 +1212,26 @@ extend org-mode's easy templates, refer to [[http://coldnew.github.io/coldnew-em
   ;;   (require 'org-indent)
   ;;   (set-face-attribute 'org-indent nil :inherit '(org-hide fixed-pitch)))
 
-  (with-eval-after-load "org"
-    (let ((default-font-size (if (display-graphic-p)
-                                 (- (face-attribute 'default :height) 20)
-                               (face-attribute 'default :height))))
-      (set-face-attribute 'org-code nil :height default-font-size)
-      (set-face-attribute 'org-block nil :height default-font-size)
-      (set-face-attribute 'org-table nil :family "Ubutu Mono" :height default-font-size)
-      (set-face-attribute 'org-formula nil :family "Ubutu Mono" :height default-font-size)
-      (set-face-attribute 'org-block-begin-line nil :background nil :foreground nil :inherit 'shadow :slant 'italic :height default-font-size)
-      (set-face-attribute 'org-block-end-line nil :background nil :foreground nil :inherit 'shadow :slant 'italic :height default-font-size)))
+  ;; (with-eval-after-load "org"
+  ;;   (let ((default-font-size (- (face-attribute 'default :height) (if (display-graphic-p) 20 0))))
+  ;;     (set-face-attribute 'org-code nil :height default-font-size)
+  ;;     (set-face-attribute 'org-block nil :height default-font-size)
+  ;;     (set-face-attribute 'org-block-begin-line nil :background nil :foreground nil :inherit 'shadow :slant 'italic :height default-font-size)
+  ;;     (set-face-attribute 'org-block-end-line nil :background nil :foreground nil :inherit 'shadow :slant 'italic :height default-font-size)
+  ;;     (when (find-font (font-spec :name "Ubuntu Mono"))
+  ;;       (set-face-attribute 'org-table nil :family "Ubutu Mono" :height default-font-size)
+  ;;       (set-face-attribute 'org-formula nil :family "Ubutu Mono" :height default-font-size))))
+
+  (add-hook 'org-mode-hook
+            (lambda ()
+              (let ((default-font-size (- (face-attribute 'default :height) (if (display-graphic-p) 20 0))))
+                (set-face-attribute 'org-code nil :height default-font-size)
+                (set-face-attribute 'org-block nil :height default-font-size)
+                (set-face-attribute 'org-block-begin-line nil :background nil :foreground nil :inherit 'shadow :slant 'italic :height default-font-size)
+                (set-face-attribute 'org-block-end-line nil :background nil :foreground nil :inherit 'shadow :slant 'italic :height default-font-size)
+                (when (find-font (font-spec :name "Ubuntu Mono"))
+                  (set-face-attribute 'org-table nil :family "Ubutu Mono" :height default-font-size)
+                  (set-face-attribute 'org-formula nil :family "Ubutu Mono" :height default-font-size)))))
 #+END_SRC
 
 Also correct the face of  =org-meta-line= in =org-table= 
