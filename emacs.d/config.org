@@ -60,6 +60,8 @@ Set system PATH and emacs exec path
 
   (when (display-graphic-p)
     (fringe-mode '(0 . 0)))
+  ;; (setq-default indicate-empty-lines t)
+  ;; (setq-default indicate-abuffer-boundaries 'right)
 #+END_SRC
 
 *** Custom file 
@@ -180,7 +182,7 @@ Check out [[http://tapoueh.org/emacs/el-get.html][el-get]].
   (if window-system
       (defvar sd/fixed-font-family
         (cond ((x-list-fonts "Hasklig")         "Hasklig")
-              ((x-list-fonts "Source Code Pro") "Source Code Pro:weight") ;; weigth=light
+              ((x-list-fonts "Source Code Pro") "Source Code Pro:weight=light") ;; weigth=light
               ((x-list-fonts "Anonymous Pro")   "Anonymous Pro")
               ((x-list-fonts "M+ 1mn")          "M+ 1mn"))
         "The fixed width font based on what is installed, `nil' if not defined."))
@@ -1178,25 +1180,40 @@ extend org-mode's easy templates, refer to [[http://coldnew.github.io/coldnew-em
   (set-face-attribute 'variable-pitch nil :font "Source Sans Pro" :height 160)
   (set-face-attribute 'fixed-pitch nil :font "Source Code Pro" :height (face-attribute 'default :height))
 
-  ;; (add-hook 'text-mode-hook 'variable-pitch-mode)
 
   ;; Install Ubuntu Mono fonts and apply it in org-table to align Chinese fonts
-  (with-eval-after-load "org"
-    (mapc (lambda (face)
-            (set-face-attribute face nil :inherit 'fixed-pitch))
-          (list 'org-code 'org-block 'org-block-background 'org-block-begin-line 'org-block-end-line))
-    (set-face-attribute 'org-table nil :family "Ubuntu Mono" :height 140)
-    (set-face-attribute 'org-formula nil :family "Ubuntu Mono" :height 140)
-    ;; org-special-keyword inherited from font-lock-keywork originally; as org is changed to variable-pitch, it cause
-    ;; the font in special-keywords are not monospace
-    (set-face-attribute 'org-special-keyword nil :inherit '(font-lock-keyword-face fixed-pitch))
-    ;; same as above 
-    (set-face-attribute 'org-verbatim nil :inherit '(shadow fixed-pitch))
+  ;; (with-eval-after-load "org"
+  ;;   (mapc (lambda (face)
+  ;;           (set-face-attribute face nil :inherit 'fixed-pitch))
+  ;;         (list
+  ;;          'org-code
+  ;;          'org-block
+  ;;          'org-block-background
+  ;;          'org-block-begin-line
+  ;;          'org-block-end-line))
+  ;;   (set-face-attribute 'org-table nil :family "Ubuntu Mono" :height 140)
+  ;;   (set-face-attribute 'org-formula nil :family "Ubuntu Mono" :height 140)
+  ;;   ;; org-special-keyword inherited from font-lock-keywork originally; as org is changed to variable-pitch, it cause
+  ;;   ;; the font in special-keywords are not monospace
+  ;;   (set-face-attribute 'org-special-keyword nil :inherit '(font-lock-keyword-face fixed-pitch))
+  ;;   ;; same as above 
+  ;;   (set-face-attribute 'org-verbatim nil :inherit '(shadow fixed-pitch))
+  ;;   (set-face-attribute 'org-block-begin-line nil :inherit 'shadow :slant 'italic :foreground nil)
+  ;;   (set-face-attribute 'org-block-end-line nil :inherit 'shadow :slant 'italic :foreground nil)
     
-    ;; fix indent broken by variable-pitch-mode
-    ;; http://emacs.stackexchange.com/questions/26864/variable-pitch-face-breaking-indentation-in-org-mode
-    (require 'org-indent)
-    (set-face-attribute 'org-indent nil :inherit '(org-hide fixed-pitch)))
+  ;;   ;; fix indent broken by variable-pitch-mode
+  ;;   ;; http://emacs.stackexchange.com/questions/26864/variable-pitch-face-breaking-indentation-in-org-mode
+  ;;   (require 'org-indent)
+  ;;   (set-face-attribute 'org-indent nil :inherit '(org-hide fixed-pitch)))
+
+  (with-eval-after-load "org"
+    (let ((default-font-size (- (face-attribute 'default :height) 20)))
+      (set-face-attribute 'org-code nil :height default-font-size)
+      (set-face-attribute 'org-block nil :height default-font-size)
+      (set-face-attribute 'org-table nil :family "Ubutu Mono" :height default-font-size)
+      (set-face-attribute 'org-formula nil :family "Ubutu Mono" :height default-font-size)
+      (set-face-attribute 'org-block-begin-line nil :background nil :foreground nil :inherit 'shadow :slant 'italic :height default-font-size)
+      (set-face-attribute 'org-block-end-line nil :background nil :foreground nil :inherit 'shadow :slant 'italic :height default-font-size)))
 #+END_SRC
 
 Also correct the face of  =org-meta-line= in =org-table= 
