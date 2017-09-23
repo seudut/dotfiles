@@ -1528,12 +1528,12 @@ Type =o= to go to the link
 
 ** Smart Parens
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
-  (use-package smartparens
-    :ensure t
-    :config
-    (progn
-      (require 'smartparens-config)
-      (add-hook 'prog-mode-hook 'smartparens-mode)))
+  ;; (use-package smartparens
+  ;;   :ensure t
+  ;;   :config
+  ;;   (progn
+  ;;     (require 'smartparens-config)
+  ;;     (add-hook 'prog-mode-hook 'smartparens-mode)))
 #+END_SRC
 
 ** Ace-Windows
@@ -2274,8 +2274,8 @@ C/C++ ide tools
 3. tags jump
 *** c/c++ style
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
-  (setq c-default-style "stroustrup"
-        c-basic-offset 4)
+  ;; (setq c-default-style "stroustrup"
+  ;;       c-basic-offset 4)
 
   ;; "C-M-j" is my global binding for avy goto line below
   ;; disable it in c mode
@@ -2289,6 +2289,31 @@ C/C++ ide tools
   (add-to-list 'auto-mode-alist '("\\.mm\\'" . objc-mode))
 
   (setq c-hungry-delete-key t)
+
+
+  ;; Looks `c-hanging-braces-alist' doesn't work as expected when  `electric-pair-mode' is enabled.
+  (electric-pair-mode 1)
+
+  (defconst sd/c-style
+    '("stroustrup"
+      (c-tab-always-indent . t)
+      (c-basic-offset . 4)
+      (c-hanging-braces-alist . ((substatement-open before)
+                                 (statement-block-intro before)))
+      (c-hanging-colons-alist . ())
+      (c-echo-syntactic-information-p . nil)
+      (c-hanging-semi&comma-criteria . ()))
+    "My C programming style")
+
+  (c-add-style "sd-c-style" sd/c-style)
+
+  (setq c-default-style "sd-c-style")
+
+  (add-hook 'c-mode-hook '(lambda ()
+                            (c-toggle-auto-newline 1)
+                            (c-set-style "sd-c-style")))
+
+  ;; (advice-add 'c-electric-brace :after (lambda (arg) "Add new line after insert {}" (newline-and-indent)))
 #+END_SRC
 
 *** irony
