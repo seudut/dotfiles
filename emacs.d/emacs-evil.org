@@ -195,14 +195,23 @@ Let the search highlight persistent, https://stackoverflow.com/questions/2576803
 
 ** Eshell
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
-  (with-eval-after-load "evil"
-    (with-eval-after-load "evil-leader"
-      (with-eval-after-load "eshell"
-        (evil-define-key 'emacs eshell-mode-map (kbd (concat evil-leader/leader "e")) #'sd/toggle-project-eshell)
-        (evil-define-key 'emacs eshell-mode-map (kbd (concat evil-leader/leader "d")) #'dired)
-        (evil-define-key 'emacs eshell-mode-map (kbd (concat evil-leader/leader "f")) #'ido-switch-buffer)
-        (evil-define-key 'emacs eshell-mode-map (kbd (concat evil-leader/leader "q")) #'evil-quit)
-        (evil-define-key 'emacs eshell-mode-map (kbd "C-;") 'mode-line-other-buffer))))
+  (add-hook 'eshell-mode-hook (lambda ()
+                                (dolist (key-fun '(("e" . sd/toggle-project-eshell)
+                                                   ("d" . dired)
+                                                   ("f" . ido-switch-buffer)
+                                                   ("q" . evil-quit)))
+                                  (evil-define-key 'emacs eshell-mode-map (kbd (concat evil-leader/leader (car key-fun))) (cdr key-fun)))))
+
+  ;; (add-hook 'eshell-mode-map
+  ;;        (lambda ()
+  ;;          (mapc (lambda (key-fun)
+  ;;                  (evil-define-key 'emacs eshell-mode-map (kbd (concat evil-leader/leader (car key-fun))) (cdr key-fun)))
+  ;;                '(("e" . dired)))))
+
+  ;; (add-hook 'eshell-mode-hook (lambda ()
+  ;;                               (loop for (key . fun) in '(
+  ;;                                                          ("e" . sd/toggle-project-eshell))
+  ;;                                     do (evil-define-key 'emacs eshell-mode-map (kbd (concat evil-leader/leader key)) fun))))
 #+END_SRC
 ** Dired mode
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
