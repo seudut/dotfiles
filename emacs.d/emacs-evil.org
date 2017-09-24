@@ -196,12 +196,17 @@ Let the search highlight persistent, https://stackoverflow.com/questions/2576803
 ** Eshell
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
   (add-hook 'eshell-mode-hook (lambda ()
-                                (dolist (key-fun '(("e" . sd/toggle-project-eshell)
-                                                   ("d" . dired)
-                                                   ("f" . ido-switch-buffer)
-                                                   ("q" . evil-quit)))
-                                  (evil-define-key 'emacs eshell-mode-map (kbd (concat evil-leader/leader (car key-fun))) (cdr key-fun)))))
+                                (when (and (boundp 'evil-mode) evil-mode)
+                                  (dolist (key-fun '(("e" . sd/toggle-project-eshell)
+                                                     ("d" . dired)
+                                                     ("f" . ido-switch-buffer)
+                                                     ("'" . other-window)
+                                                     ("q" . evil-quit)))
+                                    (evil-define-key 'emacs eshell-mode-map (kbd (concat evil-leader/leader (car key-fun))) (cdr key-fun))))
+                                ;; (define-key eshell-mode-map (kbd "C-j") nil)
+                                ))
 
+  ;; 
   ;; (add-hook 'eshell-mode-map
   ;;        (lambda ()
   ;;          (mapc (lambda (key-fun)
