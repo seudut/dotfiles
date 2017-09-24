@@ -24,3 +24,4 @@ tramp/*
 ltxpng/*
 tramp
 image-dired/*
+emacs-evil.el
