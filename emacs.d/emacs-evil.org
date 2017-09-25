@@ -97,28 +97,6 @@ https://www.emacswiki.org/emacs/Evil.
     (evil-escape-mode))
 #+END_SRC
 
-* Evil-Leader
-#+BEGIN_SRC emacs-lisp :tangle yes :results silent
-  (with-eval-after-load "evil-leader"
-    ;; Buffer & File
-    (evil-leader/set-key "f" 'ido-switch-buffer)
-    (evil-leader/set-key "b" 'ido-switch-buffer)
-    (evil-leader/set-key "w" 'evil-save)
-    (evil-leader/set-key "r" 'ivy-recentf)
-    (evil-leader/set-key "w" 'save-buffer)
-    (evil-leader/set-key "o" 'ido-find-file)
-    (evil-leader/set-key "t" 'projectile-find-file)
-    ;; Window
-    (evil-leader/set-key "s" 'evil-window-split)
-    (evil-leader/set-key "v" 'evil-window-vsplit)
-    (evil-leader/set-key "q" 'evil-quit)
-    ;; others
-    (evil-leader/set-key "g" 'magit-status)
-    (evil-leader/set-key "d" (lambda () (interactive) (dired default-directory)))
-    (evil-leader/set-key "e" 'sd/toggle-project-eshell)
-    (evil-leader/set-key "h" 'help))
-#+END_SRC
-
 * other extention
 ** Evil-matchit
 [[https://github.com/redguardtoo/evil-matchit]]
@@ -146,7 +124,35 @@ https://www.emacswiki.org/emacs/Evil.
     :config
     (global-evil-surround-mode 1))
 #+END_SRC
+
+
 * Key bindings
+** Evil-Leader
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+  (with-eval-after-load "evil-leader"
+    ;; Buffer & File explore
+    ;; (with-eval-after-load "ivy")
+    ;; (with-eval-after-load "counsel")
+    ;; (when (require 'ivy))
+    (evil-leader/set-key "b" 'counsel-projectile-find-file)
+    (evil-leader/set-key "f" 'ivy-switch-buffer)
+    (evil-leader/set-key "r" 'ivy-recentf)
+    
+    ;; (evil-leader/set-key "o" 'ido-find-file)
+    ;; (evil-leader/set-key "t" 'projectile-find-file)
+    ;; (evil-leader/set-key "w" 'evil-save)
+    (evil-leader/set-key "w" 'save-buffer)
+    ;; Window
+    (evil-leader/set-key "s" 'evil-window-split)
+    (evil-leader/set-key "v" 'evil-window-vsplit)
+    (evil-leader/set-key "q" 'evil-quit)
+    ;; others
+    (evil-leader/set-key "g" 'magit-status)
+    ;; (evil-leader/set-key "d" (lambda () (interactive) (dired default-directory)))
+    (evil-leader/set-key "d" 'dired)
+    (evil-leader/set-key "e" 'sd/toggle-project-eshell)
+    (evil-leader/set-key "h" 'help))
+#+END_SRC
 ** Basic state bindings
 There are three kinds key bindings
 - prefix key is the leader key, defined by evil-leader.
@@ -197,9 +203,11 @@ Let the search highlight persistent, https://stackoverflow.com/questions/2576803
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
   (add-hook 'eshell-mode-hook (lambda ()
                                 (when (and (boundp 'evil-mode) evil-mode)
-                                  (dolist (key-fun '(("e" . sd/toggle-project-eshell)
+                                  (dolist (key-fun '(("f" . ivy-switch-buffer)
+                                                     ("b" . counsel-projectile-find-file)
+                                                     ("r" . counsel-recentf)
+                                                     ("e" . sd/toggle-project-eshell)
                                                      ("d" . dired)
-                                                     ("f" . ido-switch-buffer)
                                                      ("'" . other-window)
                                                      ("q" . evil-quit)))
                                     (evil-define-key 'emacs eshell-mode-map (kbd (concat evil-leader/leader (car key-fun))) (cdr key-fun))))

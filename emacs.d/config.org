@@ -608,9 +608,10 @@ set height in mode line
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
   (use-package ido
     :ensure t
-    :init (setq ido-enable-flex-matching nil
+    :init (setq ido-enable-flex-matching t
                 ido-ignore-extensions t
                 ido-use-virtual-buffers t
+                ido-use-faces nil
                 ido-everywhere t)
     (setq ido-save-directory-list-file (concat sd-temp-directory "ido.last"))
     :config
@@ -623,15 +624,6 @@ set height in mode line
     (define-key ido-file-completion-map (kbd "C-w") #'ido-delete-backward-word-updir)
     (define-key ido-file-dir-completion-map (kbd "C-w") #'ido-delete-backward-updir)
     ;; (define-key ido-file-dir-completion-map (kbd "C-i") #'ido-copy-current-word)
-    
-    ;; (dolist (map (list
-    ;;               ido-buffer-completion-map
-    ;;               ido-file-completion-map
-    ;;               ido-file-dir-completion-map
-    ;;               ido-common-completion-map))
-    ;;   (define-key map (kbd "C-w") #'ido-delete-backward-word-updir)
-    ;;   ;; (define-key map (kbd "C-i") #'ido-copy-current-file-name)
-    ;;   )
     )
 
   (icomplete-mode t)
@@ -641,8 +633,6 @@ set height in mode line
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
   (use-package flx-ido
     :ensure t
-    :init (setq ido-enable-flex-matching nil
-                ido-use-faces nil)
     :config (flx-ido-mode nil))
 #+END_SRC
 
@@ -3597,7 +3587,8 @@ stolen from [[https://github.com/mariolong/emacs.d/blob/f6a061594ef1b5d1f4750e9d
   (use-package swiper
     :ensure t
     :init
-    (setq ivy-use-virtual-buffers t)
+    (setq ivy-use-virtual-buffers nil)
+    (setq ivy-wrap t)
     (set-face-attribute 'ivy-current-match nil :background "Orange" :foreground "black")
     :config
     (ivy-mode)
@@ -3609,6 +3600,9 @@ stolen from [[https://github.com/mariolong/emacs.d/blob/f6a061594ef1b5d1f4750e9d
     (define-key swiper-map (kbd "M-.") (lambda ()
                                          (interactive)
                                          (insert (format "%s" (with-ivy-window (thing-at-point 'symbol)))))))
+
+  (with-eval-after-load "ivy"
+    (define-key ivy-minibuffer-map (kbd "C-o") 'ivy-dispatching-done))
 #+END_SRC
 
 ** Expand region map
