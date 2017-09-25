@@ -685,20 +685,6 @@ Use [[https://github.com/DarwinAwardWinner/ido-ubiquitous][ido-ubiquitous]] for 
                   ido-file-dir-completion-map)))
 #+END_SRC
 
-** Counsel
-#+BEGIN_SRC emacs-lisp :tangle yes :results silent
-  (use-package counsel
-    :ensure t
-    :defer t
-    :init
-    (global-set-key (kbd "M-x") 'counsel-M-x)
-    (global-set-key (kbd "C-h f") 'counsel-describe-function)
-    (global-set-key (kbd "C-h v") 'counsel-describe-variable)
-    ;; (set-face-attribute 'ivy-current-match nil :background "Orange" :foreground "black")
-    (define-key read-expression-map (kbd "C-r") 'counsel-expression-history)
-    (global-set-key (kbd "C-c C-r") 'ivy-resume))
-#+END_SRC
-
 ** helm
 let helm windows split inside current window
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
@@ -706,6 +692,68 @@ let helm windows split inside current window
     (setq helm-split-window-in-side-p t))
 #+END_SRC
 
+* Swiper & Ivy & Counsel
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+  (use-package counsel
+    :ensure t
+    :defer t
+    :init
+    (use-package ivy :ensure t)
+    (ivy-mode 1)
+    (setq ivy-use-virtual-buffers nil
+          ivy-wrap t)
+    (set-face-attribute 'ivy-current-match nil :background "Orange" :foreground "black")
+    (global-set-key (kbd "M-x") 'counsel-M-x)
+    (global-set-key (kbd "C-h f") 'counsel-describe-function)
+    (global-set-key (kbd "C-h v") 'counsel-describe-variable)
+    (global-set-key (kbd "C-x C-f") 'counsel-find-file)
+    (define-key read-expression-map (kbd "C-r") 'counsel-expression-history)
+    (global-set-key (kbd "C-c C-r") 'ivy-resume))
+
+  (use-package counsel-projectile
+    :ensure t
+    :defer t)
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+  (defun sd/swith-buffer-other-window ()
+    (interactive)
+    (ivy-set-action (cond ((eq (ivy-state-caller ivy-last) 'ivy-switch-buffer)
+                           'ivy--switch-buffer-other-window-action)
+                          ((eq (ivy-state-caller ivy-last) 'counsel-recentf)
+                           'find-file-other-window)
+                          ((eq (ivy-state-caller ivy-last) 'counsel-projectile-find-file)
+                           'counsel-projectile-find-file-action-other-window)
+                          (t
+                           nil)))
+    (ivy-done)
+    (ivy-shrink-after-dispatching))
+
+  (with-eval-after-load "ivy"
+    (define-key ivy-minibuffer-map (kbd "C-k") #'sd/swith-buffer-other-window))
+#+END_SRC
+
+stolen from [[https://github.com/mariolong/emacs.d/blob/f6a061594ef1b5d1f4750e9dad9dc97d6e122840/emacs-init.org][here]]
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+  (use-package swiper
+    :ensure t
+    ;; :init
+    ;(require 'ivy)
+    ;; (setq ivy-use-virtual-buffers nil)
+    ;; (setq ivy-wrap t)
+    ;(set-face-attribute 'ivy-current-match nil :background "Orange" :foreground "black")
+    :config
+    ;; (ivy-mode)
+    (global-set-key (kbd "s-/") 'swiper)
+    (define-key swiper-map (kbd "M-r") 'swiper-query-replace)
+    (define-key swiper-map (kbd "C-.") (lambda ()
+                                         (interactive)
+                                         (insert (format "%s" (with-ivy-window (thing-at-point 'word))))))
+    (define-key swiper-map (kbd "M-.") (lambda ()
+                                         (interactive)
+                                         (insert (format "%s" (with-ivy-window (thing-at-point 'symbol)))))))
+
+#+END_SRC
 * Org-mode Settings
 ** Org-mode Basic setting
 Always indents header, and hide header leading starts so that no need type =#+STATUP: indent= 
@@ -3581,29 +3629,6 @@ Occur search key bindings
     (use-package moccur-edit))
 #+END_SRC
 
-*** Swiper
-stolen from [[https://github.com/mariolong/emacs.d/blob/f6a061594ef1b5d1f4750e9dad9dc97d6e122840/emacs-init.org][here]]
-#+BEGIN_SRC emacs-lisp :tangle yes :results silent
-  (use-package swiper
-    :ensure t
-    :init
-    (setq ivy-use-virtual-buffers nil)
-    (setq ivy-wrap t)
-    (set-face-attribute 'ivy-current-match nil :background "Orange" :foreground "black")
-    :config
-    (ivy-mode)
-    (global-set-key (kbd "s-/") 'swiper)
-    (define-key swiper-map (kbd "M-r") 'swiper-query-replace)
-    (define-key swiper-map (kbd "C-.") (lambda ()
-                                         (interactive)
-                                         (insert (format "%s" (with-ivy-window (thing-at-point 'word))))))
-    (define-key swiper-map (kbd "M-.") (lambda ()
-                                         (interactive)
-                                         (insert (format "%s" (with-ivy-window (thing-at-point 'symbol)))))))
-
-  (with-eval-after-load "ivy"
-    (define-key ivy-minibuffer-map (kbd "C-o") 'ivy-dispatching-done))
-#+END_SRC
 
 ** Expand region map
 *** Install =expand-region=

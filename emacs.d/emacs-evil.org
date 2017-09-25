@@ -124,8 +124,6 @@ https://www.emacswiki.org/emacs/Evil.
     :config
     (global-evil-surround-mode 1))
 #+END_SRC
-
-
 * Key bindings
 ** Evil-Leader
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
@@ -204,7 +202,7 @@ Let the search highlight persistent, https://stackoverflow.com/questions/2576803
   (add-hook 'eshell-mode-hook (lambda ()
                                 (when (and (boundp 'evil-mode) evil-mode)
                                   (dolist (key-fun '(("f" . ivy-switch-buffer)
-                                                     ("b" . counsel-projectile-find-file)
+                                                     ;("b" . counsel-projectile-find-file)
                                                      ("r" . counsel-recentf)
                                                      ("e" . sd/toggle-project-eshell)
                                                      ("d" . dired)
