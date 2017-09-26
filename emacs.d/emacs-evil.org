@@ -136,6 +136,7 @@ https://www.emacswiki.org/emacs/Evil.
     ;; Window
     (evil-leader/set-key "s" 'evil-window-split)
     (evil-leader/set-key "v" 'evil-window-vsplit)
+    (evil-leader/set-key "t" 'sd/hydra-window-layout/body)
     (evil-leader/set-key "q" 'evil-quit)
     ;; others
     (evil-leader/set-key "g" 'magit-status)
@@ -197,9 +198,11 @@ Let the search highlight persistent, https://stackoverflow.com/questions/2576803
                                   (dolist (key-fun '(("f" . ivy-switch-buffer)
                                                      ("b" . counsel-projectile-find-file)
                                                      ("r" . counsel-recentf)
+                                                     ("t" . sd/hydra-window-layout/body)
                                                      ("e" . sd/toggle-project-eshell)
                                                      ("d" . dired)
                                                      ("'" . other-window)
+                                                     ("h" . help)
                                                      ("q" . evil-quit)))
                                     (evil-define-key 'emacs eshell-mode-map (kbd (concat evil-leader/leader (car key-fun))) (cdr key-fun))))
                                 ;; (define-key eshell-mode-map (kbd "C-j") nil)

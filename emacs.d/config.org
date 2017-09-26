@@ -112,6 +112,7 @@ Make a temp directory for all cache/history files
 
   ;; set temp file path for recentf and auto-save
   (setq recentf-save-file (concat sd-temp-directory "recentf"))
+  (setq recentf-max-saved-items 1000)
   (setq auto-save-list-file-prefix (concat sd-temp-directory "auto-save-list/.saves-"))
 #+END_SRC
 
@@ -704,8 +705,8 @@ let helm windows split inside current window
           ivy-wrap t)
     (set-face-attribute 'ivy-current-match nil :background "Orange" :foreground "black")
     (global-set-key (kbd "M-x") 'counsel-M-x)
-    (global-set-key (kbd "C-h f") 'counsel-describe-function)
-    (global-set-key (kbd "C-h v") 'counsel-describe-variable)
+    ;; (global-set-key (kbd "C-h f") 'counsel-describe-function)
+    ;; (global-set-key (kbd "C-h v") 'counsel-describe-variable)
     (global-set-key (kbd "C-x C-f") 'counsel-find-file)
     (define-key read-expression-map (kbd "C-r") 'counsel-expression-history)
     (global-set-key (kbd "C-c C-r") 'ivy-resume))
@@ -1421,9 +1422,10 @@ Toggle an eshell in split window below, refer [[http://www.howardism.org/Technic
 *** hydra install
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
   (use-package hydra
-    :ensure t)
-  ;; disable new line in minibuffer when hint hydra
-  (setq hydra-lv nil)
+    :ensure t
+    ;; disable new line in minibuffer when hint hydra
+    :init
+    (setq hydra-lv nil))
 #+END_SRC
 
 *** Windmove Splitter
@@ -1515,8 +1517,8 @@ Refer [[https://github.com/abo-abo/hydra/blob/master/hydra-examples.el][hydra-ex
     ("u" winner-undo "window-Undo"  :exit t)
     ("r" winner-redo "window-Redo"  :exit t))
 
-  (with-eval-after-load "evil"
-    (define-key evil-normal-state-map (kbd ";t") 'sd/hydra-window-layout/body))
+  ;; (with-eval-after-load "evil"
+  ;;   (define-key evil-normal-state-map (kbd ";t") 'sd/hydra-window-layout/body))
 
 #+END_SRC
 
