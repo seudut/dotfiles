@@ -44,7 +44,7 @@ Set system PATH and emacs exec path
         (menu-bar-mode 1))
     (menu-bar-mode 0))
 
-  (setq debug-on-error t)
+  ;; (setq debug-on-error t)
   (setq inhibit-startup-message t)
 
   (defalias 'yes-or-no-p 'y-or-n-p)
@@ -730,6 +730,7 @@ let helm windows split inside current window
     (ivy-shrink-after-dispatching))
 
   (with-eval-after-load "ivy"
+    (define-key ivy-minibuffer-map (kbd "C-o") 'ivy-dispatching-done)
     (define-key ivy-minibuffer-map (kbd "C-k") #'sd/swith-buffer-other-window))
 #+END_SRC
 
@@ -738,10 +739,6 @@ stolen from [[https://github.com/mariolong/emacs.d/blob/f6a061594ef1b5d1f4750e9d
   (use-package swiper
     :ensure t
     ;; :init
-    ;(require 'ivy)
-    ;; (setq ivy-use-virtual-buffers nil)
-    ;; (setq ivy-wrap t)
-    ;(set-face-attribute 'ivy-current-match nil :background "Orange" :foreground "black")
     :config
     ;; (ivy-mode)
     (global-set-key (kbd "s-/") 'swiper)
@@ -1361,9 +1358,18 @@ set default eshell history folder
 
   ;; (add-hook 'eshell-mode-hook (lambda ()
   ;;                               (local-set-key (kbd "C-l") 'sd/eshell-clear-buffer)))
-  (add-hook 'eshell-mode-hook (apply-partially #'local-set-key (kbd "C-l") 'sd/eshell-clear-buffer))
   ;; (add-hook 'eshell-mode-map (lambda () (interactive)
   ;;                              (define-key eshell-mode-map (kbd "<tab>") 'completion-at-point)))
+
+  (defun sd/eshell-hook ()
+    (interactive)
+    (define-key eshell-mode-map (kbd "C-j") #'eshell-send-input)
+    (define-key eshell-mode-map (kbd "C-l") #'sd/eshell-clear-buffer))
+
+  (add-hook 'eshell-mode-hook #'sd/eshell-hook)
+
+
+  ;; (add-hook 'eshell-mode-hook (apply-partially #'local-set-key (kbd "C-l") 'sd/eshell-clear-buffer))
 #+END_SRC
 
 ** Toggle Eshell
@@ -1607,6 +1613,7 @@ When see function by =C-h f=, and visit the source code, I would like the buffer
              ;; (eval . (when buffer-file-name
              ;;           (setq-local view-no-disable-on-exit t)
              ;;           (view-mode-enter)))
+             (projectile-enable-caching . nil)
              ))))
 
   ;; (dir-locals-set-directory-class (expand-file-name "/usr/local/share/emacs") 'emacs)
@@ -3128,7 +3135,7 @@ Use =ESC= to exit minibuffer. Also I map =Super-h= the same as =C-g=
 
 
   ;; https://emacs.stackexchange.com/questions/16497/how-to-exclude-files-from-projectile
-  (setq projectile-enable-caching t)
+  ;; (setq projectile-enable-caching t)
   (if (executable-find "rg")
       (progn
         (defconst modi/rg-arguments

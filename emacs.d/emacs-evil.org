@@ -129,16 +129,9 @@ https://www.emacswiki.org/emacs/Evil.
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
   (with-eval-after-load "evil-leader"
     ;; Buffer & File explore
-    ;; (with-eval-after-load "ivy")
-    ;; (with-eval-after-load "counsel")
-    ;; (when (require 'ivy))
     (evil-leader/set-key "b" 'counsel-projectile-find-file)
     (evil-leader/set-key "f" 'ivy-switch-buffer)
     (evil-leader/set-key "r" 'ivy-recentf)
-    
-    ;; (evil-leader/set-key "o" 'ido-find-file)
-    ;; (evil-leader/set-key "t" 'projectile-find-file)
-    ;; (evil-leader/set-key "w" 'evil-save)
     (evil-leader/set-key "w" 'save-buffer)
     ;; Window
     (evil-leader/set-key "s" 'evil-window-split)
@@ -202,7 +195,7 @@ Let the search highlight persistent, https://stackoverflow.com/questions/2576803
   (add-hook 'eshell-mode-hook (lambda ()
                                 (when (and (boundp 'evil-mode) evil-mode)
                                   (dolist (key-fun '(("f" . ivy-switch-buffer)
-                                                     ;("b" . counsel-projectile-find-file)
+                                                     ("b" . counsel-projectile-find-file)
                                                      ("r" . counsel-recentf)
                                                      ("e" . sd/toggle-project-eshell)
                                                      ("d" . dired)
