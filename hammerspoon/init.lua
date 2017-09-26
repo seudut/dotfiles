@@ -117,7 +117,7 @@ function move_window(direction)
     end
 end
  
-local hyper = {"ctrl", "alt"}
+local hyper = {"ctrl", "cmd"}
 hs.hotkey.bind(hyper, "h", move_window("left"))
 hs.hotkey.bind(hyper, "l", move_window("right"))
 hs.hotkey.bind(hyper, "k", move_window("up"))
