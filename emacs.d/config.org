@@ -1486,7 +1486,38 @@ Refer [[https://github.com/abo-abo/hydra/blob/master/hydra-examples.el][hydra-ex
     ("q" nil "quit")
     ("f" nil "quit"))
 
-  (global-set-key (kbd "C-'") 'sd/hydra-misc/body)
+  ;; (global-set-key (kbd "C-'") 'sd/hydra-misc/body)
+
+  (defun sd/exchange-win-layout ()
+    "Change the windos layout."
+    (interactive)
+    (when (equal (length (window-list)) 2)
+      (let ((current-layout (if (or (window-in-direction 'right) (window-in-direction 'left))
+                                'v
+                              'h))
+            (other-buf (window-buffer (or (window-in-direction 'right)
+                                          (window-in-direction 'left)
+                                          (window-in-direction 'below)
+                                          (window-in-direction 'above)))))
+        (delete-other-windows)
+        (if (eq current-layout 'v)
+            (split-window-below)
+          (split-window-right))
+        (other-window 1)
+        (switch-to-buffer other-buf))))
+
+  (defhydra sd/hydra-window-layout (:color red :colums nil)
+    "Window Layout"
+    ("m" sd/toggle-max-windows "Max-win" :exit t)
+    ("s" ace-swap-window "Swap" :exit t)
+    ("d" ace-delete-window "Delete"  :exit t)
+    ("x" sd/exchange-win-layout "eXchange"  :exit t)
+    ("u" winner-undo "window-Undo"  :exit t)
+    ("r" winner-redo "window-Redo"  :exit t))
+
+  (with-eval-after-load "evil"
+    (define-key evil-normal-state-map (kbd ";t") 'sd/hydra-window-layout/body))
+
 #+END_SRC
 
 *** hydra launcher
