@@ -164,8 +164,14 @@ There are three kinds key bindings
             (define-key map (kbd "C-<") (lambda () (interactive) (evil-window-decrease-width 3)))
             (define-key map (kbd "C-+") (lambda () (interactive) (evil-window-increase-height 3)))
             (define-key map (kbd "C--") (lambda () (interactive) (evil-window-decrease-height 3)))
-            (define-key map (kbd "C-=") (lambda () (interactive) (balance-windows))))
+            (define-key map (kbd "C-=") (lambda () (interactive) (balance-windows)))
+            ;; As ; has been defined as leader, so remap , to ; repeaat t/f
+            (define-key map (kbd ",") 'evil-repeat-find-char))
           (list evil-normal-state-map evil-motion-state-map))
+
+    
+    ;; (define-key evil-normal-state-map  "s" nil)
+    ;; (define-key evil-normal-state-map  "sj" 'ivy-switch-buffer)
     ;; normal state
     (define-key evil-normal-state-map (kbd "C-SPC") 'mode-line-other-buffer)
     (define-key evil-normal-state-map (kbd "C-;") 'previous-multiframe-window)
@@ -188,7 +194,9 @@ Let the search highlight persistent, https://stackoverflow.com/questions/2576803
 
   (with-eval-after-load "evil"
     (define-key evil-normal-state-map "\\" nil)
-    (define-key evil-normal-state-map "\\\\" #'evil-ex-nohighlight))
+    (define-key evil-normal-state-map "\\\\" #'evil-ex-nohighlight)
+    (define-key evil-normal-state-map "\\f" #'describe-function)
+    (define-key evil-normal-state-map "\\v" #'describe-variable))
 #+END_SRC
 
 ** Eshell
@@ -291,9 +299,25 @@ Let the search highlight persistent, https://stackoverflow.com/questions/2576803
       (evil-define-key 'normal worf-mode-map (kbd "]") (lambda ()
                                                          (interactive)
                                                          (call-interactively #'worf-forward)
-                                                         (evil-emacs-state)))))
+                                                         (evil-emacs-state)))
+      ;; (evil-define-key 'normal worf-mode-map (kbd "g") (lambda ()
+      ;;                                                    (interactive)
+      ;;                                                    (wspecial-worf-goto)
+      ;;                                                    (evil-emacs-state)))
+      ))
 #+END_SRC
 
+** Avy & Evil
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+  (with-eval-after-load "evil"
+    (dolist (map (list evil-normal-state-map
+                       evil-visual-state-map
+                       evil-motion-state-map))
+      (define-key map (kbd "J") 'avy-goto-line-below)
+      (define-key map (kbd "K") 'avy-goto-line-above)
+      (define-key map (kbd "F") 'avy-goto-char)
+      (define-key map (kbd "W") 'avy-goto-char-timer)))
+#+END_SRC
 * Others
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
   (dolist (mode '(c-mode-hook lua-mode-hook))

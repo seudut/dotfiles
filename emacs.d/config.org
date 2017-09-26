@@ -1784,8 +1784,8 @@ Wiki [[http://stackoverflow.com/questions/3480173/show-keys-in-emacs-keymap-valu
 
 ** goto-last-change
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
-  (use-package goto-last-change
-    :ensure t)
+  ;; (use-package goto-last-change
+  ;;   :ensure t)
 #+END_SRC
 
 ** Ag
