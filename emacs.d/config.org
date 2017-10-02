@@ -32,6 +32,8 @@ Set system PATH and emacs exec path
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
   (defconst my-name "Peng Li")
   (defconst my-email "seudut@gmail.com")
+  (defconst MY-EMACS-DIR (concat (getenv "HOME") "/.emacs.d"))
+  (defconst MY-EMACS-TMP (concat MY-EMACS-DIR "/temp"))
 #+END_SRC
 
 ** General Setting
@@ -2120,6 +2122,8 @@ here on Mac, just use "open" commands to pen =.pdf=,  =.html= and image files
 
   (use-package company-statistics
     :ensure t
+    :init
+    (setq company-statistics-file (concat MY-EMACS-TMP "/company-statistics-cache.el"))
     :config
     (company-statistics-mode))
 
@@ -2498,6 +2502,9 @@ irony-company
 
   (require 'cc-mode)
   (require 'semantic)
+  (setq semanticdb-default-save-directory (concat MY-EMACS-TMP "/semantic/"))
+  (unless (file-exists-p semanticdb-default-save-directory)
+    (make-directory semanticdb-default-save-directory))
 
   (global-semanticdb-minor-mode 1)
   (global-semantic-idle-scheduler-mode 1)
