@@ -34,6 +34,8 @@ Set system PATH and emacs exec path
   (defconst my-email "seudut@gmail.com")
   (defconst MY-EMACS-DIR (concat (getenv "HOME") "/.emacs.d"))
   (defconst MY-EMACS-TMP (concat MY-EMACS-DIR "/temp"))
+  (unless (file-exists-p MY-EMACS-TMP)
+    (mkdir MY-EMACS-TMP))
 #+END_SRC
 
 ** General Setting
@@ -62,6 +64,8 @@ Set system PATH and emacs exec path
 
   (when (display-graphic-p)
     (fringe-mode '(0 . 0)))
+
+  (blink-cursor-mode 0)
   ;; (setq-default indicate-empty-lines t)
   ;; (setq-default indicate-abuffer-boundaries 'right)
 #+END_SRC
@@ -201,7 +205,7 @@ Setting the fonts alignment issue
   (if window-system
       (when sd/fixed-font-family
         (set-frame-font sd/fixed-font-family)
-        (set-face-attribute 'default nil :font sd/fixed-font-family :height 140)
+        (set-face-attribute 'default nil :font sd/fixed-font-family :height 120)
         (set-face-font 'default sd/fixed-font-family)))
 #+END_SRC
 
@@ -704,7 +708,8 @@ let helm windows split inside current window
     (use-package ivy :ensure t)
     (ivy-mode 1)
     (setq ivy-use-virtual-buffers nil
-          ivy-wrap t)
+          ivy-wrap t
+          ivy-count-format "%d/%d ")
     (set-face-attribute 'ivy-current-match nil :background "Orange" :foreground "black")
     (global-set-key (kbd "M-x") 'counsel-M-x)
     ;; (global-set-key (kbd "C-h f") 'counsel-describe-function)
@@ -713,9 +718,14 @@ let helm windows split inside current window
     (define-key read-expression-map (kbd "C-r") 'counsel-expression-history)
     (global-set-key (kbd "C-c C-r") 'ivy-resume))
 
-  (use-package counsel-projectile
-    :ensure t
-    :defer t)
+  ;; (use-package counsel-projectile
+  ;;   :ensure t
+  ;;   :defer t)
+
+  (add-to-list 'load-path "~/project/counsel-projectile/")
+  (require 'counsel-projectile)
+  (setq counsel-projectile-use-buffer-preselect t)
+  (setq projectile-completion-system 'ivy)
 #+END_SRC
 
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
@@ -725,6 +735,8 @@ let helm windows split inside current window
                            'ivy--switch-buffer-other-window-action)
                           ((eq (ivy-state-caller ivy-last) 'counsel-recentf)
                            'find-file-other-window)
+                          ((eq (ivy-state-caller ivy-last) 'projectile-find-file)
+                           'projectile-find-file-other-window)
                           ((eq (ivy-state-caller ivy-last) 'counsel-projectile-find-file)
                            'counsel-projectile-find-file-action-other-window)
                           (t
@@ -1519,8 +1531,19 @@ Refer [[https://github.com/abo-abo/hydra/blob/master/hydra-examples.el][hydra-ex
     ("u" winner-undo "window-Undo"  :exit t)
     ("r" winner-redo "window-Redo"  :exit t))
 
-  ;; (with-eval-after-load "evil"
-  ;;   (define-key evil-normal-state-map (kbd ";t") 'sd/hydra-window-layout/body))
+  (defhydra sd/hydra-gtags (:color red :colums nil)
+    "ggtags - global"
+    ("d" sd/ggtags-find-definition "Definition" :exit t)
+    ("r" ggtags-find-reference "Reference" :exit t)
+    ("s" sd/ggtags-find-symbol "Symbol" :exit t))
+
+  (defhydra sd/hydra-projectile (:color red :column nil)
+    "Projectile: "
+    ("s" projectile-switch-open-project "Switch" :exit t)
+    ("f" projectile-find-file "File" :exit t)
+    ("b" projectile-switch-to-buffer "Buffer" :exit t))
+
+
 
 #+END_SRC
 
@@ -2146,6 +2169,24 @@ here on Mac, just use "open" commands to pen =.pdf=,  =.html= and image files
     (yas-reload-all))
 #+END_SRC
 
+** YouCompleteMe
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+  (use-package ycmd
+    :ensure t
+    :init
+    (use-package company-ycmd
+      :ensure t
+      :init
+      (setq company-ycmd-enable-fuzzy-matching nil)
+      :config
+      (company-ycmd-setup))
+    (setq ycmd-force-semantic-completion t)
+    (add-hook 'c++-mode-hook 'ycmd-mode)
+    (add-hook 'c-mode-hook 'ycmd-mode)
+    (set-variable 'ycmd-server-command '("python" "/Users/peng/project/ycmd/ycmd"))
+    (set-variable 'ycmd-global-config "/Users/peng/project/ycmd/cpp/ycm/.ycm_extra_conf.py"))
+#+END_SRC
+
 
 ** company and yasnippet
 Add yasnippet as the company candidates
@@ -2272,14 +2313,21 @@ Refer, [[http://emacs.stackexchange.com/questions/7908/how-to-make-yasnippet-and
   (set-face-attribute 'font-lock-function-name-face nil :foreground "#A6E22E" :weight 'normal :slant 'normal)
   (set-face-attribute 'font-lock-variable-name-face nil :foreground "#00FF00")
 
-  (font-lock-add-keywords 'c-mode
-                          ;; highlight %s \n
-                          '(("\\([%\\][a-zA-Z]\\)" (1  font-lock-keyword-face prepend))
-                            ("[^[:alpha:]]\\([[:digit:]]*\\)[^[:alpha:]]" (1 font-lock-constant-face append))
-                            ;; hex number
-                            ("[^[:alpha:]]\\(0[x\\|X][0-9a-fA-F]*\\)[^[:alpha:]]" (1 font-lock-constant-face append))
-                            ;; hightlight the function call
-                            ("\\s\"?\\(\\(\\sw\\|\\s_\\)+\\(<-\\)?\\)\\s\"?*\\s-*(" (1 font-lock-function-name-face))) t)
+  (dolist (mode '(c-mode
+                  c++-mode))
+    (font-lock-add-keywords mode
+                            ;; highlight %s \n
+                            '(("\\([%\\][a-zA-Z]\\)" (1  font-lock-keyword-face prepend))
+                              ("[^[:alpha:]]\\([[:digit:]]*\\)[^[:alpha:]]" (1 font-lock-constant-face append))
+                              ;; hex number
+                              ("[^[:alpha:]]\\(0[x\\|X][0-9a-fA-F]*\\)[^[:alpha:]]" (1 font-lock-constant-face append))
+                              ;; hightlight the function call
+                              ("\\s\"?\\(\\(\\sw\\|\\s_\\)+\\(<-\\)?\\)\\s\"?*\\s-*(" (1 font-lock-function-name-face))) t))
+
+  (font-lock-add-keywords 'c++-mode
+                          '(
+                            ("[\s\\|::]\\(cin\\|cout\\|endl\\)[^[:alpha:][:digit:]]" (1 font-lock-constant-face append))
+                            ) t)
 #+END_SRC
 
 ** Emacs Lisp
@@ -2417,12 +2465,12 @@ then install irony searver, and =LIBCLANG_LIBRARY= and =LIBCLANG_INCLUDE_DIR= ac
 **** irony config
 irony-mode-hook, copied from [[https://github.com/Sarcasm/irony-mode][irony-mode]] github
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
-  (use-package irony
-    :ensure t
-    :config
-    (add-hook 'c++-mode-hook 'irony-mode)
-    (add-hook 'c-mode-hook 'irony-mode)
-    (add-hook 'objc-mode-hook 'irony-mode))
+  ;; (use-package irony
+  ;;   :ensure t
+  ;;   :init
+  ;;   (add-hook 'c++-mode-hook 'irony-mode)
+  ;;   (add-hook 'c-mode-hook 'irony-mode)
+  ;;   (add-hook 'objc-mode-hook 'irony-mode))
 
   ;; replace the `completion-at-point' and `complete-symbol' bindings in
   ;; irony-mode's buffers by irony-mode's function
@@ -2450,28 +2498,28 @@ irony-mode-hook, copied from [[https://github.com/Sarcasm/irony-mode][irony-mode
 
 irony-company
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
-  (use-package company-irony
-    :ensure t)
+  ;; (use-package company-irony
+  ;;   :ensure t)
 
-  (use-package flycheck-irony
-    :ensure t)
+  ;; (use-package flycheck-irony
+  ;;   :ensure t)
 
-  (use-package company-c-headers
-    :ensure t
-    :config
-    (add-to-list 'company-c-headers-path-system "/usr/include/c++/4.2.1/")
-    (add-to-list 'company-c-headers-path-system "/usr/local/include/"))
+  ;; (use-package company-c-headers
+  ;;   :ensure t
+  ;;   :config
+  ;;   (add-to-list 'company-c-headers-path-system "/usr/include/c++/4.2.1/")
+  ;;   (add-to-list 'company-c-headers-path-system "/usr/local/include/"))
 
   ;; (with-eval-after-load 'company
   ;;   (add-to-list 'company-backends 'company-irony)
   ;;   (add-to-list 'company-backends 'company-c-headers))
 
-  (with-eval-after-load 'company
-    (push  '(company-irony :with company-yasnippet) company-backends)
-    (push  '(company-c-headers :with company-yasnippet) company-backends))
+  ;; (with-eval-after-load 'company
+  ;;   (push  '(company-irony :with company-yasnippet) company-backends)
+  ;;   (push  '(company-c-headers :with company-yasnippet) company-backends))
 
-  (with-eval-after-load 'flycheck
-    (add-hook 'flycheck-mode-hook #'flycheck-irony-setup))
+  ;; (with-eval-after-load 'flycheck
+  ;;   (add-hook 'flycheck-mode-hook #'flycheck-irony-setup))
 #+END_SRC
 
 *** flycheck
@@ -2499,6 +2547,18 @@ irony-company
             (lambda ()
               (when (derived-mode-p 'c-mode 'c++-mode 'java-mode)
                 (ggtags-mode 1))))
+
+  (defun sd/ggtags-find-definition ()
+    "Find the definition with current name completing."
+    (interactive)
+    (setq current-prefix-arg '(4))
+    (call-interactively 'ggtags-find-definition))
+
+  (defun sd/ggtags-find-symbol ()
+    "Find symbol"
+    (interactive)
+    (setq current-prefix-arg '(4))
+    (call-interactively 'ggtags-find-other-symbol))
 
   (require 'cc-mode)
   (require 'semantic)
@@ -2585,7 +2645,6 @@ Install =guile=, =guile= is an implementation of =Scheme= programming language.
 
   (add-to-list 'auto-mode-alist '("\\.rkt\\'" . racket-mode))
 #+END_SRC
-
 * Compile
 Set the environments vairables in compilation mode
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
@@ -3156,7 +3215,8 @@ Use =ESC= to exit minibuffer. Also I map =Super-h= the same as =C-g=
     (setq projectile-cache-file (concat sd-temp-directory "projectile.cache"))
     :config
     (add-to-list 'projectile-globally-ignored-files "GTAGS")
-    (projectile-global-mode t))
+    (projectile-global-mode t)
+    (global-set-key (kbd "C-M-p") 'projectile-switch-project))
 
   ;; change default-directory of scratch buffer to projectile-project-root 
   (defun sd/project-switch-action ()
@@ -3441,17 +3501,17 @@ Search, replace and hightlight will in later paragraph
     :config
     (avy-setup-default))
 
-  (global-set-key (kbd "C-M-j") 'avy-goto-line-below)
-  (global-set-key (kbd "C-M-n") 'avy-goto-line-below)
-  (global-set-key (kbd "C-M-k") 'avy-goto-line-above)
-  (global-set-key (kbd "C-M-p") 'avy-goto-line-above)
+  ;; (global-set-key (kbd "C-M-j") 'avy-goto-line-below)
+  ;; (global-set-key (kbd "C-M-n") 'avy-goto-line-below)
+  ;; (global-set-key (kbd "C-M-k") 'avy-goto-line-above)
+  ;; (global-set-key (kbd "C-M-p") 'avy-goto-line-above)
 
-  (global-set-key (kbd "C-M-f") 'avy-goto-word-1-below)
-  (global-set-key (kbd "C-M-b") 'avy-goto-word-1-above)
+  ;; (global-set-key (kbd "C-M-f") 'avy-goto-word-1-below)
+  ;; (global-set-key (kbd "C-M-b") 'avy-goto-word-1-above)
 
   ;; (global-set-key (kbd "M-g e") 'avy-goto-word-0)
-  (global-set-key (kbd "C-M-w") 'avy-goto-char-timer)
-  (global-set-key (kbd "C-M-l") 'avy-goto-char-in-line)
+  ;; (global-set-key (kbd "C-M-w") 'avy-goto-char-timer)
+  ;; (global-set-key (kbd "C-M-l") 'avy-goto-char-in-line)
 
   ;; ;; will delete above 
   ;; (global-set-key (kbd "M-g j") 'avy-goto-line-below)

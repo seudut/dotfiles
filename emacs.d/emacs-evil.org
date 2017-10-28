@@ -128,22 +128,21 @@ https://www.emacswiki.org/emacs/Evil.
 ** Evil-Leader
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
   (with-eval-after-load "evil-leader"
-    ;; Buffer & File explore
-    (evil-leader/set-key "b" 'counsel-projectile-find-file)
-    (evil-leader/set-key "f" 'ivy-switch-buffer)
-    (evil-leader/set-key "r" 'ivy-recentf)
-    (evil-leader/set-key "w" 'save-buffer)
-    ;; Window
-    (evil-leader/set-key "s" 'evil-window-split)
-    (evil-leader/set-key "v" 'evil-window-vsplit)
-    (evil-leader/set-key "t" 'sd/hydra-window-layout/body)
-    (evil-leader/set-key "q" 'evil-quit)
-    ;; others
-    (evil-leader/set-key "g" 'magit-status)
-    ;; (evil-leader/set-key "d" (lambda () (interactive) (dired default-directory)))
-    (evil-leader/set-key "d" 'dired)
-    (evil-leader/set-key "e" 'sd/toggle-project-eshell)
-    (evil-leader/set-key "h" 'help))
+    (cl-loop for (key . fun ) in '(("F" . counsel-projectile-switch-to-buffer)
+                                   ("f" . ivy-switch-buffer)
+                                   ("b" . counsel-projectile-find-file)
+                                   ("r" . ivy-recentf)
+                                   ("w" . save-buffer)
+                                   ("v" . evil-window-vsplit)
+                                   ("s" . evil-window-split)
+                                   ("t" . sd/hydra-gtags/body)
+                                   ("p" . sd/hydra-projectile/body)
+                                   ("q" . evil-quit)
+                                   ("g" . magit-status)
+                                   ("e" . sd/toggle-project-eshell)
+                                   ("d" . dired)
+                                   ("h" . help))
+             do (evil-leader/set-key key fun)))
 #+END_SRC
 ** Basic state bindings
 There are three kinds key bindings
@@ -173,7 +172,7 @@ There are three kinds key bindings
     ;; (define-key evil-normal-state-map  "s" nil)
     ;; (define-key evil-normal-state-map  "sj" 'ivy-switch-buffer)
     ;; normal state
-    (define-key evil-normal-state-map (kbd "C-SPC") 'mode-line-other-buffer)
+    ;; (define-key evil-normal-state-map (kbd "C-SPC") 'mode-line-other-buffer)
     (define-key evil-normal-state-map (kbd "C-;") 'previous-multiframe-window)
     ;; insert state
     (define-key evil-insert-state-map (kbd "C-p") 'previous-line)
@@ -317,6 +316,11 @@ Let the search highlight persistent, https://stackoverflow.com/questions/2576803
       (define-key map (kbd "K") 'avy-goto-line-above)
       (define-key map (kbd "F") 'avy-goto-char)
       (define-key map (kbd "W") 'avy-goto-char-timer)))
+#+END_SRC
+
+** ggtags
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+
 #+END_SRC
 * Others
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
