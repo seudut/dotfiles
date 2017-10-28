@@ -22,7 +22,7 @@ https://www.emacswiki.org/emacs/Evil.
     (setq evil-replace-state-cursor '("red" bar))
     (setq evil-operator-state-cursor '("red" hollow))
     ;; others, don't move back cursor when exit insert mode
-    (setq evil-move-cursor-back nil)
+    ;; (setq evil-move-cursor-back nil)
     :config
     (use-package evil-leader
       :ensure t
@@ -37,16 +37,6 @@ https://www.emacswiki.org/emacs/Evil.
                                 (modify-syntax-entry ?_ "w")
                                 ;; (modify-syntax-entry ?- "w")
                                 ))
-
-  (with-eval-after-load "evil"
-    ;; remap x to X as `evil-move-cursor-back' is set nil
-    ;; (define-key evil-normal-state-map [remap evil-delete-char] 'evil-delete-backward-char)
-    (define-key evil-normal-state-map (kbd "x") (lambda () (interactive)
-                                                  (let ((org evil-move-cursor-back))
-                                                    (setq evil-move-cursor-back t)
-                                                    (call-interactively 'evil-delete-char)
-                                                    ;; (evil-delete-char)
-                                                    (setq evil-move-cursor-back org)))))
 #+END_SRC
 
 ** Initial mode and state config
@@ -168,19 +158,18 @@ There are three kinds key bindings
             (define-key map (kbd ",") 'evil-repeat-find-char))
           (list evil-normal-state-map evil-motion-state-map))
 
-    
-    ;; (define-key evil-normal-state-map  "s" nil)
-    ;; (define-key evil-normal-state-map  "sj" 'ivy-switch-buffer)
-    ;; normal state
-    ;; (define-key evil-normal-state-map (kbd "C-SPC") 'mode-line-other-buffer)
-    (define-key evil-normal-state-map (kbd "C-;") 'previous-multiframe-window)
     ;; insert state
-    (define-key evil-insert-state-map (kbd "C-p") 'previous-line)
-    (define-key evil-insert-state-map (kbd "C-n") 'next-line)
-    (define-key evil-insert-state-map (kbd "C-h") 'delete-backward-char)
-    (define-key evil-insert-state-map (kbd "C-a") 'move-beginning-of-line)
-    (define-key evil-insert-state-map (kbd "C-e") 'move-end-of-line)
-    (define-key evil-insert-state-map (kbd "C-k") 'kill-line)
+    (cl-loop for (key-sequence . fun) in '(("C-;" . iedit-mode)
+                                           ("C-n" . next-line)
+                                           ("C-p" . previous-line)
+                                           ("C-a" . move-beginning-of-line)
+                                           ("C-e" . move-end-of-line)
+                                           ("C-h" . delete-backward-char)
+                                           ("C-k" . kill-line))
+             do (define-key evil-insert-state-map (kbd key-sequence) fun))
+    
+    
+    
     ;; motion mode
     (define-key evil-motion-state-map (kbd "SPC") 'scroll-up-command)
     (define-key evil-motion-state-map (kbd "S-SPC") 'scroll-down-command))
@@ -308,10 +297,19 @@ Let the search highlight persistent, https://stackoverflow.com/questions/2576803
 
 ** Avy & Evil
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
+  (setq avy-keys '(?a ?s ?d ?g
+                      ?h ?k ?l
+                      ?q ?w ?e ?r ?t
+                      ?y ?u ?i ?o ?p
+                      ?z ?x ?c ?v ?b
+                      ?n ?m ?f ?j 59))
+  ;; (setq avy-background t)
   (with-eval-after-load "evil"
     (dolist (map (list evil-normal-state-map
                        evil-visual-state-map
                        evil-motion-state-map))
+      (define-key map (kbd "gw") 'avy-goto-word-0-below)
+      (define-key map (kbd "gb") 'avy-goto-word-0-above)
       (define-key map (kbd "J") 'avy-goto-line-below)
       (define-key map (kbd "K") 'avy-goto-line-above)
       (define-key map (kbd "F") 'avy-goto-char)

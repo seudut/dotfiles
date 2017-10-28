@@ -2404,18 +2404,18 @@ C/C++ ide tools
   ;; (setq c-default-style "stroustrup"
   ;;       c-basic-offset 4)
 
-  ;; "C-M-j" is my global binding for avy goto line below
-  ;; disable it in c mode
-  (mapcar #'(lambda (map)
-             (define-key map (kbd "C-M-j") nil))
-          (list c-mode-map
-                c++-mode-map
-                objc-mode-map))
+  ;; ;; "C-M-j" is my global binding for avy goto line below
+  ;; ;; disable it in c mode
+  ;; (mapcar #'(lambda (map)
+  ;;            (define-key map (kbd "C-M-j") nil))
+  ;;         (list c-mode-map
+  ;;               c++-mode-map
+  ;;               objc-mode-map))
 
   ;; objective c
   (add-to-list 'auto-mode-alist '("\\.mm\\'" . objc-mode))
 
-  (setq c-hungry-delete-key t)
+  (setq-default c-hungry-delete-key t)
 
 
   ;; Looks `c-hanging-braces-alist' doesn't work as expected when  `electric-pair-mode' is enabled.
@@ -2442,7 +2442,6 @@ C/C++ ide tools
 
   ;; (advice-add 'c-electric-brace :after (lambda (arg) "Add new line after insert {}" (newline-and-indent)))
 #+END_SRC
-
 *** irony
 **** install irony server
 Install clang, on mac, it has =libclang.dylib=, but no develop headers. Install by =brew=
@@ -2481,10 +2480,10 @@ irony-mode-hook, copied from [[https://github.com/Sarcasm/irony-mode][irony-mode
     (define-key irony-mode-map [remap complete-symbol]
       'irony-completion-at-point-async))
 
-  (add-hook 'irony-mode-hook 'my-irony-mode-hook)
-  (add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options)
+  ;; (add-hook 'irony-mode-hook 'my-irony-mode-hook)
+  ;; (add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options)
 
-  (add-hook 'c++-mode-local-vars-hook #'sd/c++-mode-local-vars)
+  ;; (add-hook 'c++-mode-local-vars-hook #'sd/c++-mode-local-vars)
 
   ;; add C++ completions, because by default c++ file can not complete
   ;; c++ std functions, another method is create .dir-local.el file, for p
@@ -2591,7 +2590,7 @@ irony-company
         (setq out-file-name (shell-quote-argument (concat (file-name-sans-extension buffer-file-name) ".out"))))
       (setq-local compilation-read-command t)
       (set (make-local-variable 'compile-command)
-           (concat "g++ -Wall "
+           (concat "g++ -Wall -std=c++11 "
                    current-file-name
                    " -o "
                    out-file-name
@@ -2845,6 +2844,13 @@ Emacs lisp auto-insert, based on the default module in =autoinsert.el=, but repl
     :ensure t)
 #+END_SRC
 
+* Iedit
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+  (use-package iedit
+    :ensure t
+    :init
+    (global-set-key (kbd "C-;") #'iedit-mode))
+#+END_SRC
 * Gnus
 ** Gmail setting 
 Refer [[https://www.emacswiki.org/emacs/GnusGmail][GnusGmail]]
