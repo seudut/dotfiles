@@ -117,9 +117,17 @@ https://www.emacswiki.org/emacs/Evil.
 * Key bindings
 ** Evil-Leader
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
+  (defun sd/swith-to-buffer ()
+    "switch to buffer"
+    (interactive)
+    (call-interactively 'projectile-switch-to-buffer))
+
   (with-eval-after-load "evil-leader"
     (cl-loop for (key . fun ) in '(("F" . counsel-projectile-switch-to-buffer)
-                                   ("f" . ivy-switch-buffer)
+                                   ("f" . (lambda () (interactive)
+                                            (call-interactively (if (projectile-project-p)
+                                                                    'projectile-switch-to-buffer
+                                                                  'ivy-switch-buffer))))
                                    ("b" . counsel-projectile-find-file)
                                    ("r" . ivy-recentf)
                                    ("w" . save-buffer)
@@ -167,12 +175,33 @@ There are three kinds key bindings
                                            ("C-h" . delete-backward-char)
                                            ("C-k" . kill-line))
              do (define-key evil-insert-state-map (kbd key-sequence) fun))
+
+    ;; remap some vim keybindings
+    (dolist (map (list
+                  evil-normal-state-map
+                  evil-visual-state-map
+                  evil-motion-state-map))
+      (cl-loop for (keys . fun) in '(("'" . evil-goto-mark)
+                                     ("`" . evil-goto-mark-line))
+               do (define-key map (kbd keys) fun)))
     
     
     
     ;; motion mode
-    (define-key evil-motion-state-map (kbd "SPC") 'scroll-up-command)
-    (define-key evil-motion-state-map (kbd "S-SPC") 'scroll-down-command))
+    ;; (define-key evil-motion-state-map (kbd "SPC") 'scroll-up-command)
+    ;; (define-key evil-motion-state-map (kbd "S-SPC") 'scroll-down-command)
+    )
+
+
+  ;; (keymapp (car (list evil-normal-state-map evil-visual-state-map)))
+
+  ;; (keymapp (car '(evil-normal-state-map evil-visual-state-map)))
+  ;; (keymapp (car `(,evil-normal-state-map ,evil-visual-state-map)))
+
+
+  ;; (keymapp evil-normal-state-map)
+  ;; (keymapp 'evil-normal-state-map)
+  ;; (keymapp `,evil-normal-state-map)
 #+END_SRC
 
 
@@ -203,18 +232,6 @@ Let the search highlight persistent, https://stackoverflow.com/questions/2576803
                                     (evil-define-key 'emacs eshell-mode-map (kbd (concat evil-leader/leader (car key-fun))) (cdr key-fun))))
                                 ;; (define-key eshell-mode-map (kbd "C-j") nil)
                                 ))
-
-  ;; 
-  ;; (add-hook 'eshell-mode-map
-  ;;        (lambda ()
-  ;;          (mapc (lambda (key-fun)
-  ;;                  (evil-define-key 'emacs eshell-mode-map (kbd (concat evil-leader/leader (car key-fun))) (cdr key-fun)))
-  ;;                '(("e" . dired)))))
-
-  ;; (add-hook 'eshell-mode-hook (lambda ()
-  ;;                               (loop for (key . fun) in '(
-  ;;                                                          ("e" . sd/toggle-project-eshell))
-  ;;                                     do (evil-define-key 'emacs eshell-mode-map (kbd (concat evil-leader/leader key)) fun))))
 #+END_SRC
 ** Dired mode
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
@@ -259,12 +276,12 @@ Let the search highlight persistent, https://stackoverflow.com/questions/2576803
 
 ** expand region
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
-  (with-eval-after-load "evil"
-    (with-eval-after-load "expand-region"
-      (define-key evil-normal-state-map (kbd "SPC") 'er/expand-region)
-      (define-key evil-visual-state-map (kbd "SPC") 'er/expand-region)
-      (define-key evil-visual-state-map (kbd "S-SPC") 'er/contract-region)
-      (define-key evil-normal-state-map (kbd "S-SPC") 'er/contract-region)))
+  ;; (with-eval-after-load "evil"
+  ;;   (with-eval-after-load "expand-region"
+  ;;     (define-key evil-normal-state-map (kbd "SPC") 'er/expand-region)
+  ;;     (define-key evil-visual-state-map (kbd "SPC") 'er/expand-region)
+  ;;     (define-key evil-visual-state-map (kbd "S-SPC") 'er/contract-region)
+  ;;     (define-key evil-normal-state-map (kbd "S-SPC") 'er/contract-region)))
 #+END_SRC
 
 ** Org Mode (worf mode) and Lispy mode
@@ -287,12 +304,7 @@ Let the search highlight persistent, https://stackoverflow.com/questions/2576803
       (evil-define-key 'normal worf-mode-map (kbd "]") (lambda ()
                                                          (interactive)
                                                          (call-interactively #'worf-forward)
-                                                         (evil-emacs-state)))
-      ;; (evil-define-key 'normal worf-mode-map (kbd "g") (lambda ()
-      ;;                                                    (interactive)
-      ;;                                                    (wspecial-worf-goto)
-      ;;                                                    (evil-emacs-state)))
-      ))
+                                                         (evil-emacs-state)))))
 #+END_SRC
 
 ** Avy & Evil
@@ -304,16 +316,15 @@ Let the search highlight persistent, https://stackoverflow.com/questions/2576803
                       ?z ?x ?c ?v ?b
                       ?n ?m ?f ?j 59))
   ;; (setq avy-background t)
+  (setq avy-all-windows nil)
   (with-eval-after-load "evil"
     (dolist (map (list evil-normal-state-map
                        evil-visual-state-map
                        evil-motion-state-map))
       (define-key map (kbd "gw") 'avy-goto-word-0-below)
       (define-key map (kbd "gb") 'avy-goto-word-0-above)
-      (define-key map (kbd "J") 'avy-goto-line-below)
-      (define-key map (kbd "K") 'avy-goto-line-above)
-      (define-key map (kbd "F") 'avy-goto-char)
-      (define-key map (kbd "W") 'avy-goto-char-timer)))
+      (define-key map (kbd "ge") 'avy-goto-word-0)
+      (define-key map (kbd "gc") 'avy-goto-char)))
 #+END_SRC
 
 ** ggtags

@@ -744,9 +744,21 @@ let helm windows split inside current window
     (ivy-done)
     (ivy-shrink-after-dispatching))
 
+  (defun sd/exit-ivy-and-swith-to-buffer ()
+    "exit ivy complete, and call swith to buffer"
+    (interactive)
+    (ivy--exhibit)
+    (ivy-set-action (lambda (buf)
+                      (ivy-switch-buffer)))
+    (when (ivy-read-action)
+      (ivy-done))
+    (ivy-shrink-after-dispatching))
+
   (with-eval-after-load "ivy"
     (define-key ivy-minibuffer-map (kbd "C-o") 'ivy-dispatching-done)
-    (define-key ivy-minibuffer-map (kbd "C-k") #'sd/swith-buffer-other-window))
+    (define-key ivy-minibuffer-map (kbd "C-k") #'sd/swith-buffer-other-window)
+    ;; (define-key ivy-minibuffer-map (kbd "M-o") nil)
+    (define-key ivy-minibuffer-map (kbd "C-o") #'sd/exit-ivy-and-swith-to-buffer))
 #+END_SRC
 
 stolen from [[https://github.com/mariolong/emacs.d/blob/f6a061594ef1b5d1f4750e9dad9dc97d6e122840/emacs-init.org][here]]
@@ -1238,29 +1250,29 @@ extend org-mode's easy templates, refer to [[http://coldnew.github.io/coldnew-em
 
 
   ;; Install Ubuntu Mono fonts and apply it in org-table to align Chinese fonts
-  ;; (with-eval-after-load "org"
-  ;;   (mapc (lambda (face)
-  ;;           (set-face-attribute face nil :inherit 'fixed-pitch))
-  ;;         (list
-  ;;          'org-code
-  ;;          'org-block
-  ;;          'org-block-background
-  ;;          'org-block-begin-line
-  ;;          'org-block-end-line))
-  ;;   (set-face-attribute 'org-table nil :family "Ubuntu Mono" :height 140)
-  ;;   (set-face-attribute 'org-formula nil :family "Ubuntu Mono" :height 140)
-  ;;   ;; org-special-keyword inherited from font-lock-keywork originally; as org is changed to variable-pitch, it cause
-  ;;   ;; the font in special-keywords are not monospace
-  ;;   (set-face-attribute 'org-special-keyword nil :inherit '(font-lock-keyword-face fixed-pitch))
-  ;;   ;; same as above 
-  ;;   (set-face-attribute 'org-verbatim nil :inherit '(shadow fixed-pitch))
-  ;;   (set-face-attribute 'org-block-begin-line nil :inherit 'shadow :slant 'italic :foreground nil)
-  ;;   (set-face-attribute 'org-block-end-line nil :inherit 'shadow :slant 'italic :foreground nil)
+  (with-eval-after-load "org"
+    (mapc (lambda (face)
+            (set-face-attribute face nil :inherit 'fixed-pitch))
+          (list
+           'org-code
+           'org-block
+           'org-block-background
+           'org-block-begin-line
+           'org-block-end-line))
+    (set-face-attribute 'org-table nil :family "Ubuntu Mono" :height 100)
+    (set-face-attribute 'org-formula nil :family "Ubuntu Mono" :height 100)
+    ;; org-special-keyword inherited from font-lock-keywork originally; as org is changed to variable-pitch, it cause
+    ;; the font in special-keywords are not monospace
+    (set-face-attribute 'org-special-keyword nil :inherit '(font-lock-keyword-face fixed-pitch))
+    ;; same as above 
+    (set-face-attribute 'org-verbatim nil :inherit '(shadow fixed-pitch))
+    (set-face-attribute 'org-block-begin-line nil :inherit 'shadow :slant 'italic :foreground nil)
+    (set-face-attribute 'org-block-end-line nil :inherit 'shadow :slant 'italic :foreground nil)
     
-  ;;   ;; fix indent broken by variable-pitch-mode
-  ;;   ;; http://emacs.stackexchange.com/questions/26864/variable-pitch-face-breaking-indentation-in-org-mode
-  ;;   (require 'org-indent)
-  ;;   (set-face-attribute 'org-indent nil :inherit '(org-hide fixed-pitch)))
+    ;; fix indent broken by variable-pitch-mode
+    ;; http://emacs.stackexchange.com/questions/26864/variable-pitch-face-breaking-indentation-in-org-mode
+    (require 'org-indent)
+    (set-face-attribute 'org-indent nil :inherit '(org-hide fixed-pitch)))
 
   ;; (with-eval-after-load "org"
   ;;   (let ((default-font-size (- (face-attribute 'default :height) (if (display-graphic-p) 20 0))))
@@ -1541,10 +1553,8 @@ Refer [[https://github.com/abo-abo/hydra/blob/master/hydra-examples.el][hydra-ex
     "Projectile: "
     ("s" projectile-switch-open-project "Switch" :exit t)
     ("f" projectile-find-file "File" :exit t)
-    ("b" projectile-switch-to-buffer "Buffer" :exit t))
-
-
-
+    ("b" projectile-switch-to-buffer "Buffer" :exit t)
+    ("p" projectile-switch-project "Project" :exit t))
 #+END_SRC
 
 *** hydra launcher
@@ -3181,6 +3191,10 @@ Here are some global key bindings for basic editting
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
   (global-set-key (kbd "C-h") 'delete-backward-char)
   (global-set-key (kbd "s-m") 'man)
+  (global-set-key (kbd "<s-return>") 'toggle-frame-fullscreen)
+  (global-set-key (kbd "s-f") 'projectile-find-file)
+  (global-set-key (kbd "s-=") 'text-scale-increase)
+  (global-set-key (kbd "s--") 'text-scale-decrease)
 #+END_SRC
 
 Refer [[https://github.com/fnwiya/dotfiles/blob/c9ca79f1b22c919d9f4c3a0f944ba8281255a594/setup/.emacs.d/loader-init/_90-kill-region-or-backward-kill-word.el][kill-region-or-backward-kill-word]]
@@ -3259,31 +3273,6 @@ Use =ESC= to exit minibuffer. Also I map =Super-h= the same as =C-g=
 
         (advice-add 'projectile-get-ext-command :override #'modi/advice-projectile-use-rg))
     (message "rg is not found"))
-#+END_SRC
-
-*** project config =super= keybindings
-#+BEGIN_SRC emacs-lisp :tangle yes :results silent
-  ;; (global-set-key (kbd "s-h") 'keyboard-quit)
-  ;; (global-set-key (kbd "s-j") 'ido-switch-buffer)
-  ;; (global-set-key (kbd "s-k") 'ido-find-file)
-  ;; (global-set-key (kbd "s-l") 'sd/delete-current-window)
-  ;; s-l  -->  goto-line
-  ;; (global-set-key (kbd "s-/") 'swiper)
-  ;; s-;  -->
-  ;; s-'  -->  'next-multiframe-window
-  (global-set-key (kbd "<s-return>") 'toggle-frame-fullscreen)
-
-  (global-set-key (kbd "s-f") 'projectile-find-file)
-  ;; (global-set-key (kbd "s-`") 'mode-line-other-buffer)
-
-  ;; (global-set-key (kbd "s-n") 'persp-next)
-  ;; (global-set-key (kbd "s-p") 'persp-prev)
-  ;; (global-set-key (kbd "s-;") 'persp-switch-last)
-
-  (global-set-key (kbd "s-=") 'text-scale-increase)
-  (global-set-key (kbd "s--") 'text-scale-decrease)
-
-  ;; (global-set-key (kbd "s-u") 'undo-tree-visualize)
 #+END_SRC
 
 ** Windown & Buffer - =C-o=
@@ -3527,6 +3516,9 @@ Search, replace and hightlight will in later paragraph
   ;; (global-set-key (kbd "M-g e") 'avy-goto-word-0)
   ;; (global-set-key (kbd "M-g f") 'avy-goto-char-timer)
   ;; (global-set-key (kbd "M-g c") 'avy-goto-char-in-line)
+  (global-set-key (kbd "M-g c") 'avy-goto-char)
+  (global-set-key (kbd "M-g b") 'avy-goto-word-0-above)
+  (global-set-key (kbd "M-g w") 'avy-goto-word-0-below)
 #+END_SRC
 
 *** =Imenu= goto tag
@@ -3825,7 +3817,8 @@ Occur search key bindings
   (el-get-bundle seudut/perspeen
     :features perspeen
     (setq perspeen-use-tab nil)
-    (perspeen-mode))
+    ;; (perspeen-mode)
+    )
 
   ;; super-i to switch to ith workspace
 
