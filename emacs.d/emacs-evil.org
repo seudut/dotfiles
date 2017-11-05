@@ -120,14 +120,17 @@ https://www.emacswiki.org/emacs/Evil.
   (defun sd/swith-to-buffer ()
     "switch to buffer"
     (interactive)
-    (call-interactively 'projectile-switch-to-buffer))
+    (if (projectile-project-p)
+        (projectile-switch-to-buffer)
+      (ivy-switch-buffer)))
+
+  (ivy-set-actions
+   'sd/swith-to-buffer
+   '(("j" ivy--switch-buffer-other-window-action "other window")))
 
   (with-eval-after-load "evil-leader"
     (cl-loop for (key . fun ) in '(("F" . counsel-projectile-switch-to-buffer)
-                                   ("f" . (lambda () (interactive)
-                                            (call-interactively (if (projectile-project-p)
-                                                                    'projectile-switch-to-buffer
-                                                                  'ivy-switch-buffer))))
+                                   ("f" . sd/swith-to-buffer)
                                    ("b" . counsel-projectile-find-file)
                                    ("r" . ivy-recentf)
                                    ("w" . save-buffer)
