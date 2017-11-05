@@ -16,10 +16,10 @@ nnoremap j 6j
 nnoremap k 6k
 nnoremap h gT
 nnoremap l gt
-nnoremap <C-h> h
+nnoremap <C-h> H
+nnoremap <C-l> L
 nnoremap <C-j> j
 nnoremap <C-k> k
-nnoremap <C-l> l
 
 nmap <BS> <PageUp>
 nmap J <C-d>
@@ -32,6 +32,7 @@ nmap <Leader>h :help<Space>
 
 
 nmap <Leader>,	:source ~/.vimperatorrc<CR>
+nmap <Leader>x :
 
 
 "noremap <C-o>	<Esc>
@@ -69,3 +70,18 @@ noremap v <C-^>
 "nmap t <C-t>:open<Space>
 "nmap t <M-t><esc>:open<Space>
 set focuscontent
+set hintchars=asdghklqwertyuiopzxcvbnmfj
+"set maxitems=30
+
+nnoremap g1 :tabn 1<CR>
+nnoremap g2 :tabn 2<CR>
+nnoremap g3 :tabn 3<CR>
+nnoremap g4 :tabn 4<CR>
+nnoremap g5 :tabn 5<CR>
+nnoremap g6 :tabn 6<CR>
+nnoremap g7 :tabn 7<CR>
+nnoremap g8 :tabn 8<CR>
+nnoremap g9 :tabn 9<CR>
+nnoremap g0 :tabn 0<CR>
+
+imap <C-n> <Down>
