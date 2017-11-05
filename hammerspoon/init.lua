@@ -10,6 +10,21 @@ hs.hotkey.bind({"cmd", "alt", "ctrl"}, "R", function()
 end)
 hs.alert.show("Config loaded")
 
+---- Right click 
+--hs.hotkey.bind({"cmd,", "alt", "ctrl"}, "l", function()
+--      hs.eventtap.rightClick(hs.mouse.getAbsolutePosition())
+--end)
+
+-- Donw : For firefox vimperator
+hs.hotkey.bind({"cmd,", "ctrl"}, "n", function()
+      hs.eventtap.keyStroke({}, 'down')
+end)
+
+-- Up
+hs.hotkey.bind({"cmd,", "ctrl"}, "p", function()
+      hs.eventtap.keyStroke({}, 'up')
+end)
+
 -- Reacting to application events
 -- Move all Finder in front
 function applicationWatcher(appName, eventType, appObject)
