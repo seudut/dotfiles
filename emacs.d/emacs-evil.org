@@ -117,21 +117,10 @@ https://www.emacswiki.org/emacs/Evil.
 * Key bindings
 ** Evil-Leader
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
-  (defun sd/swith-to-buffer ()
-    "switch to buffer"
-    (interactive)
-    (if (projectile-project-p)
-        (projectile-switch-to-buffer)
-      (ivy-switch-buffer)))
-
-  (ivy-set-actions
-   'sd/swith-to-buffer
-   '(("j" ivy--switch-buffer-other-window-action "other window")))
-
   (with-eval-after-load "evil-leader"
     (cl-loop for (key . fun ) in '(("F" . counsel-projectile-switch-to-buffer)
                                    ("f" . sd/swith-to-buffer)
-                                   ("b" . counsel-projectile-find-file)
+                                   ("b" . projectile-find-file)
                                    ("r" . ivy-recentf)
                                    ("w" . save-buffer)
                                    ("v" . evil-window-vsplit)
@@ -187,24 +176,9 @@ There are three kinds key bindings
       (cl-loop for (keys . fun) in '(("'" . evil-goto-mark)
                                      ("`" . evil-goto-mark-line))
                do (define-key map (kbd keys) fun)))
-    
-    
-    
     ;; motion mode
-    ;; (define-key evil-motion-state-map (kbd "SPC") 'scroll-up-command)
-    ;; (define-key evil-motion-state-map (kbd "S-SPC") 'scroll-down-command)
-    )
-
-
-  ;; (keymapp (car (list evil-normal-state-map evil-visual-state-map)))
-
-  ;; (keymapp (car '(evil-normal-state-map evil-visual-state-map)))
-  ;; (keymapp (car `(,evil-normal-state-map ,evil-visual-state-map)))
-
-
-  ;; (keymapp evil-normal-state-map)
-  ;; (keymapp 'evil-normal-state-map)
-  ;; (keymapp `,evil-normal-state-map)
+    (define-key evil-motion-state-map (kbd "SPC") 'scroll-up-command)
+    (define-key evil-motion-state-map (kbd "S-SPC") 'scroll-down-command))
 #+END_SRC
 
 

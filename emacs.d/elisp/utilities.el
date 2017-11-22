@@ -71,7 +71,18 @@ one window, window undo"
 			     100
 			   80))))
 
-
+(defun my-open-scratch-in-project  ()
+  "Create or open scratch buffer under currrent project."
+  (interactive)
+  (let (ret)
+    (dolist (buf (projectile-project-buffers) ret)
+      (if (string-match "*scratch*" (buffer-name buf))
+	  (setq ret buf)))
+    (if ret
+	(switch-to-buffer ret)
+      (switch-to-buffer (format "*scratch*<%s>" (projectile-project-name)))
+      (funcall initial-major-mode)
+      (insert (format ";; %s under  %s project\n\n" (buffer-name) (projectile-project-name))))))
 
 (provide 'utilities)
 ;;; utilities.el ends here

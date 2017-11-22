@@ -699,6 +699,42 @@ let helm windows split inside current window
     (setq helm-split-window-in-side-p t))
 #+END_SRC
 
+* Projectile
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+  (use-package projectile
+    :ensure t
+    :init
+    (setq projectile-enable-caching t)
+    (setq projectile-switch-project-action 'projectile-dired)
+    (setq projectile-cache-file (concat sd-temp-directory "projectile.cache"))
+    (setq projectile-completion-system 'ivy)
+    :config
+    (add-to-list 'projectile-globally-ignored-files "GTAGS")
+    (projectile-global-mode t))
+
+  ;; https://emacs.stackexchange.com/questions/16497/how-to-exclude-files-from-projectile
+  (if (executable-find "rg")
+      (progn
+        (defconst modi/rg-arguments
+          `("--line-number"               ; line numbers
+            "--smart-case"
+            "--follow"                    ; follow symlinks
+            "--mmap")                     ; apply memory map optimization when possible
+          "Default rg arguments used in the functions in `projectile' package.")
+
+        (defun modi/advice-projectile-use-rg ()
+          "Always use `rg' for getting a list of all files in the project."
+          (mapconcat 'identity
+                     (append '("\\rg")    ; used unaliased version of `rg': \rg
+                             modi/rg-arguments
+                             '("--null"   ; output null separated results,
+                               "--files")) ; get file names matching the regex '' (all files)
+                     " "))
+
+        (advice-add 'projectile-get-ext-command :override #'modi/advice-projectile-use-rg))
+    (message "rg is not found"))
+#+END_SRC
+
 * Swiper & Ivy & Counsel
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
   (use-package counsel
@@ -717,37 +753,36 @@ let helm windows split inside current window
     (global-set-key (kbd "C-x C-f") 'counsel-find-file)
     (define-key read-expression-map (kbd "C-r") 'counsel-expression-history)
     (global-set-key (kbd "C-c C-r") 'ivy-resume))
-
-  ;; (use-package counsel-projectile
-  ;;   :ensure t
-  ;;   :defer t)
-
-  (add-to-list 'load-path "~/project/counsel-projectile/")
-  (require 'counsel-projectile)
-  (setq counsel-projectile-use-buffer-preselect t)
-  (setq projectile-completion-system 'ivy)
 #+END_SRC
 
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
   (ivy-set-actions
-   'projectile-switch-to-buffer
-   '(("j" ivy--switch-buffer-other-window-action "other window" )))
-
-  (ivy-set-actions
    t
    '(("q" (lambda (x) (ivy-quit-and-run (message "=="))) "exit")))
 
-  (defun sd/swith-buffer-other-window ()
+  (ivy-set-actions
+   'projectile-switch-to-buffer
+   '(("j" ivy--switch-buffer-other-window-action "other window" )))
+
+  (defun sd/projectile-find-file-other-window-action (file)
+    (message "=========")
+    (message (projectile-expand-root file))
+    (find-file-other-window (projectile-expand-root file)))
+
+  (ivy-set-actions
+   'projectile-find-file
+   '(("j" sd/projectile-find-file-other-window-action "other-window")))
+
+  (defun sd/swith-to-buffer ()
+    "switch to buffer"
     (interactive)
-    (ivy-set-action (let ((last (ivy-state-caller ivy-last)))
-                      (cond ((eq last 'ivy-switch-buffer) 'ivy--switch-buffer-other-window-action)
-                            ((eq last 'counsel-recentf) 'find-file-other-window)
-                            ((eq last 'projectile-find-file) 'projectile-find-file-other-window)
-                            ((eq last 'counsel-projectile-find-file) 'counsel-projectile-find-file-action-other-window)
-                            ((eq last 'projectile-switch-to-buffer) 'ivy--switch-buffer-other-window-action)
-                            (t nil))))
-    (ivy-done)
-    (ivy-shrink-after-dispatching))
+    (if (projectile-project-p)
+        (projectile-switch-to-buffer)
+      (ivy-switch-buffer)))
+
+  (ivy-set-actions
+   'sd/swith-to-buffer
+   '(("j" ivy--switch-buffer-other-window-action "other window")))
 
   (defun sd/exit-ivy-and-swith-to-buffer ()
     "exit ivy complete, and call swith to buffer"
@@ -755,11 +790,29 @@ let helm windows split inside current window
     (ivy-quit-and-run
      (ivy-switch-buffer)))
 
+  (defun my/ivy-read-action (key)
+    (let ((actions (ivy-state-action ivy-last)))
+      (if (null (ivy--actionp actions))
+          t
+        (let* ((action-idx (cl-position-if
+                            (lambda (x) (equal (car x) key))
+                            (cdr actions))))
+          (cond ((member key '("" ""))
+                 nil)
+                ((null action-idx)
+                 (message "%s is not bound" key)
+                 nil)
+                (t
+                 (message "")
+                 (setcar actions (1+ action-idx))
+                 (ivy-set-action actions)))))))
+
   (with-eval-after-load "ivy"
-    ;; (define-key ivy-minibuffer-map (kbd "C-o") 'ivy-dispatching-done)
-    (define-key ivy-minibuffer-map (kbd "C-k") #'sd/swith-buffer-other-window)
-    ;; (define-key ivy-minibuffer-map (kbd "M-o") nil)
-    (define-key ivy-minibuffer-map (kbd "C-o") #'sd/exit-ivy-and-swith-to-buffer))
+    (define-key ivy-minibuffer-map (kbd "C-o") 'ivy-dispatching-done)
+    (define-key ivy-minibuffer-map (kbd "C-k") (lambda () (interactive)
+                                                 (my/ivy-read-action "j")
+                                                 (ivy-done)))
+    (define-key ivy-minibuffer-map (kbd "M-o") #'sd/exit-ivy-and-swith-to-buffer))
 #+END_SRC
 
 stolen from [[https://github.com/mariolong/emacs.d/blob/f6a061594ef1b5d1f4750e9dad9dc97d6e122840/emacs-init.org][here]]
@@ -3187,57 +3240,6 @@ We can use [[https://www.gnu.org/software/emms/quickstart.html][Emms]] for multi
 #+END_SRC
 
 * Project operations - =super=
-** Projectile
-#+BEGIN_SRC emacs-lisp :tangle yes :results silent
-  (use-package projectile
-    :ensure t
-    :init
-    (setq projectile-enable-caching t)
-    (setq projectile-switch-project-action (lambda ()
-                                             (projectile-dired)
-                                             (sd/project-switch-action)))
-    (setq projectile-cache-file (concat sd-temp-directory "projectile.cache"))
-    :config
-    (add-to-list 'projectile-globally-ignored-files "GTAGS")
-    (projectile-global-mode t)
-    (global-set-key (kbd "C-M-p") 'projectile-switch-project))
-
-  ;; change default-directory of scratch buffer to projectile-project-root 
-  (defun sd/project-switch-action ()
-    "Change default-directory of scratch buffer to current projectile-project-root directory"
-    (interactive)
-    (dolist (buffer (buffer-list))
-      (if (string-match (concat "scratch.*" (projectile-project-name))
-                        (buffer-name buffer))
-          (let ((root (projectile-project-root)))
-            (with-current-buffer buffer
-              (cd root))))))
-
-
-
-  ;; https://emacs.stackexchange.com/questions/16497/how-to-exclude-files-from-projectile
-  ;; (setq projectile-enable-caching t)
-  (if (executable-find "rg")
-      (progn
-        (defconst modi/rg-arguments
-          `("--line-number"               ; line numbers
-            "--smart-case"
-            "--follow"                    ; follow symlinks
-            "--mmap")                     ; apply memory map optimization when possible
-          "Default rg arguments used in the functions in `projectile' package.")
-
-        (defun modi/advice-projectile-use-rg ()
-          "Always use `rg' for getting a list of all files in the project."
-          (mapconcat 'identity
-                     (append '("\\rg")    ; used unaliased version of `rg': \rg
-                             modi/rg-arguments
-                             '("--null"   ; output null separated results,
-                               "--files")) ; get file names matching the regex '' (all files)
-                     " "))
-
-        (advice-add 'projectile-get-ext-command :override #'modi/advice-projectile-use-rg))
-    (message "rg is not found"))
-#+END_SRC
 
 ** Windown & Buffer - =C-o=
 Defind a =hydra= function for windows, buffer & bookmark operations. And map it to =C-o= globally.
@@ -3776,8 +3778,7 @@ Here are some global key bindings for basic editting
   (global-set-key (kbd "s-m") 'man)
   (global-set-key (kbd "<s-return>") 'toggle-frame-fullscreen)
   ;; project operation
-  (global-set-key (kbd "s-p") 'projectile-switch-project)
-  (global-set-key (kbd "s-p") 'projectile-switch-project)
+  (global-set-key (kbd "s-p") 'projectile-switch-open-project)
   (global-set-key (kbd "s-f") 'projectile-find-file)
   (global-set-key (kbd "s-=") 'text-scale-increase)
   (global-set-key (kbd "s--") 'text-scale-decrease)
