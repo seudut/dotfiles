@@ -118,14 +118,13 @@ https://www.emacswiki.org/emacs/Evil.
 ** Evil-Leader
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
   (with-eval-after-load "evil-leader"
-    (cl-loop for (key . fun ) in '(("F" . counsel-projectile-switch-to-buffer)
-                                   ("f" . sd/swith-to-buffer)
+    (cl-loop for (key . fun ) in '(("f" . sd/swith-to-buffer)
                                    ("b" . projectile-find-file)
                                    ("r" . ivy-recentf)
                                    ("w" . save-buffer)
                                    ("v" . evil-window-vsplit)
                                    ("s" . evil-window-split)
-                                   ("t" . sd/hydra-gtags/body)
+                                   ("t" . sd/hydra-window-layout/body)
                                    ("p" . sd/hydra-projectile/body)
                                    ("q" . evil-quit)
                                    ("g" . magit-status)
@@ -149,11 +148,11 @@ There are three kinds key bindings
             (define-key map "\C-j" 'evil-window-down)
             (define-key map "\C-k" 'evil-window-up)
             (define-key map "\C-l" 'evil-window-right)
-            (define-key map (kbd "C->") (lambda () (interactive) (evil-window-increase-width 3)))
-            (define-key map (kbd "C-<") (lambda () (interactive) (evil-window-decrease-width 3)))
-            (define-key map (kbd "C-+") (lambda () (interactive) (evil-window-increase-height 3)))
-            (define-key map (kbd "C--") (lambda () (interactive) (evil-window-decrease-height 3)))
-            (define-key map (kbd "C-=") (lambda () (interactive) (balance-windows)))
+            ;; (define-key map (kbd "C->") (lambda () (interactive) (evil-window-increase-width 3)))
+            ;; (define-key map (kbd "C-<") (lambda () (interactive) (evil-window-decrease-width 3)))
+            ;; (define-key map (kbd "C-+") (lambda () (interactive) (evil-window-increase-height 3)))
+            ;; (define-key map (kbd "C--") (lambda () (interactive) (evil-window-decrease-height 3)))
+            ;; (define-key map (kbd "C-=") (lambda () (interactive) (balance-windows)))
             ;; As ; has been defined as leader, so remap , to ; repeaat t/f
             (define-key map (kbd ",") 'evil-repeat-find-char))
           (list evil-normal-state-map evil-motion-state-map))
@@ -193,22 +192,30 @@ Let the search highlight persistent, https://stackoverflow.com/questions/2576803
     (define-key evil-normal-state-map "\\v" #'describe-variable))
 #+END_SRC
 
+Go, =g= command 
+
+- =g#= =g*= :: same as =#=, =*=,  but without using "\<" and "\>"
+- =g$= :: same as =$=
+- =g&= :: repease last =:s= on all lines
+- g', g`, like ' ` but without changing the jumplist
+- g+, g-
+- g; :: 
+gs
+
 ** Eshell
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
   (add-hook 'eshell-mode-hook (lambda ()
                                 (when (and (boundp 'evil-mode) evil-mode)
-                                  (dolist (key-fun '(("f" . ivy-switch-buffer)
-                                                     ("b" . counsel-projectile-find-file)
-                                                     ("r" . counsel-recentf)
+                                  (dolist (key-fun '(("f" . sd/swith-to-buffer)
+                                                     ("b" . projectile-find-file)
+                                                     ("r" . ivy-recentf)
                                                      ("t" . sd/hydra-window-layout/body)
                                                      ("e" . sd/toggle-project-eshell)
                                                      ("d" . dired)
                                                      ("'" . other-window)
                                                      ("h" . help)
                                                      ("q" . evil-quit)))
-                                    (evil-define-key 'emacs eshell-mode-map (kbd (concat evil-leader/leader (car key-fun))) (cdr key-fun))))
-                                ;; (define-key eshell-mode-map (kbd "C-j") nil)
-                                ))
+                                    (evil-define-key 'emacs eshell-mode-map (kbd (concat evil-leader/leader (car key-fun))) (cdr key-fun))))))
 #+END_SRC
 ** Dired mode
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
