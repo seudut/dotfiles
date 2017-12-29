@@ -30,9 +30,8 @@
                 "right_command": "right_option"
             },
             "standalone_keys": {
-                "caps_lock": "escape",
-                "right_command": "escape",
-                "left_control": "escape"
+                "_comment": "caps_lock: escape",
+                "right_command": "escape"
             },
             "virtual_hid_keyboard": {
                 "caps_lock_delay_milliseconds": 0,

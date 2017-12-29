@@ -309,7 +309,7 @@ if [[ $OSNAME == 'Darwin' ]]; then
     export ANDROID_TOOLCHAIN="$ANDROID_NDK_HOME/standalone-toolchain-api14/"
     export ANDROID_HOME="$HOME/android/android-sdk-macosx/"
     export PATH=$PATH:"${ANDROID_TOOLCHAIN}/bin/":"${ANDROID_HOME}/platform-tools/"
-    export PATH="$HOME/bin":"/usr/local/bin":$PATH
+    export PATH="$HOME/bin":"/usr/local/bin":"/usr/local/sbin":$PATH
     
     
     ## appended by cpan initializaion
