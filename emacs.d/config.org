@@ -1698,16 +1698,6 @@ Type =o= to go to the link
     (ace-link-setup-default))
 #+END_SRC
 
-** Smart Parens
-#+BEGIN_SRC emacs-lisp :tangle yes :results silent
-  ;; (use-package smartparens
-  ;;   :ensure t
-  ;;   :config
-  ;;   (progn
-  ;;     (require 'smartparens-config)
-  ;;     (add-hook 'prog-mode-hook 'smartparens-mode)))
-#+END_SRC
-
 ** Ace-Windows
 [[https://github.com/abo-abo/ace-window][ace-window]] 
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
@@ -1718,15 +1708,6 @@ Type =o= to go to the link
                                           ;  (global-set-key (kbd "M-o") 'ace-window)
     :config
     (setq aw-keys '(?a ?s ?d ?f ?j ?k ?l)))
-#+END_SRC
-
-** Which key
-[[https://github.com/justbur/emacs-which-key][which-key]] show the key bindings 
-#+BEGIN_SRC emacs-lisp :tangle yes :results silent
-  ;; (use-package which-key
-  ;;   :ensure t
-  ;;   :config
-  ;;   (which-key-mode))
 #+END_SRC
 
 ** View only for some directory
@@ -1802,12 +1783,6 @@ When see function by =C-h f=, and visit the source code, I would like the buffer
     (sd/delete-current-window))
 #+END_SRC
 
-** Demo It
-#+BEGIN_SRC emacs-lisp :tangle yes :results silent
-  (use-package org-tree-slide
-    :ensure t)
-#+END_SRC
-
 ** Presentation
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
   (use-package org-tree-slide
@@ -1875,12 +1850,6 @@ Wiki [[http://stackoverflow.com/questions/3480173/show-keys-in-emacs-keymap-valu
   (el-get-bundle help-mode+
     :url "https://raw.githubusercontent.com/emacsmirror/emacswiki.org/master/help-mode+.el"
     :features help-mode+)
-#+END_SRC
-
-** goto-last-change
-#+BEGIN_SRC emacs-lisp :tangle yes :results silent
-  ;; (use-package goto-last-change
-  ;;   :ensure t)
 #+END_SRC
 
 ** Ag
@@ -3254,90 +3223,90 @@ Most use =C-o C-o= to switch buffers; =C-o x, v= to split window; =C-o o= to del
   (winner-mode 1)
 
   (require 'utilities)
-  (defhydra sd/hydra-window (:color red :columns nil)
-    "C-o"
-    ;; windows switch
-    ("h" windmove-left nil :exit t)
-    ("j" windmove-down nil :exit t)
-    ("k" windmove-up nil :exit t)
-    ("l" windmove-right nil :exit t)
-    ("C-o" other-window nil :exit t)
-    ;; window resize
-    ("H" hydra-move-splitter-left nil)
-    ("J" hydra-move-splitter-down nil)
-    ("K" hydra-move-splitter-up nil)
-    ("L" hydra-move-splitter-right nil)
-    ;; windows split
-    ("v" (lambda ()
-           (interactive)
-           (split-window-right)
-           (windmove-right))
-     nil :exit t)
-    ("x" (lambda ()
-           (interactive)
-           (split-window-below)
-           (windmove-down))
-     nil :exit t)
-    ;; buffer / windows switch
-    ("o" sd/toggle-max-windows nil :exit t)
-    ("C-k" sd/delete-current-window nil :exit t)
-    ("C-d" (lambda ()
-             (interactive)
-             (kill-buffer)
-             (sd/delete-current-window))
-     nil :exit t)
+  ;; (defhydra sd/hydra-window (:color red :columns nil)
+  ;;   "C-o"
+  ;;   ;; windows switch
+  ;;   ("h" windmove-left nil :exit t)
+  ;;   ("j" windmove-down nil :exit t)
+  ;;   ("k" windmove-up nil :exit t)
+  ;;   ("l" windmove-right nil :exit t)
+  ;;   ("C-o" other-window nil :exit t)
+  ;;   ;; window resize
+  ;;   ("H" hydra-move-splitter-left nil)
+  ;;   ("J" hydra-move-splitter-down nil)
+  ;;   ("K" hydra-move-splitter-up nil)
+  ;;   ("L" hydra-move-splitter-right nil)
+  ;;   ;; windows split
+  ;;   ("v" (lambda ()
+  ;;          (interactive)
+  ;;          (split-window-right)
+  ;;          (windmove-right))
+  ;;    nil :exit t)
+  ;;   ("x" (lambda ()
+  ;;          (interactive)
+  ;;          (split-window-below)
+  ;;          (windmove-down))
+  ;;    nil :exit t)
+  ;;   ;; buffer / windows switch
+  ;;   ("o" sd/toggle-max-windows nil :exit t)
+  ;;   ("C-k" sd/delete-current-window nil :exit t)
+  ;;   ("C-d" (lambda ()
+  ;;            (interactive)
+  ;;            (kill-buffer)
+  ;;            (sd/delete-current-window))
+  ;;    nil :exit t)
 
-    ;; ace-window
-    ;; ("'" other-window "other" :exit t)
-    ;; ("a" ace-window "ace")
-    ("s" ace-swap-window nil)
-    ("D" ace-delete-window nil :exit t)
-    ;; ("i" ace-maximize-window "ace-one" :exit t)
-    ;; Windows undo - redo
-    ("u" (progn (winner-undo) (setq this-command 'winner-undo)) nil)
-    ("r" (progn (winner-redo) (setq this-command 'winner-redo)) nil)
+  ;;   ;; ace-window
+  ;;   ;; ("'" other-window "other" :exit t)
+  ;;   ;; ("a" ace-window "ace")
+  ;;   ("s" ace-swap-window nil)
+  ;;   ("D" ace-delete-window nil :exit t)
+  ;;   ;; ("i" ace-maximize-window "ace-one" :exit t)
+  ;;   ;; Windows undo - redo
+  ;;   ("u" (progn (winner-undo) (setq this-command 'winner-undo)) nil)
+  ;;   ("r" (progn (winner-redo) (setq this-command 'winner-redo)) nil)
 
-    ;; ibuffer, dired, eshell, bookmarks
-    ;; ("C-i" other-window nil :exit t)
-    ("C-b" ido-switch-buffer nil :exit t)
-    ("C-f" projectile-find-file nil :exit t)
-    ("C-r" ivy-recentf nil :exit t)
-    ;; ("C-p" persp-switch nil :exit t)
-    ;; ("C-t" projectile-persp-switch-project nil :exit t)
+  ;;   ;; ibuffer, dired, eshell, bookmarks
+  ;;   ;; ("C-i" other-window nil :exit t)
+  ;;   ("C-b" ido-switch-buffer nil :exit t)
+  ;;   ("C-f" projectile-find-file nil :exit t)
+  ;;   ("C-r" ivy-recentf nil :exit t)
+  ;;   ;; ("C-p" persp-switch nil :exit t)
+  ;;   ;; ("C-t" projectile-persp-switch-project nil :exit t)
 
-    ;; other special buffers
-    ("d" sd/project-or-dired-jump nil :exit t)
-    ("b" ibuffer nil :exit t)
-    ("t" multi-term nil :exit t)
-    ("e" sd/toggle-project-eshell nil :exit t)
-    ("m" bookmark-jump-other-window nil :exit t)
-    ("M" bookmark-set nil :exit t)
-    ("g" magit-status nil :exit t)
-    ;; ("p" paradox-list-packages nil :exit t)
+  ;;   ;; other special buffers
+  ;;   ("d" sd/project-or-dired-jump nil :exit t)
+  ;;   ("b" ibuffer nil :exit t)
+  ;;   ("t" multi-term nil :exit t)
+  ;;   ("e" sd/toggle-project-eshell nil :exit t)
+  ;;   ("m" bookmark-jump-other-window nil :exit t)
+  ;;   ("M" bookmark-set nil :exit t)
+  ;;   ("g" magit-status nil :exit t)
+  ;;   ;; ("p" paradox-list-packages nil :exit t)
 
-    ;; quit
-    ("q" nil nil)
-    ("<ESC>" nil nil)
-    ("C-h" windmove-left nil :exit t)
-    ("C-j" windmove-down nil :exit t)
-    ("C-k" windmove-up nil :exit t)
-    ("C-l" windmove-right nil :exit t)
-    ("C-;" nil nil :exit t)
-    ("n" nil nil :exit t)
-    ("[" nil nil :exit t)
-    ("]" nil nil :exit t)
-    ("f" nil nil))
+  ;;   ;; quit
+  ;;   ("q" nil nil)
+  ;;   ("<ESC>" nil nil)
+  ;;   ("C-h" windmove-left nil :exit t)
+  ;;   ("C-j" windmove-down nil :exit t)
+  ;;   ("C-k" windmove-up nil :exit t)
+  ;;   ("C-l" windmove-right nil :exit t)
+  ;;   ("C-;" nil nil :exit t)
+  ;;   ("n" nil nil :exit t)
+  ;;   ("[" nil nil :exit t)
+  ;;   ("]" nil nil :exit t)
+  ;;   ("f" nil nil))
 
-  (global-unset-key (kbd "C-o"))
-  (global-set-key (kbd "C-o") 'sd/hydra-window/body)
+  ;; (global-unset-key (kbd "C-o"))
+  ;; (global-set-key (kbd "C-o") 'sd/hydra-window/body)
 
-  (defun sd/project-or-dired-jump ()
-    "If under project, jump to the root directory, otherwise
-  jump to dired of current file"
-    (interactive)
-    (if (projectile-project-p)
-        (projectile-dired)
-      (dired-jump)))
+  ;; (defun sd/project-or-dired-jump ()
+  ;;   "If under project, jump to the root directory, otherwise
+  ;; jump to dired of current file"
+  ;;   (interactive)
+  ;;   (if (projectile-project-p)
+  ;;       (projectile-dired)
+  ;;     (dired-jump)))
 #+END_SRC
 
 Kill the help window and buffer when quit.
@@ -3373,24 +3342,7 @@ Kill the help window and buffer when quit.
 #+END_SRC
 
 ** Motion
-- =C-M-=
-[[https://www.masteringemacs.org/article/effective-editing-movement][effective-editing-movement]]
-*** Command Arguments, numeric argumens
-=C-u 4= same as =C-4=, =M-4=
-*** Basic movement
-moving by line / word / 
-=C-f=, =C-b=, =C-p=, =C-n=, =M-f=, =M-b=
-=C-a=, =C-e=
-=M-m= (move first non-whitespace on this line) 
-=M-}=, =M-{=, Move forward end of paragraph
-=M-a=, =M-e=,  beginning / end of sentence
-=C-M-a=, =C-M-e=, move begining of defun
-=C-x ]=, =C-x [=, forward/backward one page
-=C-v=, =M-v=, =C-M-v=, =C-M-S-v= scroll down/up
-=M-<=, =M->=, beginning/end of buffer
-=M-r=, Repositiong point
 
-*** Moving by S-expression / List
 *** Marks
 =C-<SPC>= set marks toggle the region
 =C-u C-<SPC>= Jump to the mark, repeated calls go further back the mark ring
@@ -3452,15 +3404,6 @@ Here for movement, we can use register to save/jump position
     :ensure t)
 #+END_SRC
 
-*** Bookmarks
-As I would like use bookmakr for different buffer/files. to help to swith
-different buffer/file quickly. this setting is in Windows/buffer node
-=C-x r m= set a bookmarks
-=C-x r l= list bookmarks
-=C-x r b= jump to bookmarks
-
-*** Search
-Search, replace and hightlight will in later paragraph
 *** =Avy= for easy motion
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
   (use-package avy
@@ -3510,12 +3453,6 @@ Search, replace and hightlight will in later paragraph
 #+END_SRC
 
 ** Edit
-*** basic editting
-- cut, yank, =C-w=, =C-y=
-- save, revert
-- undo, redo - undo-tree
-- select, expand-region
-- spell check, flyspell
 
 *** Kill ring
 =helm-show-kill-ring=
@@ -3788,6 +3725,7 @@ Here are some global key bindings for basic editting
   (global-set-key (kbd "s-f") 'projectile-find-file)
   (global-set-key (kbd "s-=") 'text-scale-increase)
   (global-set-key (kbd "s--") 'text-scale-decrease)
+  (global-unset-key (kbd "s-n"))
 #+END_SRC
 
 Refer [[https://github.com/fnwiya/dotfiles/blob/c9ca79f1b22c919d9f4c3a0f944ba8281255a594/setup/.emacs.d/loader-init/_90-kill-region-or-backward-kill-word.el][kill-region-or-backward-kill-word]]
@@ -3852,24 +3790,4 @@ Use =ESC= to exit minibuffer. Also I map =Super-h= the same as =C-g=
 * Evil Mode
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
   (org-babel-load-file "~/.emacs.d/emacs-evil.org")
-#+END_SRC
-* Note
-** Check if emacs is in terminal of graphic mode
-Use =display-graphic-p= instead of =window-system=
-[[info:elisp#Window%20Systems][Window Systems]]
-** =Interactive= 
-** List operation
-*** add a element to list
-- ~add-to-list~ functions, append
-- ~push~ macro
-- ~(setcdr (last aa) (list element))~
-blog with modify list
-
-draw one line top of the windows
-* test
-This is a test.
-#+BEGIN_SRC emacs-lisp :tangle yes :results silent
-  ;; test local mode line
-  ;; (add-to-list 'load-path "~/.emacs.d/elisp")
-  ;; (require 'my-mode-line)
 #+END_SRC

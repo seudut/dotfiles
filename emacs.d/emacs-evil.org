@@ -148,11 +148,6 @@ There are three kinds key bindings
             (define-key map "\C-j" 'evil-window-down)
             (define-key map "\C-k" 'evil-window-up)
             (define-key map "\C-l" 'evil-window-right)
-            ;; (define-key map (kbd "C->") (lambda () (interactive) (evil-window-increase-width 3)))
-            ;; (define-key map (kbd "C-<") (lambda () (interactive) (evil-window-decrease-width 3)))
-            ;; (define-key map (kbd "C-+") (lambda () (interactive) (evil-window-increase-height 3)))
-            ;; (define-key map (kbd "C--") (lambda () (interactive) (evil-window-decrease-height 3)))
-            ;; (define-key map (kbd "C-=") (lambda () (interactive) (balance-windows)))
             ;; As ; has been defined as leader, so remap , to ; repeaat t/f
             (define-key map (kbd ",") 'evil-repeat-find-char))
           (list evil-normal-state-map evil-motion-state-map))
