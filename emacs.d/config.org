@@ -487,14 +487,7 @@ Install powerline mode [[https://github.com/milkypostman/powerline][powerline]]
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
   (use-package powerline
     :ensure t
-    :config
-    ;; (powerline-center-theme)
-    )
-
-  ;; (use-package smart-mode-line
-  ;;   :ensure t)
-  ;; (use-package smart-mode-line-powerline-theme
-  ;;   :ensure t)
+    :config)
 #+END_SRC
 
 Revised powerline-center-theme
