@@ -132,6 +132,11 @@ Make a temp directory for all cache/history files
   (unless (display-graphic-p)
     (xterm-mouse-mode))
 #+END_SRC
+
+*** others
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+  (setq vc-follow-symlinks t)
+#+END_SRC
 * Package Management Tools
 ** Use-package
 Using [[https://github.com/jwiegley/use-package][use-package]] to manage emacs packages
@@ -157,267 +162,6 @@ Check out [[http://tapoueh.org/emacs/el-get.html][el-get]].
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
   (use-package paradox
     :ensure t)
-#+END_SRC
-
-* Color and Fonts Settings
-** highlight current line
-#+BEGIN_SRC emacs-lisp :tangle yes :results silent
-  ;; (global-hl-line-mode)
-  ;; don't want high light current line in eshell/term mode
-  (add-hook 'prog-mode-hook 'hl-line-mode)
-  (add-hook 'text-mode-hook 'hl-line-mode)
-  (add-hook 'dired-mode-hook 'hl-line-mode)
-
-  ;; only highlight selected window
-  (setq hl-line-sticky-flag nil)
-
-  (setq-default fill-column 120)
-  (add-hook 'text-mode-hook 'turn-on-auto-fill)
-#+END_SRC
-
-** Smart Comments
-[[https://github.com/paldepind/smart-comment][smart-comments]]
-#+BEGIN_SRC emacs-lisp :tangle yes :results silent
-  (use-package smart-comment
-    :ensure t
-    :bind ("M-;" . smart-conmment))
-#+END_SRC
-
-** Font Setting
-*** syntax highlighting
-#+BEGIN_SRC emacs-lisp :tangle yes :results silent
-  (global-font-lock-mode 1)
-#+END_SRC
-
-*** [[https://github.com/i-tu/Hasklig][Hasklig]] and Source Code Pro, defined fonts family
-#+BEGIN_SRC emacs-lisp :tangle yes :results silent
-  (if window-system
-      (defvar sd/fixed-font-family
-        (cond ((x-list-fonts "Hasklig")         "Hasklig")
-              ((x-list-fonts "Source Code Pro") "Source Code Pro:weight=light") ;; weigth=light
-              ((x-list-fonts "Anonymous Pro")   "Anonymous Pro")
-              ((x-list-fonts "M+ 1mn")          "M+ 1mn"))
-        "The fixed width font based on what is installed, `nil' if not defined."))
-#+END_SRC
-
-Setting the fonts alignment issue
-#+BEGIN_SRC emacs-lisp :tangle yes :results silent
-  (if window-system
-      (when sd/fixed-font-family
-        (set-frame-font sd/fixed-font-family)
-        (set-face-attribute 'default nil :font sd/fixed-font-family :height 120)
-        (set-face-font 'default sd/fixed-font-family)))
-#+END_SRC
-
-*** Chinese fonts
-Fix the font alignment issue when both Chinese and English hybird in org-mode table. Refer [[http://coldnew.github.io/blog/2013/11-16_d2f3a/][解決 org-mode 表格內中英文對齊的問題]]
-#+BEGIN_SRC emacs-lisp :tangle yes :results silent
-  (defvar emacs-english-font "Source Code Pro" "The font name of English.")
-
-  (defvar emacs-cjk-font "STHeiti" "The font name for CJK.")
-
-  (defvar emacs-font-size-pair '(13 . 16) "Default font size pair for (english . chinese)")
-
-  (defvar emacs-font-size-pair-list
-    '(( 5 .  6) (10 . 12)
-      (11 . 14) (12 . 14)
-      (13 . 16) (14 . 16) (15 . 18) (16 . 20) (17 . 20)
-      (18 . 22) (19 . 22) (20 . 24) (21 . 26)
-      (24 . 28) (26 . 32) (28 . 34)
-      (30 . 36) (34 . 40) (36 . 44))
-    "This list is used to store matching (englis . chinese) font-size.")
-
-  (defun font-exist-p (fontname)
-    "Test if this font is exist or not."
-    (if (or (not fontname) (string= fontname ""))
-        nil
-      (if (not (x-list-fonts fontname)) nil t)))
-
-  (defun set-font (english chinese size-pair)
-    "Setup emacs English and Chinese font on x window-system."
-    (if (font-exist-p english)
-        (set-frame-font (format "%s:pixelsize=%d" english (car size-pair)) t))
-    (if (font-exist-p chinese)
-        (dolist (charset '(han cjk-misc) ;; '(kana han symbol cjk-misc bopomofo)
-                 )
-          (set-fontset-font (frame-parameter nil 'font) charset
-                            (font-spec :family chinese :size (cdr size-pair))))))
-
-  (defun emacs-step-font-size (step)
-    "Increase/Decrease emacs's font size."
-    (let ((scale-steps emacs-font-size-pair-list))
-      (if (< step 0) (setq scale-steps (reverse scale-steps)))
-      (setq emacs-font-size-pair
-            (or (cadr (member emacs-font-size-pair scale-steps))
-                emacs-font-size-pair))
-      (when emacs-font-size-pair
-        (message "emacs font size set to %.1f" (car emacs-font-size-pair))
-        (set-font emacs-english-font emacs-cjk-font emacs-font-size-pair))))
-
-  (defun increase-emacs-font-size ()
-    "Decrease emacs's font-size acording emacs-font-size-pair-list."
-    (interactive) (emacs-step-font-size 1))
-
-  (defun decrease-emacs-font-size ()
-    "Increase emacs's font-size acording emacs-font-size-pair-list."
-    (interactive) (emacs-step-font-size -1))
-#+END_SRC
-
-
-** Color Theme
-
-Loading theme should be after all required loaded, refere [[https://github.com/jwiegley/use-package][:defer]] in =use-package=
-
-#+BEGIN_SRC emacs-lisp :tangle yes :results silent
-  (setq vc-follow-symlinks t)
-  (use-package molokai-theme
-    :ensure t)
-
-  (use-package color-theme
-    :ensure t
-    :init (require 'color-theme)
-    :config (use-package color-theme-sanityinc-tomorrow
-              :ensure t
-              :no-require t
-              :config
-              ;; (load-theme 'sanityinc-tomorrow-bright t)
-              (load-theme 'molokai t)
-              ))
-
-  ;(eval-after-load 'color-theme
-  ;  (load-theme 'sanityinc-tomorrow-bright t))
-
-#+END_SRC
-
-Change the Org-mode colors 
-
-#+BEGIN_SRC emacs-lisp :tangle yes :results silent
-
-  (defun org-src-color-blocks-light ()
-    "Colors the block headers and footers to make them stand out more for lighter themes"
-    (interactive)
-    (custom-set-faces
-     '(org-block-begin-line
-      ((t (:underline "#A7A6AA" :foreground "#008ED1" :background "#EAEAFF"))))
-     '(org-block-background
-       ((t (:background "#FFFFEA"))))
-     '(org-block
-       ((t (:background "#FFFFEA"))))
-     '(org-block-end-line
-       ((t (:overline "#A7A6AA" :foreground "#008ED1" :background "#EAEAFF"))))
-
-     '(mode-line-buffer-id ((t (:foreground "#005000" :bold t))))
-     '(which-func ((t (:foreground "#008000"))))))
-
-  (defun org-src-color-blocks-dark ()
-    "Colors the block headers and footers to make them stand out more for dark themes"
-    (interactive)
-    (custom-set-faces
-     '(org-block-begin-line
-       ((t (:foreground "#008ED1" :background "#002E41"))))
-     '(org-block-background
-       ((t (:background "#000000"))))
-     '(org-block
-       ((t (:background "#000000"))))
-     '(org-block-end-line
-       ((t (:foreground "#008ED1" :background "#002E41"))))
-
-     '(mode-line-buffer-id ((t (:foreground "black" :bold t))))
-     '(which-func ((t (:foreground "green"))))))
-
-  (org-src-color-blocks-dark)
-
-#+END_SRC
-
-improve color for org-mode
-#+BEGIN_SRC emacs-lisp :tangle yes :results silent
-  (deftheme ha/org-theme "Sub-theme to beautify org mode")
-
-  (if window-system
-      (defvar sd/variable-font-tuple
-        (cond ((x-list-fonts "Source Sans Pro") '(:font "Source Sans Pro"))
-              ((x-list-fonts "Lucida Grande")   '(:font "Lucida Grande"))
-              ((x-list-fonts "Verdana")         '(:font "Verdana"))
-              ((x-family-fonts "Sans Serif")    '(:family "Sans Serif"))
-              (nil (warn "Cannot find a Sans Serif Font.  Install Source Sans Pro.")))
-        "My variable width font available to org-mode files and whatnot."))
-
-  (defun sd/org-color ()
-    (let* ((sd/fixed-font-tuple (list :font sd/fixed-font-family))
-           (base-font-color     (face-foreground 'default nil 'default))
-           (background-color    (face-background 'default nil 'default))
-           (primary-color       (face-foreground 'mode-line nil))
-           (secondary-color     (face-background 'secondary-selection nil 'region))
-           (base-height         (face-attribute 'default :height))
-           (headline           `(:inherit default :weight bold :foreground ,base-font-color)))
-      (custom-theme-set-faces 'ha/org-theme
-                              `(org-agenda-structure ((t (:inherit default :height 2.0 :underline nil))))
-                              `(org-verbatim ((t (:inherit 'fixed-pitched :foreground "#aef"))))
-                              `(org-table ((t (:inherit 'fixed-pitched))))
-                              `(org-block ((t (:inherit 'fixed-pitched))))
-                              `(org-block-background ((t (:inherit 'fixed-pitched))))
-                              `(org-block-begin-line ((t (:inherit 'fixed-pitched))))
-                              `(org-block-end-line ((t (:inherit 'fixed-pitched))))
-                              `(org-level-8 ((t (,@headline ,@sd/variable-font-tuple))))
-                              `(org-level-7 ((t (,@headline ,@sd/variable-font-tuple))))
-                              `(org-level-6 ((t (,@headline ,@sd/variable-font-tuple))))
-                              `(org-level-5 ((t (,@headline ,@sd/variable-font-tuple))))
-                              `(org-level-4 ((t (,@headline ,@sd/variable-font-tuple
-                                                            :height ,(round (* 1.1 base-height))))))
-                              `(org-level-3 ((t (,@headline ,@sd/variable-font-tuple
-                                                            :height ,(round (* 1.25 base-height))))))
-                              `(org-level-2 ((t (,@headline ,@sd/variable-font-tuple
-                                                            :height ,(round (* 1.5 base-height))))))
-                              `(org-level-1 ((t (,@headline ,@sd/variable-font-tuple
-                                                            :height ,(round (* 1.75 base-height))))))
-                              `(org-document-title ((t (,@headline ,@sd/variable-font-tuple :height 1.5 :underline nil)))))))
-
-
-#+END_SRC
-
-search text theme
-#+BEGIN_SRC emacs-lisp :tangle yes :results silent
-  (set-face-attribute 'lazy-highlight nil :background "yellow" :foreground "black" :weight 'bold)
-#+END_SRC
-
-** Rainbow-delimiter
-
-#+BEGIN_SRC emacs-lisp :tangle yes :results silent
-
-  (use-package rainbow-delimiters
-    :ensure t
-    :init
-    (add-hook 'prog-mode-hook #'rainbow-delimiters-mode))
-
-#+END_SRC
-
-** page-break-lines
-#+BEGIN_SRC emacs-lisp :tangle yes :results silent
-  (use-package page-break-lines
-    :ensure t
-    :config
-    (global-page-break-lines-mode)
-    ;; (turn-on-page-break-lines-mode)
-    )
-#+END_SRC
-
-** rainbow-mode
-
-Enable rainbow mode in emacs lisp mode
-
-#+BEGIN_SRC emacs-lisp :tangle yes :results silent
-  (use-package rainbow-mode
-    :ensure t
-  ;  :init
-  ;  (add-hook emacs-lisp-mode-hook 'rainbow-mode)
-    )
-
-#+END_SRC
-
-** cusor color
-#+BEGIN_SRC emacs-lisp :tangle yes :results silent
-  (if (display-graphic-p)
-      (set-cursor-color 'red))
 #+END_SRC
 
 * Mode-line
@@ -449,15 +193,16 @@ clean mode line, Refer to [[https://www.masteringemacs.org/article/hiding-replac
       (yas-minor-mode . "y")
       ;; default jj
       (evil-escape-mode . "")
+      (auto-fill-mode . "")
       ;; Major modes
       (lisp-interaction-mode . "λ")
       (hi-lock-mode . "")
       (python-mode . "Py")
       (emacs-lisp-mode . "EL")
-      (eshell-mode . "𝞔")
-      (dired-mode . "𝞓")
-      (ibuffer-mode . "𝞑")
-      (org-mode . "𝞞")
+      ;; (eshell-mode . "𝞔")
+      ;; (dired-mode . "𝞓")
+      ;; (ibuffer-mode . "𝞑")
+      ;; (org-mode . "𝞞")
       (nxhtml-mode . "nx"))
     "Alist for `clean-mode-line'.
 
@@ -529,7 +274,6 @@ Revised powerline-center-theme
                   '("%e"
                     (:eval
                      (let* ((active (powerline-selected-window-active))
-                            ;; (mode-line-buffer-id (if active 'sd/mode-line-buffer-id 'mode-line-buffer-id-inactive))
                             (mode-line-buffer-id (if active 'sd/mode-line-buffer-id 'powerline-inactive1))
                             (mode-line (if active 'mode-line 'mode-line-inactive))
                             (my-face1 (if active 'sd/powerline-active1 'powerline-inactive1))
@@ -546,23 +290,17 @@ Revised powerline-center-theme
                                                              (powerline-current-separator)
                                                              (cdr powerline-default-separator-dir))))
                             (lhs (list (powerline-raw "%* " my-face-buffer-modified 'l)
-                                       ;; (powerline-buffer-size mode-line 'l)
                                        (powerline-buffer-id mode-line-buffer-id 'l)
                                        (powerline-raw " " my-face1)
                                        (funcall separator-left my-face1 face1)
                                        (powerline-narrow face1 'l)
-                                       ;; (powerline-vc face1)
                                        (sd/powerline-simpler-vc (powerline-vc face1))))
                             (rhs (list (powerline-raw global-mode-string face1 'r)
                                        (powerline-raw "%4l" face1 'r)
                                        (powerline-raw ":" face1)     
                                        (powerline-raw "%3c" face1 'r)
                                        (funcall separator-right face1 my-face1)
-                                       ;; (powerline-raw " " my-face1)
-                                       (powerline-raw (format-time-string " %I:%M %p  ") my-face1 'r)
-                                       ;; (powerline-raw "%6p" my-face1 'r)
-                                       ;; (powerline-hud my-face1 face1 )
-                                       ))
+                                       (powerline-raw (format-time-string " %I:%M %p  ") my-face1 'r)))
                             (center (list (powerline-raw " " face1)
                                           (funcall separator-left face1 face2)
                                           (powerline-raw (when  (and (boundp 'evil-mode)  evil-mode) evil-mode-line-tag) face2)
@@ -580,27 +318,275 @@ Revised powerline-center-theme
                                (powerline-fill face1 (powerline-width rhs))
                                (powerline-render rhs)))))))
 
+  (setq ns-use-srgb-colorspace nil)       ;; Fix the issue in mode-line when showing triangle
   (sd/powerline-center-theme_revised)
 #+END_SRC
 
-Fix the issue in mode line when showing triangle 
+* Color and Theme
+** highlight setting
+
+- hightligh current line
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
-  (setq ns-use-srgb-colorspace nil)
+    ;; (global-hl-line-mode)
+    ;; don't want high light current line in eshell/term mode
+    (add-hook 'prog-mode-hook 'hl-line-mode)
+    (add-hook 'text-mode-hook 'hl-line-mode)
+    (add-hook 'dired-mode-hook 'hl-line-mode)
+
+    ;; only highlight selected window
+    (setq hl-line-sticky-flag nil)
+
+    ;; (setq-default fill-column 120)
+    ;; (add-hook 'text-mode-hook 'turn-on-auto-fill)
 #+END_SRC
 
-set height in mode line
+- highlight searching text
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
-  (defconst sd/mode-line-font-heigh 100
-    "Defaulet the fontsize on mode line.")
+  (set-face-attribute 'lazy-highlight nil :background "yellow" :foreground "black" :weight 'bold)
+#+END_SRC
 
-  (with-eval-after-load "powerline"
-    (when (display-graphic-p)
-      (set-face-attribute 'mode-line-inactive nil :height sd/mode-line-font-heigh)
-      (set-face-attribute 'mode-line nil :height sd/mode-line-font-heigh)
-      (let* ((base-font-size (face-attribute 'default :height)))
-        ;; 100/140;0.8
-        (set-variable 'powerline-height (/ base-font-size 10))
-        (set-variable 'powerline-text-scale-factor (/ (float sd/mode-line-font-heigh) base-font-size)))))
+** color theme
+Loading theme should be after all required loaded, refere [[https://github.com/jwiegley/use-package][:defer]] in =use-package=
+
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+  (use-package molokai-theme
+    :ensure t)
+
+  (use-package color-theme
+    :ensure t
+    :init (require 'color-theme)
+    :config (use-package color-theme-sanityinc-tomorrow
+              :ensure t
+              :no-require t
+              :config
+              (load-theme 'molokai t)))
+#+END_SRC
+
+Change the Org-mode colors 
+
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+  ;; (defun org-src-color-blocks-light ()
+  ;;   "Colors the block headers and footers to make them stand out more for lighter themes"
+  ;;   (interactive)
+  ;;   (custom-set-faces
+  ;;    '(org-block-begin-line
+  ;;      ((t (:underline "#A7A6AA" :foreground "#008ED1" :background "#EAEAFF"))))
+  ;;    '(org-block-background
+  ;;      ((t (:background "#FFFFEA"))))
+  ;;    '(org-block
+  ;;      ((t (:background "#FFFFEA"))))
+  ;;    '(org-block-end-line
+  ;;      ((t (:overline "#A7A6AA" :foreground "#008ED1" :background "#EAEAFF"))))
+
+  ;;    '(mode-line-buffer-id ((t (:foreground "#005000" :bold t))))
+  ;;    '(which-func ((t (:foreground "#008000"))))))
+
+  ;; (defun org-src-color-blocks-dark ()
+  ;;   "Colors the block headers and footers to make them stand out more for dark themes"
+  ;;   (interactive)
+  ;;   (custom-set-faces
+  ;;    '(org-block-begin-line
+  ;;      ((t (:foreground "#008ED1" :background "#002E41"))))
+  ;;    '(org-block-background
+  ;;      ((t (:background "#000000"))))
+  ;;    '(org-block
+  ;;      ((t (:background "#000000"))))
+  ;;    '(org-block-end-line
+  ;;      ((t (:foreground "#008ED1" :background "#002E41"))))
+
+  ;;    '(mode-line-buffer-id ((t (:foreground "black" :bold t))))
+  ;;    '(which-func ((t (:foreground "green"))))))
+
+  ;; (org-src-color-blocks-dark)
+
+#+END_SRC
+
+improve color for org-mode
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+  ;; (deftheme ha/org-theme "Sub-theme to beautify org mode")
+
+  ;; (if window-system
+  ;;     (defvar sd/variable-font-tuple
+  ;;       (cond ((x-list-fonts "Source Sans Pro") '(:font "Source Sans Pro"))
+  ;;             ((x-list-fonts "Lucida Grande")   '(:font "Lucida Grande"))
+  ;;             ((x-list-fonts "Verdana")         '(:font "Verdana"))
+  ;;             ((x-family-fonts "Sans Serif")    '(:family "Sans Serif"))
+  ;;             (nil (warn "Cannot find a Sans Serif Font.  Install Source Sans Pro.")))
+  ;;       "My variable width font available to org-mode files and whatnot."))
+
+  ;; (defun sd/org-color ()
+  ;;   (let* ((sd/fixed-font-tuple (list :font sd/fixed-font-family))
+  ;;          (base-font-color     (face-foreground 'default nil 'default))
+  ;;          (background-color    (face-background 'default nil 'default))
+  ;;          (primary-color       (face-foreground 'mode-line nil))
+  ;;          (secondary-color     (face-background 'secondary-selection nil 'region))
+  ;;          (base-height         (face-attribute 'default :height))
+  ;;          (headline           `(:inherit default :weight bold :foreground ,base-font-color)))
+  ;;     (custom-theme-set-faces 'ha/org-theme
+  ;;                             `(org-agenda-structure ((t (:inherit default :height 2.0 :underline nil))))
+  ;;                             `(org-verbatim ((t (:inherit 'fixed-pitched :foreground "#aef"))))
+  ;;                             `(org-table ((t (:inherit 'fixed-pitched))))
+  ;;                             `(org-block ((t (:inherit 'fixed-pitched))))
+  ;;                             `(org-block-background ((t (:inherit 'fixed-pitched))))
+  ;;                             `(org-block-begin-line ((t (:inherit 'fixed-pitched))))
+  ;;                             `(org-block-end-line ((t (:inherit 'fixed-pitched))))
+  ;;                             `(org-level-8 ((t (,@headline ,@sd/variable-font-tuple))))
+  ;;                             `(org-level-7 ((t (,@headline ,@sd/variable-font-tuple))))
+  ;;                             `(org-level-6 ((t (,@headline ,@sd/variable-font-tuple))))
+  ;;                             `(org-level-5 ((t (,@headline ,@sd/variable-font-tuple))))
+  ;;                             `(org-level-4 ((t (,@headline ,@sd/variable-font-tuple
+  ;;                                                           :height ,(round (* 1.1 base-height))))))
+  ;;                             `(org-level-3 ((t (,@headline ,@sd/variable-font-tuple
+  ;;                                                           :height ,(round (* 1.25 base-height))))))
+  ;;                             `(org-level-2 ((t (,@headline ,@sd/variable-font-tuple
+  ;;                                                           :height ,(round (* 1.5 base-height))))))
+  ;;                             `(org-level-1 ((t (,@headline ,@sd/variable-font-tuple
+  ;;                                                           :height ,(round (* 1.75 base-height))))))
+  ;;                             `(org-document-title ((t (,@headline ,@sd/variable-font-tuple :height 1.5 :underline nil)))))))
+
+
+#+END_SRC
+
+
+
+** Rainbow-delimiter
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+  (use-package rainbow-delimiters
+    :ensure t
+    :init
+    (add-hook 'prog-mode-hook #'rainbow-delimiters-mode))
+#+END_SRC
+
+** page-break-lines
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+  (use-package page-break-lines
+    :ensure t
+    :config
+    (global-page-break-lines-mode))
+#+END_SRC
+
+** rainbow-mode
+
+Enable rainbow mode in emacs lisp mode
+
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+  (use-package rainbow-mode
+    :ensure t
+  ;  :init
+  ;  (add-hook emacs-lisp-mode-hook 'rainbow-mode)
+    )
+
+#+END_SRC
+
+** cusor color
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+  (if (display-graphic-p)
+      (set-cursor-color 'red))
+#+END_SRC
+
+* Font Settingh
+** font lock
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+  (global-font-lock-mode 1)
+#+END_SRC
+
+** fonts family
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+  (defvar my-font-family
+    (cond ((x-list-fonts "Source Code Pro") "Source Code Pro"))
+    (cond ((x-list-fonts "HanziPen SC") "HanziPen SC"))
+    ;; (cond ((x-list-fonts "Source Code Pro") "Source Code Pro:weight=light"))
+    )
+
+  ;; (when (display-graphic-p)
+  ;;   (set-frame-font my-font-family)
+  ;;   (set-face-attribute 'default nil :font my-font-family :height 120)
+  ;;   (set-face-font 'default my-font-family))
+#+END_SRC
+
+** Chinese fonts 
+
+Fix the font alignment issue when both Chinese and English hybird in org-mode table. Refer [fn:1]
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+    ;; (defvar emacs-english-font "Source Code Pro:weight=light" "The font name of English.")
+    (defvar emacs-english-font "Source Code Pro" "The font name of English.")
+
+    ;; (defvar emacs-cjk-font "STHeiti" "The font name for CJK.")
+    (defvar emacs-cjk-font "HanziPen SC" "The font name for CJK.")
+
+    (defvar emacs-font-size-pair-list
+      '((5 . 6) (10 . 12)
+        (11 . 14) (12 . 14)
+        (13 . 16) (14 . 16) (15 . 18) (16 . 20) (17 . 20)
+        (18 . 22) (19 . 22) (20 . 24) (21 . 26)
+        (24 . 28) (26 . 32) (28 . 34)
+        (30 . 36) (34 . 40) (36 . 44))
+      "This list is used to store matching (englis . chinese) font-size.")
+      ;; (defvar emacs-font-size-pair '(13 . 16) "Default font size pair for (english . chinese)")
+
+      ;; (defvar emacs-font-size-pair '(13 . 16) "Default font size pair for (english . chinese)")
+
+    (defvar emacs-font-size-pair (nth 3 emacs-font-size-pair-list) "Default font size pair for (english . chinese)")
+
+    (defun font-exist-p (fontname)
+      "Test if this font is exist or not."
+      (if (or (not fontname) (string= fontname ""))
+          nil
+        (if (not (x-list-fonts fontname)) nil t)))
+
+    (defun set-font (english chinese size-pair)
+      "Setup emacs English and Chinese font on x window-system."
+      (if (font-exist-p english)
+        (set-frame-font english (format "%s:pixelsize=%d" english (car size-pair)) t)
+        ;; (set-face-attribute 'default nil :font english :height (* 10 (car size-pair)))
+        
+        ;; (set-frame-font (format "%s:pixelsize=%d" english (car size-pair)) t)
+        )
+      (if (font-exist-p chinese)
+          (dolist (charset '(han cjk-misc) ;; '(kana han symbol cjk-misc bopomofo)
+                           )
+            (set-fontset-font (frame-parameter nil 'font) charset
+                              (font-spec :family chinese :size (cdr size-pair))))))
+
+    (defun emacs-step-font-size (step)
+      "Increase/Decrease emacs's font size."
+      (let ((scale-steps emacs-font-size-pair-list))
+        (if (< step 0) (setq scale-steps (reverse scale-steps)))
+        (setq emacs-font-size-pair
+              (or (cadr (member emacs-font-size-pair scale-steps))
+                  emacs-font-size-pair))
+        (when emacs-font-size-pair
+          (message "emacs font size set to %.1f" (car emacs-font-size-pair))
+          (set-font emacs-english-font emacs-cjk-font emacs-font-size-pair))))
+
+    (defun increase-emacs-font-size ()
+      "Decrease emacs's font-size acording emacs-font-size-pair-list."
+      (interactive) (emacs-step-font-size 1))
+
+    (defun decrease-emacs-font-size ()
+      "Increase emacs's font-size acording emacs-font-size-pair-list."
+      (interactive) (emacs-step-font-size -1))
+
+  ;  (set-font emacs-english-font emacs-cjk-font '(12 . 16))
+    ;; (set-font emacs-english-font emacs-cjk-font emacs-font-size-pair)
+#+END_SRC
+
+** Org Mode font
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+  (when (display-graphic-p)
+    (setq my-ch-font "STkaiti")
+    ;; (setq face-font-rescale-alist `(("HanziPen SC" . ,(/ 16.0 13))))
+    (setq face-font-rescale-alist `((,my-ch-font . ,(/ 16.0 13))))
+    ;; (set-face-attribute 'default nil :font "Source Code Pro-13")
+    (set-face-attribute 'default nil :font "Source Code Pro:weight=light" :height 130)
+    ;; (set-fontset-font t 'han      (font-spec :family "STkaiti"))
+    ;; (set-fontset-font t 'cjk-misc (font-spec :family "STkaiti"))
+    ;; (set-face-attribute 'org-table nil :family "Ubuntu Mono" :height 120)
+    ;; (set-face-attribute 'org-table nil :family "Ubuntu Mono" :height 120)
+    (dolist (charset '(han cjk-misc))
+      (set-fontset-font (frame-parameter nil 'font) charset
+                        ;; (font-spec :family "HanziPen SC")
+                        (font-spec :family my-ch-font))))
 #+END_SRC
 
 * IDO & SMEX
@@ -856,6 +842,106 @@ Always indents header, and hide header leading starts so that no need type =#+ST
     (setq org-image-actual-width nil))
 #+END_SRC
 
+** Org theme
+*** Fix the default theme - molokai
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+  (with-eval-after-load "org"
+    (set-face-attribute 'org-block-begin-line nil :background nil :foreground nil :inherit 'shadow :slant 'italic)
+    (set-face-attribute 'org-block-end-line nil :background nil :foreground nil :inherit 'shadow :slant 'italic)
+    ;; (set-face-attribute 'org-table nil :family "Ubuntu Mono" :height (face-attribute 'default :height))
+    )
+
+  ;; (x-list-fonts "Ubuntu Mono")
+
+  ;; (set-frame-font "Ubuntu Mono")
+  ;; (x-list-fonts "WenQuanYi Zen Hei")
+  ;; (set-frame-font "WenQuanYi Zen Hei Mono")
+#+END_SRC
+*** variable-pitch-mode and fixed-pitch-mode
+[[https://yoo2080.wordpress.com/2013/05/30/monospace-font-in-tables-and-source-code-blocks-in-org-mode-proportional-font-in-other-parts/][monospace font in tables and source code blocks in org-mode, proportional font in other parts]]
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+  ;(when (display-graphic-p)
+  ;  (unless (find-font (font-spec :name "Ubuntu Mono"))
+  ;    (warn "Font not found Ubuntu Mono"))
+  ;  (unless (find-font (font-spec :name "Source Code Pro"))
+  ;    (warn "Font not found Source Code Pro"))
+  ;  (unless (find-font (font-spec :name "Source Sans Pro"))
+  ;    (warn "Font not found Source Sans Pro")))
+
+  ;; (set-face-attribute 'variable-pitch nil :font "Source Sans Pro" :height 160)
+  ;; (set-face-attribute 'fixed-pitch nil :font "Source Code Pro" :height (face-attribute 'default :height))
+
+
+  ;; Install Ubuntu Mono fonts and apply it in org-table to align Chinese fonts
+  ;; (with-eval-after-load "org"
+  ;;   (mapc (lambda (face)
+  ;;           (set-face-attribute face nil :inherit 'fixed-pitch))
+  ;;         (list
+  ;;          'org-code
+  ;;          'org-block
+  ;;          'org-block-background
+  ;;          'org-block-begin-line
+  ;;          'org-block-end-line))
+  ;;   (set-face-attribute 'org-table nil :family "Ubuntu Mono" :height 100)
+  ;;   (set-face-attribute 'org-formula nil :family "Ubuntu Mono" :height 100)
+  ;;   ;; org-special-keyword inherited from font-lock-keywork originally; as org is changed to variable-pitch, it cause
+  ;;   ;; the font in special-keywords are not monospace
+  ;;   (set-face-attribute 'org-special-keyword nil :inherit '(font-lock-keyword-face fixed-pitch))
+  ;;   ;; same as above 
+  ;;   (set-face-attribute 'org-verbatim nil :inherit '(shadow fixed-pitch))
+  ;;   (set-face-attribute 'org-block-begin-line nil :inherit 'shadow :slant 'italic :foreground nil)
+  ;;   (set-face-attribute 'org-block-end-line nil :inherit 'shadow :slant 'italic :foreground nil)
+    
+  ;;   ;; fix indent broken by variable-pitch-mode
+  ;;   ;; http://emacs.stackexchange.com/questions/26864/variable-pitch-face-breaking-indentation-in-org-mode
+  ;;   (require 'org-indent)
+  ;;   (set-face-attribute 'org-indent nil :inherit '(org-hide fixed-pitch)))
+
+  ;; (with-eval-after-load "org"
+  ;;   (let ((default-font-size (- (face-attribute 'default :height) (if (display-graphic-p) 20 0))))
+  ;;     (set-face-attribute 'org-code nil :height default-font-size)
+  ;;     (set-face-attribute 'org-block nil :height default-font-size)
+  ;;     ;; (set-face-attribute 'org-block-begin-line nil :background nil :foreground nil :inherit 'shadow :slant 'italic :height default-font-size)
+  ;;     ;; (set-face-attribute 'org-block-end-line nil :background nil :foreground nil :inherit 'shadow :slant 'italic :height default-font-size)
+  ;;     (when (find-font (font-spec :name "Ubuntu Mono"))
+  ;;       (set-face-attribute 'org-table nil :family "Ubutu Mono" :height default-font-size)
+  ;;       (set-face-attribute 'org-formula nil :family "Ubutu Mono" :height default-font-size))))
+
+  ;; (add-hook 'org-mode-hook
+  ;;           (lambda ()
+  ;;             (let ((default-font-size (- (face-attribute 'default :height) (if (display-graphic-p) 20 0))))
+  ;;               (set-face-attribute 'org-code nil :height default-font-size)
+  ;;               (set-face-attribute 'org-block nil :height default-font-size)
+  ;;               ;; (set-face-attribute 'org-block-begin-line nil :background nil :foreground nil :inherit 'shadow :slant 'italic :height default-font-size)
+  ;;               ;; (set-face-attribute 'org-block-end-line nil :background nil :foreground nil :inherit 'shadow :slant 'italic :height default-font-size)
+  ;;               (when (find-font (font-spec :name "Ubuntu Mono"))
+  ;;                 (set-face-attribute 'org-table nil :family "Ubutu Mono" :height default-font-size)
+  ;;                 (set-face-attribute 'org-formula nil :family "Ubutu Mono" :height default-font-size)))))
+#+END_SRC
+
+Also correct the face of  =org-meta-line= in =org-table= 
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+  ;; (with-eval-after-load "org"
+  ;;   (set-face-attribute 'org-meta-line nil :font "Source Code Pro" :height 120 :slant 'italic :inherit 'font-lock-comment-face))
+#+END_SRC
+*** 
+
+*** Org-head face
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+  ;; (with-eval-after-load "org"
+  ;;   (let* ((base-height (face-attribute 'variable-pitch :height))
+  ;;          (base-font-color (face-foreground 'default nil  'default)))
+  ;;     (set-face-attribute 'org-document-title nil :weight 'bold :height (+ 60 base-height))
+  ;;     (set-face-attribute 'org-level-1 nil :weight 'bold :height (+ 40 base-height))
+  ;;     (set-face-attribute 'org-level-2 nil :weight 'bold :height (+ 30 base-height))
+  ;;     (set-face-attribute 'org-level-3 nil :weight 'bold :height (+ 20 base-height))
+  ;;     (set-face-attribute 'org-level-4 nil :weight 'bold :height (+ 10 base-height))
+  ;;     (set-face-attribute 'org-level-5 nil :weight 'bold)
+  ;;     (set-face-attribute 'org-level-6 nil :weight 'bold)
+  ;;     (set-face-attribute 'org-level-7 nil :weight 'bold)
+  ;;     (set-face-attribute 'org-level-8 nil :weight 'bold)))
+#+END_SRC
+
 
 ** Org babel
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
@@ -947,7 +1033,7 @@ use [[https://github.com/sabof/org-bullets][org-bullets]] package to show utf-8 
       '((t (:foreground "green yellow")))
   "Face used for the org-bullets.")
   (setq org-bullets-face-name (quote  org-bullet-face))
-  (set-face-attribute 'org-bullet-face t :foreground "burlywood" :weight 'normal :height 1.6)
+  ;; (set-face-attribute 'org-bullet-face t :foreground "burlywood" :weight 'normal :height 1.6)
 #+END_SRC
 
 ** Worf Mode
@@ -1278,91 +1364,6 @@ extend org-mode's easy templates, refer to [[http://coldnew.github.io/coldnew-em
   (add-to-list 'org-structure-template-alist
                '("u" "#+BEGIN_SRC plantuml :file ? \n\n#+END_SRC"))
 
-#+END_SRC
-
-** Org theme
-*** variable-pitch-mode and fixed-pitch-mode
-[[https://yoo2080.wordpress.com/2013/05/30/monospace-font-in-tables-and-source-code-blocks-in-org-mode-proportional-font-in-other-parts/][monospace font in tables and source code blocks in org-mode, proportional font in other parts]]
-#+BEGIN_SRC emacs-lisp :tangle yes :results silent
-  (when (display-graphic-p)
-    (unless (find-font (font-spec :name "Ubuntu Mono"))
-      (warn "Font not found Ubuntu Mono"))
-    (unless (find-font (font-spec :name "Source Code Pro"))
-      (warn "Font not found Source Code Pro"))
-    (unless (find-font (font-spec :name "Source Sans Pro"))
-      (warn "Font not found Source Sans Pro")))
-
-  (set-face-attribute 'variable-pitch nil :font "Source Sans Pro" :height 160)
-  (set-face-attribute 'fixed-pitch nil :font "Source Code Pro" :height (face-attribute 'default :height))
-
-
-  ;; Install Ubuntu Mono fonts and apply it in org-table to align Chinese fonts
-  (with-eval-after-load "org"
-    (mapc (lambda (face)
-            (set-face-attribute face nil :inherit 'fixed-pitch))
-          (list
-           'org-code
-           'org-block
-           'org-block-background
-           'org-block-begin-line
-           'org-block-end-line))
-    (set-face-attribute 'org-table nil :family "Ubuntu Mono" :height 100)
-    (set-face-attribute 'org-formula nil :family "Ubuntu Mono" :height 100)
-    ;; org-special-keyword inherited from font-lock-keywork originally; as org is changed to variable-pitch, it cause
-    ;; the font in special-keywords are not monospace
-    (set-face-attribute 'org-special-keyword nil :inherit '(font-lock-keyword-face fixed-pitch))
-    ;; same as above 
-    (set-face-attribute 'org-verbatim nil :inherit '(shadow fixed-pitch))
-    (set-face-attribute 'org-block-begin-line nil :inherit 'shadow :slant 'italic :foreground nil)
-    (set-face-attribute 'org-block-end-line nil :inherit 'shadow :slant 'italic :foreground nil)
-    
-    ;; fix indent broken by variable-pitch-mode
-    ;; http://emacs.stackexchange.com/questions/26864/variable-pitch-face-breaking-indentation-in-org-mode
-    (require 'org-indent)
-    (set-face-attribute 'org-indent nil :inherit '(org-hide fixed-pitch)))
-
-  ;; (with-eval-after-load "org"
-  ;;   (let ((default-font-size (- (face-attribute 'default :height) (if (display-graphic-p) 20 0))))
-  ;;     (set-face-attribute 'org-code nil :height default-font-size)
-  ;;     (set-face-attribute 'org-block nil :height default-font-size)
-  ;;     (set-face-attribute 'org-block-begin-line nil :background nil :foreground nil :inherit 'shadow :slant 'italic :height default-font-size)
-  ;;     (set-face-attribute 'org-block-end-line nil :background nil :foreground nil :inherit 'shadow :slant 'italic :height default-font-size)
-  ;;     (when (find-font (font-spec :name "Ubuntu Mono"))
-  ;;       (set-face-attribute 'org-table nil :family "Ubutu Mono" :height default-font-size)
-  ;;       (set-face-attribute 'org-formula nil :family "Ubutu Mono" :height default-font-size))))
-
-  (add-hook 'org-mode-hook
-            (lambda ()
-              (let ((default-font-size (- (face-attribute 'default :height) (if (display-graphic-p) 20 0))))
-                (set-face-attribute 'org-code nil :height default-font-size)
-                (set-face-attribute 'org-block nil :height default-font-size)
-                (set-face-attribute 'org-block-begin-line nil :background nil :foreground nil :inherit 'shadow :slant 'italic :height default-font-size)
-                (set-face-attribute 'org-block-end-line nil :background nil :foreground nil :inherit 'shadow :slant 'italic :height default-font-size)
-                (when (find-font (font-spec :name "Ubuntu Mono"))
-                  (set-face-attribute 'org-table nil :family "Ubutu Mono" :height default-font-size)
-                  (set-face-attribute 'org-formula nil :family "Ubutu Mono" :height default-font-size)))))
-#+END_SRC
-
-Also correct the face of  =org-meta-line= in =org-table= 
-#+BEGIN_SRC emacs-lisp :tangle yes :results silent
-  (with-eval-after-load "org"
-    (set-face-attribute 'org-meta-line nil :font "Source Code Pro" :height 120 :slant 'italic :inherit 'font-lock-comment-face))
-#+END_SRC
-
-*** Org-head face
-#+BEGIN_SRC emacs-lisp :tangle yes :results silent
-  ;; (with-eval-after-load "org"
-  ;;   (let* ((base-height (face-attribute 'variable-pitch :height))
-  ;;          (base-font-color (face-foreground 'default nil  'default)))
-  ;;     (set-face-attribute 'org-document-title nil :weight 'bold :height (+ 60 base-height))
-  ;;     (set-face-attribute 'org-level-1 nil :weight 'bold :height (+ 40 base-height))
-  ;;     (set-face-attribute 'org-level-2 nil :weight 'bold :height (+ 30 base-height))
-  ;;     (set-face-attribute 'org-level-3 nil :weight 'bold :height (+ 20 base-height))
-  ;;     (set-face-attribute 'org-level-4 nil :weight 'bold :height (+ 10 base-height))
-  ;;     (set-face-attribute 'org-level-5 nil :weight 'bold)
-  ;;     (set-face-attribute 'org-level-6 nil :weight 'bold)
-  ;;     (set-face-attribute 'org-level-7 nil :weight 'bold)
-  ;;     (set-face-attribute 'org-level-8 nil :weight 'bold)))
 #+END_SRC
 
 ** Org Blog
@@ -3716,6 +3717,9 @@ Here are some global key bindings for basic editting
   ;; project operation
   (global-set-key (kbd "s-p") 'projectile-switch-open-project)
   (global-set-key (kbd "s-f") 'projectile-find-file)
+
+  ;; (global-set-key (kbd "s-=") 'increase-emacs-font-size)
+  ;; (global-set-key (kbd "s--") 'decrease-emacs-font-size)
   (global-set-key (kbd "s-=") 'text-scale-increase)
   (global-set-key (kbd "s--") 'text-scale-decrease)
   (global-unset-key (kbd "s-n"))
@@ -3784,3 +3788,12 @@ Use =ESC= to exit minibuffer. Also I map =Super-h= the same as =C-g=
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
   (org-babel-load-file "~/.emacs.d/emacs-evil.org")
 #+END_SRC
+
+* Footnotes
+
+[fn:1] [[http://coldnew.github.io/blog/2013/11-16_d2f3a/][解決 org-mode 表格內中英文對齊的問題]] 
+
+
+
+
+
