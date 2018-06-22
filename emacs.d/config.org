@@ -581,8 +581,6 @@ Fix the font alignment issue when both Chinese and English hybird in org-mode ta
     (set-face-attribute 'default nil :font "Source Code Pro:weight=light" :height 130)
     ;; (set-fontset-font t 'han      (font-spec :family "STkaiti"))
     ;; (set-fontset-font t 'cjk-misc (font-spec :family "STkaiti"))
-    ;; (set-face-attribute 'org-table nil :family "Ubuntu Mono" :height 120)
-    ;; (set-face-attribute 'org-table nil :family "Ubuntu Mono" :height 120)
     (dolist (charset '(han cjk-misc))
       (set-fontset-font (frame-parameter nil 'font) charset
                         ;; (font-spec :family "HanziPen SC")
@@ -850,12 +848,6 @@ Always indents header, and hide header leading starts so that no need type =#+ST
     (set-face-attribute 'org-block-end-line nil :background nil :foreground nil :inherit 'shadow :slant 'italic)
     ;; (set-face-attribute 'org-table nil :family "Ubuntu Mono" :height (face-attribute 'default :height))
     )
-
-  ;; (x-list-fonts "Ubuntu Mono")
-
-  ;; (set-frame-font "Ubuntu Mono")
-  ;; (x-list-fonts "WenQuanYi Zen Hei")
-  ;; (set-frame-font "WenQuanYi Zen Hei Mono")
 #+END_SRC
 *** variable-pitch-mode and fixed-pitch-mode
 [[https://yoo2080.wordpress.com/2013/05/30/monospace-font-in-tables-and-source-code-blocks-in-org-mode-proportional-font-in-other-parts/][monospace font in tables and source code blocks in org-mode, proportional font in other parts]]
@@ -1417,7 +1409,7 @@ and Defined keys, using vi keybindings, Refer abo-abo's setting [[https://github
 ** Eshell alias
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
   (defalias 'e 'find-file)
-  (defalias 'ff 'find-file)
+  (defalias 'ff 'find-file-other-window)
   (defalias 'ee 'find-files)
 #+END_SRC
 
@@ -1431,20 +1423,12 @@ set default eshell history folder
 #+BEGIN_SRC emacs-lisp :tangle yes :results silent
   (require 'utilities)
 
-  ;; (add-hook 'eshell-mode-hook (lambda ()
-  ;;                               (local-set-key (kbd "C-l") 'sd/eshell-clear-buffer)))
-  ;; (add-hook 'eshell-mode-map (lambda () (interactive)
-  ;;                              (define-key eshell-mode-map (kbd "<tab>") 'completion-at-point)))
-
   (defun sd/eshell-hook ()
     (interactive)
     (define-key eshell-mode-map (kbd "C-j") #'eshell-send-input)
     (define-key eshell-mode-map (kbd "C-l") #'sd/eshell-clear-buffer))
 
   (add-hook 'eshell-mode-hook #'sd/eshell-hook)
-
-
-  ;; (add-hook 'eshell-mode-hook (apply-partially #'local-set-key (kbd "C-l") 'sd/eshell-clear-buffer))
 #+END_SRC
 
 ** Toggle Eshell

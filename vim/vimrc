@@ -199,8 +199,9 @@ inoremap <C-U> <C-G>u<C-U>
 inoremap <C-a>	<Home>
 inoremap <C-e>	<End>
 inoremap <C-D>	<Del>
-inoremap <C-b>	<S-Left>
-inoremap <C-f>	<S-Right>
+inoremap <C-b>	<Left>
+inoremap <C-f>	<Right>
+inoremap <C-/> <Esc>ui
 imap <A-d>	<S-Right><C-w>
 " }}}
 " Command mode ------------------------------------------------------- {{{

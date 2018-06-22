@@ -1,6 +1,6 @@
 "3.8.2 (created: 2014/02/13 23:52:43)
 " To compatible with some pluins, and bugs
-" Keep Firefox at the version of 50.0
+" Keep Firefox at the version of (50.0) 55.0
 " And TabTree 1.5.1
 cd ~
 
@@ -63,7 +63,8 @@ set gui=nonavigation
 noremap <C-SPACE> <C-^>
 noremap v <C-^>
 " fix the issue on firefox49 history not working, https://github.com/vimperator/vimperator-labs/issues/590
-"js services.services.autoCompleteSearch.class_="@mozilla.org/autocomplete/search;1?name=unifiedcomplete"
+" js services.services.autoCompleteSearch.class_="@mozilla.org/autocomplete/search;1?name=unifiedcomplete"
+" js services.services.autoCompleteSearch.class_="@mozilla.org/autocomplete/search;1?name=unifiedcomplete"
 
 "https://github.com/vimperator/vimperator-labs/issues/740
 "set activate=
