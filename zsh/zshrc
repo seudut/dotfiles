@@ -112,7 +112,10 @@ alias cp='cp -i'
 alias ln='ln -i'
 
 #alias svn='colorsvn'
-alias sed='/usr/local/bin/gsed'
+if [[ $OSNAME == 'Darwin' ]]; then
+    [[ -f '/usr/local/bin/gsed' ]] || echo "zshrc warning: no gsed"
+fi
+[[ -f '/usr/local/bin/gsed' ]] && alias sed='/usr/local/bin/gsed'
 
 ##### Git 
 alias 'gs'='git status'
