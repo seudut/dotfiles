@@ -84,6 +84,7 @@ set confirm
 set nostartofline   " don't jump to first character when paging
 set wrap
 set expandtab
+set backspace=indent,eol,start
 "set textwidth, formatoptions for chinese
 set formatoptions+=m
 set colorcolumn=+1
@@ -119,6 +120,8 @@ endif
 " Mappings ---------------------------------------------------------------- {{{
 let mapleader = ";"
 map Q gq
+nnoremap Q <Nop>
+nnoremap gq <Nop>
 " Normal mode ------------------------------------------------------------- {{{
 nnoremap Y	y$
 nnoremap ' `
