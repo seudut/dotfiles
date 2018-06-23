@@ -334,3 +334,14 @@ export PATH="$HOME/.bin":$PATH;
 if which pyenv > /dev/null; then eval "$(pyenv init -)"; fi
 export PYENV_ROOT="$HOME/.pyenv"
 export PATH="$PYENV_ROOT/bin:$PATH"
+
+# tmux variable
+export TMUX_IP=`echo $SSH_CONNECTION | awk '{print $3}'`
+if [[ $OSNAME == 'Darwin' ]]; then
+    ip=`ifconfig | grep "inet .*broadcast" | head -1 | awk '{print $2}'`
+    [[ $TMUX_IP = "" ]] && TMUX_IP=$ip
+else
+    ip=`ip addr | grep 'inet .*global' | head -1 | sed 's/^.*inet //g; s/\/.*$//g'`
+    [[ $TMUX_IP = "" ]] && TMUX_IP=$ip
+fi
+
