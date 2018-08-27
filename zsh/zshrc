@@ -295,6 +295,7 @@ export MANPATH=$MANPATH:/usr/local/man
 
 export MANPATH=$MANPATH:${HOME}/perl5/man
 export PATH=$PATH:"${HOME}/scripts"
+export PATH=$PATH:"/sbin:/usr/sbin"
 ## hunspell path
 export DICPATH="/usr/local/share/hunspell/"
 
