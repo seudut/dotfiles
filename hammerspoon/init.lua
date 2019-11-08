@@ -16,27 +16,18 @@ hs.alert.show("Config loaded")
 --end)
 
 -- Donw : For firefox vimperator
-hs.hotkey.bind({"cmd,", "ctrl"}, "n", function()
+hs.hotkey.bind({"cmd", "ctrl"}, "n", function()
       hs.eventtap.keyStroke({}, 'down')
 end)
 
 -- Up
-hs.hotkey.bind({"cmd,", "ctrl"}, "p", function()
+hs.hotkey.bind({"cmd", "ctrl"}, "p", function()
       hs.eventtap.keyStroke({}, 'up')
 end)
 
--- Reacting to application events
--- Move all Finder in front
-function applicationWatcher(appName, eventType, appObject)
-    if (eventType == hs.application.watcher.activated) then
-        if (appName == "Finder") then
-            -- Bring all Finder windows forward when one gets activated
-            appObject:selectMenuItem({"Window", "Bring All to Front"})
-        end
-    end
-end
-appWatcher = hs.application.watcher.new(applicationWatcher)
-appWatcher:start()
+hs.hotkey.bind({"ctrl"},"[", function()
+    hs.eventtap.keyStroke({}, 'escape' )
+end)
 
 
 -- Window Movement
@@ -46,10 +37,10 @@ appWatcher:start()
 -- CTRL + ALT + Up - Go "fullscreen".
 -- CTRL + ALT + Down - Center window, covering 2/3 of screen size.
 --
- 
 function move_window(direction)
     return function()
-        local win      = hs.window.focusedWindow()
+        --local win      = hs.window.focusedWindow()
+        local win      = hs.window.frontmostWindow()
         local app      = win:application()
         local app_name = app:name()
         local f        = win:frame()
@@ -103,6 +94,21 @@ hs.hotkey.bind(hyper, "k", move_window("up"))
 hs.hotkey.bind(hyper, "j", move_window("down"))
 hs.hotkey.bind(hyper, "m", move_window("max"))
 
+
+
+---- Toggle iTerm2
+-- https://kalis.me/setup-hyper-key-hammerspoon-macos/
+hs.hotkey.bind({"cmd"}, "I", function() 
+    hs.osascript.applescriptFromFile("./applescript/iterm2_toggle.applescript")
+end)
+
+
+---- Toggle Emacs
+hs.hotkey.bind({"cmd"}, "O", function() 
+    hs.osascript.applescriptFromFile("./applescript/emacs_toggle.applescript")
+end)
+
+-----
 -- Search and dictionary
 -- Past and copy
 -- App quick startup
@@ -110,36 +116,36 @@ hs.hotkey.bind(hyper, "m", move_window("max"))
 -- Use SpoonInstall,
 -- http://zzamboni.org/post/using-spoons-in-hammerspoon/
 -- https://github.com/Hammerspoon/Spoons/raw/master/Spoons/SpoonInstall.spoon.zip
-if hs.spoons == nil then
-   hs.spoons=require('hs.spoons')
-end
-
-
+-----if hs.spoons == nil then
+-----   hs.spoons=require('hs.spoons')
+-----end
+-----
+-----
 hs.loadSpoon ("SpoonInstall")
 spoon.SpoonInstall.use_syncinstall = true
 INSTALL = spoon.SpoonInstall
-
---------------------------------------------------------------------------------
--- MouseCircle  http://www.hammerspoon.org/Spoons/MouseCircle.html
-INSTALL:andUse("MouseCircle",
-                {
-                   disable = false,
-                   config = {
-                      color = hs.drawing.color.x11.rebeccapurple
-                   },
-                   hotkeys = {
-                      show = { {"cmd", "alt", "ctrl"}, "m"}
-                   }
-                }
-)
-
---------------------------------------------------------------------------------
+-----
+-------------------------------------------------------------------------------------
+------- MouseCircle  http://www.hammerspoon.org/Spoons/MouseCircle.html
+-----INSTALL:andUse("MouseCircle",
+-----                {
+-----                   disable = false,
+-----                   config = {
+-----                      color = hs.drawing.color.x11.rebeccapurple
+-----                   },
+-----                   hotkeys = {
+-----                      show = { {"cmd", "alt", "ctrl"}, "m"}
+-----                   }
+-----                }
+-----)
+-----
+-------------------------------------------------------------------------------------
 -- TextClipboardHistory
 INSTALL:andUse("TextClipboardHistory",
                {
                   config = {
                      show_in_menubar = false,
-                     hist_size = 500,
+                     hist_size = 300,
                   },
                   hotkeys = {
                      toggle_clipboard = { { "cmd", "shift" }, "v"}
@@ -149,68 +155,114 @@ INSTALL:andUse("TextClipboardHistory",
 )
 
 
+-------------------------------------------------------------------------------------
+------- Seal -- http://www.hammerspoon.org/Spoons/Seal.html
+-----INSTALL:andUse("Seal",
+-----               {
+-----                  hotkeys = { show = { {"cmd", "ctrl", "alt"}, "space" } },
+-----                  fn = function(s)
+-----                     s:loadPlugins({"apps", "calc", "safari_bookmarks", "screencapture", "useractions"})
+-----                     s.plugins.safari_bookmarks.always_open_with_safari = false
+-----                     s.plugins.useractions.actions =
+-----                        {
+-----                           ["Hammerspoon docs webpage"] = {
+-----                              url = "http://hammerspoon.org/docs/",
+-----                              icon = hs.image.imageFromName(hs.image.systemImageNames.ApplicationIcon),
+-----                              -- hotkey = { hyper, "h" }
+-----                           },
+-----                           ["Leave corpnet"] = {
+-----                              fn = function()
+-----                                 spoon.WiFiTransitions:processTransition('foo', 'corpnet01')
+-----                              end,
+-----                              icon = swisscom_logo,
+-----                           },
+-----                           ["Arrive in corpnet"] = {
+-----                              fn = function()
+-----                                 spoon.WiFiTransitions:processTransition('corpnet01', 'foo')
+-----                              end,
+-----                              icon = swisscom_logo,
+-----                           },
+-----                           ["Translate using Leo"] = {
+-----                              url = "http://dict.leo.org/ende/index_de.html#/search=${query}",
+-----                              icon = 'favicon',
+-----                              keyword = "leo",
+-----                           },
+-----                           ["Tell me something"] = {
+-----                              keyword = "tellme",
+-----                              fn = function(str) hs.alert.show(str) end,
+-----                           }
+-----                        }
+-----                     s:refreshAllCommands()
+-----                  end,
+-----                  start = true,
+-----               }
+-----)
 --------------------------------------------------------------------------------
--- Seal -- http://www.hammerspoon.org/Spoons/Seal.html
-INSTALL:andUse("Seal",
-               {
-                  hotkeys = { show = { {"cmd", "ctrl", "alt"}, "space" } },
-                  fn = function(s)
-                     s:loadPlugins({"apps", "calc", "safari_bookmarks", "screencapture", "useractions"})
-                     s.plugins.safari_bookmarks.always_open_with_safari = false
-                     s.plugins.useractions.actions =
-                        {
-                           ["Hammerspoon docs webpage"] = {
-                              url = "http://hammerspoon.org/docs/",
-                              icon = hs.image.imageFromName(hs.image.systemImageNames.ApplicationIcon),
-                              -- hotkey = { hyper, "h" }
-                           },
-                           ["Leave corpnet"] = {
-                              fn = function()
-                                 spoon.WiFiTransitions:processTransition('foo', 'corpnet01')
-                              end,
-                              icon = swisscom_logo,
-                           },
-                           ["Arrive in corpnet"] = {
-                              fn = function()
-                                 spoon.WiFiTransitions:processTransition('corpnet01', 'foo')
-                              end,
-                              icon = swisscom_logo,
-                           },
-                           ["Translate using Leo"] = {
-                              url = "http://dict.leo.org/ende/index_de.html#/search=${query}",
-                              icon = 'favicon',
-                              keyword = "leo",
-                           },
-                           ["Tell me something"] = {
-                              keyword = "tellme",
-                              fn = function(str) hs.alert.show(str) end,
-                           }
-                        }
-                     s:refreshAllCommands()
-                  end,
-                  start = true,
-               }
-)
---------------------------------------------------------------------------------
--- Focus the last used window.
-local function focusLastFocused()
-    local wf = hs.window.filter
-    local lastFocused = wf.defaultCurrentSpace:getWindows(wf.sortByFocusedLast)
-    if #lastFocused > 0 then lastFocused[1]:focus() end
+--
+--
+---- -- Focus the last used window.
+---- local function focusLastFocused()
+----     local wf = hs.window.filter
+----     local lastFocused = wf.defaultCurrentSpace:getWindows(wf.sortByFocusedLast)
+----     if #lastFocused > 0 then lastFocused[1]:focus() end
+---- end
+---- 
+---- -- Create the chooser.
+---- -- On selection, copy the emoji and type it into the focused application.
+---- local chooser = hs.chooser.new(function(choice)
+----     if not choice then focusLastFocused(); return end
+----     hs.pasteboard.setContents(choice["chars"])
+----     focusLastFocused()
+----     hs.eventtap.keyStrokes(hs.pasteboard.getContents())
+---- end)
+---- 
+---- chooser:searchSubText(true)
+---- chooser:choices(choices)
+---- 
+---- chooser:rows(5)
+---- chooser:bgDark(true)
+---- hs.hotkey.bind({"cmd", "alt"}, "E", function() chooser:show() end)
+
+----require("remap_alt_ctrl_2_escape")
+require("remap_alt_2_escape")
+
+--- remapp, as in vimum shift-space now working when space is mapped
+--mapSpaceShift = hs.hotkey.new({"shift"}, 'space', "mm", function()
+--    hs.alert.show("hah");
+--    hs.eventtap.keyStroke({}, 'PageUp')
+--end, nil, nil)
+--
+--- remapp, as in vimum shift-space now working when space is mapped
+mapSpaceShift = hs.hotkey.new({"shift"}, 'space', function()
+    hs.eventtap.keyStroke({}, 'PageUp')
+end, nil, nil)
+
+function applicationWatcher(appName, eventType, appObject)
+    if (appName == "Google Chrome" and eventType == hs.application.watcher.activated) then
+        mapSpaceShift:enable()
+    elseif (appName == "Google Chrome" and eventType == hs.application.watcher.deactivated) then
+        mapSpaceShift:disable()
+    end
 end
+appWatcher = hs.application.watcher.new(applicationWatcher)
+appWatcher:start()
 
--- Create the chooser.
--- On selection, copy the emoji and type it into the focused application.
-local chooser = hs.chooser.new(function(choice)
-    if not choice then focusLastFocused(); return end
-    hs.pasteboard.setContents(choice["chars"])
-    focusLastFocused()
-    hs.eventtap.keyStrokes(hs.pasteboard.getContents())
-end)
+hs.window.filter.ignoreAlways['Mail'] = true
+hs.window.filter.ignoreAlways['AppCenter'] = true
+hs.window.filter.ignoreAlways['Image Viewer'] = true
+hs.window.filter.ignoreAlways['LarkWindowApp'] = true
+hs.window.filter.ignoreAlways['Calendar'] = true
+hs.window.filter.ignoreAlways['网易有道词典'] = true
+hs.window.filter.ignoreAlways['IM'] = true
+hs.window.filter.ignoreAlways['Space'] = true
+hs.window.filter.ignoreAlways['Sourcetree Networking'] = true
+hs.window.filter.ignoreAlways['Xcode'] = true
+hs.window.filter.ignoreAlways['SDK'] = true
 
-chooser:searchSubText(true)
-chooser:choices(choices)
-
-chooser:rows(5)
-chooser:bgDark(true)
-hs.hotkey.bind({"cmd", "alt"}, "E", function() chooser:show() end)
+--mapSpaceShift = hs.hotkey.new({"shift"}, 'space', nil, function()
+--    hs.eventtap.keyStroke({}, 'PageUp')
+--end)
+--
+--hs.window.filter.new('Google Chrome')
+--    :subscribe(hs.window.filter.windowFocused,function() mapSpaceShift:enable() end)
+--    :subscribe(hs.window.filter.windowUnfocused,function() mapSpaceShift:disable() end)
