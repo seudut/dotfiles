@@ -437,6 +437,7 @@ let g:gutentags_cache_dir = s:vim_tags
 if !isdirectory(s:vim_tags)
    silent! call mkdir(s:vim_tags, 'p')
 endif
+let g:gutentags_modules = ['ctags', 'gtags_cscope']
 
 " 配置 ctags 的参数 "
 let g:gutentags_ctags_extra_args = ['--fields=+niazS', '--extra=+q']
