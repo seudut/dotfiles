@@ -1,0 +1,321 @@
+#+TITLE:Emacs Evil Config
+#+AUTHOR: Peng Li
+#+EMAIL: seudut@gmail.com
+ 
+As the =Evil= mode is significant, and has lots of configurations, it's better put them 
+in a separate file.
+
+* Evil mode 
+** Install and basic config
+https://www.emacswiki.org/emacs/Evil.
+=global-evil-leader-mode= should be set before =evil-mode=.
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+  (use-package evil
+    :ensure t
+    :init
+    ;; (setq evil-default-state 'emacs)
+    (setq evil-emacs-state-cursor '("red" box))
+    (setq evil-normal-state-cursor '("green" box))
+    (setq evil-motion-state-cursor '("green" box))
+    (setq evil-visual-state-cursor '("orange" box))
+    (setq evil-insert-state-cursor '("red" bar))
+    (setq evil-replace-state-cursor '("red" bar))
+    (setq evil-operator-state-cursor '("red" hollow))
+    ;; others, don't move back cursor when exit insert mode
+    ;; (setq evil-move-cursor-back nil)
+    :config
+    (use-package evil-leader
+      :ensure t
+      :init
+      :config
+      (evil-leader/set-leader ";")
+      (global-evil-leader-mode))
+    ;; (require 'evil-leader)
+    (evil-mode t))
+
+  (add-hook 'prog-mode-hook #'(lambda ()
+                                (modify-syntax-entry ?_ "w")
+                                ;; (modify-syntax-entry ?- "w")
+                                ))
+#+END_SRC
+
+** Initial mode and state config
+- Use =normal= as the default state but exclude some special modes.
+- Bind =[escape]=  to =normal= mode. This only works on GUI Emacs. If need to work on Terminal, shoudl also bind =(kbd
+  "<ESC>)=, but this will make the combined key =M-= not wor.
+- Not alias =insert= state to =emacs= state, as it break some vi's feature in insert mode, such as column edit. Instead,
+  here add a advice function to change the sate as emacs when enter insert mode, but this is only limited in some
+  certain modes.
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+  (defvar my-mode-list-to-use-emacs-as-insert '(emacs-lisp-mode
+                                                org-mode
+                                                eshell-mode
+                                                lisp-interaction-mode)
+    "The mode in this list will consider insert state as emacs state by adding `advice-add' below.")
+
+  (defvar my-modes-use-emacs-init '(emacs-lisp-mode
+                                    org-mode
+                                    lisp-interaction-mode
+                                    eshell-mode
+                                    text-mode
+                                    package-menu-mode
+                                    paradox-menu-mode)
+    "The mode in this list will use emacs sate as a initial evil state.")
+
+  (with-eval-after-load "evil"
+    (setq evil-default-state 'normal)
+      ;; (defalias 'evil-inset-mode 'evil-emacs-state)
+    (define-key evil-emacs-state-map [escape] 'evil-normal-state)
+    ;; (define-key evil-emacs-state-map (kbd "<ESC>") 'evil-normal-state)
+    (dolist (mode my-modes-use-emacs-init) (evil-set-initial-state mode 'emacs))
+    (advice-add 'evil-insert-state :after (lambda (&optional arg)
+                                            (when (memq major-mode my-mode-list-to-use-emacs-as-insert)
+                                              (evil-emacs-state)))))
+#+END_SRC
+
+* Evil-escape
+[[https://github.com/syl20bnr/evil-escape][evil-escape]], escape from anything with customizable key sequence.
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+  (use-package evil-escape
+    :ensure t
+    :init
+    (setq-default evil-escape-delay 0.2)
+    (setq-default evil-escape-key-sequence "jj")
+    (setq-default evil-escape-excluded-states '(normal visual motion emacs))
+    (setq-default evil-escape-excluded-major-modes '(emacs-lisp-mode org-mode))
+    :config
+    (evil-escape-mode))
+#+END_SRC
+
+* other extention
+** Evil-matchit
+[[https://github.com/redguardtoo/evil-matchit]]
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+  (use-package evil-matchit
+    :ensure t
+    :config
+    (global-evil-matchit-mode 1))
+#+END_SRC
+
+** Evil-visualstar
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+  (use-package evil-visualstar
+    :ensure t
+    :init
+    (setq evil-visualstar/persistent t)
+    :config
+    (global-evil-visualstar-mode))
+#+END_SRC
+
+** Evil-surround
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+  (use-package evil-surround
+    :ensure t
+    :config
+    (global-evil-surround-mode 1))
+#+END_SRC
+* Key bindings
+** Evil-Leader
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+  (with-eval-after-load "evil-leader"
+    (cl-loop for (key . fun ) in '(("f" . sd/swith-to-buffer)
+                                   ("b" . projectile-find-file)
+                                   ("r" . ivy-recentf)
+                                   ("w" . save-buffer)
+                                   ("v" . evil-window-vsplit)
+                                   ("s" . evil-window-split)
+                                   ("t" . sd/hydra-window-layout/body)
+                                   ("p" . sd/hydra-projectile/body)
+                                   ("q" . evil-quit)
+                                   ("g" . magit-status)
+                                   ("e" . sd/toggle-project-eshell)
+                                   ("d" . dired)
+                                   ("h" . help))
+             do (evil-leader/set-key key fun)))
+#+END_SRC
+** Basic state bindings
+There are three kinds key bindings
+- prefix key is the leader key, defined by evil-leader.
+- prefix key is the =Ctrl=,
+- prefix key is =\=, 
+
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+  (with-eval-after-load "evil"
+    (mapc (lambda (map)
+            (define-key map "\C-W s" 'evil-window-split)
+            (define-key map "\C-W v" 'evil-window-vsplit)
+            (define-key map "\C-h" 'evil-window-left)
+            (define-key map "\C-j" 'evil-window-down)
+            (define-key map "\C-k" 'evil-window-up)
+            (define-key map "\C-l" 'evil-window-right)
+            ;; As ; has been defined as leader, so remap , to ; repeaat t/f
+            (define-key map (kbd ",") 'evil-repeat-find-char))
+          (list evil-normal-state-map evil-motion-state-map))
+
+    ;; insert state
+    (cl-loop for (key-sequence . fun) in '(("C-;" . iedit-mode)
+                                           ("C-n" . next-line)
+                                           ("C-p" . previous-line)
+                                           ("C-a" . move-beginning-of-line)
+                                           ("C-e" . move-end-of-line)
+                                           ("C-h" . delete-backward-char)
+                                           ("C-k" . kill-line))
+             do (define-key evil-insert-state-map (kbd key-sequence) fun))
+
+    ;; remap some vim keybindings
+    (dolist (map (list
+                  evil-normal-state-map
+                  evil-visual-state-map
+                  evil-motion-state-map))
+      (cl-loop for (keys . fun) in '(("'" . evil-goto-mark)
+                                     ("`" . evil-goto-mark-line))
+               do (define-key map (kbd keys) fun)))
+    ;; motion mode
+    (define-key evil-motion-state-map (kbd "SPC") 'scroll-up-command)
+    (define-key evil-motion-state-map (kbd "S-SPC") 'scroll-down-command))
+#+END_SRC
+
+
+Let the search highlight persistent, https://stackoverflow.com/questions/25768036/emacs-evil-non-incremental-search-and-persistent-highlighting/34252236
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+  (evil-select-search-module 'evil-search-module 'evil-search)
+
+  (with-eval-after-load "evil"
+    (define-key evil-normal-state-map "\\" nil)
+    (define-key evil-normal-state-map "\\\\" #'evil-ex-nohighlight)
+    (define-key evil-normal-state-map "\\f" #'describe-function)
+    (define-key evil-normal-state-map "\\v" #'describe-variable))
+#+END_SRC
+
+Go, =g= command 
+
+- =g#= =g*= :: same as =#=, =*=,  but without using "\<" and "\>"
+- =g$= :: same as =$=
+- =g&= :: repease last =:s= on all lines
+- g', g`, like ' ` but without changing the jumplist
+- g+, g-
+- g; :: 
+gs
+
+** Eshell
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+  (add-hook 'eshell-mode-hook (lambda ()
+                                (when (and (boundp 'evil-mode) evil-mode)
+                                  (dolist (key-fun '(("f" . sd/swith-to-buffer)
+                                                     ("b" . projectile-find-file)
+                                                     ("r" . ivy-recentf)
+                                                     ("t" . sd/hydra-window-layout/body)
+                                                     ("e" . sd/toggle-project-eshell)
+                                                     ("d" . dired)
+                                                     ("'" . other-window)
+                                                     ("h" . help)
+                                                     ("q" . evil-quit)))
+                                    (evil-define-key 'emacs eshell-mode-map (kbd (concat evil-leader/leader (car key-fun))) (cdr key-fun))))))
+#+END_SRC
+** Dired mode
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+  (with-eval-after-load "evil"
+    ;; file and directory explore
+    (define-key dired-mode-map (kbd "C-h") nil)
+    (define-key dired-mode-map (kbd "C-k") nil)
+    (evil-define-key 'normal dired-mode-map (kbd "H") 'dired-omit-mode)
+    (evil-define-key 'normal dired-mode-map (kbd "g") 'dired-goto-file)
+    (evil-define-key 'normal dired-mode-map (kbd "r") 'revert-buffer)
+    (evil-define-key 'normal dired-mode-map (kbd "i") 'dired-maybe-insert-subdir)
+    (evil-define-key 'normal dired-mode-map (kbd "TAB") 'diredp-next-subdir)
+    (evil-define-key 'normal dired-mode-map (kbd "J") 'diredp-next-subdir)
+    (evil-define-key 'normal dired-mode-map (kbd "K") 'diredp-prev-subdir)
+    (evil-define-key 'normal dired-mode-map (kbd "l") 'dired-display-file)
+    (evil-define-key 'normal dired-mode-map (kbd "f") 'dired-narrow)
+    (evil-define-key 'normal dired-mode-map (kbd "j") 'sd/dired-next-line)
+    (evil-define-key 'normal dired-mode-map (kbd "k") 'sd/dired-previous-line)
+    (evil-define-key 'normal dired-mode-map (kbd "h") 'sd/dired-up-directory)
+    (evil-define-key 'normal dired-mode-map [C-backspace] 'dired-up-directory)
+    ;; file and folder deletion
+    (evil-define-key 'normal dired-mode-map (kbd "m") 'dired-mark)
+    (evil-define-key 'normal dired-mode-map (kbd "u") 'dired-unmark)
+    (evil-define-key 'normal dired-mode-map (kbd "U") 'dired-unmark-all-marks)
+    (evil-define-key 'normal dired-mode-map (kbd "z") #'sd/dired-get-size)
+    (evil-define-key 'normal dired-mode-map (kbd "d") 'dired-flag-file-deletion)
+    (evil-define-key 'normal dired-mode-map (kbd "x") 'dired-do-flagged-delete)
+    (evil-define-key 'normal dired-mode-map (kbd "D") 'dired-do-delete)
+    ;; File and folder creation
+    (evil-define-key 'normal dired-mode-map (kbd "c") 'sd/dired-new-file)
+    (evil-define-key 'normal dired-mode-map (kbd "+") 'dired-create-directory)
+    (evil-define-key 'normal dired-mode-map (kbd "C") 'dired-do-copy)
+    (evil-define-key 'normal dired-mode-map (kbd "R") 'dired-do-rename)
+
+    ;; keep some normap mapping
+    (evil-define-key 'normal dired-mode-map (kbd "/") 'evil-ex-search-forward)
+    (evil-define-key 'normal dired-mode-map (kbd "n") 'evil-search-next)
+    (evil-define-key 'normal dired-mode-map (kbd "N") 'evil-search-previous)
+    (evil-define-key 'normal dired-mode-map (kbd "v") 'evil-visual-char))
+
+#+END_SRC
+
+** expand region
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+  ;; (with-eval-after-load "evil"
+  ;;   (with-eval-after-load "expand-region"
+  ;;     (define-key evil-normal-state-map (kbd "SPC") 'er/expand-region)
+  ;;     (define-key evil-visual-state-map (kbd "SPC") 'er/expand-region)
+  ;;     (define-key evil-visual-state-map (kbd "S-SPC") 'er/contract-region)
+  ;;     (define-key evil-normal-state-map (kbd "S-SPC") 'er/contract-region)))
+#+END_SRC
+
+** Org Mode (worf mode) and Lispy mode
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+  (with-eval-after-load "evil"
+    (with-eval-after-load "lispy"
+      (evil-define-key 'normal lispy-mode-map (kbd "[") (lambda ()
+                                                          (interactive)
+                                                          (call-interactively #'lispy-backward)
+                                                          (evil-emacs-state)))
+      (evil-define-key 'normal lispy-mode-map (kbd "]") (lambda ()
+                                                          (interactive)
+                                                          (call-interactively #'lispy-forward)
+                                                          (evil-emacs-state))))
+    (with-eval-after-load "worf"
+      (evil-define-key 'normal worf-mode-map (kbd "[") (lambda ()
+                                                         (interactive)
+                                                         (call-interactively #'worf-backward)
+                                                         (evil-emacs-state)))
+      (evil-define-key 'normal worf-mode-map (kbd "]") (lambda ()
+                                                         (interactive)
+                                                         (call-interactively #'worf-forward)
+                                                         (evil-emacs-state)))))
+#+END_SRC
+
+** Avy & Evil
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+  (setq avy-keys '(?a ?s ?d ?g
+                      ?h ?k ?l
+                      ?q ?w ?e ?r ?t
+                      ?y ?u ?i ?o ?p
+                      ?z ?x ?c ?v ?b
+                      ?n ?m ?f ?j 59))
+  ;; (setq avy-background t)
+  (setq avy-all-windows nil)
+  (with-eval-after-load "evil"
+    (dolist (map (list evil-normal-state-map
+                       evil-visual-state-map
+                       evil-motion-state-map))
+      (define-key map (kbd "gw") 'avy-goto-word-0-below)
+      (define-key map (kbd "gb") 'avy-goto-word-0-above)
+      (define-key map (kbd "ge") 'avy-goto-word-0)
+      (define-key map (kbd "gc") 'avy-goto-char)))
+#+END_SRC
+
+** ggtags
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+
+#+END_SRC
+* Others
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+  (dolist (mode '(c-mode-hook lua-mode-hook))
+    (add-hook mode (lambda () (setq indent-tabs-mode nil))))
+#+END_SRC
+* Provide 
+#+BEGIN_SRC emacs-lisp :tangle yes :results silent
+  (provide 'init-evil-mode)
+#+END_SRC
