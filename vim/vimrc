@@ -30,6 +30,7 @@ Bundle 'rking/ag.vim'
 Bundle 'payneseu/mark-2.8.4'
 "Bundle 'derekwyatt/vim-fswitch'
 Bundle 'sjl/gundo.vim'
+Bundle "vim-scripts/a.vim"
 Bundle 'tpope/vim-markdown'
 "Bundle 'vim-scripts/BreakPts'
 "Bundle 'vim-scripts/genutils'
@@ -156,6 +157,9 @@ nmap =	<C-w>=
 
 nnoremap <C-D>	<C-D>zz
 nnoremap <C-U>	<C-U>zz
+
+" a.vim switch .h .cpp
+nnoremap <C-A> :A<cr>
 
 "nnoremap <SPACE>	<C-F>
 nnoremap <S-SPACE>	<C-B>
@@ -315,7 +319,7 @@ let g:ycm_global_ycm_extra_conf = '~/.vim/bundle/YouCompleteMe/third_party/ycmd/
 "http://www.cnblogs.com/clivelee/p/4266559.html
 "https://github.com/Valloric/YouCompleteMe/issues/18
 "let g:ycm_path_to_python_interpreter= '/System/Library/Frameworks/Python.framework/Versions/2.7/bin/python'
-let g:ycm_auto_trigger = 1
+let g:ycm_auto_trigger = 0
 let g:ycm_seed_identifiers_with_syntax = 1
 let g:ycm_show_diagnostics_ui = 0
 let g:ycm_enable_diagnostic_signs = 0
@@ -344,9 +348,10 @@ nnoremap <silent> sj     :FzfBuffers<CR>
 nnoremap <silent> sk     :FzfFiles<CR>
 nnoremap <silent> st     :FzfTags<CR>
 nnoremap <silent> s,     :FzfBTags<CR>
+nnoremap <silent> sg     :FzfGFiles<CR>
 nnoremap <silent> sn     :FzfHistory<CR>
 "nnoremap <silent> s/     :call fzf#vim#grep("rg --column --line-number --no-heading --color=always --smart-case ". expand(\"<cword>\"), 1, <bang>0)<cr>
-nnoremap <silent> s/     :call fzf#vim#grep("rg --column --line-number --no-heading --color=always --smart-case ".expand("<cword>"), 1, fzf#vim#with_preview('right:20%'))<cr>
+nnoremap <silent> s/     :call fzf#vim#grep("rg --column --line-number --no-heading --color=always --smart-case ".expand("<cword>"), 1, fzf#vim#with_preview('right:40%'))<cr>
 
 " map jj to exit  https://github.com/junegunn/fzf/issues/741
 autocmd FileType fzf tnoremap <buffer> jj <c-c>
@@ -423,6 +428,7 @@ let g:gutentags_project_root = ['.root', '.svn', '.git', '.project']
 
 " 所生成的数据文件的名称 "
 let g:gutentags_ctags_tagfile = '.tags'
+let g:gutentags_generate_on_write = 0
 
 " 将自动生成的 tags 文件全部放入 ~/.cache/tags 目录中，避免污染工程目录 "
 let s:vim_tags = expand('~/.cache/tags')
