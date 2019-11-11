@@ -35,6 +35,7 @@ Bundle 'tpope/vim-markdown'
 "Bundle 'vim-scripts/genutils'
 "Bundle 'vim-scripts/Marks-Browser'
 Bundle 'MattesGroeger/vim-bookmarks'
+" Bundle 'junegunn/fzf.vim'
 Bundle 'junegunn/fzf.vim'
 Bundle 'ludovicchabant/vim-gutentags'
 "Bundle 'tpope/vim-repeat'
@@ -258,48 +259,48 @@ let g:fuf_mrucmd_maxItem = 400
 let g:fuf_file_exclude = '\v\~$|\.(DS_Store|o|exe|dll|bak|orig|swp|pyc)$|(^|[/\\])\.(hg|git|bzr|svn)($|[/\\])'
 let g:fuf_buffertag_ctagsPath = '/usr/local/bin/ctags'
 let g:fuf_enumeratingLimit = 30
-nnoremap <silent> sj     :FufBuffer<CR>
-nnoremap <silent> sk     :FufFileWithCurrentBufferDir<CR>
-nnoremap <silent> sK     :FufFileWithFullCwd<CR>
-nnoremap <silent> s<C-k> :FufFile<CR>
-"nnoremap <silent> sl     :FufCoverageFileChange<CR>
-"nnoremap <silent> sL     :FufCoverageFileChange<CR>
-"nnoremap <silent> s<C-l> :FufCoverageFileRegister<CR>
-nnoremap <silent> sd     :FufDirWithCurrentBufferDir<CR>
-nnoremap <silent> sD     :FufDirWithFullCwd<CR>
-nnoremap <silent> s<C-d> :FufDir<CR>
-nnoremap <silent> sn     :FufMruFile<CR>
-nnoremap <silent> sN     :FufMruFileInCwd<CR>
-nnoremap <silent> sm     :FufMruCmd<CR>
-"nnoremap <silent> su     :FufBookmarkFile<CR>
-nnoremap <silent> s<C-u> :FufBookmarkFileAdd<CR>
-"vnoremap <silent> s<C-u> :FufBookmarkFileAddAsSelectedText<CR>
-nnoremap <silent> si     :FufBookmarkDir<CR>
-nnoremap <silent> s<C-i> :FufBookmarkDirAdd<CR>
-nnoremap <silent> sT     :FufTag<CR>
-nnoremap <silent> st     :FufTag!<CR>
-nnoremap <silent> s<C-]> :FufTagWithCursorWord!<CR>
-nnoremap <silent> s,     :FufBufferTag<CR>
-nnoremap <silent> s<     :FufBufferTag!<CR>
-"vnoremap <silent> s,     :FufBufferTagWithSelectedText!<CR>
-"vnoremap <silent> s<     :FufBufferTagWithSelectedText<CR>
-nnoremap <silent> s}     :FufBufferTagWithCursorWord!<CR>
-nnoremap <silent> sl     :FufBufferTagAll<CR>
-"nnoremap <silent> s.     :FufBufferTagAll<CR>
-nnoremap <silent> s>     :FufBufferTagAll!<CR>
-"vnoremap <silent> s.     :FufBufferTagAllWithSelectedText!<CR>
-"vnoremap <silent> s>     :FufBufferTagAllWithSelectedText<CR>
-"nnoremap <silent> s]     :FufBufferTagAllWithCursorWord!<CR>
-nnoremap <silent> sG     :FufTaggedFile<CR>
-nnoremap <silent> sg     :FufTaggedFile!<CR>
-"nnoremap <silent> so     :FufJumpList<CR>
-"nnoremap <silent> sp     :FufChangeList<CR>
-"nnoremap <silent> sq     :FufQuickfix<CR>
-"nnoremap <silent> sy     :FufLine<CR>
-"  nnoremap <silent> sh     :FufHelp<CR>
-"nnoremap <silent> se     :FufEditDataFile<CR>
-nnoremap <silent> sr     :FufRenewCache<CR>
-" }}}
+"nnoremap <silent> sj     :FufBuffer<CR>
+"nnoremap <silent> sk     :FufFileWithCurrentBufferDir<CR>
+"nnoremap <silent> sK     :FufFileWithFullCwd<CR>
+"nnoremap <silent> s<C-k> :FufFile<CR>
+""nnoremap <silent> sl     :FufCoverageFileChange<CR>
+""nnoremap <silent> sL     :FufCoverageFileChange<CR>
+""nnoremap <silent> s<C-l> :FufCoverageFileRegister<CR>
+"nnoremap <silent> sd     :FufDirWithCurrentBufferDir<CR>
+"nnoremap <silent> sD     :FufDirWithFullCwd<CR>
+"nnoremap <silent> s<C-d> :FufDir<CR>
+"nnoremap <silent> sn     :FufMruFile<CR>
+"nnoremap <silent> sN     :FufMruFileInCwd<CR>
+"nnoremap <silent> sm     :FufMruCmd<CR>
+""nnoremap <silent> su     :FufBookmarkFile<CR>
+"nnoremap <silent> s<C-u> :FufBookmarkFileAdd<CR>
+""vnoremap <silent> s<C-u> :FufBookmarkFileAddAsSelectedText<CR>
+"nnoremap <silent> si     :FufBookmarkDir<CR>
+"nnoremap <silent> s<C-i> :FufBookmarkDirAdd<CR>
+"nnoremap <silent> sT     :FufTag<CR>
+"nnoremap <silent> st     :FufTag!<CR>
+"nnoremap <silent> s<C-]> :FufTagWithCursorWord!<CR>
+"nnoremap <silent> s,     :FufBufferTag<CR>
+"nnoremap <silent> s<     :FufBufferTag!<CR>
+""vnoremap <silent> s,     :FufBufferTagWithSelectedText!<CR>
+""vnoremap <silent> s<     :FufBufferTagWithSelectedText<CR>
+"nnoremap <silent> s}     :FufBufferTagWithCursorWord!<CR>
+"nnoremap <silent> sl     :FufBufferTagAll<CR>
+""nnoremap <silent> s.     :FufBufferTagAll<CR>
+"nnoremap <silent> s>     :FufBufferTagAll!<CR>
+""vnoremap <silent> s.     :FufBufferTagAllWithSelectedText!<CR>
+""vnoremap <silent> s>     :FufBufferTagAllWithSelectedText<CR>
+""nnoremap <silent> s]     :FufBufferTagAllWithCursorWord!<CR>
+"nnoremap <silent> sG     :FufTaggedFile<CR>
+"nnoremap <silent> sg     :FufTaggedFile!<CR>
+""nnoremap <silent> so     :FufJumpList<CR>
+""nnoremap <silent> sp     :FufChangeList<CR>
+""nnoremap <silent> sq     :FufQuickfix<CR>
+""nnoremap <silent> sy     :FufLine<CR>
+""  nnoremap <silent> sh     :FufHelp<CR>
+""nnoremap <silent> se     :FufEditDataFile<CR>
+"nnoremap <silent> sr     :FufRenewCache<CR>
+"" }}}
 " YouCompleteMe ----------------------------------------------------------- {{{
 "syntax on, must before the YCM,
 
@@ -327,19 +328,57 @@ let g:ycm_key_detailed_diagnostics = ''
 
 " Fzf --------------------------------------------------------------------- {{{
 " This is the default extra key bindings
+set rtp+=/usr/local/opt/fzf
+let $FZF_DEFAULT_COMMAND = 'rg --files --no-messages "" .'
+"let $FZF_DEFAULT_OPTS = $FZF_DEFAULT_OPTS . ' --layout=reverse --inline-info --bind ctrl-a:select-all,ctrl-n:down,ctrl-p:up,ctrl-f:half-page-up,ctrl-b:half-page-down'
+let $FZF_DEFAULT_OPTS=$FZF_DEFAULT_OPTS . " --layout=reverse " . 
+                      \ " --inline-info " . 
+                      \ " --cycle --extended " . 
+                      \ " --exact " . 
+                      \ " --bind ctrl-a:select-all,ctrl-n:down,ctrl-p:up,ctrl-f:half-page-up,ctrl-b:half-page-down"
+
+
+let g:fzf_command_prefix = 'Fzf'
+
+nnoremap <silent> sj     :FzfBuffers<CR>
+nnoremap <silent> sk     :FzfFiles<CR>
+nnoremap <silent> st     :FzfTags<CR>
+nnoremap <silent> s,     :FzfBTags<CR>
+nnoremap <silent> sn     :FzfHistory<CR>
+"nnoremap <silent> s/     :call fzf#vim#grep("rg --column --line-number --no-heading --color=always --smart-case ". expand(\"<cword>\"), 1, <bang>0)<cr>
+nnoremap <silent> s/     :call fzf#vim#grep("rg --column --line-number --no-heading --color=always --smart-case ".expand("<cword>"), 1, fzf#vim#with_preview('right:20%'))<cr>
+
+" map jj to exit  https://github.com/junegunn/fzf/issues/741
+autocmd FileType fzf tnoremap <buffer> jj <c-c>
+
+
+" Mapping selecting mappings
+nmap <leader><tab> <plug>(fzf-maps-n)
+xmap <leader><tab> <plug>(fzf-maps-x)
+omap <leader><tab> <plug>(fzf-maps-o)
+
+" Insert mode completion
+imap <c-x><c-k> <plug>(fzf-complete-word)
+imap <c-x><c-f> <plug>(fzf-complete-path)
+imap <c-x><c-j> <plug>(fzf-complete-file-ag)
+imap <c-x><c-l> <plug>(fzf-complete-line)
+
+" Advanced customization using autoload functions
+inoremap <expr> <c-x><c-k> fzf#vim#complete#word({'left': '15%'})
+
 let g:fzf_action = {
   \ 'ctrl-t': 'tab split',
   \ 'ctrl-x': 'split',
   \ 'ctrl-v': 'vsplit' }
-
+"
 " Default fzf layout
 " - down / up / left / right
-let g:fzf_layout = { 'down': '~40%' }
+let g:fzf_layout = { 'up': '~20%' }
 
 " In Neovim, you can set up fzf window using a Vim command
-let g:fzf_layout = { 'window': 'enew' }
-let g:fzf_layout = { 'window': '-tabnew' }
-let g:fzf_layout = { 'window': '10new' }
+" let g:fzf_layout = { 'window': 'enew' }
+" let g:fzf_layout = { 'window': '-tabnew' }
+" let g:fzf_layout = { 'window': '10new' }
 
 " Customize fzf colors to match your color scheme
 let g:fzf_colors =
@@ -362,6 +401,17 @@ let g:fzf_colors =
 " previous-history instead of down and up. If you don't like the change,
 " explicitly bind the keys to down and up in your $FZF_DEFAULT_OPTS.
 let g:fzf_history_dir = '~/.local/share/fzf-history'
+" [Buffers] Jump to the existing window if possible
+let g:fzf_buffers_jump = 1
+
+" [[B]Commits] Customize the options used by 'git log':
+let g:fzf_commits_log_options = '--graph --color=always --format="%C(auto)%h%d %s %C(black)%C(bold)%cr"'
+
+" [Tags] Command to generate tags file
+let g:fzf_tags_command = 'ctags -R'
+
+" [Commands] --expect expression for directly executing the command
+let g:fzf_commands_expect = 'alt-enter,ctrl-x'
 
 " }}}
 
