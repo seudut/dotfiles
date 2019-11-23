@@ -121,8 +121,10 @@ fi
 alias 'gs'='git status'
 alias 'ga'='git add'
 alias 'gc'='git commit'
-alias 'gl'='git log  --oneline --graph --all --color --decorate --abbrev-commit'
-alias 'git-log'='git log  --oneline --graph --all --color --decorate --abbrev-commit'
+#alias 'gl'='git log  --oneline --graph --all --color --decorate --abbrev-commit'
+alias 'gl'='git log  --oneline --graph --color --decorate --abbrev-commit'
+#alias 'git-log'='git log  --oneline --graph --all --color --decorate --abbrev-commit'
+alias 'git-log'='git log  --oneline --graph --color --decorate --abbrev-commit'
 alias 'gdiff'='git diff'
 alias 'gpush'='git push origin master'
 
