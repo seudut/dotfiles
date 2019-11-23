@@ -37,6 +37,7 @@ Bundle 'tpope/vim-markdown'
 "Bundle 'vim-scripts/Marks-Browser'
 Bundle 'MattesGroeger/vim-bookmarks'
 " Bundle 'junegunn/fzf.vim'
+Bundle 'junegunn/fzf', {'dir': '~/.fzf', 'do': './install --all'}
 Bundle 'junegunn/fzf.vim'
 Bundle 'ludovicchabant/vim-gutentags'
 "Bundle 'tpope/vim-repeat'
@@ -354,7 +355,7 @@ nnoremap <silent> sn     :FzfHistory<CR>
 nnoremap <silent> s/     :call fzf#vim#grep("rg --column --line-number --no-heading --color=always --smart-case ".expand("<cword>"), 1, fzf#vim#with_preview('right:40%'))<cr>
 
 " map jj to exit  https://github.com/junegunn/fzf/issues/741
-autocmd FileType fzf tnoremap <buffer> jj <c-c>
+autocmd! FileType fzf tnoremap <buffer> jj <c-c>
 
 
 " Mapping selecting mappings
@@ -407,7 +408,7 @@ let g:fzf_colors =
 " explicitly bind the keys to down and up in your $FZF_DEFAULT_OPTS.
 let g:fzf_history_dir = '~/.local/share/fzf-history'
 " [Buffers] Jump to the existing window if possible
-let g:fzf_buffers_jump = 1
+let g:fzf_buffers_jump = 0
 
 " [[B]Commits] Customize the options used by 'git log':
 let g:fzf_commits_log_options = '--graph --color=always --format="%C(auto)%h%d %s %C(black)%C(bold)%cr"'
@@ -424,7 +425,7 @@ let g:fzf_commands_expect = 'alt-enter,ctrl-x'
 " Gutentags --------------------------------------------------------------- {{{
 
 " gutentags搜索工程目录的标志，碰到这些文件/目录名就停止向上一级目录递归 "
-let g:gutentags_project_root = ['.root', '.svn', '.git', '.project']
+let g:gutentags_project_root = ['.guctags', '.root', '.svn', '.git', '.project']
 
 " 所生成的数据文件的名称 "
 let g:gutentags_ctags_tagfile = '.tags'

@@ -92,7 +92,7 @@ zstyle ':completion:*:kill:*' command 'ps -u $USER -o pid,%cpu,tty,cputime,cmd'
 alias grep='grep --color -E'
 #alias mvim='mvim --remote-silent'
 #alias vim='/usr/local/bin/mvim -v'
-alias tmux='tmux -2'
+alias tmux='/usr/local/bin/tmux -2'
 
 if [[ $OSNAME == 'Darwin' ]]; then
     alias l='ls -l'
@@ -121,8 +121,9 @@ fi
 alias 'gs'='git status'
 alias 'ga'='git add'
 alias 'gc'='git commit'
-alias 'gl'='git log  --oneline --graph --all --color --decorate --abbrev-commit'
-alias 'git-log'='git log  --oneline --graph --all --color --decorate --abbrev-commit'
+#alias 'git-log'='git log  --oneline --graph --all --color --decorate --abbrev-commit'
+alias 'gl'='git log  --oneline --graph --color --decorate --abbrev-commit'
+alias 'git-log'='git log  --oneline --graph --color --decorate --abbrev-commit'
 alias 'gdiff'='git diff'
 alias 'gpush'='git push origin master'
 
@@ -325,8 +326,8 @@ if [[ $OSNAME == 'Darwin' ]]; then
 fi
 
 # python3
-alias python="/usr/local/bin/python3"
-alias pip="/usr/local/bin/pip3"
+#alias python="/usr/local/bin/python3"
+#alias pip="/usr/local/bin/pip3"
 
 
 # add Racket into PATH
@@ -359,3 +360,12 @@ export FZF_DEFAULT_COMMAND='rg --files --no-ignore-vcs --hidden'
 
 export NVM_DIR="/Users/peng/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+
+gdb-tmux() {
+    local tty="$(tmux split-window -hPF "#{pane_tty}" "tail -f /dev/null")"
+    tmux last-pane
+    gdb -ex "dashboard -output $tty" "$@"
+}
