@@ -327,8 +327,8 @@ if [[ $OSNAME == 'Darwin' ]]; then
 fi
 
 # python3
-alias python="/usr/local/bin/python3"
-alias pip="/usr/local/bin/pip3"
+#alias python="/usr/local/bin/python3"
+#alias pip="/usr/local/bin/pip3"
 
 
 # add Racket into PATH
@@ -361,3 +361,5 @@ export FZF_DEFAULT_COMMAND='rg --files --no-ignore-vcs --hidden'
 
 export NVM_DIR="/Users/peng/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
