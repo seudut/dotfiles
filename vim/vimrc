@@ -342,9 +342,7 @@ let $FZF_DEFAULT_COMMAND = 'rg --files --no-messages "" .'
 "let $FZF_DEFAULT_OPTS = $FZF_DEFAULT_OPTS . ' --layout=reverse --inline-info --bind ctrl-a:select-all,ctrl-n:down,ctrl-p:up,ctrl-f:half-page-up,ctrl-b:half-page-down'
 let $FZF_DEFAULT_OPTS=$FZF_DEFAULT_OPTS . " --layout=reverse " . 
                       \ " --inline-info " . 
-                      \ " --cycle --extended " . 
-                      \ " --exact " . 
-                      \ " --bind ctrl-a:select-all,ctrl-n:down,ctrl-p:up,ctrl-f:half-page-up,ctrl-b:half-page-down"
+                      \ " --bind ctrl-n:down,ctrl-p:up,ctrl-f:half-page-up,ctrl-b:half-page-down"
 
 
 let g:fzf_command_prefix = 'Fzf'
@@ -441,7 +439,7 @@ let g:fzf_commands_expect = 'alt-enter,ctrl-x'
 " Gutentags --------------------------------------------------------------- {{{
 
 " gutentags搜索工程目录的标志，碰到这些文件/目录名就停止向上一级目录递归 "
-let g:gutentags_project_root = ['.guctags', '.root', '.svn', '.git', '.project']
+let g:gutentags_project_root = ['.guctags', '.gutctags', '.root', '.svn', '.git', '.project']
 
 " 所生成的数据文件的名称 "
 let g:gutentags_ctags_tagfile = '.tags'

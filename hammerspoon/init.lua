@@ -15,15 +15,15 @@ hs.alert.show("Config loaded")
 --      hs.eventtap.rightClick(hs.mouse.getAbsolutePosition())
 --end)
 
--- Donw : For firefox vimperator
-hs.hotkey.bind({"cmd", "ctrl"}, "n", function()
-      hs.eventtap.keyStroke({}, 'down')
-end)
-
--- Up
-hs.hotkey.bind({"cmd", "ctrl"}, "p", function()
-      hs.eventtap.keyStroke({}, 'up')
-end)
+---- Donw : For firefox vimperator
+--hs.hotkey.bind({"cmd", "ctrl"}, "n", function()
+--      hs.eventtap.keyStroke({}, 'down')
+--end)
+--
+---- Up
+--hs.hotkey.bind({"cmd", "ctrl"}, "p", function()
+--      hs.eventtap.keyStroke({}, 'up')
+--end)
 
 hs.hotkey.bind({"ctrl"},"[", function()
     hs.eventtap.keyStroke({}, 'escape' )
