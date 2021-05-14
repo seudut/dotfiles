@@ -46,6 +46,10 @@ Bundle 'ludovicchabant/vim-gutentags'
 Bundle 'vim-latex/vim-latex'
 Plugin 'vimperator/vimperator.vim'
 
+" Golang
+Plugin 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
+
+
 call vundle#end()
 filetype plugin indent on
 
@@ -639,7 +643,26 @@ vmap #$ <Plug>IMAP_JumpForward
 vmap #$ <Plug>IMAP_DeleteAndJumpForward
 let g:Imap_FreezeImap=1
 " }}}
+
+" vim-go ------------------------------------------------------------------ {{{
+let g:go_highlight_fields = 1
+let g:go_highlight_functions = 1
+let g:go_highlight_function_calls = 1
+let g:go_highlight_extra_types = 1
+let g:go_highlight_operators = 1
+
+" Auto formatting and importing
+let g:go_fmt_autosave = 1
+let g:go_fmt_command = "goimports"
+let g:go_def_mode='godef'
+
+" Status line types/signatures
+let g:go_auto_type_info = 1
+
 " }}}
+
+" }}}
+
 " FileType ---------------------------------------------------------------- {{{
 autocmd BufNewFile,BufRead *.log set filetype=logecc
 autocmd BufNewFile,BufRead *.log.[0-9] set filetype=logecc
@@ -676,7 +699,12 @@ autocmd FileType perl setlocal foldmethod=syntax |
     \ let b:AutoClosePairs = AutoClose#DefaultPairsModified("\"", "{}") |
 	\ inoremap <buffer> {<CR> {<CR>}<ESC>kA<CR>
 
-autocmd Filetype markdown setlocal textwidth=80
+autocmd FileType markdown setlocal textwidth=80
+
+autocmd FileType go |
+    \ setlocal list |
+    \ setlocal noexpandtab |
+    \ inoremap <buffer> . .<C-x><C-o>
 
 autocmd CmdwinEnter * map <buffer> q :q<CR>
 

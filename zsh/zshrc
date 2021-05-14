@@ -357,7 +357,7 @@ else
     [[ $TMUX_IP = "" ]] && TMUX_IP=$ip
 fi
 
-export PATH=$PATH:/usr/local/go/bin
+export PATH=$PATH:/usr/local/go/bin:~/go/bin
 
 ##alias vim=/usr/local/Cellar/macvim/7.4-104/MacVim.app/Contents/MacOS/Vim
 export FZF_DEFAULT_COMMAND='rg --files --no-ignore-vcs --hidden'
