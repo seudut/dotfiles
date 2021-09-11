@@ -46,6 +46,12 @@ Bundle 'ludovicchabant/vim-gutentags'
 Bundle 'vim-latex/vim-latex'
 Plugin 'vimperator/vimperator.vim'
 
+" plantuml - uml preview
+" https://jekhokie.github.io/linux/vim/plantuml/2020/07/25/plantuml-using-vim.html
+Plugin 'weirongxu/plantuml-previewer.vim'
+Plugin 'tyru/open-browser.vim'
+Plugin 'aklt/plantuml-syntax'
+
 " Golang
 Plugin 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 
@@ -705,6 +711,11 @@ autocmd FileType go |
     \ inoremap <buffer> . .<C-x><C-o>
 
 autocmd CmdwinEnter * map <buffer> q :q<CR>
+au FileType plantuml let g:plantuml_previewer#plantuml_jar_path = get(
+    \  matchlist(system('cat `which plantuml` | grep plantuml.jar'), '\v.*\s[''"]?(\S+plantuml\.jar).*'),
+    \  1,
+    \  0
+    \)
 
 " }}}
 " Functions --------------------------------------------------------------- {{{
