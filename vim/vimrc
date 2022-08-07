@@ -11,7 +11,7 @@ call vundle#begin()
 Plugin 'gmarik/Vundle.vim'
 Bundle 'vim-scripts/FuzzyFinder'
 Bundle 'vim-scripts/L9'
-Bundle 'Valloric/YouCompleteMe'
+"Bundle 'Valloric/YouCompleteMe'
 Bundle 'octol/vim-cpp-enhanced-highlight'
 Bundle 'vim-airline/vim-airline'
 Bundle 'vim-airline/vim-airline-themes'
@@ -39,6 +39,7 @@ Bundle 'MattesGroeger/vim-bookmarks'
 " Bundle 'junegunn/fzf.vim'
 Bundle 'junegunn/fzf', {'dir': '~/.fzf', 'do': './install --all'}
 Bundle 'junegunn/fzf.vim'
+"Bundle 'junegunn/vim-peekaboo'
 Bundle 'ludovicchabant/vim-gutentags'
 "Bundle 'tpope/vim-repeat'
 "Bundle 'kien/ctrlp.vim'
@@ -54,6 +55,15 @@ Plugin 'aklt/plantuml-syntax'
 
 " Golang
 Plugin 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
+
+
+"if has('nvim')
+"  Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+"else
+  Bundle 'Shougo/deoplete.nvim'
+  Bundle 'roxma/nvim-yarp'
+  Bundle 'roxma/vim-hug-neovim-rpc'
+"endif
 
 
 call vundle#end()
@@ -325,7 +335,7 @@ if !has("osx")
 endif
 
 "let g:ycm_collect_identifiers_from_tags_files = 1
-let g:ycm_global_ycm_extra_conf = '~/.vim/bundle/YouCompleteMe/third_party/ycmd/cpp/ycm/.ycm_extra_conf.py'
+"let g:ycm_global_ycm_extra_conf = '~/.vim/bundle/YouCompleteMe/third_party/ycmd/cpp/ycm/.ycm_extra_conf.py'
 " this is fix youcompleteme python error
 "http://www.cnblogs.com/clivelee/p/4266559.html
 "https://github.com/Valloric/YouCompleteMe/issues/18
@@ -348,7 +358,11 @@ let $FZF_DEFAULT_COMMAND = 'rg --files --no-messages "" .'
 "let $FZF_DEFAULT_OPTS = $FZF_DEFAULT_OPTS . ' --layout=reverse --inline-info --bind ctrl-a:select-all,ctrl-n:down,ctrl-p:up,ctrl-f:half-page-up,ctrl-b:half-page-down'
 let $FZF_DEFAULT_OPTS=$FZF_DEFAULT_OPTS . " --layout=reverse " . 
                       \ " --inline-info " . 
-                      \ " --bind ctrl-n:down,ctrl-p:up,ctrl-f:half-page-up,ctrl-b:half-page-down"
+                      \ " --exact " . 
+                      \ " --cycle " .
+                      \ " --bind ctrl-n:down,ctrl-p:up,ctrl-k:half-page-up,ctrl-j:half-page-down"
+"let $FZF_DEFAULT_OPTS=substitute($FZF_DEFAULT_OPTS, '\V--exact\|-x', '', 'g')
+
 
 
 let g:fzf_command_prefix = 'Fzf'
@@ -359,10 +373,63 @@ nnoremap <silent> st     :FzfTags<CR>
 nnoremap <silent> s,     :FzfBTags<CR>
 nnoremap <silent> sg     :FzfGFiles<CR>
 nnoremap <silent> sn     :FzfHistory<CR>
+nnoremap <silent> <Leader>h     :FzfHelptags<CR>
 "nnoremap <silent> s/     :call fzf#vim#grep("rg --column --line-number --no-heading --color=always --smart-case ". expand(\"<cword>\"), 1, <bang>0)<cr>
-nnoremap <silent> s/     :call fzf#vim#grep("rg --column --line-number --no-heading --color=always --smart-case ".expand("<cword>"), 1, fzf#vim#with_preview('right:40%'))<cr>
+nnoremap <silent> sw     :call fzf#vim#grep("rg --column --line-number --no-heading --color=always --smart-case ".expand("<cword>"), 1, fzf#vim#with_preview('right:40%'))<cr>
 command!  -bang -nargs=* Rg2 call fzf#vim#grep("rg --column  --line-number --no-heading --color=always --smart-case ".shellescape(<q-args>), 1, fzf#vim#with_preview('right:40%'))
-nnoremap <silent> s?  :Rg2<cr>
+"nnoremap <silent> s?  :Rg2<cr>
+
+function! RipgrepFzf(query, fullscreen)
+  let command_fmt = 'rg --column --line-number --no-heading --color=always --smart-case -- %s || true'
+  let initial_command = printf(command_fmt, shellescape(a:query))
+  let reload_command = printf(command_fmt, '{q}')
+  let spec = {'options': ['--phony', '--query', a:query, '--bind', 'change:reload:'.reload_command]}
+  call fzf#vim#grep(initial_command, 1, fzf#vim#with_preview(spec), a:fullscreen)
+endfunction
+
+command! -nargs=* -bang RG call RipgrepFzf(<q-args>, <bang>0)
+"nnoremap <silent> s/ :RG<cr>
+
+"https://github.com/junegunn/fzf.vim/issues/1369
+function! RipgrepFzf2(query, fullscreen)
+  let command_fmt = 'rg --column --line-number --no-heading --color=always --smart-case '
+  let initial_command = command_fmt.(a:query)
+  let reload_command = printf(command_fmt.('%s'), '{q}')
+  let spec = {'options': ['--phony', '--query', a:query, '--bind', 'change:reload:eval '.reload_command]}
+  call fzf#vim#grep(initial_command, 1, fzf#vim#with_preview(spec), a:fullscreen)
+endfunction
+command! -nargs=* -bang RG2 call RipgrepFzf2(<q-args>, <bang>0)
+nnoremap <silent> s/ :RG2<cr>
+
+
+"nnoremap <silent> sm     :call fzf#vim#grep(":GoReferrers ".expand("<cword>"), 1, fzf#vim#with_preview('right:40%'))<cr>
+command! LS call fzf#run(fzf#wrap({'source': 'ls'}))
+command! LL call fzf#run({'source': 'cat /home/peng/temp/ss.cpp', 'sink': 'e', 'window': {'width': 0.9, 'height': 0.6}})
+command! MyTest call fzf#run({'sink': 'e'})
+command! -bang -nargs=? -complete=dir MyFF
+    \ call fzf#vim#files(<q-args>, {'options': ['--layout=reverse', '--info=inline']}, <bang>0)
+command! -bang -nargs=? -complete=dir MYFF2
+    \ call fzf#vim#files(<q-args>, {'options': ['--layout=reverse', '--info=inline', '--preview', 'cat {}']}, <bang>0)
+command! -bang -nargs=? -complete=dir MyFF3
+    \ call fzf#vim#files(<q-args>, {'options': ['--layout=reverse', '--info=inline', '--preview', '~/.vim/plugged/fzf.vim/bin/preview.sh {}']}, <bang>0)
+
+"command!  -bang -nargs=* MyBuf call fzf#vim#grep("cat "., 1, fzf#vim#with_preview('right:40%'))
+command!  -bang -nargs=* MyBuf call fzf#vim#buffer_lines(<q-args>, <bang>0)
+
+" replace FzfBLines https://github.com/junegunn/fzf.vim/issues/374
+command! -bang -nargs=* LinesWithPreview
+    \ call fzf#vim#grep(
+    \   'rg --with-filename --column --line-number --no-heading --color=always --smart-case . '.fnameescape(expand('%')), 1,
+    \   fzf#vim#with_preview({'options': '--delimiter : --nth 4.. --no-sort'}, 'right:40%', '?'),
+    \   <bang>0)
+"nnoremap H :LinesWithPreview<CR>
+nnoremap <silent> s/ :LinesWithPreview<CR> 
+
+
+
+
+
+
 
 " map jj to exit  https://github.com/junegunn/fzf/issues/741
 autocmd! FileType fzf tnoremap <buffer> jj <c-c>
@@ -389,9 +456,19 @@ let g:fzf_action = {
 "
 " Default fzf layout
 " - down / up / left / right
-let g:fzf_layout = { 'up': '~20%' }
+"let g:fzf_layout = { 'up': '~30%' }
+let g:fzf_layout = { 'window': { 'width': 0.9, 'height': 0.6 } }
 
-" In Neovim, you can set up fzf window using a Vim command
+"let g:terminal_ansi_colors = [
+"  \ '#4e4e4e', '#d68787', '#5f865f', '#d8af5f',
+"  \ '#85add4', '#d7afaf', '#87afaf', '#d0d0d0',
+"  \ '#626262', '#d75f87', '#87af87', '#ffd787',
+"  \ '#add4fb', '#ffafaf', '#87d7d7', '#e4e4e4'
+"\ ]
+"
+
+
+" In meovim, you can set up fzf window using a Vim command
 " let g:fzf_layout = { 'window': 'enew' }
 " let g:fzf_layout = { 'window': '-tabnew' }
 " let g:fzf_layout = { 'window': '10new' }
@@ -654,11 +731,23 @@ let g:go_highlight_functions = 1
 let g:go_highlight_function_calls = 1
 let g:go_highlight_extra_types = 1
 let g:go_highlight_operators = 1
+"let g:go_auto_sameids = 1
+let g:go_highlight_function_parameters = 1
+let g:go_highlight_types = 1
+
+
+
+
+
+
+
+
 
 " Auto formatting and importing
 let g:go_fmt_autosave = 1
 let g:go_fmt_command = "goimports"
 let g:go_def_mode='godef'
+"let g:go_gopls_options = ['-remote=auto', '-logfile=/tmp/gopls.log', '-vv', '-remote.logfile=/tmp/gopls-remote.log', '-rpc.trace']
 
 " Status line types/signatures
 let g:go_auto_type_info = 1
@@ -666,6 +755,11 @@ let g:go_auto_type_info = 1
 " }}}
 
 " }}}
+
+" deoplete----------------------------------------------------------------- {{{
+let g:deoplete#enable_at_startup = 1
+" }}}
+
 
 " FileType ---------------------------------------------------------------- {{{
 autocmd BufNewFile,BufRead *.log set filetype=logecc
