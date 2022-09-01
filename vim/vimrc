@@ -371,7 +371,8 @@ nnoremap <silent> sj     :FzfBuffers<CR>
 nnoremap <silent> sk     :FzfFiles<CR>
 nnoremap <silent> st     :FzfTags<CR>
 nnoremap <silent> s,     :FzfBTags<CR>
-nnoremap <silent> sg     :FzfGFiles<CR>
+"nnoremap <silent> sg     :FzfGFiles<CR>
+nnoremap <silent> sg :RG2<CR>
 nnoremap <silent> sn     :FzfHistory<CR>
 nnoremap <silent> <Leader>h     :FzfHelptags<CR>
 "nnoremap <silent> s/     :call fzf#vim#grep("rg --column --line-number --no-heading --color=always --smart-case ". expand(\"<cword>\"), 1, <bang>0)<cr>
@@ -399,7 +400,7 @@ function! RipgrepFzf2(query, fullscreen)
   call fzf#vim#grep(initial_command, 1, fzf#vim#with_preview(spec), a:fullscreen)
 endfunction
 command! -nargs=* -bang RG2 call RipgrepFzf2(<q-args>, <bang>0)
-nnoremap <silent> s/ :RG2<cr>
+"nnoremap <silent> s/ :RG2<cr>
 
 
 "nnoremap <silent> sm     :call fzf#vim#grep(":GoReferrers ".expand("<cword>"), 1, fzf#vim#with_preview('right:40%'))<cr>
@@ -419,7 +420,7 @@ command!  -bang -nargs=* MyBuf call fzf#vim#buffer_lines(<q-args>, <bang>0)
 " replace FzfBLines https://github.com/junegunn/fzf.vim/issues/374
 command! -bang -nargs=* LinesWithPreview
     \ call fzf#vim#grep(
-    \   'rg --with-filename --column --line-number --no-heading --color=always --smart-case . '.fnameescape(expand('%')), 1,
+    \   'rg --line-number --no-heading --color=always --smart-case . '.fnameescape(expand('%')), 1,
     \   fzf#vim#with_preview({'options': '--delimiter : --nth 4.. --no-sort'}, 'right:40%', '?'),
     \   <bang>0)
 "nnoremap H :LinesWithPreview<CR>
@@ -732,9 +733,10 @@ let g:go_highlight_function_calls = 1
 let g:go_highlight_extra_types = 1
 let g:go_highlight_operators = 1
 "let g:go_auto_sameids = 1
-let g:go_highlight_function_parameters = 1
+"let g:go_highlight_function_parameters = 1
 let g:go_highlight_types = 1
-
+let g:go_fold_enable = ['block', 'import', 'varconst', 'package_comment']
+"command GoUpdateBinaries gopls
 
 
 
@@ -758,6 +760,12 @@ let g:go_auto_type_info = 1
 
 " deoplete----------------------------------------------------------------- {{{
 let g:deoplete#enable_at_startup = 1
+"call deoplete#custom#option('auto_complete_delay', 200)
+call deoplete#custom#option({
+            \ 'auto_complete_delay': 200,
+            \ 'smart_case': v:true,
+            \ 'min_pattern_length': 4,
+            \})
 " }}}
 
 
@@ -802,7 +810,6 @@ autocmd FileType markdown setlocal textwidth=80
 autocmd FileType go |
     \ setlocal list |
     \ setlocal noexpandtab |
-    \ inoremap <buffer> . .<C-x><C-o>
 
 autocmd CmdwinEnter * map <buffer> q :q<CR>
 au FileType plantuml let g:plantuml_previewer#plantuml_jar_path = get(

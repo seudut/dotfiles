@@ -5,6 +5,8 @@ my new vim configureation files
 Refer https://github.com/connermcd/dotfiles.git and https://bitbucket.org/sjl/dotfiles
 
 
+vim-8.2.2434
+
 ```bash
 ./configure --prefix=/home/peng/source/vim-v8.2.5172/_install
 --with-features=huge --enable-perlinterp  --enable-rubyinterp --enable-luainterp
