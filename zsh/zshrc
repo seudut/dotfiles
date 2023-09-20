@@ -112,10 +112,10 @@ alias cp='cp -i'
 alias ln='ln -i'
 
 #alias svn='colorsvn'
-if [[ $OSNAME == 'Darwin' ]]; then
-    [[ -f '/usr/local/bin/gsed' ]] || echo "zshrc warning: no gsed"
-fi
-[[ -f '/usr/local/bin/gsed' ]] && alias sed='/usr/local/bin/gsed'
+#if [[ $OSNAME == 'Darwin' ]]; then
+#    [[ -f '/usr/local/bin/gsed' ]] || echo "zshrc warning: no gsed"
+#fi
+#[[ -f '/usr/local/bin/gsed' ]] && alias sed='/usr/local/bin/gsed'
 
 ##### Git 
 alias 'gs'='git status'
@@ -371,3 +371,6 @@ export NVM_DIR="/Users/peng/.nvm"
 # MY variable for command application
 #
 export MY_IP=`ip addr  | perl -waln -e '/docker/ or /127.0.0.1/ or /-->/ or /inet (.*)?\// and print "$1"'`
+eval $(/opt/homebrew/bin/brew shellenv)
+
+export PATH=$PATH:${HOME}/scripts

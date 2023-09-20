@@ -1,5 +1,7 @@
 #!/usr/bin/perl -w
-
+#
+# https://xnathan.com/2019/05/03/squirrel-wubi-setup/
+#
 use 5.010;
 use strict;
 use Cwd;

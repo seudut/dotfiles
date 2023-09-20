@@ -1,7 +1,7 @@
 -- Sample Hello World 
 hs.hotkey.bind({"cmd", "alt", "ctrl"}, "W", function()
   hs.notify.new({title="Hammerspoon", informativeText="Hello World"}):send()
---  hs.alert.show("Hello World!")
+  hs.alert.show("Hello World!")
 end)
 
 -- Reload configuration
@@ -9,6 +9,12 @@ hs.hotkey.bind({"cmd", "alt", "ctrl"}, "R", function()
   hs.reload()
 end)
 hs.alert.show("Config loaded")
+
+-- lock screen shortcut
+hs.hotkey.bind({"cmd", "alt", "ctrl"}, "L", function() 
+    hs.caffeinate.startScreensaver() 
+end)
+
 
 ---- Right click 
 --hs.hotkey.bind({"cmd,", "alt", "ctrl"}, "l", function()
@@ -48,9 +54,9 @@ function move_window(direction)
         local max      = screen:frame()
  
         if direction == "left" then
-	    f.x = max.x
+	        f.x = max.x
             f.y = max.y
-	    f.w = max.w / 2
+	        f.w = max.w / 2
             f.h = max.h
         elseif direction == "right" then
             f.x = max.x + (max.w / 2)
@@ -98,15 +104,15 @@ hs.hotkey.bind(hyper, "m", move_window("max"))
 
 ---- Toggle iTerm2
 -- https://kalis.me/setup-hyper-key-hammerspoon-macos/
-hs.hotkey.bind({"cmd"}, "I", function() 
-    hs.osascript.applescriptFromFile("./applescript/iterm2_toggle.applescript")
-end)
+---hs.hotkey.bind({"cmd"}, "I", function() 
+---    hs.osascript.applescriptFromFile("./applescript/iterm2_toggle.applescript")
+---end)
 
 
 ---- Toggle Emacs
-hs.hotkey.bind({"cmd"}, "O", function() 
-    hs.osascript.applescriptFromFile("./applescript/emacs_toggle.applescript")
-end)
+---hs.hotkey.bind({"cmd"}, "O", function() 
+---    hs.osascript.applescriptFromFile("./applescript/emacs_toggle.applescript")
+---end)
 
 -----
 -- Search and dictionary
@@ -224,7 +230,7 @@ INSTALL:andUse("TextClipboardHistory",
 ---- hs.hotkey.bind({"cmd", "alt"}, "E", function() chooser:show() end)
 
 ----require("remap_alt_ctrl_2_escape")
-require("remap_alt_2_escape")
+--- require("remap_alt_2_escape")
 
 --- remapp, as in vimum shift-space now working when space is mapped
 --mapSpaceShift = hs.hotkey.new({"shift"}, 'space', "mm", function()
@@ -266,3 +272,25 @@ hs.window.filter.ignoreAlways['SDK'] = true
 --hs.window.filter.new('Google Chrome')
 --    :subscribe(hs.window.filter.windowFocused,function() mapSpaceShift:enable() end)
 --    :subscribe(hs.window.filter.windowUnfocused,function() mapSpaceShift:disable() end)
+--
+--
+
+-- hotkey for iterm
+hs.hotkey.bind({"cmd"},"I", function()
+    --local win      = hs.window.frontmostWindow()
+    --local app      = win:application()
+    --local app_name = app:name()
+    local app = hs.application.find("iTerm2")
+    if app then
+        if not app:isFrontmost() then
+            app:activate()
+        else
+            app:hide()
+        end
+    end
+end)
+
+-- open wubi.jpeg
+hs.hotkey.bind({"cmd", "ctrl"},"b", function()
+    hs.execute("open ~/Desktop/wubi.jpeg")
+end)
