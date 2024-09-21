@@ -370,7 +370,7 @@ export NVM_DIR="/Users/peng/.nvm"
 ################################################################################
 # MY variable for command application
 #
-export MY_IP=`ip addr  | perl -waln -e '/docker/ or /127.0.0.1/ or /-->/ or /inet (.*)?\// and print "$1"'`
-eval $(/opt/homebrew/bin/brew shellenv)
+#export MY_IP=`ip addr  | perl -waln -e '/docker/ or /127.0.0.1/ or /-->/ or /inet (.*)?\// and print "$1"'`
+#eval $(/opt/homebrew/bin/brew shellenv)
 
 export PATH=$PATH:${HOME}/scripts
