@@ -739,20 +739,17 @@ let g:go_fold_enable = ['block', 'import', 'varconst', 'package_comment']
 "command GoUpdateBinaries gopls
 
 
-
-
-
-
-
-
 " Auto formatting and importing
 let g:go_fmt_autosave = 1
 let g:go_fmt_command = "goimports"
-let g:go_def_mode='godef'
+let g:go_def_mode='gopls'
+"let g:go_def_mode='godef'
 "let g:go_gopls_options = ['-remote=auto', '-logfile=/tmp/gopls.log', '-vv', '-remote.logfile=/tmp/gopls-remote.log', '-rpc.trace']
 
 " Status line types/signatures
 let g:go_auto_type_info = 1
+au filetype go inoremap <buffer> . .<C-x><C-o>
+
 
 " }}}
 
@@ -764,7 +761,7 @@ let g:deoplete#enable_at_startup = 1
 call deoplete#custom#option({
             \ 'auto_complete_delay': 200,
             \ 'smart_case': v:true,
-            \ 'min_pattern_length': 4,
+            \ 'min_pattern_length': 3,
             \})
 " }}}
 
