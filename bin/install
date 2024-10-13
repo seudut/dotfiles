@@ -1,0 +1,3 @@
+#!/usr/bin/bash
+#
+ln -s ~/dotfiles/bin/proxy ~/.local/bin/proxy
